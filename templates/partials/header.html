@@ -1,0 +1,23 @@
+<ul class="ul-navbar">
+    <nav class="link">
+      {% load static %}
+      
+      <a href="https://betech.cl/" target="_blank"><img src='{% static "img/logobetech01.png" %}' class="logo-navbar" alt="Logo Navbar"></a>
+        <div >
+          <a style="margin-right:10px; margin-left: 660px;" href="{% url 'home' %}"><span class="glyphicon glyphicon-home"></span>Inicio</a>
+          <a style="margin-right:10px;" href="{% url 'carga_servidor' %}">Carga Servidor</a>
+          <a style="margin-right:10px;" href="{% url 'inventario_rollizo' %}">Inventario</a>
+          <li>
+            <a style="margin-right:10px;" href="#">Planificador</a>
+            <ul class="menu-vertical">
+              <li><a href="{% url 'plan_bodega' %}">Bodegas</a></li>
+              <li><a href="{% url 'plan_lineas' %}">Lineas</a></li>
+              <li><a href="{% url 'plan_productos' %}">Productos</a></li>
+              <li><a href="{% url 'plan_rollizo' %}">Rollizo</a></li>
+            </ul>
+          </li>
+          <a style="margin-right:10px;" href="{% url 'administracion' %}">Administración</a>
+          <a style="margin-right:30px;" href="{% url 'index' %}">Salir &#128075;</a>
+        </div>
+    </nav>
+  </ul>

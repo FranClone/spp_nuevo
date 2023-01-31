@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
+
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Mantenedor</title>
+</head>
+<body>
+    
+    {% include "partials/header.html" %}
+    <div class="table-container">
+        <table class="table">
+            <br>
+            <h1 class="encabezado-pedidos">Planificador Bodega</h1>
+            <thead class="thead-pedidos">
+                <tr>
+                    <th>ID Bodega</th>
+                    <th>Nombre Bodega</th>
+                    <th>RUT Empresa</th>
+                    <th>Stock</th>
+                </tr>
+                <tr>
+                    <td>1</a></td> 
+                    <td>Bodega 1</a></td>
+                    <td>191214889</a></td>
+                    <td>Stock</td>
+                </tr>
+                <tr>
+                    <td>2</td>
+                    <td>Bodega 2</td>
+                    <td>191214889</td>
+                    <td>Stock</td>
+                </tr>
+                <tr>
+                    <td>3</td>
+                    <td>Bodega 3</td>
+                    <td>191214889</td>
+                    <td>Stock</td>
+                </tr>
+            </thead>
+        </table>
+        <br><br>
+    </div>
+</body>
+</html>

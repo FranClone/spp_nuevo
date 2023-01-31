@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Home</title>
+</head>
+<body>
+
+    {% include "partials/header.html" %}
+    <div class="table-container">
+        <table class="table">
+            <br>
+            <h1 class="encabezado-pedidos">Inventario Rollizos Clasificado</h1>
+            <thead class="thead-pedidos">
+                <tr>
+                    <th>Rollizo Clasificado</th>
+                    <th>Clase Diámetrica</th>
+                    <th>Largo</th>
+                    <th>Cantidad [m^3]</th>
+                </tr>
+                <tr>
+                    <td><a href="">001</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>     
+                    <td>123</td>  
+                    <td>234</td> 
+                </tr>
+                <tr>
+                    <td><a href="">002</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>  
+                    <td>123</td>  
+                    <td>22</td> 
+                </tr>
+                <tr>
+                    <td><a href="">003</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>    
+                    <td>123</td>  
+                    <td>345</td>
+                </tr>
+            </thead>
+        </table>
+        <br><br>
+    </div>
+    <div class="table-container">
+        <table class="table">
+            <br>
+            <h1 class="encabezado-pedidos">Inventario Rollizos NO Clasificado</h1>
+            <thead class="thead-pedidos">
+                <tr>
+                    <th>Rollizo Clasificado</th>
+                    <th>Clase Diámetrica</th>
+                    <th>Número de Rollizos</th>
+                </tr>
+                <tr>
+                    <td><a href="">001</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>   
+                    <td>123</td>  
+                </tr>
+                <tr>
+                    <td><a href="">002</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>
+                    <td>123</td> 
+                </tr>
+                <tr>
+                    <td><a href="">003</a></td>
+                    <td>
+                        <select>
+                            <option>14</option>
+                            <option>16</option>
+                            <option>18</option>
+                            <option>20</option>
+                            <option>22</option>
+                            <option>24</option>
+                            <option>26</option>
+                            <option>28</option>
+                            <option>30</option>
+                        </select>
+                    </td>  
+                    <td>123</td> 
+                </tr>
+            </thead>
+        </table>
+        <br><br>
+    </div>
+
+</body>
+</html>

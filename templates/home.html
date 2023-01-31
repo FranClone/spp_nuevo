@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
+    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
+    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Home</title>
+</head>
+<body>
+
+    {% include "partials/header.html" %}
+    <div class="container-gantt">
+        <div class="gantt-here" id="gantt_here"></div>
+    </div>
+    <script>
+        gantt.init("gantt_here");
+        gantt.parse({
+        data:[
+            {id:1, text:"Project #2", start_date:"01-04-2013", duration:7},
+            {id:2, text:"Task #1",    start_date:"02-04-2013", duration:2,
+                progress:0.6, parent:1},
+            {id:3, text:"Task #2",    start_date:"05-04-2013", duration:2,
+                progress:0.6, parent:1}
+        ],
+        links:[
+            { id:1, source:1, target:2, type:1},
+            { id:2, source:2, target:3, type:0}
+        ]
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
+    
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Home</title>
+</head>
+<body>
+
+    {% include "partials/header.html" %}
+    <div class="table-container">
+        <table class="table">
+            <br>
+            <h1 class="encabezado-pedidos">Lista de Pedidos</h1>
+            <thead class="thead-pedidos">
+                <tr>
+                    <th>ID Pedido</th>
+                    <th>Cliente</th>
+                    <th>Fecha Entrega</th>
+                    <th>Productos</th>
+                    <th>Cantidad [m^3]</th>
+                    <th>Fecha Verde</th>
+                    <th>Prioridad</th>  
+                    <th>Eliminar</th>
+                    <th>Guardar</th>
+                </tr>
+                <tr>
+                    <td><a href="">001</a></td>
+                    <td>Cliente 1</td>
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td>
+                    <td>P1 - P2 - P3</td>      
+                    <td>234</td> 
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td> 
+                    <td>
+                        <select>
+                            <option>Alta</option>
+                            <option>Normal</option>
+                            <option>Baja</option>
+                        </select>
+                    </td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Guardar</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">002</a></td>
+                    <td>Cliente 2</td>
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td>
+                    <td>P2 - P5 - P1</td>      
+                    <td>22</td>
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td> 
+                    <td>
+                        <select>
+                            <option>Alta</option>
+                            <option>Normal</option>
+                            <option>Baja</option>
+                        </select>
+                    </td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Guardar</a></td>
+                </tr>
+                <tr>
+                    <td><a href="">003</a></td>
+                    <td>Cliente 3</td>
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td>
+                    <td>P3 - P7 - P1</td>      
+                    <td>345</td>
+                    <td><input type="date" id="start" name="trip-start" value="2023-01-05"></td> 
+                    <td>
+                        <select>
+                            <option>Alta</option>
+                            <option>Normal</option>
+                            <option>Baja</option>
+                        </select>
+                    </td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
+                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Guardar</a></td>
+                </tr>
+            </thead>
+        </table>
+        <br><br>
+    </div>
+</body>
+</html>
