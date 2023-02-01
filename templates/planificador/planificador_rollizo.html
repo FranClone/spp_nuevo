@@ -24,33 +24,19 @@
                     <th>Nombre Rollizo</th>
                     <th>Descripción Rollizo</th>
                     <th>ID Linea</th>
-                    <th>Clase Diamétrica</th>
-                    <th>Largo Rollizo</th>
+                    <th>Diámetro</th>
+                    <th>RUT Empresa</th>
                 </tr>
+                {% for row in rows %}
                 <tr>
-                    <td>001</td> 
-                    <td>Rollizo 1</td>
-                    <td>Rollizo Grueso</td>
-                    <td>1</td>
-                    <td>22</td> 
-                    <td>33</td>
+                    <td>{{row.id_rollizo}}</td>
+                    <td>{{row.nombre_rollizo}}</td>
+                    <td>{{row.descripcion_rollizo}}</td>
+                    <td>{{row.id_linea}}</td>
+                    <td>{{row.diametro}}</td>
+                    <td>{{row.rut_empresa}}</td>
                 </tr>
-                <tr>
-                    <td>002</td> 
-                    <td>Rollizo 2</td>
-                    <td>Rollizo Delgado</td>
-                    <td>2</td>
-                    <td>24</td> 
-                    <td>31</td>
-                </tr>
-                <tr>
-                    <td>003</td> 
-                    <td>Rollizo 3</td>
-                    <td>Rollizo Grueso</td>
-                    <td>3</td>
-                    <td>26</td> 
-                    <td>29</td>
-                </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>

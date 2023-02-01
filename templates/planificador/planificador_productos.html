@@ -27,30 +27,16 @@
                     <th>Ancho Producto</th>
                     <th>Largo Producto</th>
                 </tr>
+                {% for row in rows %}
                 <tr>
-                    <td>001</td> 
-                    <td>Producto 1</td>
-                    <td>P1</td>
-                    <td>11</td>
-                    <td>22</td> 
-                    <td>33</td>
+                    <td>{{row.id_producto}}</td>
+                    <td>{{row.nombre_producto}}</td>
+                    <td>{{row.descripcion_producto}}</td>
+                    <td>{{row.espesor_producto}}</td>
+                    <td>{{row.ancho_producto}}</td>
+                    <td>{{row.largo_producto}}</td>
                 </tr>
-                <tr>
-                    <td>002</td> 
-                    <td>Producto 2</td>
-                    <td>P2</td>
-                    <td>44</td>
-                    <td>55</td> 
-                    <td>66</td>
-                </tr>
-                <tr>
-                    <td>003</td> 
-                    <td>Producto 3</td>
-                    <td>P3</td>
-                    <td>77</td>
-                    <td>88</td> 
-                    <td>99</td>
-                </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>

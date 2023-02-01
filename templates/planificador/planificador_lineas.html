@@ -25,24 +25,14 @@
                     <th>RUT Empresa</th>
                     <th>Descripción</th>
                 </tr>
+                {% for row in rows %}
                 <tr>
-                    <td>1</a></td> 
-                    <td>Línea 1</a></td>
-                    <td>191214889</a></td>
-                    <td>Línea Extensa</td>
+                    <td>{{row.id_linea}}</td>
+                    <td>{{row.nombre_linea}}</td>
+                    <td>{{row.rut_empresa}}</td>
+                    <td>{{row.descripcion_linea}}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Línea 2</td>
-                    <td>191214889</td>
-                    <td>Línea Avanzada</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Línea 3</td>
-                    <td>191214889</td>
-                    <td>Línea Extensa</td>
-                </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>

@@ -25,24 +25,14 @@
                     <th>RUT Empresa</th>
                     <th>Stock</th>
                 </tr>
+                {% for row in rows %}
                 <tr>
-                    <td>1</a></td> 
-                    <td>Bodega 1</a></td>
-                    <td>191214889</a></td>
-                    <td>Stock</td>
+                    <td>{{row.id_bodega}}</td>
+                    <td>{{row.nombre_bodega}}</td>
+                    <td>{{row.rut_empresa}}</td>
+                    <td>{{row.descripcion_bodega}}</td>
                 </tr>
-                <tr>
-                    <td>2</td>
-                    <td>Bodega 2</td>
-                    <td>191214889</td>
-                    <td>Stock</td>
-                </tr>
-                <tr>
-                    <td>3</td>
-                    <td>Bodega 3</td>
-                    <td>191214889</td>
-                    <td>Stock</td>
-                </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>
