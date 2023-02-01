@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import Administracion, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Mantenedor, Productos, Header
+from .views import Administracion, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Mantenedor, Productos
 from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
 
 urlpatterns = [
@@ -31,7 +31,6 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
     path('productos/', Productos.as_view(), name = "productos"),
-    path('header/', Header.as_view(), name = "header"),
     
     #urls menu desplegable de header, planificador
     path('planificador_bodega/', Plan_Bodega.as_view(), name = "plan_bodega"),

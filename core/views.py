@@ -9,6 +9,7 @@ import pyodbc
 try:
     conexion = pyodbc.connect('DRIVER={SQL Server};SERVER=192.168.100.138,1434;DATABASE=SPP;UID=sa;PWD=B3t3ch1tda.2021')
     print("conexión a base de datos exitosa")
+
 except Exception as ex:
     print(ex)
 
@@ -29,11 +30,12 @@ class Administracion(View): #HomeView da acceso a ambos, get req y post req. Get
 
 class Carga_sv(View): 
     def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'carga_servidor.html', context)
+        cursor = conexion.cursor()
+        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", "77003725-5")
+        rows = cursor.fetchall()
+        cursor.commit()
+        cursor.close()
+        return render(request, 'carga_servidor.html', {"rows":rows})
 
 class Home(View): 
     def get(self, request, *args, **kwargs):
@@ -61,11 +63,14 @@ class Inventario_pdto(View):
 
 class Inventario_roll(View): 
     def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'inventario_rollizo.html', context)
+        cursor = conexion.cursor()
+        cursor.execute("EXEC dbo.sel_rollizo_largo_empresa @rut_empresa=?", "77003725-5")
+        clas = cursor.fetchall()
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
+        noclas = cursor.fetchall()
+        cursor.commit()
+        cursor.close()
+        return render(request, 'inventario_rollizo.html', {"clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):
     def get(self, request, *args, **kwargs):
@@ -101,27 +106,18 @@ class Mantenedor(View):
 
 class Productos(View): 
     def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'productos.html', context)
-
-class Header(View): 
-    def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'partials/header.html', context)
+        cursor = conexion.cursor()
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
+        rows = cursor.fetchall()
+        cursor.commit()
+        cursor.close()
+        return render(request, 'productos.html', {"rows":rows})
 
 #Vistas menu desplegable de header, planificador
 class Plan_Bodega(View): 
-    def get(self, request, *args, **kwargs):
+    def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
-        cursor.execute("""SELECT id_bodega, nombre_bodega, 
-                        rut_empresa, descripcion_bodega
-                        FROM BODEGA""")
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()
@@ -130,9 +126,7 @@ class Plan_Bodega(View):
 class Plan_Lineas(View): 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("""SELECT id_linea, nombre_linea, 
-                        rut_empresa, descripcion_linea
-                        FROM LINEA""")
+        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", "77003725-5")
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()
@@ -141,10 +135,7 @@ class Plan_Lineas(View):
 class Plan_Productos(View): 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("""SELECT id_producto, nombre_producto, 
-                        descripcion_producto, espesor_producto,
-                        ancho_producto, largo_producto
-                        FROM PRODUCTO""")
+        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", "77003725-5")
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()
@@ -153,10 +144,7 @@ class Plan_Productos(View):
 class Plan_Rollizo(View): 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("""SELECT id_rollizo, nombre_rollizo, 
-                        descripcion_rollizo, id_linea,
-                        diametro, rut_empresa
-                        FROM ROLLIZO""")
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()

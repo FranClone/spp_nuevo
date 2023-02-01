@@ -22,14 +22,14 @@
                 <tr>
                     <th>ID Linea</th>
                     <th>Nombre Linea</th>
-                    <th>RUT Empresa</th>
+                    <th>Nombre Empresa</th>
                     <th>Descripción</th>
                 </tr>
                 {% for row in rows %}
                 <tr>
                     <td>{{row.id_linea}}</td>
                     <td>{{row.nombre_linea}}</td>
-                    <td>{{row.rut_empresa}}</td>
+                    <td>{{row.nombre_empresa}}</td>
                     <td>{{row.descripcion_linea}}</td>
                 </tr>
                 {% endfor %}

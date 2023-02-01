@@ -24,8 +24,8 @@
                     <th>Nombre Rollizo</th>
                     <th>Descripción Rollizo</th>
                     <th>ID Linea</th>
-                    <th>Diámetro</th>
-                    <th>RUT Empresa</th>
+                    <th>Clase Diamétrica</th>
+                    <th>Largo Rollizo</th>
                 </tr>
                 {% for row in rows %}
                 <tr>
@@ -34,7 +34,7 @@
                     <td>{{row.descripcion_rollizo}}</td>
                     <td>{{row.id_linea}}</td>
                     <td>{{row.diametro}}</td>
-                    <td>{{row.rut_empresa}}</td>
+                    <td>{{row.largo}}</td>
                 </tr>
                 {% endfor %}
             </thead>
