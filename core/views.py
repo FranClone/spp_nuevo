@@ -1,5 +1,21 @@
 from django.views.generic import View
 from django.shortcuts import render
+import pyodbc
+
+#https://www.youtube.com/watch?v=y-goMhYOyts
+#está en inglés el video pero se ve bueno
+#me compiló ahora y las migraciones se hicieron
+#ojalá poder entrar al administrador
+
+#cnxn = pyodbc.connect('DRIVER={ODBC Driver 17 for SQL Server};SERVER=;DATABASE=SPP;UID=sa;PWD=B3t3ch1tda.2021')
+#cursor = cnxn.cursor()
+
+#cursor.execute("SELECT * FROM Bodega")
+
+#rows = cursor.fetchall()
+
+#for row in rows:
+#    print(row)
 
 #Hay 2 tipos de vistas, clases y funciones esta es de clases
 class Administracion(View): #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
@@ -96,7 +112,7 @@ class Header(View):
 
         }
 
-        return render(request, 'header.html', context)
+        return render(request, 'partials/header.html', context)
 
 #Vistas menu desplegable de header, planificador
 class Plan_Bodega(View): 

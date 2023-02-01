@@ -2,28 +2,27 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img\logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
-
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Administración</title>
 </head>
 <body>
-
     {% include "partials/header.html" %}
-    <div class="register-box">
+    <div class="register-box container">
             <h1>Registrar Cliente</h1>
-            <form action="">
-                <input type="text" placeholder="Usuario">
-                <input type="email" placeholder="Correo">
+            <form class = "form-group" action="">
+                <input type="text" class="form-control-sm" placeholder="Usuario">
+                <input type="email" class="form-control-sm" placeholder="Correo">
                 <input type="submit">
             </form>
             <br><br>
     </div>
-    <div class="table-clientes">
+    <div class="table-container container">
         <table class="table">
             <br>
             <h1 class="encabezado-pedidos">Listado de Clientes</h1>
@@ -41,7 +40,7 @@
                     <td>Cliente 1</td>
                     <td>betech@betechltda.cl</td>
                     <td>
-                        <select>
+                        <select class="form-control-sm">
                             <option>Si</option>
                             <option>No</option>
                         </select>

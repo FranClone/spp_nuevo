@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img\logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
@@ -15,24 +16,29 @@
 <body>
 
     {% include "partials/header.html" %}
-    <div class="container-gantt">
+    <div class="gantt-container container">
         <div class="gantt-here" id="gantt_here"></div>
+        <script>
+            gantt.init("gantt_here");
+            gantt.parse({
+            data:[
+                {id:2, text:"Pedido #1", start_date:"25-01-2023", duration:2
+                    },
+                {id:3, text:"Pedido #2", start_date:"26-01-2023", duration:2
+                    },
+                {id:4, text:"Pedido #3", start_date:"27-01-2023", duration:2
+                    },
+                {id:5, text:"Pedido #4", start_date:"28-01-2023", duration:2
+                    },
+                {id:6, text:"Pedido #5", start_date:"29-01-2023", duration:2
+                    },
+                {id:7, text:"Pedido #6", start_date:"30-01-2023", duration:2
+                    },
+                {id:8, text:"Pedido #7", start_date:"31-01-2023", duration:2
+                    }
+                ]
+            });
+        </script>
     </div>
-    <script>
-        gantt.init("gantt_here");
-        gantt.parse({
-        data:[
-            {id:1, text:"Project #2", start_date:"01-04-2013", duration:7},
-            {id:2, text:"Task #1",    start_date:"02-04-2013", duration:2,
-                progress:0.6, parent:1},
-            {id:3, text:"Task #2",    start_date:"05-04-2013", duration:2,
-                progress:0.6, parent:1}
-        ],
-        links:[
-            { id:1, source:1, target:2, type:1},
-            { id:2, source:2, target:3, type:0}
-        ]
-    });
-    </script>
 </body>
 </html>

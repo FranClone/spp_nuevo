@@ -35,7 +35,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core',
+    'core'
 ]
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
@@ -71,10 +71,18 @@ WSGI_APPLICATION = 'core.wsgi.application'
 # contiene las configuraciones para las bases de datos 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'mssql',
+        'NAME': 'SPP',
+        'USER': 'sa',
+        'PASSWORD': 'B3t3ch1tda.2021',
+        'HOST': '192.168.100.138',
+        'PORT': '1434',
+        'OPTIONS': {
+            'driver': 'ODBC Driver 17 for SQL Server',
+        },
     }
 }
+
 
 # validadores para checkear la seguridad de las passwords de usuario
 AUTH_PASSWORD_VALIDATORS = [

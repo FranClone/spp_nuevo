@@ -2,6 +2,8 @@
     % load static %
 }
 
+/*Crear estilos nuevos para las tablas de administración y carga_servidor*/
+
 body {
     margin: 0;
     padding: 0;
@@ -65,6 +67,11 @@ body {
 
 .input-login {
     caret-color: red;
+}
+
+.gantt-here{
+    width: 1120px;
+    height: 550px;
 }
 
 .li-navbar {
@@ -221,36 +228,69 @@ body {
     width: 140px;
 }
 
+.navbar-nav>li>a{
+
+  margin-right:20px;
+  color: rgb(255, 0, 0);
+}
+
+.navbar-toggler {
+    padding: .20rem .50rem;
+    font-size: 1.25rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid white;
+
+    }
+
+    .nav-link{
+
+      color: #fff !important;
+    }
+
+
+.wrapper{
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: #000;
+    clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 71% 100%);
+    transition: 1s all;
+}
+
+.navbar-red:hover .wrapper{
+
+  clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 65% 100%);
+
+}
+
+.navbar-red{
+
+  background-color: red;
+  color: #fff;
+
+}
+
+.all-show {
+  z-index: 10;
+}
+
 .register-box {
     width: 700px;
-    height: 100px;
+    height: 125px;
     background: white;
+    opacity: 0.9;
     text-align: center;
     margin: 50px auto;
     padding: 20px;
     border-radius: 25px;
 }
 
-.table {
-    width: 100%;
-    border-collapse: collapse;
-    text-align: center;
-}
-
 .table-container {
     padding: 0 10%;
     margin: 40px auto 0;
     background-color: white;
-    width: 1000px;
-    opacity: 0.9;
-    border-radius: 25px;
-}
-
-.table-clientes {
-    padding: 0 10%;
-    margin: 40px auto 0;
-    background-color: white;
-    width: 700px;
+    width: 100%;
     opacity: 0.9;
     border-radius: 25px;
 }
@@ -282,21 +322,18 @@ body {
     border: 2px solid black;
 }
 
-.ul-navbar {
-    list-style-type: none;
-    display: flex;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: white;
-    color: black;
-}
-
-.ul-navbar>li>a {
+/*.ul-navbar>li>a {
     display: block;
     padding: 15px 20px;
-    color: white;
     text-decoration: none;
+    color:rgb(255, 0, 0)
+}*/
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: center;
+  overflow-x: auto;
 }
 
 .ul-navbar>li:hover {
@@ -312,7 +349,7 @@ body {
     display: none;
     list-style: none;
     width: 130px;
-    background-color: white;
+    background-color: rgb(255, 0, 0);
     opacity: 0.9;
     z-index: 1;
     color: black;
