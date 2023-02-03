@@ -1,6 +1,6 @@
 from django.views.generic import View
 from django.shortcuts import render
-import pyodbc
+import pyodbc, json
 
 #https://www.youtube.com/watch?v=y-goMhYOyts
 #está en inglés el video pero se ve bueno
@@ -27,6 +27,19 @@ class Administracion(View): #HomeView da acceso a ambos, get req y post req. Get
 
         }
         return render(request, 'administracion.html', context) #Las '' son el template osea la info en html que se mostrará. También podria definirse context como doble break pero en este caso lo dejamos así, como variable
+
+class Bar_chart(View): #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
+    def get(self, request, *args, **kwargs):
+        """Cálculo matemático para obtener la producción global del aserradero en porcentaje"""
+
+        # si me pidieron 1000 m^3 de producto_1 y hasta el día de hoy llevo 500 m^3 de producto_1
+        mcubicos_pedido_producto_1 = [4000, 5000, 6000, 7000, 8000]
+        mcubicos_cortados_producto_1 = [2000, 3000, 2500, 2000, 4000]
+        produccion_global = []
+        for i in range(len(mcubicos_pedido_producto_1)):
+            produccion_global.append((mcubicos_cortados_producto_1[i] / mcubicos_pedido_producto_1[i]) * 100)
+        return render(request, 'bar_chart.html', {"pr_global":json.dumps(produccion_global)})
+
 
 class Carga_sv(View): 
     def get(self, request, *args, **kwargs):

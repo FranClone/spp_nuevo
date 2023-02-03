@@ -15,12 +15,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from .views import Administracion, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Mantenedor, Productos
+from .views import Administracion, Bar_chart, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Mantenedor, Productos
 from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('administracion/', Administracion.as_view(), name = "administracion"),
+    path('bar_chart/', Bar_chart.as_view(), name="bar_chart"),
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('home/', Home.as_view(), name = "home"),
     path('', Index.as_view(), name = "index"),
@@ -31,7 +32,6 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
     path('productos/', Productos.as_view(), name = "productos"),
-    
     #urls menu desplegable de header, planificador
     path('planificador_bodega/', Plan_Bodega.as_view(), name = "plan_bodega"),
     path('planificador_lineas/', Plan_Lineas.as_view(), name = "plan_lineas"),

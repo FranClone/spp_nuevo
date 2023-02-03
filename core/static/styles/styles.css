@@ -41,6 +41,17 @@ body {
     opacity: 0.92;
 }
 
+.container-bar-chart {
+    width: 500px;
+    height: 500px;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    background: white;
+    margin: 0 auto;
+    margin-top: 100px;
+}
+
 .container-container-message {
     position: relative;
 }
