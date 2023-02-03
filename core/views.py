@@ -1,5 +1,9 @@
 from django.views.generic import View
-from django.shortcuts import render
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.forms import AuthenticationForm
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from .models import UserProfile
 import pyodbc, json
 
 #https://www.youtube.com/watch?v=y-goMhYOyts
@@ -102,12 +106,25 @@ class Lista_pedidos(View):
         return render(request, 'lista_pedidos.html', context)
 
 class Login(View): 
-    def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'login.html', context)
+    def post(self, request, *args, **kwargs):
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        user = authenticate(username=username, password=password)
+        if user is not None and user.is_active:
+            try:
+                profile = UserProfile.objects.get(user=user)
+                if profile.is_administrator():
+                    login(request, user)
+                    return redirect('home')
+                else:
+                    messages.error(request, "No tienes permisos de administrador")
+                    return redirect('login')
+            except UserProfile.DoesNotExist:
+                messages.error(request, "No tienes permisos de administrador")
+                return redirect('login')
+        else:
+            messages.error(request, "Usuario o contraseña incorrecta")
+            return redirect('login')
 
 class Mantenedor(View): 
     def get(self, request, *args, **kwargs):
