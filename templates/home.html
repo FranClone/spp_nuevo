@@ -4,10 +4,10 @@
     {% load static %}
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img\logo_betech.png' %}">
-    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
-    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
     <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
     <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles\notificacion.css' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -22,19 +22,19 @@
             gantt.init("gantt_here");
             gantt.parse({
             data:[
-                {id:2, text:"Pedido #1", start_date:"25-01-2023", duration:2
+                {id:2, text:"Pedido #1", start_date:"25-01-2023", duration:2, color:'red'
                     },
-                {id:3, text:"Pedido #2", start_date:"26-01-2023", duration:2
+                {id:3, text:"Pedido #2", start_date:"26-01-2023", duration:2, color:'orange'
                     },
-                {id:4, text:"Pedido #3", start_date:"27-01-2023", duration:2
+                {id:4, text:"Pedido #3", start_date:"27-01-2023", duration:2, color:'yellow'
                     },
-                {id:5, text:"Pedido #4", start_date:"28-01-2023", duration:2
+                {id:5, text:"Pedido #4", start_date:"28-01-2023", duration:2, color:'green'
                     },
-                {id:6, text:"Pedido #5", start_date:"29-01-2023", duration:2
+                {id:6, text:"Pedido #5", start_date:"29-01-2023", duration:2, color:'blue'
                     },
-                {id:7, text:"Pedido #6", start_date:"30-01-2023", duration:2
+                {id:7, text:"Pedido #6", start_date:"30-01-2023", duration:2, color:'purple'
                     },
-                {id:8, text:"Pedido #7", start_date:"31-01-2023", duration:2
+                {id:8, text:"Pedido #7", start_date:"31-01-2023", duration:2, color:'pink'
                     }
                 ]
             });
