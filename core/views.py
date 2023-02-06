@@ -1,9 +1,12 @@
-from django.views.generic import View
-from django.contrib.auth import authenticate, login
-from django.contrib.auth.forms import AuthenticationForm
-from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.utils.decorators import method_decorator
+from django.views.generic import View
 from .models import UserProfile
+from .forms import CustomUserCreationForm, LoginForm
 import pyodbc, json
 
 #https://www.youtube.com/watch?v=y-goMhYOyts
@@ -105,26 +108,56 @@ class Lista_pedidos(View):
 
         return render(request, 'lista_pedidos.html', context)
 
-class Login(View): 
-    def post(self, request, *args, **kwargs):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
-            try:
-                profile = UserProfile.objects.get(user=user)
-                if profile.is_administrator():
-                    login(request, user)
-                    return redirect('home')
-                else:
-                    messages.error(request, "No tienes permisos de administrador")
-                    return redirect('login')
-            except UserProfile.DoesNotExist:
-                messages.error(request, "No tienes permisos de administrador")
+class Login(View):
+    form_class = LoginForm
+    template_name = 'login.html'
+    success_url = '/home/'
+    
+    def get(self, request):
+        form = LoginForm()
+        return render(request, 'login.html', {'form':form})
+
+    def post(self, request):
+        rut = request.POST['rut']
+        password = request.POST['password']
+        try:
+            user_profile = UserProfile.objects.get(rut=rut)
+            user = user_profile.user
+            if user.check_password(password):
+                login(request, user)
+                return redirect('home')
+            else:
+                return render(request, 'login.html', {'error_message': 'Invalid login'})
+        except UserProfile.DoesNotExist:
+            return render(request, 'login.html', {'error_message': 'Invalid login'})
+        
+    def form_valid(self, form):
+        rut = form.cleaned_data.get('rut')
+        password = form.cleaned_data.get('password')
+
+        user = authenticate(username=rut, password=password)
+
+        if user:
+            if user.is_active:
+                login(self.request, user)
+                return redirect(self.success_url)
+            else:
+                messages.error(self.request, "Tu cuenta esta desactivada")
                 return redirect('login')
         else:
-            messages.error(request, "Usuario o contraseña incorrecta")
+            messages.error(self.request, "Invalid Login")
             return redirect('login')
+        
+    @method_decorator(login_required)
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated and request.path != reverse('login'):
+            return redirect(self.success_url)
+        return super().dispatch(request, *args, **kwargs)
+
+@login_required
+def logout_view(request):
+    logout(request)
+    return redirect('login')
 
 class Mantenedor(View): 
     def get(self, request, *args, **kwargs):
@@ -143,7 +176,22 @@ class Productos(View):
         cursor.close()
         return render(request, 'productos.html', {"rows":rows})
 
+class Register(View):
+    def get(self, request):
+        form = CustomUserCreationForm()
+        return render(request, 'register.html', {'form': form})
+
+    def post(self, request):
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            rut = form.cleaned_data.get('rut')
+            UserProfile.objects.create(user=user, rut=rut)
+            return redirect('login')
+        return render(request, 'register.html', {'form': form})
+
 #Vistas menu desplegable de header, planificador
+
 class Plan_Bodega(View): 
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()

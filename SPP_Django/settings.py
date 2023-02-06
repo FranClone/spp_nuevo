@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core'
 ]
+
+LOGIN_URL = '/login/'
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -66,7 +68,7 @@ TEMPLATES = [
     },
 ]
 # ruta de la aplicacion WSGI 
-WSGI_APPLICATION = 'core.wsgi.application'
+WSGI_APPLICATION = 'SPP_Django.wsgi.application'
 
 # contiene las configuraciones para las bases de datos 
 DATABASES = {

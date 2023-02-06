@@ -20,15 +20,14 @@
         <img src='{% static "img/logo_betech.png" %}' class="avatar" alt="Avatar Image">
         <h1>Ingresar</h1>
 
-        <form method="post">
-          {% csrf_token %}
-          <input type="text" id="username" name="username" class="input-login" placeholder="RUT Cliente">
-          <br>
-          <input type="password" id="password" name="password" class="input-login" placeholder="Contraseña">
-          <br>
-          <input type="submit" value="Ingresar">
-          <p>© BETECH LTDA.<br>Todos los derechos reservados 2022</p><br>
-        </form>
+        {% block content %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input type="submit" value="Ingresar">
+                <p>© BETECH LTDA.<br>Todos los derechos reservados 2022</p><br>
+            </form>
+        {% endblock %}
     </div>
     
 </body>

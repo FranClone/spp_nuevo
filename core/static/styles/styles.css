@@ -78,6 +78,7 @@ body {
 
 .input-login {
     caret-color: red;
+    margin-bottom: 5px;
 }
 
 .gantt-here{
