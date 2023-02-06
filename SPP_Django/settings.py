@@ -38,7 +38,9 @@ INSTALLED_APPS = [
     'core'
 ]
 
-LOGIN_URL = '/login/'
+LOGIN_URL = '/home/'
+
+LOGOUT_REDIRECT_URL = '/login/'
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
