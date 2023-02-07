@@ -1,6 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
@@ -19,6 +19,16 @@ try:
 
 except Exception as ex:
     print(ex)
+
+def superuser_required(view_func):
+    """Restrict a view to superusers only"""
+    decorated_view_func = user_passes_test(lambda u: u.is_superuser)(view_func)
+    return decorated_view_func
+
+def staff_required(view_func):
+    """Restrict a view to staff members only"""
+    decorated_view_func = user_passes_test(lambda u: u.is_staff)(view_func)
+    return decorated_view_func
 
 #cursor.execute("SELECT * FROM Bodega")
 
@@ -87,14 +97,17 @@ class Inventario_pdto(View):
 class Inventario_roll(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
+        clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_largo_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", "77003725-5")
         clas = cursor.fetchall()
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
         noclas = cursor.fetchall()
         cursor.commit()
         cursor.close()
-        return render(request, 'inventario_rollizo.html', {"clas":clas, "noclas":noclas})
+        print(clas)
+        print(noclas)
+        return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):
     def get(self, request, *args, **kwargs):
@@ -122,7 +135,9 @@ class Login(View):
 
     def post(self, request):
         #Obtiene rut desde el login
-        rut = request.POST['rut']
+        rut_body = request.POST['rut_body']
+        rut_dv = request.POST['rut_dv']
+        rut = f'{rut_body}-{rut_dv}'
         password = request.POST['password']
         #hay user
         try:
@@ -134,16 +149,18 @@ class Login(View):
                 login(request, user)
                 return redirect('home')
             else:
-                #no corresponde la contraseña al usuario
-                return render(request, 'login.html', {'error_message': 'Invalid login'})
+                #no corresponde la contraseña al usuario}
+                form = self.form_class()
+                return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
         #no existe user
         except UserProfile.DoesNotExist:
-            return render(request, 'login.html', {'error_message': 'Invalid login'})
+            form = self.form_class()
+            return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
     
     #Este método kickea al usuario del login si está logueado    
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
-            return redirect('Home')
+            return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
 class Logout(View):

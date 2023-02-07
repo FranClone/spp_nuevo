@@ -26,6 +26,7 @@ DEBUG = os.environ.get('DEBUG')
 # lista de hosts/dominios del sitio
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 # aplicaciones instaladas en el sitio
 INSTALLED_APPS = [
