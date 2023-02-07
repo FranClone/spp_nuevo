@@ -9,18 +9,15 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>SPP - Lista de Pedidos</title>
 </head>
 <body>
-    
     {% include "partials/header.html" %}
     <div class="table-container">
         <table class="table"> 
         <br>
             <h1 class="encabezado-pedidos">Lista de Pedidos</h1>
                 <div class="container-add">
-                
                 <input type="button" id="add" value="Añadir">
             </div> 
             
@@ -39,17 +36,11 @@
                     <td>Betech Ltda</td>
                     <td><input type="date" id="start" name="trip-start" value="2022-11-04"></td>
                     <td>P1</td>      
-                    <td><input type="text" name="" id="" value="234">
-                        <!-- <div class="input-group">
-                            <input type="text" required class="input">
-                            <label for="Nombre" class="input-label">Nombre</label>
-                        </div>-->
-                    </td> 
+                    <td><input type="text" name="" id="" value="234"></td> 
                     <td><input type="date" id="start" name="trip-start" value="2022-11-04"></td> 
                     <td>Baja</td>
                     <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
                 </tr>
-
                 <tr>
                     <td>Betech Ltda</td>
                     <td><input type="date" id="start" name="trip-start" value="2022-11-04"></td>
@@ -59,7 +50,6 @@
                     <td>Alta</td>
                     <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
                 </tr>
-
                 <tr>
                     <td>Betech Ltda</td>
                     <td><input type="date" id="start" name="trip-start" value="2022-11-04"></td>
@@ -73,7 +63,6 @@
         </table>
         <br><br>
     </div>
-    
     <script src="{% static 'js\agrega_pedido.js' %}"></script>
 </body>
 </html>

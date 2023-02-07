@@ -1,3 +1,9 @@
+"""En este módulo se definen todas las vistas para la aplicación web y la lógica para las solicitudes HTTP. 
+Maneja las request del usuario y responde con contenido como páginas HTML, JSON, entre otros.
+En Django, una vista es una función de Python o basada en clases que toma una web request y devuelve una web response.
+Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
+"""
+
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -5,14 +11,12 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.http import JsonResponse
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 import pyodbc, json
 
-#https://www.youtube.com/watch?v=y-goMhYOyts
-#está en inglés el video pero se ve bueno
-#me compiló ahora y las migraciones se hicieron
-#ojalá poder entrar al administrador
+# se intenta conectar a la base de datos
 try:
     conexion = pyodbc.connect('DRIVER={SQL Server};SERVER=192.168.100.138,1434;DATABASE=SPP;UID=sa;PWD=B3t3ch1tda.2021')
     print("conexión a base de datos exitosa")
@@ -20,35 +24,29 @@ try:
 except Exception as ex:
     print(ex)
 
-#cursor.execute("SELECT * FROM Bodega")
-
-#rows = cursor.fetchall()
-
-#for row in rows:
-#    print(row)
-
-#Hay 2 tipos de vistas, clases y funciones esta es de clases
-class Administracion(View): #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
+class Administracion(View): 
+    """Esta clase define la vista de Administración"""
     def get(self, request, *args, **kwargs):
         context={
 
         }
-        return render(request, 'administracion.html', context) #Las '' son el template osea la info en html que se mostrará. También podria definirse context como doble break pero en este caso lo dejamos así, como variable
+        return render(request, 'administracion.html', context) 
 
-class Bar_chart(View): #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
+class Bar_chart(View): 
     def get(self, request, *args, **kwargs):
-        """Cálculo matemático para obtener la producción global del aserradero en porcentaje"""
-
-        # si me pidieron 1000 m^3 de producto_1 y hasta el día de hoy llevo 500 m^3 de producto_1
-        mcubicos_pedido_producto_1 = [4000, 5000, 6000, 7000, 8000]
-        mcubicos_cortados_producto_1 = [2000, 3000, 2500, 2000, 4000]
+        """Esta clase define la vista del bar chart"""
+        mcubicos_pedido_producto = [4000, 5000, 6000, 7000, 8000, 7000]
+        mcubicos_cortados_producto = [2000, 3000, 2500, 2000, 4000, 7000]
         produccion_global = []
-        for i in range(len(mcubicos_pedido_producto_1)):
-            produccion_global.append((mcubicos_cortados_producto_1[i] / mcubicos_pedido_producto_1[i]) * 100)
+        
+        # se realiza el cálculo matemático para obtener los valores porcentuales de cada pedido
+        for i in range(len(mcubicos_pedido_producto)):
+            produccion_global.append((mcubicos_cortados_producto[i] / mcubicos_pedido_producto[i]) * 100)
+            
         return render(request, 'bar_chart.html', {"pr_global":json.dumps(produccion_global)})
 
-
 class Carga_sv(View): 
+    """Esta clase define la vista de Carga"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", "77003725-5")
@@ -58,14 +56,15 @@ class Carga_sv(View):
         return render(request, 'carga_servidor.html', {"rows":rows})
 
 class Home(View): 
+    """Esta clase define la vista Home"""
     def get(self, request, *args, **kwargs):
-        context={
-
-        }
-
-        return render(request, 'home.html', context)
+        producto_terminado = 1000
+        producto_pedido = 5000
+        progress = (producto_terminado / producto_pedido)*100
+        return render(request, 'home.html', {'progress': progress})
 
 class Index(View): 
+    """Esta clase define la vista Index"""
     def get(self, request, *args, **kwargs):
         context={
 
@@ -74,6 +73,7 @@ class Index(View):
         return render(request, 'index.html', context)
 
 class Inventario_pdto(View): 
+    """Esta clase define la vista de Inventario"""
     def get(self, request, *args, **kwargs):
         context={
 
@@ -82,6 +82,7 @@ class Inventario_pdto(View):
         return render(request, 'inventario_producto.html', context)
 
 class Inventario_roll(View): 
+    """Esta clase define la vista de Inventario"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_rollizo_largo_empresa @rut_empresa=?", "77003725-5")
@@ -93,6 +94,7 @@ class Inventario_roll(View):
         return render(request, 'inventario_rollizo.html', {"clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):
+    """Esta clase define la vista de Inventario"""
     def get(self, request, *args, **kwargs):
         context={
 
@@ -101,6 +103,7 @@ class Inventario_roll_nc(View):
         return render(request, 'inventario_rollizo_nc.html', context) 
 
 class Lista_pedidos(View): 
+    """Esta clase define la vista de Lista de Pedidos"""
     def get(self, request, *args, **kwargs):
         context={
 
@@ -109,6 +112,7 @@ class Lista_pedidos(View):
         return render(request, 'lista_pedidos.html', context)
 
 class Login(View):
+    """Esta clase define la vista de Login"""
     form_class = LoginForm
     template_name = 'login.html'
     success_url = '/home/'
@@ -154,12 +158,14 @@ class Login(View):
             return redirect(self.success_url)
         return super().dispatch(request, *args, **kwargs)
 
+"""Este método decorativo autentica a un usuario para validar y permitir acceso a las vistas"""
 @login_required
 def logout_view(request):
     logout(request)
     return redirect('login')
 
 class Mantenedor(View): 
+    """Esta clase define la vista de Mantenedor"""
     def get(self, request, *args, **kwargs):
         context={
 
@@ -168,6 +174,7 @@ class Mantenedor(View):
         return render(request, 'mantenedor.html', context)
 
 class Productos(View): 
+    """Esta clase define la vista de Productos"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
@@ -177,6 +184,7 @@ class Productos(View):
         return render(request, 'productos.html', {"rows":rows})
 
 class Register(View):
+    """Esta clase define la vista de Register"""
     def get(self, request):
         form = CustomUserCreationForm()
         return render(request, 'register.html', {'form': form})
@@ -190,9 +198,8 @@ class Register(View):
             return redirect('login')
         return render(request, 'register.html', {'form': form})
 
-#Vistas menu desplegable de header, planificador
-
 class Plan_Bodega(View): 
+    """Esta clase define la vista de Planificador Bodega"""
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
@@ -202,6 +209,7 @@ class Plan_Bodega(View):
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
 
 class Plan_Lineas(View): 
+    """Esta clase define la vista de Planificador de Lineas"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", "77003725-5")
@@ -211,6 +219,7 @@ class Plan_Lineas(View):
         return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
 
 class Plan_Productos(View): 
+    """Esta clase define la vista de Planificador de Productos"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", "77003725-5")
@@ -220,6 +229,7 @@ class Plan_Productos(View):
         return render(request, 'planificador/planificador_productos.html', {'rows':rows})
 
 class Plan_Rollizo(View): 
+    """Esta clase define la vista de Planificador de Rollizos"""
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
@@ -227,3 +237,28 @@ class Plan_Rollizo(View):
         cursor.commit()
         cursor.close()
         return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
+
+def get_data(request):
+    """Esta función asigna los valores a cada barra del bar chart"""
+    P1 = 100
+    P2 = 77
+    P3 = 89
+    P4 = 87
+    P5 = 100
+    data = {
+        'labels': ['P1', 'P2', 'P3', 'P4', 'P5'],
+        'datasets': [
+            {
+                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
+                'borderColor': 'rgba(255, 99, 132, 1)',
+                'borderWidth': 1,
+                'data': [P1, P2, P3, P4, P5]
+            }
+        ]
+    }
+    return JsonResponse(data)
+
+def my_view(request):
+    # crea una variable de progreso y la envía a 'home.html'
+    progress = 0
+    return render(request, 'home.html', {'progress': progress})

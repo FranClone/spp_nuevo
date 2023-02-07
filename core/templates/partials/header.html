@@ -1,6 +1,6 @@
+<!--este archivo permite desplegar un navbar y enlazarla a distintas vistas-->
+
 {% load static %}
-<!-- este header se ha obtenido desde el snippet obtenido
-en la página https://bbbootstrap.com/snippets/bootstrap-colorful-navbar-animation-45860002 -->
 <nav class="navbar navbar-expand-lg navbar-red navbar-dark ul-navbar">
   <div class="wrapper">
   </div>
@@ -17,11 +17,9 @@ en la página https://bbbootstrap.com/snippets/bootstrap-colorful-navbar-animati
         <li class="nav-item">
           <a class="nav-link" href="{% url 'carga_servidor' %}">Carga Servidor</a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="{% url 'inventario_rollizo' %}">Inventario</a>
         </li>
-
         <li>
           <a class="nav-link" href="#">Planificador</a>
           <ul class="menu-vertical">
@@ -31,16 +29,12 @@ en la página https://bbbootstrap.com/snippets/bootstrap-colorful-navbar-animati
             <li><a class="nav-link" href="{% url 'plan_rollizo' %}">Rollizo</a></li>
           </ul>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="{% url 'administracion' %}">Administración</a>
         </li>
-
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}"></i>Salir</a>
         </li>
-        
-        
       </ul>
     </div>
   </div>

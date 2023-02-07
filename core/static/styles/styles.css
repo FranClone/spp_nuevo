@@ -2,8 +2,6 @@
     % load static %
 }
 
-/*Crear estilos nuevos para las tablas de administración y carga_servidor*/
-
 body {
     margin: 0;
     padding: 0;
@@ -11,6 +9,10 @@ body {
     background-size: cover;
     font-family: sans-serif;
     height: 100vh;
+}
+
+li {
+    display: inline-block;
 }
 
 .a-eliminar {
@@ -23,12 +25,28 @@ body {
     background-color: red;
 }
 
+.all-show {
+    z-index: 10;
+}
+
 .a-navbar {
     color: black;
     display: block;
     padding: 14px 16px;
     text-align: center;
     text-decoration: none;
+}
+
+.btn-select-file {
+    background: red;
+    cursor: pointer;
+    display: none;
+}
+
+.carga {
+    width: 100%;
+    text-align: center;
+    margin-top: 20px;
 }
 
 .container-add {
@@ -81,9 +99,32 @@ body {
     margin-bottom: 5px;
 }
 
-.gantt-here{
-    width: 1120px;
-    height: 550px;
+.gantt-here {
+    margin: 0 auto;
+    text-align: center;
+    width: 90%;
+    height: 400px;
+}
+
+.label-carga-masiva {
+    cursor: pointer;
+    border: 2px solid black;
+    background: red;
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+.label-carga-individual {
+    cursor: pointer;
+    border: 2px solid black;
+    background: red;
+    color: white;
+    font-size: 20px;
+    padding: 15px;
+    border-radius: 5px;
 }
 
 .li-navbar {
@@ -146,8 +187,8 @@ body {
     position: absolute;
     transform: translate(-50%, -50%);
     box-sizing: border-box;
+    border: 3px solid white;
     border-radius: 15px;
-    box-shadow: 5px 5px 5px gray;
     padding: 70px 30px;
 }
 
@@ -240,10 +281,28 @@ body {
     width: 140px;
 }
 
-.navbar-nav>li>a{
+.menu-vertical {
+    position: absolute;
+    display: none;
+    list-style: none;
+    width: 130px;
+    background-color: rgb(255, 0, 0);
+    opacity: 0.9;
+    z-index: 1;
+    color: black;
+    justify-content: center;
+}
 
-  margin-right:20px;
-  color: rgb(255, 0, 0);
+.menu-vertical li a {
+    display: block;
+    color: black;
+    text-decoration: none;
+    padding: 15px 15px 15px 5px;
+}
+
+.navbar-nav>li>a {
+    margin-right: 20px;
+    color: rgb(255, 0, 0);
 }
 
 .navbar-toggler {
@@ -252,39 +311,35 @@ body {
     line-height: 1;
     background-color: transparent;
     border: 1px solid white;
+}
 
-    }
+.nav-link {
+    color: #fff !important;
+}
 
-    .nav-link{
+.navbar-red:hover .wrapper {
+    clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 65% 100%);
+}
 
-      color: #fff !important;
-    }
+.navbar-red {
+    background-color: red;
+    color: #fff;
+}
 
+.progress {
+    width: 10%;
+    height: 30px;
+    border: 2px solid white;
+    border-radius: 2px;
+    margin: 10px auto;
+}
 
-.wrapper{
-    width: 100%;
-    position: absolute;
+.progress-bar {
+    color: white;
     height: 100%;
-    background-color: #000;
-    clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 71% 100%);
-    transition: 1s all;
-}
-
-.navbar-red:hover .wrapper{
-
-  clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 65% 100%);
-
-}
-
-.navbar-red{
-
-  background-color: red;
-  color: #fff;
-
-}
-
-.all-show {
-  z-index: 10;
+    background-color: green;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .register-box {
@@ -296,6 +351,13 @@ body {
     margin: 50px auto;
     padding: 20px;
     border-radius: 25px;
+}
+
+.table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    overflow-x: auto;
 }
 
 .table-container {
@@ -334,20 +396,6 @@ body {
     border: 2px solid black;
 }
 
-/*.ul-navbar>li>a {
-    display: block;
-    padding: 15px 20px;
-    text-decoration: none;
-    color:rgb(255, 0, 0)
-}*/
-
-.table {
-  width: 100%;
-  border-collapse: collapse;
-  text-align: center;
-  overflow-x: auto;
-}
-
 .ul-navbar>li:hover {
     background-color: red;
 }
@@ -356,29 +404,15 @@ body {
     display: block;
 }
 
-.menu-vertical {
-    position: absolute;
-    display: none;
-    list-style: none;
-    width: 130px;
-    background-color: rgb(255, 0, 0);
-    opacity: 0.9;
-    z-index: 1;
-    color: black;
-    justify-content: center;
-}
-
 .ul-navbar li:hover .menu-vertical {
     display: block;
 }
 
-li {
-    display: inline-block;
-}
-
-.menu-vertical li a {
-    display: block;
-    color: black;
-    text-decoration: none;
-    padding: 15px 15px 15px 5px;
+.wrapper {
+    width: 100%;
+    position: absolute;
+    height: 100%;
+    background-color: #000;
+    clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 71% 100%);
+    transition: 1s all;
 }
