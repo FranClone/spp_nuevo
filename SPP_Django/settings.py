@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'core'
 ]
 
-LOGIN_URL = '/home/'
-
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/login/'
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 # representa la ruta de importacion a la configuracion de URL
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'SPP_Django.urls'
 # contiene las configuraciones para las plantillas a utilizar
 TEMPLATES = [
     {
