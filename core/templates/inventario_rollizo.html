@@ -23,60 +23,20 @@
                     <th>Largo</th>
                     <th>Cantidad [m^3]</th>
                 </tr>
+                {% for c in clas %}
                 <tr>
-                    <td><a href="">001</a></td>
+                    <td>{{c.nombre_largo}}</td>
                     <td>
                         <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
-                        </select>
-                    </td>     
-                    <td>123</td>  
-                    <td>234</td> 
-                </tr>
-                <tr>
-                    <td><a href="">002</a></td>
-                    <td>
-                        <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
-                        </select>
-                    </td>  
-                    <td>123</td>  
-                    <td>22</td> 
-                </tr>
-                <tr>
-                    <td><a href="">003</a></td>
-                    <td>
-                        <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
+                    {% for cd in clase_diametrica %}
+                            <option>{{cd}}</option> 
+                    {% endfor %}
                         </select>
                     </td>    
-                    <td>123</td>  
-                    <td>345</td>
+                    <td>{{c.largo}}</td>  
+                    <td>{{c.cantidad}}</td> 
                 </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>
@@ -91,57 +51,19 @@
                     <th>Clase Diámetrica</th>
                     <th>Número de Rollizos</th>
                 </tr>
+                {% for nc in noclas %}
                 <tr>
-                    <td><a href="">001</a></td>
+                    <td>{{nc.nombre_rollizo}}</td>
                     <td>
                         <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
+                    {% for cd in clase_diametrica %}
+                            <option>{{cd}}</option> 
+                    {% endfor %}
                         </select>
-                    </td>   
-                    <td>123</td>  
+                    </td>    
+                    <td>{{nc.largo}}</td> 
                 </tr>
-                <tr>
-                    <td><a href="">002</a></td>
-                    <td>
-                        <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
-                        </select>
-                    </td>
-                    <td>123</td> 
-                </tr>
-                <tr>
-                    <td><a href="">003</a></td>
-                    <td>
-                        <select>
-                            <option>14</option>
-                            <option>16</option>
-                            <option>18</option>
-                            <option>20</option>
-                            <option>22</option>
-                            <option>24</option>
-                            <option>26</option>
-                            <option>28</option>
-                            <option>30</option>
-                        </select>
-                    </td>  
-                    <td>123</td> 
-                </tr>
+                {% endfor %}
             </thead>
         </table>
         <br><br>

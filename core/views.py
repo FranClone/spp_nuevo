@@ -6,9 +6,9 @@ Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
-from django.urls import reverse
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http import JsonResponse
@@ -24,15 +24,34 @@ try:
 except Exception as ex:
     print(ex)
 
-class Administracion(View): 
-    """Esta clase define la vista de Administración"""
+def superuser_required(view_func):
+    """Restrict a view to superusers only"""
+    decorated_view_func = user_passes_test(lambda u: u.is_superuser)(view_func)
+    return decorated_view_func
+
+def staff_required(view_func):
+    """Restrict a view to staff members only"""
+    decorated_view_func = user_passes_test(lambda u: u.is_staff)(view_func)
+    return decorated_view_func
+
+#cursor.execute("SELECT * FROM Bodega")
+
+#rows = cursor.fetchall()
+
+#for row in rows:
+#    print(row)
+
+#Hay 2 tipos de vistas, clases y funciones esta es de clases
+class Administracion(View):
+    @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
         context={
 
         }
         return render(request, 'administracion.html', context) 
 
-class Bar_chart(View): 
+class Bar_chart(View):
+    @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
         """Esta clase define la vista del bar chart"""
         mcubicos_pedido_producto = [4000, 5000, 6000, 7000, 8000, 7000]
@@ -45,8 +64,9 @@ class Bar_chart(View):
             
         return render(request, 'bar_chart.html', {"pr_global":json.dumps(produccion_global)})
 
-class Carga_sv(View): 
-    """Esta clase define la vista de Carga"""
+
+class Carga_sv(View):
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", "77003725-5")
@@ -81,17 +101,20 @@ class Inventario_pdto(View):
 
         return render(request, 'inventario_producto.html', context)
 
-class Inventario_roll(View): 
-    """Esta clase define la vista de Inventario"""
+class Inventario_roll(View):
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
+        clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_largo_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", "77003725-5")
         clas = cursor.fetchall()
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
         noclas = cursor.fetchall()
         cursor.commit()
         cursor.close()
-        return render(request, 'inventario_rollizo.html', {"clas":clas, "noclas":noclas})
+        print(clas)
+        print(noclas)
+        return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):
     """Esta clase define la vista de Inventario"""
@@ -114,55 +137,47 @@ class Lista_pedidos(View):
 class Login(View):
     """Esta clase define la vista de Login"""
     form_class = LoginForm
-    template_name = 'login.html'
     success_url = '/home/'
-    
     def get(self, request):
+        #Obtiene formulario de forms.py
         form = LoginForm()
         return render(request, 'login.html', {'form':form})
 
     def post(self, request):
-        rut = request.POST['rut']
+        #Obtiene rut desde el login
+        rut_body = request.POST['rut_body']
+        rut_dv = request.POST['rut_dv']
+        rut = f'{rut_body}-{rut_dv}'
         password = request.POST['password']
+        #hay user
         try:
             user_profile = UserProfile.objects.get(rut=rut)
             user = user_profile.user
+            #corresponde la contraseña al usuario
             if user.check_password(password):
+                #entra al sistema
                 login(request, user)
                 return redirect('home')
             else:
-                return render(request, 'login.html', {'error_message': 'Invalid login'})
+                #no corresponde la contraseña al usuario}
+                form = self.form_class()
+                return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
+        #no existe user
         except UserProfile.DoesNotExist:
-            return render(request, 'login.html', {'error_message': 'Invalid login'})
-        
-    def form_valid(self, form):
-        rut = form.cleaned_data.get('rut')
-        password = form.cleaned_data.get('password')
-
-        user = authenticate(username=rut, password=password)
-
-        if user:
-            if user.is_active:
-                login(self.request, user)
-                return redirect(self.success_url)
-            else:
-                messages.error(self.request, "Tu cuenta esta desactivada")
-                return redirect('login')
-        else:
-            messages.error(self.request, "Invalid Login")
-            return redirect('login')
-        
-    @method_decorator(login_required)
+            form = self.form_class()
+            return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
+    
+    #Este método kickea al usuario del login si está logueado    
     def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated and request.path != reverse('login'):
-            return redirect(self.success_url)
+        if request.user.is_authenticated:
+            return redirect('home')
         return super().dispatch(request, *args, **kwargs)
 
-"""Este método decorativo autentica a un usuario para validar y permitir acceso a las vistas"""
-@login_required
-def logout_view(request):
-    logout(request)
-    return redirect('login')
+class Logout(View):
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return redirect('login')
 
 class Mantenedor(View): 
     """Esta clase define la vista de Mantenedor"""
@@ -174,7 +189,7 @@ class Mantenedor(View):
         return render(request, 'mantenedor.html', context)
 
 class Productos(View): 
-    """Esta clase define la vista de Productos"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
@@ -199,7 +214,7 @@ class Register(View):
         return render(request, 'register.html', {'form': form})
 
 class Plan_Bodega(View): 
-    """Esta clase define la vista de Planificador Bodega"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
@@ -208,8 +223,8 @@ class Plan_Bodega(View):
         cursor.close()
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
 
-class Plan_Lineas(View): 
-    """Esta clase define la vista de Planificador de Lineas"""
+class Plan_Lineas(View):
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", "77003725-5")
@@ -218,8 +233,8 @@ class Plan_Lineas(View):
         cursor.close()
         return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
 
-class Plan_Productos(View): 
-    """Esta clase define la vista de Planificador de Productos"""
+class Plan_Productos(View):
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", "77003725-5")
@@ -228,8 +243,8 @@ class Plan_Productos(View):
         cursor.close()
         return render(request, 'planificador/planificador_productos.html', {'rows':rows})
 
-class Plan_Rollizo(View): 
-    """Esta clase define la vista de Planificador de Rollizos"""
+class Plan_Rollizo(View):
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")

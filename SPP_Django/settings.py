@@ -26,6 +26,7 @@ DEBUG = os.environ.get('DEBUG')
 # lista de hosts/dominios del sitio
 ALLOWED_HOSTS = []
 
+AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
 
 # aplicaciones instaladas en el sitio
 INSTALLED_APPS = [
@@ -39,6 +40,8 @@ INSTALLED_APPS = [
 ]
 
 LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/login/'
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -50,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 # representa la ruta de importacion a la configuracion de URL
-ROOT_URLCONF = 'core.urls'
+ROOT_URLCONF = 'SPP_Django.urls'
 # contiene las configuraciones para las plantillas a utilizar
 TEMPLATES = [
     {

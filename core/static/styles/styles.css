@@ -326,6 +326,7 @@ li {
     color: #fff;
 }
 
+<<<<<<< HEAD
 .progress {
     width: 10%;
     height: 30px;
@@ -333,6 +334,21 @@ li {
     border-radius: 2px;
     margin: 10px auto;
 }
+=======
+.rut-input {
+    display: flex;
+    width: 80px; /* tamaño del input */
+    }
+
+.rut-body {
+    width: calc(100% - 20px); /* ancho del cuerpo del RUT */
+    }
+
+.rut-dv {
+    width: 20px; /* ancho del dígito verificador */
+    margin-left: 10px; /* margen a la izquierda */
+    }
+>>>>>>> a60bf203f9dc1b7d740cebe8eee45e4af5685a19
 
 .progress-bar {
     color: white;
