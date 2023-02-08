@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-import re
 
 def validate_rut_body(value):
     if not value.isdigit():
@@ -15,8 +14,8 @@ def validate_rut_dv(value):
     return value
 
 class CustomUserCreationForm(UserCreationForm):
-    rut_body = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-body', 'placeholder': 'RUT Cliente', 'input_type': 'number'}), max_length=8, label="", validators=[validate_rut_body])
-    rut_dv = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-dv'}), max_length=1, label="", validators=[validate_rut_dv])
+    rut_body = forms.CharField(max_length=8, label="", validators=[validate_rut_body])
+    rut_dv = forms.CharField(max_length=1, label="", validators=[validate_rut_dv])
 
     class Meta:
         model = User
