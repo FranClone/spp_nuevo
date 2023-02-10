@@ -15,9 +15,20 @@
 <body>
     {% include "partials/header.html" %}
     <div class="carga">
-        <label class="label-carga-masiva" for="carga-masiva">Carga Masiva
-            <input class="btn-select-file" id="carga-masiva" type="file">
+        <label class="label-carga-masiva" for="carga-multiple">Carga Múltiple
+            <script>
+                $('.label-carga-masiva').click(function() {
+                    window.location.href = "/pedido_multiple/";
+                });
+            </script>
         </label>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <labelgi class="label-carga-masiva" for="carga-masiva">Carga Masiva
+                <input class="btn-select-file" id="carga-masiva" type="file" name="carga-masiva">
+            </label>
+            <input type="submit" value="Cargar">
+        </form>
         <label class="label-carga-individual" for="carga-individual">Carga Individual
             <script>
                 $('.label-carga-individual').click(function() {

@@ -15,7 +15,7 @@ from django.http import JsonResponse
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-import pyodbc, json, os, datetime, ast
+import pyodbc, json, os, datetime, ast, openpyxl
 
 # se intenta conectar a la base de datos
 try:
@@ -84,6 +84,31 @@ class Home(View):
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
         return render(request, 'home.html', {'progress': progress})
+    
+    def post(self, request, *args, **kwargs):
+        #Carga Archivo
+        try:
+            archivo = request.FILES['carga-masiva']
+        except:
+            return redirect('home')
+
+        # Verifica el tamaño del archivo
+        if archivo.size > 100000000:  # 100 MB
+            return redirect('home')
+
+        #Retorna archivo en formato Workbook
+        wb = openpyxl.load_workbook(archivo)
+        #Obtiene la página que se obtiene al inicio
+        hoja = wb.active
+        #Itera sobre la hoja
+        for fila in hoja.iter_rows():
+            for celda in fila:
+                # Si no es un valor numérico o una cadena de texto, prevenir funciones raras
+                if celda.data_type not in ["n", "s"]:  
+                    return redirect('home')    
+            print(fila[0].value, fila[1].value, fila[2].value)
+        return redirect('home')
+
 
 class Index(View): 
     """Esta clase define la vista Index"""
@@ -190,10 +215,12 @@ class Mantenedor(View):
 class Pedido(View):
     template_name = 'pedido.html'
 
+    @method_decorator(login_required)
     def get(self, request):
         form = PedidoForm()
         return render(request, self.template_name, {'form': form})
 
+    @method_decorator(login_required)
     def post(self, request):
         form = PedidoForm(request.POST)
         if form.is_valid():
@@ -220,6 +247,14 @@ class Pedido(View):
                 cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?, ?)}", (producto_id, producto_nombre, cantidad, fecha_entrega))
                 cursor.commit()
             return redirect('home')
+        return render(request, self.template_name, {'form': form})
+
+class Pedido_Multiple(View):
+    template_name = 'pedido_multiple.html'
+
+    @method_decorator(login_required)
+    def get(self, request, *args, **kwargs):
+        form = PedidoForm()
         return render(request, self.template_name, {'form': form})
 
 class Productos(View): 
