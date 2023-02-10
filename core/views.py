@@ -75,7 +75,6 @@ class Carga_sv(View):
         cursor.commit()
         cursor.close()
         prioridades = ['Alta', 'Media', 'Baja', 'Eliminada']
-        print(rows)
         return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
 class Home(View): 
