@@ -5,7 +5,7 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 """
 from django.contrib import admin
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Productos, Register
+from .views import Administracion, Bar_chart, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Productos, Register
 from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
 from .views import get_data
 
@@ -15,7 +15,7 @@ urlpatterns = [
     path('bar_chart/', Bar_chart.as_view(), name="bar_chart"),
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('home/', Home.as_view(), name = "home"),
-    path('', Index.as_view(), name = "index"),
+    path('', Login.as_view(), name = "login"),
     path('inventario_producto/', Inventario_pdto.as_view(), name = "inventario_producto"),
     path('inventario_rollizo/', Inventario_roll.as_view(), name = "inventario_rollizo"),
     path('inventario_rollizo_nc/', Inventario_roll_nc.as_view(), name = "inventario_rollizo_nc"),
@@ -23,6 +23,7 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
+    path('pedido/', Pedido.as_view(), name = "pedido"),
     path('productos/', Productos.as_view(), name = "productos"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar

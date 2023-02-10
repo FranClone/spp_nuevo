@@ -19,8 +19,12 @@
             <input class="btn-select-file" id="carga-masiva" type="file">
         </label>
         <label class="label-carga-individual" for="carga-individual">Carga Individual
-            <input class="btn-select-file" id="carga-individual" type="file">
-        </label>
+            <script>
+                $('.label-carga-individual').click(function() {
+                    window.location.href = "/pedido/";
+                });
+            </script>
+        </label>        
     </div>
 
     <div class="progress">

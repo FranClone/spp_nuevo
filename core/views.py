@@ -14,11 +14,12 @@ from django.views.generic import View
 from django.http import JsonResponse
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
-import pyodbc, json
+from .pedidoForm import PedidoForm
+import pyodbc, json, os, datetime, ast
 
 # se intenta conectar a la base de datos
 try:
-    conexion = pyodbc.connect('DRIVER={SQL Server};SERVER=192.168.100.138,1434;DATABASE=SPP;UID=sa;PWD=B3t3ch1tda.2021')
+    conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
     print("conexión a base de datos exitosa")
 
 except Exception as ex:
@@ -69,11 +70,13 @@ class Carga_sv(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()
-        return render(request, 'carga_servidor.html', {"rows":rows})
+        prioridades = ['Alta', 'Media', 'Baja', 'Eliminada']
+        print(rows)
+        return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
 class Home(View): 
     """Esta clase define la vista Home"""
@@ -106,14 +109,11 @@ class Inventario_roll(View):
     def get(self, request, *args, **kwargs):
         clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         clas = cursor.fetchall()
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         noclas = cursor.fetchall()
-        cursor.commit()
         cursor.close()
-        print(clas)
-        print(noclas)
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):
@@ -188,13 +188,47 @@ class Mantenedor(View):
 
         return render(request, 'mantenedor.html', context)
 
+class Pedido(View):
+    template_name = 'pedido.html'
+
+    def get(self, request):
+        form = PedidoForm()
+        return render(request, self.template_name, {'form': form})
+
+    def post(self, request):
+        form = PedidoForm(request.POST)
+        if form.is_valid():
+            cursor = conexion.cursor()
+            numero_pedido = form.cleaned_data['numero_pedido']
+            fecha_recepcion = form.cleaned_data['fecha_recepcion']
+            fecha_recepcion = datetime.datetime.combine(fecha_recepcion, datetime.time.min)
+            fecha_entrega = form.cleaned_data['fecha_entrega']
+            fecha_entrega = datetime.datetime.combine(fecha_entrega, datetime.time.min)
+            destino_pedido = form.cleaned_data['destino_pedido']
+            # id_bodega = form.cleaned_data['nombre_bodega']
+            prioridad = form.cleaned_data['prioridad']
+            # Ingresa Datos a Pedido
+            cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, os.environ.get('RUT_EMPRESA'), request.user.username, prioridad))
+            cursor.commit()
+            productos = request.POST.getlist('form-0-producto')
+            cantidades = request.POST.getlist('form-0-cantidad')
+            for i in range(len(productos)):
+                # Ingresa Productos a DETALLE_PEDIDO
+                producto_data = ast.literal_eval(productos[i])
+                producto_id = producto_data['id']
+                producto_nombre = producto_data['nombre']
+                cantidad = cantidades[i]
+                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?, ?)}", (producto_id, producto_nombre, cantidad, fecha_entrega))
+                cursor.commit()
+            return redirect('home')
+        return render(request, self.template_name, {'form': form})
+
 class Productos(View): 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
-        cursor.commit()
         cursor.close()
         return render(request, 'productos.html', {"rows":rows})
 
@@ -217,9 +251,8 @@ class Plan_Bodega(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
-        cursor.commit()
         cursor.close()
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
 
@@ -227,9 +260,8 @@ class Plan_Lineas(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
-        cursor.commit()
         cursor.close()
         return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
 
@@ -237,9 +269,8 @@ class Plan_Productos(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
-        cursor.commit()
         cursor.close()
         return render(request, 'planificador/planificador_productos.html', {'rows':rows})
 
@@ -247,9 +278,8 @@ class Plan_Rollizo(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", "77003725-5")
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         rows = cursor.fetchall()
-        cursor.commit()
         cursor.close()
         return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
 

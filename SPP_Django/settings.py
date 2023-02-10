@@ -77,11 +77,11 @@ WSGI_APPLICATION = 'SPP_Django.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
-        'NAME': 'SPP',
-        'USER': 'sa',
-        'PASSWORD': 'B3t3ch1tda.2021',
-        'HOST': '192.168.100.138',
-        'PORT': '1434',
+        'NAME': os.environ.get('DATABASE_NAME'),
+        'USER': os.environ.get('DATABASE_USER'),
+        'PASSWORD': os.environ.get('DATABASE_PASSWORD'),
+        'HOST': os.environ.get('DATABASE_HOST'),
+        'PORT': os.environ.get('DATABASE_PORT'),
         'OPTIONS': {
             'driver': 'ODBC Driver 17 for SQL Server',
         },

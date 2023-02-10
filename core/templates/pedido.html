@@ -1,0 +1,60 @@
+<form method="post" id="form-container">
+    {% csrf_token %}
+    {{ form.numero_pedido.label_tag }}
+    {{ form.numero_pedido }}
+    <br><br>
+    {{ form.fecha_recepcion.label_tag }}
+    {{ form.fecha_recepcion }}
+    <br><br>
+    {{ form.fecha_entrega.label_tag }}
+    {{ form.fecha_entrega }}
+    <br><br>
+    {{ form.destino_pedido.label_tag }}
+    {{ form.destino_pedido }}
+    <br><br>
+    {{ form.prioridad.label_tag }}
+    {{ form.prioridad }}
+    <!--<br><br>
+    {{ form.nombre_bodega.label_tag }}
+    {{ form.nombre_bodega }}-->
+    <br><br>
+    <table>
+      <tbody id="product-table">
+        {% for form in form.productos %}
+          <tr id="product-form">
+            <td>{{ form.producto.label_tag }}</td>
+            <td>{{ form.producto }}</td>
+            <td>{{ form.cantidad.label_tag }}</td>
+            <td>{{ form.cantidad }}</td>
+            <td><button type="button" id="remove-button">Borrar</button></td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <br><br>
+    <button type="button" id="add-button">Agregar Producto</button>
+    <br><br>
+    <input type="submit" value="Ingresar Pedido">
+</form>
+
+<script>
+  // Get the add button and table
+  const addButton = document.getElementById("add-button");
+  const table = document.getElementById("product-table");
+
+  // Get the first product form
+  let productForm = document.getElementById("product-form");
+
+  // Clone the first product form and add it to the table
+  addButton.addEventListener("click", function() {
+    let newProductForm = productForm.cloneNode(true);
+    table.appendChild(newProductForm);
+  });
+
+  // Remove the product form
+  table.addEventListener("click", function(event) {
+    if (event.target.id === "remove-button") {
+      event.target.parentNode.parentNode.remove();
+    }
+  });
+</script>
