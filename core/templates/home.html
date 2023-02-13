@@ -29,6 +29,9 @@
             </label>
             <input type="submit" value="Cargar">
         </form>
+        <form action="{% url 'download_file' %}" method="get">
+            <input type="submit" value="Plantilla Excel" name="download">
+        </form>
         <label class="label-carga-individual" for="carga-individual">Carga Individual
             <script>
                 $('.label-carga-individual').click(function() {
@@ -44,24 +47,54 @@
     <div class="gantt-container">
         <div class="gantt-here" id="gantt_here"></div>
         <script>
-            gantt.init("gantt_here");
-            gantt.parse({
-            data:[
-                {id:1, text:"Pedido #1", start_date:"25-01-2023", duration:2, color:'red'
-                    },
-                {id:2, text:"Pedido #2", start_date:"26-01-2023", duration:2, color:'orange'
-                    },
-                {id:3, text:"Pedido #3", start_date:"27-01-2023", duration:2, color:'yellow'
-                    },
-                {id:4, text:"Pedido #4", start_date:"28-01-2023", duration:2, color:'green'
-                    },
-                {id:5, text:"Pedido #5", start_date:"29-01-2023", duration:2, color:'blue'
-                    },
-                {id:6, text:"Pedido #6", start_date:"30-01-2023", duration:2, color:'purple'
-                    },
-                {id:7, text:"Pedido #7", start_date:"31-01-2023", duration:2, color:'pink'
-                    }
-                ]
+            var datos = {{ result|safe }};
+            gantt.init("gantt_here")
+            var data = [];
+            var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+            for (var i = 0; i < datos.length; i++) {
+                var fechaRecepcion = new Date(datos[i].fecha_recepcion);
+                var fechaEntrega = new Date(datos[i].fecha_entrega);
+                fecha_recepcion = fechaRecepcion.toLocaleDateString();
+                fecha_entrega = fechaEntrega.toLocaleDateString();
+                var color = colors[i % colors.length];
+                var item = {
+                    id: i+1,
+                    custom_id: datos[i].id_pedido,
+                    text: "Pedido #" + datos[i].id_pedido,
+                    start_date: fecha_recepcion,
+                    duration: datos[i].duration,
+                    color: color
+                };
+            data.push(item);
+            }
+            gantt.parse({data: data});
+            gantt.attachEvent("onTaskClick", function(id){
+                // Código predefinido de onTaskClick
+                // Esconde la tarea por default
+                // Obtiene la tarea
+                var task = gantt.getTask(id);
+                // Tu lógica personalizada aquí
+                if (!task.modalboxOpened) { 
+                    var html = "<h2>Detalles del Pedido</h2>" +
+                    "<p><strong>Número de Pedido:</strong> " + datos[id-1].numero_pedido + "</p>" +
+                    "<p><strong>Fecha de Recepción:</strong> " + datos[id-1].fecha_recepcion + "</p>" +
+                    "<p><strong>Fecha de Entrega:</strong> " + datos[id-1].fecha_entrega + "</p>" +
+                    "<p><strong>Duración:</strong> " + task.duration + ' días' + "</p>" +
+                    "<p><strong>Destino de pedido:</strong> " + datos[id-1].destino_pedido + "</p>" +
+                    "<button id='close-modal' type='button'>Cerrar</button>";
+                    // Abrir la ventana modal con la información de la tarea
+                    var box = gantt.modalbox({
+                        text: html,
+                        width: 200
+                    });
+                    task.modalboxOpened = true;
+                    //Agrega un botón para cerrar la tarea
+                    document.getElementById("close-modal").addEventListener("click", function() {
+                        gantt.modalbox.hide(box);
+                        task.modalboxOpened = false;
+                    });
+                }
+                return false;            
             });
         </script>
     </div>

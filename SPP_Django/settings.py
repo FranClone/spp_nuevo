@@ -43,6 +43,10 @@ INSTALLED_APPS = [
 LOGIN_URL = '/login/'
 LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/login/'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'core\media')
+MEDIA_URL = '/media/'
+
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -51,7 +55,7 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware'
 ]
 # representa la ruta de importacion a la configuracion de URL
 ROOT_URLCONF = 'SPP_Django.urls'

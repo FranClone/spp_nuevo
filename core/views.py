@@ -4,6 +4,7 @@ En Django, una vista es una función de Python o basada en clases que toma una w
 Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 """
 
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -11,11 +12,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View
-from django.http import JsonResponse
+from django.http import JsonResponse, FileResponse, Http404
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-import pyodbc, json, os, datetime, ast, openpyxl, bleach
+import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
 try:
@@ -77,14 +78,63 @@ class Carga_sv(View):
         prioridades = ['Alta', 'Media', 'Baja', 'Eliminada']
         return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
+class DownloadExcel(View):
+    #Descarga Excel, aún no funciona apropiadamente
+    def get(self, request, *args, **kwargs):
+        file_name = "Formato Ejemplo.xlsx"
+        file_path = os.path.join(settings.MEDIA_ROOT, file_name)
+        if os.path.exists(file_path):
+            response = FileResponse(open(file_path, 'rb'))
+            response['content_type'] = 'application/vnd.ms-excel'
+            response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
+            return response
+        raise Http404
+
 class Home(View): 
     """Esta clase define la vista Home"""
+    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         producto_terminado = 1000
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
-        return render(request, 'home.html', {'progress': progress})
+        cursor = conexion.cursor()
+        #buscamos pedidos en base de datos
+        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        #obtenemos datos
+        rows = cursor.fetchall()
+        #datos para guardarlos en un diccionarios
+        column_names = [column[0] for column in cursor.description]
+        #método para convertir en diccionario compatible con JS para parsear en JSON
+        def convert_to_dict(data):
+            result = []
+            for row in data:
+                row_dict = {}
+                for i, value in enumerate(row):
+                    if value is None:
+                        #transformamos None a "null", ya que None no existe en JavaScript
+                        value = "null"
+                    #guardamos valores en diccionario
+                    row_dict[column_names[i]] = value
+                #agregamos valores a diccionario
+                result.append(row_dict)
+            return result
+        cursor.close()
+        #aplicamos función
+        result = convert_to_dict(rows)
+        #en este for loop agregamos la duración de cada producto usando las fechas
+        for item in result:
+            fecha_entrega = item.get("fecha_entrega")
+            fecha_recepcion = item.get("fecha_recepcion")
+            if fecha_entrega and fecha_recepcion:
+                fecha_entrega = datetime.datetime.strptime(fecha_entrega, "%Y-%m-%d")
+                fecha_recepcion = datetime.datetime.strptime(fecha_recepcion, "%Y-%m-%d")
+                delta = fecha_entrega - fecha_recepcion
+                item["duration"] = delta.days
+        #convertimos a json para que pueda ser leído por JS
+        result = json.dumps(result)
+        return render(request, 'home.html', {'progress': progress, 'result': result})
     
+    @method_decorator(login_required) 
     def post(self, request, *args, **kwargs):
         #Carga Archivo
         try:
@@ -123,12 +173,14 @@ class Home(View):
                 cursor = conexion.cursor()
                 cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, os.environ.get('RUT_EMPRESA'), request.user.username, prioridad))
                 cursor.commit()
+                cursor.close()
             # Si las dos últimas columnas están llenas, guardamos los valores en la base de datos utilizando
             if fila[5] and fila[6] != 'None':
                 producto_nombre = fila[5]
                 cantidad = fila[6]
                 cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?)}", (producto_nombre, cantidad, fecha_entrega))
                 cursor.commit()  
+                cursor.close()
             
         return redirect('home')
 
