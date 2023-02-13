@@ -12,7 +12,7 @@ class ProductoForm(forms.Form):
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
         data_productos = cursor.fetchall()
-        choices = [({'id':producto.id_producto, 'nombre':producto.nombre_producto}, producto.nombre_producto) for producto in data_productos]
+        choices = [(producto.nombre_producto, producto.nombre_producto) for producto in data_productos]
         self.fields['producto'] = forms.ChoiceField(choices=choices)
     def clean(self):
         cleaned_data = super().clean()

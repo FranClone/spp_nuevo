@@ -15,7 +15,7 @@ from django.http import JsonResponse
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-import pyodbc, json, os, datetime, ast, openpyxl
+import pyodbc, json, os, datetime, ast, openpyxl, bleach
 
 # se intenta conectar a la base de datos
 try:
@@ -101,12 +101,35 @@ class Home(View):
         #Obtiene la página que se obtiene al inicio
         hoja = wb.active
         #Itera sobre la hoja
-        for fila in hoja.iter_rows():
-            for celda in fila:
-                # Si no es un valor numérico o una cadena de texto, prevenir funciones raras
-                if celda.data_type not in ["n", "s"]:  
-                    return redirect('home')    
-            print(fila[0].value, fila[1].value, fila[2].value)
+        numero_pedido = None
+        fecha_recepcion = None
+        fecha_entrega = None
+        destino_pedido = None
+        prioridad = None
+
+        for i, fila in enumerate(hoja.iter_rows(values_only=True)):
+            # Salta la primera fila
+            if i == 0:
+                continue
+            # Sanitiza los datos en la fila
+            fila = [bleach.clean(str(x), tags=[], strip=True) for x in fila]
+            # Si las 5 primeras columnas están llenas, guardamos los valores en las variables correspondientes
+            if fila[0] and fila[1] and fila[2] and fila[3] and fila[4] != 'None':
+                numero_pedido = fila[0]
+                fecha_recepcion = fila[1]
+                fecha_entrega = fila[2]
+                destino_pedido = fila[3]
+                prioridad = fila[4]
+                cursor = conexion.cursor()
+                cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, os.environ.get('RUT_EMPRESA'), request.user.username, prioridad))
+                cursor.commit()
+            # Si las dos últimas columnas están llenas, guardamos los valores en la base de datos utilizando
+            if fila[5] and fila[6] != 'None':
+                producto_nombre = fila[5]
+                cantidad = fila[6]
+                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?)}", (producto_nombre, cantidad, fecha_entrega))
+                cursor.commit()  
+            
         return redirect('home')
 
 
@@ -240,11 +263,9 @@ class Pedido(View):
             cantidades = request.POST.getlist('form-0-cantidad')
             for i in range(len(productos)):
                 # Ingresa Productos a DETALLE_PEDIDO
-                producto_data = ast.literal_eval(productos[i])
-                producto_id = producto_data['id']
-                producto_nombre = producto_data['nombre']
+                producto_nombre = productos[i]
                 cantidad = cantidades[i]
-                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?, ?)}", (producto_id, producto_nombre, cantidad, fecha_entrega))
+                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?)}", (producto_nombre, cantidad, fecha_entrega))
                 cursor.commit()
             return redirect('home')
         return render(request, self.template_name, {'form': form})
