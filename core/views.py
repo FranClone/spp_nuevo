@@ -36,6 +36,30 @@ def staff_required(view_func):
     decorated_view_func = user_passes_test(lambda u: u.is_staff)(view_func)
     return decorated_view_func
 
+def aserradero_required(function=None):
+    """
+    Decorador que verifica si el usuario es del aserradero o es superusuario.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists()),
+        login_url='/login/'
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
+def cliente_required(function=None):
+    """
+    Decorador que verifica si el usuario es del aserradero, el cliente o es superusuario.
+    """
+    actual_decorator = user_passes_test(
+        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists() or u.groups.filter(name='cliente').exists()),
+        login_url='/login/'
+    )
+    if function:
+        return actual_decorator(function)
+    return actual_decorator
+
 #cursor.execute("SELECT * FROM Bodega")
 
 #rows = cursor.fetchall()
@@ -118,10 +142,14 @@ class Home(View):
                 #agregamos valores a diccionario
                 result.append(row_dict)
             return result
-        cursor.close()
         #aplicamos función
         result = convert_to_dict(rows)
         #en este for loop agregamos la duración de cada producto usando las fechas
+        cursor.execute("EXEC dbo.sel_pedido_productos_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        detalle = cursor.fetchall()
+        column_names = [column[0] for column in cursor.description]
+        detalle = convert_to_dict(detalle)
+        cursor.close()
         for item in result:
             fecha_entrega = item.get("fecha_entrega")
             fecha_recepcion = item.get("fecha_recepcion")
@@ -130,6 +158,14 @@ class Home(View):
                 fecha_recepcion = datetime.datetime.strptime(fecha_recepcion, "%Y-%m-%d")
                 delta = fecha_entrega - fecha_recepcion
                 item["duration"] = delta.days
+                item["producto"] = []
+                item["cantidad"] = []
+            for value in detalle:
+                if item.get("id_pedido") == value.get("id_pedido"):
+                    item["producto"].append(value.get("detalle_producto"))
+                    item["cantidad"].append(value.get("volumen_producto"))
+                    
+
         #convertimos a json para que pueda ser leído por JS
         result = json.dumps(result)
         return render(request, 'home.html', {'progress': progress, 'result': result})
@@ -248,9 +284,10 @@ class Login(View):
         rut_dv = request.POST['rut_dv']
         rut = f'{rut_body}-{rut_dv}'
         password = request.POST['password']
+        rut_empresa = os.environ.get('RUT_EMPRESA')
         #hay user
         try:
-            user_profile = UserProfile.objects.get(rut=rut)
+            user_profile = UserProfile.objects.get(rut=rut, rut_empresa=rut_empresa)
             user = user_profile.user
             #corresponde la contraseña al usuario
             if user.check_password(password):

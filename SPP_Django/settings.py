@@ -17,6 +17,7 @@ environ.Env.read_env()
 # crea la ruta dentro del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+CSRF_COOKIE_SECURE = True
 # variables de ambiente (clave secreta: se genera aleatoriamente con cada proyecto)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -59,6 +60,16 @@ MIDDLEWARE = [
 ]
 # representa la ruta de importacion a la configuracion de URL
 ROOT_URLCONF = 'SPP_Django.urls'
+
+SESSION_COOKIE_SECURE = True
+#segundos para avisarte de que tienes que usar HTTPS
+SECURE_HSTS_SECONDS = 60
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+"""SECURE_HSTS_PRELOAD = True""" """Este comando sirve para cuando esto sea subido a una URL, 
+                                para que Chrome y otros navegadores lo detecten, antes de activar
+                                esto, subir el sitio aquí https://hstspreload.org/"""
+#Redigir a SSL
+SECURE_SSL_REDIRECT = True
 # contiene las configuraciones para las plantillas a utilizar
 TEMPLATES = [
     {
@@ -111,7 +122,7 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # representa el codigo del lenguaje
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'es-cl'
 # representa la zona horaria para la aplicacion
 TIME_ZONE = 'UTC'
 # debe estar en True para que haga efecto el cambio de idioma

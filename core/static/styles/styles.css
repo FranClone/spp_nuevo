@@ -106,6 +106,72 @@ li {
     height: 400px;
 }
 
+.gantt_popup_text{
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+.gantt_modal_table {
+    max-width: 100%;
+    width: 100%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-size: 1.2em;
+    padding: 5px;
+  }
+  
+  /* Estilo para las celdas */
+.gantt_modal_table td, .gantt_modal_table th {
+    padding: 0.5em;
+    border: 1px solid black;
+    width: 50%
+  }
+  
+  /* Estilo para las celdas de encabezado */
+.gantt_modal_table th {
+    background-color: #B3D9D9;
+  }
+  
+  /* Estilo para las celdas de datos */
+.gantt_modal_table td {
+    background-color: #E0F7FA;
+  }
+
+.gantt_popup_text span {
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: none;
+    text-align: left;
+    width: 400px; /* Definimos un ancho para el contenedor */
+    margin: 0 auto; /* Centramos el contenedor */
+  }
+  
+.gantt_popup_text span p h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+  
+.gantt_popup_text span p {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.gantt_popup_button {
+    background-color: #fb5807db;
+    border: none;
+    box-shadow: none;
+    color: #fff;
+    font-size: 18px;
+    width: 100px;
+    height: 30px;
+}
+
+.gantt_popup_button:hover {
+    background-color: #fd0202;
+}
+
+
+
 .label-carga-masiva {
     cursor: pointer;
     border: 2px solid black;

@@ -48,7 +48,7 @@
         <div class="gantt-here" id="gantt_here"></div>
         <script>
             var datos = {{ result|safe }};
-            gantt.init("gantt_here")
+            gantt.init("gantt_here");
             var data = [];
             var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
             for (var i = 0; i < datos.length; i++) {
@@ -74,27 +74,59 @@
                 // Obtiene la tarea
                 var task = gantt.getTask(id);
                 // Tu lógica personalizada aquí
-                if (!task.modalboxOpened) { 
-                    var html = "<h2>Detalles del Pedido</h2>" +
-                    "<p><strong>Número de Pedido:</strong> " + datos[id-1].numero_pedido + "</p>" +
-                    "<p><strong>Fecha de Recepción:</strong> " + datos[id-1].fecha_recepcion + "</p>" +
-                    "<p><strong>Fecha de Entrega:</strong> " + datos[id-1].fecha_entrega + "</p>" +
-                    "<p><strong>Duración:</strong> " + task.duration + ' días' + "</p>" +
-                    "<p><strong>Destino de pedido:</strong> " + datos[id-1].destino_pedido + "</p>" +
-                    "<button id='close-modal' type='button'>Cerrar</button>";
+                if (!task.modalboxOpened) {
+                    // Crear la tabla
+                    var table = document.createElement('table');
+                    table.classList.add('gantt_modal_table');
+                    // Crear la fila de encabezado
+                    var headerRow = document.createElement('tr');
+                    var productHeader = document.createElement('th');
+                    var quantityHeader = document.createElement('th');
+                    productHeader.innerText = 'Producto';
+                    quantityHeader.innerText = 'Cantidad';
+                    headerRow.appendChild(productHeader);
+                    headerRow.appendChild(quantityHeader);
+                    table.appendChild(headerRow);
+
+                    // Crear una fila por cada producto
+                    for (var i = 0; i < datos[id-1].producto.length; i++) {
+                        var row = document.createElement('tr');
+                        var productCell = document.createElement('td');
+                        var quantityCell = document.createElement('td');
+                        productCell.innerText = datos[id-1].producto[i];
+                        quantityCell.innerText = datos[id-1].cantidad[i];
+                        row.appendChild(productCell);
+                        row.appendChild(quantityCell);
+                        table.appendChild(row);
+                    }
+                    var dias = task.duration === 1 ? " día" : " días";
+                    var html =
+                    "<p><strong>Número de Pedido:</strong> " + datos[id-1].numero_pedido +
+                    "   <strong>Destino de pedido:</strong> " + datos[id-1].destino_pedido + "</p>" +
+                    "<p><strong>Fecha de Recepción:</strong> " + datos[id-1].fecha_recepcion +
+                    "   <strong>Fecha de Entrega:</strong> " + datos[id-1].fecha_entrega + "</p>" +
+                    "<p><strong>Duración:</strong> " + task.duration + dias +
+                    "<p><strong>Productos:</strong></p>" + table.outerHTML;
                     // Abrir la ventana modal con la información de la tarea
                     var box = gantt.modalbox({
                         text: html,
-                        width: 200
+                        title:"Detalles del Pedido",
+                        width: "80%",
+                        height: "80%",
+                        buttons:[{ label:"Cerrar", value:"button", css:"btn-default" }]
                     });
                     task.modalboxOpened = true;
+                    var modalContent = document.querySelector('.gantt_modal_box');
+                    modalContent.style.overflowY = 'scroll';
+                    modalContent.style.maxHeight = 'calc(100% - 50px)'; // La altura máxima es el 
                     //Agrega un botón para cerrar la tarea
-                    document.getElementById("close-modal").addEventListener("click", function() {
-                        gantt.modalbox.hide(box);
+                    var cancelButton = document.querySelector(".gantt_popup_button");
+                    cancelButton.addEventListener("click", function() {
+                        gantt.modalbox.hide();
                         task.modalboxOpened = false;
                     });
                 }
-                return false;            
+                return false;
             });
         </script>
     </div>
