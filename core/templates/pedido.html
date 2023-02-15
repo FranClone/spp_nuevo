@@ -1,41 +1,70 @@
-<form method="post" id="form-container">
-    {% csrf_token %}
-    {{ form.numero_pedido.label_tag }}
-    {{ form.numero_pedido }}
-    <br><br>
-    {{ form.fecha_recepcion.label_tag }}
-    {{ form.fecha_recepcion }}
-    <br><br>
-    {{ form.fecha_entrega.label_tag }}
-    {{ form.fecha_entrega }}
-    <br><br>
-    {{ form.destino_pedido.label_tag }}
-    {{ form.destino_pedido }}
-    <br><br>
-    {{ form.prioridad.label_tag }}
-    {{ form.prioridad }}
-    <!--<br><br>
-    {{ form.nombre_bodega.label_tag }}
-    {{ form.nombre_bodega }}-->
-    <br><br>
-    <table>
-      <tbody id="product-table">
-        {% for form in form.productos %}
-          <tr id="product-form">
-            <td>{{ form.producto.label_tag }}</td>
-            <td>{{ form.producto }}</td>
-            <td>{{ form.cantidad.label_tag }}</td>
-            <td>{{ form.cantidad }}</td>
-            <td><button type="button" id="remove-button">Borrar</button></td>
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    <br><br>
-    <button type="button" id="add-button">Agregar Producto</button>
-    <br><br>
-    <input type="submit" value="Ingresar Pedido">
-</form>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Carga Individual</title>
+
+    {% load static %}
+    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+</head>
+
+<body>
+
+    {% include "partials/header.html" %}
+
+    <h1 class="h1-carga-individual">Carga Individual Pedidos</h1>
+
+    <form class="form-carga-individual" method="post" id="form-container">
+      {% csrf_token %}
+      <div class="container-pedidos">
+        {{ form.numero_pedido.label_tag }}
+        {{ form.numero_pedido }}
+
+        {{ form.destino_pedido.label_tag }}
+        {{ form.destino_pedido }}
+      </div>
+
+      <div class="container-fechas">
+      <br>
+      {{ form.fecha_recepcion.label_tag }}
+      {{ form.fecha_recepcion }}
+      <br>
+      {{ form.fecha_entrega.label_tag }}
+      {{ form.fecha_entrega }}
+      <br>
+      {{ form.prioridad.label_tag }}
+      {{ form.prioridad }}
+      <br>
+      </div>
+      <br>
+      <div class="container-lista-pedidos">
+        <table>
+          <tbody id="product-table">
+            {% for form in form.productos %}
+              <tr id="product-form">
+                <td>{{ form.producto.label_tag }}</td>
+                <td>{{ form.producto }}</td>
+                <td>{{ form.cantidad.label_tag }}</td>
+                <td>{{ form.cantidad }}</td>
+                <td><button type="button" id="remove-button">Borrar</button></td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <br>
+      <div>
+          <button type="button" id="add-button">Agregar Producto</button>
+          <input type="submit" value="Ingresar Pedido">  
+      </div>
+      
+    </form>
 
 <script>
   // Get the add button and table
@@ -58,3 +87,6 @@
     }
   });
 </script>
+</body>
+</html>
+

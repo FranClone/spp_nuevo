@@ -11,22 +11,16 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
-    <!--este script sirve que el botón de carga se vuelva verde
-    en caso de que se haya cargado un excel-->
     <script>
         $(document).ready(function() {
-            // selecciona el campo de carga de archivos
             var input = $('input[type="file"]');
             
             input.change(function() {
                 var file = input[0].files[0];
             
-                // verifica si se ha seleccionado un archivo de Excel .xlsx
                 if (file && file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                    // agrega la clase "verde" al botón "Cargar"
                     $('.cargar-btn').addClass('verde');
                 } else {
-                    // quita la clase "verde" del botón "Cargar"
                     $('.cargar-btn').removeClass('verde');
                 }
             });
@@ -51,9 +45,9 @@
                 </label>
             </form>
             <div class="carga-micro">
-                <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar">
+                <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar a BD">
                 <form action="{% url 'download_file' %}" method="get">
-                    <input class="label-carga-mini" type="submit" value="Plantilla Excel" name="download">
+                    <input class="label-carga-mini" type="submit" value="Descargar Formato" name="download">
                 </form>
             </div>
         </div>
@@ -85,7 +79,7 @@
                 var item = {
                     id: i+1,
                     custom_id: datos[i].id_pedido,
-                    text: "Pedido #" + datos[i].id_pedido,
+                    text: "ID Pedido " + datos[i].id_pedido,
                     start_date: fecha_recepcion,
                     duration: datos[i].duration,
                     color: color
