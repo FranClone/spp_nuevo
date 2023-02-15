@@ -2,6 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+from django.db import IntegrityError
+import os
 
 class BaseForm(forms.Form):
     def clean_rut(self):
@@ -18,17 +20,22 @@ class BaseForm(forms.Form):
                     raise ValidationError('El RUT solo puede contener números y un guión')
                 if len(rut) < 8:
                     raise ValidationError('El RUT es demasiado corto')
-
-                v = 11 - sum(int(x) * (i + 2) for i, x in enumerate(reversed(rut[:-1]))) % 11
-                if v == 10:
-                    digit = 'K'
-                elif v == 11:
-                    digit = '0'
+                dv_calculado = None
+                factor = 2
+                suma = 0
+                for d in reversed(rut[:-1]):
+                    suma += int(d) * factor
+                    factor += 1
+                    if factor == 8:
+                        factor = 2
+                resto = suma % 11
+                if resto == 0:
+                    dv_calculado = '0'
                 else:
-                    digit = str(v)
-
-                if digit.lower() != rut[-1].lower():
+                    dv_calculado = str(11 - resto)
+                if dv_calculado != rut[-1].upper():
                     raise ValidationError('El dígito verificador es incorrecto')
+
 
             try:
                 validate_rut(rut)
@@ -48,14 +55,29 @@ class CustomUserCreationForm(BaseForm, UserCreationForm):
         model = User
         fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv']
 
+    def clean(self):
+        cleaned_data = super().clean()
+        self.clean_rut()
+        self.validate_unique_rut(User)
+        return cleaned_data
+
     def save(self, commit=True):
         user = super().save(commit=False)
         user.rut = self.cleaned_data['rut']
+        user.rut_empresa = os.environ.get('RUT_EMPRESA')
         if commit:
-            user.save()
+            try:
+                user.save()
+            except IntegrityError:
+                raise forms.ValidationError('El RUT ya se encuentra registrado en el sistema.')
         return user
 
 class LoginForm(BaseForm):
     rut_body = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-body', 'placeholder': 'RUT Cliente'}), max_length=8, label="")
     rut_dv = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-dv'}), max_length=1, label="")
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input-login', 'placeholder': 'Contraseña'}), max_length=60, label="")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        self.clean_rut()
+        return cleaned_data
