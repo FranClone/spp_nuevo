@@ -41,8 +41,8 @@ class BaseForm(forms.Form):
 
 
 class CustomUserCreationForm(BaseForm, UserCreationForm):
-    rut_body = forms.CharField(max_length=8, label="")
-    rut_dv = forms.CharField(max_length=1, label="")
+    rut_body = forms.CharField(max_length=8, label="rut")
+    rut_dv = forms.CharField(max_length=1, label="digito rutificador")
 
     class Meta:
         model = User
