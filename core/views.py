@@ -90,7 +90,6 @@ class Bar_chart(View):
             
         return render(request, 'bar_chart.html', {"pr_global":json.dumps(produccion_global)})
 
-
 class Carga_sv(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
@@ -225,7 +224,6 @@ class Home(View):
                 cursor.close()
             
         return redirect('home')
-
 
 class Index(View): 
     """Esta clase define la vista Index"""

@@ -23,7 +23,7 @@ class ProductoForm(forms.Form):
 ProductoFormSet = formset_factory(ProductoForm, extra=1)
 
 class PedidoForm(forms.Form):
-    numero_pedido = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1'}))
+    numero_pedido = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1'}), label="Número Pedido")
     fecha_recepcion = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
     fecha_entrega = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
     destino_pedido = forms.CharField(max_length=100)
