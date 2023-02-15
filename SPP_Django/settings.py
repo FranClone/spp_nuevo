@@ -17,7 +17,6 @@ environ.Env.read_env()
 # crea la ruta dentro del proyecto
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-CSRF_COOKIE_SECURE = True
 # variables de ambiente (clave secreta: se genera aleatoriamente con cada proyecto)
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
@@ -60,16 +59,21 @@ MIDDLEWARE = [
 ]
 # representa la ruta de importacion a la configuracion de URL
 ROOT_URLCONF = 'SPP_Django.urls'
-
-SESSION_COOKIE_SECURE = True
+"""Configuración de seguridad, al terminar el development
+poner estos comandos en true"""
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 #segundos para avisarte de que tienes que usar HTTPS
-SECURE_HSTS_SECONDS = 60
-SECURE_HSTS_INCLUDE_SUBDOMAINS = True
-"""SECURE_HSTS_PRELOAD = True""" """Este comando sirve para cuando esto sea subido a una URL, 
-                                para que Chrome y otros navegadores lo detecten, antes de activar
-                                esto, subir el sitio aquí https://hstspreload.org/"""
+SECURE_HSTS_SECONDS = 0
+
+"""Este comando sirve para cuando esto sea subido a una URL, 
+para que Chrome y otros navegadores lo detecten, antes de activar
+esto, subir el sitio aquí https://hstspreload.org/"""
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+
+SECURE_HSTS_PRELOAD = False     
 #Redigir a SSL
-SECURE_SSL_REDIRECT = True
+SECURE_SSL_REDIRECT = False
 # contiene las configuraciones para las plantillas a utilizar
 TEMPLATES = [
     {

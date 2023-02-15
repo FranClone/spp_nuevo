@@ -13,59 +13,63 @@
 <body>
     {% include "partials/header.html" %}
     <div class="table-container container">
-        <table class="table">
-            <br>
-            <h1 class="encabezado-pedidos">Inventario Rollizos Clasificado</h1>
-            <thead class="thead-pedidos">
-                <tr>
-                    <th>Rollizo Clasificado</th>
-                    <th>Clase Diámetrica</th>
-                    <th>Largo</th>
-                    <th>Cantidad [m^3]</th>
-                </tr>
-                {% for c in clas %}
-                <tr>
-                    <td>{{c.nombre_largo}}</td>
-                    <td>
-                        <select>
-                    {% for cd in clase_diametrica %}
-                            <option>{{cd}}</option> 
+        <div class="table-responsive">
+            <table class="table w-100">
+                <br>
+                <h1 class="encabezado-pedidos">Inventario Rollizos Clasificado</h1>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>Rollizo Clasificado</th>
+                        <th>Clase Diámetrica</th>
+                        <th>Largo</th>
+                        <th>Cantidad [m^3]</th>
+                    </tr>
+                    {% for c in clas %}
+                    <tr>
+                        <td>{{c.nombre_largo}}</td>
+                        <td>
+                            <select>
+                        {% for cd in clase_diametrica %}
+                                <option>{{cd}}</option> 
+                        {% endfor %}
+                            </select>
+                        </td>    
+                        <td>{{c.largo}}</td>  
+                        <td>{{c.cantidad}}</td> 
+                    </tr>
                     {% endfor %}
-                        </select>
-                    </td>    
-                    <td>{{c.largo}}</td>  
-                    <td>{{c.cantidad}}</td> 
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
+                </thead>
+            </table>
+        </div>
         <br><br>
     </div>
     <div class="table-container container">
-        <table class="table">
-            <br>
-            <h1 class="encabezado-pedidos">Inventario Rollizos NO Clasificado</h1>
-            <thead class="thead-pedidos">
-                <tr>
-                    <th>Rollizo Clasificado</th>
-                    <th>Clase Diámetrica</th>
-                    <th>Número de Rollizos</th>
-                </tr>
-                {% for nc in noclas %}
-                <tr>
-                    <td>{{nc.nombre_rollizo}}</td>
-                    <td>
-                        <select>
-                    {% for cd in clase_diametrica %}
-                            <option>{{cd}}</option> 
+        <div class="table-responsive">
+            <table class="table w-100">
+                <br>
+                <h1 class="encabezado-pedidos">Inventario Rollizos NO Clasificado</h1>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>Rollizo Clasificado</th>
+                        <th>Clase Diámetrica</th>
+                        <th>Número de Rollizos</th>
+                    </tr>
+                    {% for nc in noclas %}
+                    <tr>
+                        <td>{{nc.nombre_rollizo}}</td>
+                        <td>
+                            <select>
+                        {% for cd in clase_diametrica %}
+                                <option>{{cd}}</option> 
+                        {% endfor %}
+                            </select>
+                        </td>    
+                        <td>{{nc.largo}}</td> 
+                    </tr>
                     {% endfor %}
-                        </select>
-                    </td>    
-                    <td>{{nc.largo}}</td> 
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
+                </thead>
+            </table>
+        </div>
         <br><br>
     </div>
 

@@ -11,6 +11,27 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
+    <!--este script sirve que el botón de carga se vuelva verde
+    en caso de que se haya cargado un excel-->
+    <script>
+        $(document).ready(function() {
+            // selecciona el campo de carga de archivos
+            var input = $('input[type="file"]');
+            
+            input.change(function() {
+                var file = input[0].files[0];
+            
+                // verifica si se ha seleccionado un archivo de Excel .xlsx
+                if (file && file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
+                    // agrega la clase "verde" al botón "Cargar"
+                    $('.cargar-btn').addClass('verde');
+                } else {
+                    // quita la clase "verde" del botón "Cargar"
+                    $('.cargar-btn').removeClass('verde');
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -22,16 +43,20 @@
                 });
             </script>
         </label>
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            <label class="label-carga-masiva" for="carga-masiva">Carga Masiva
-                <input class="btn-select-file" id="carga-masiva" type="file" name="carga-masiva">
-            </label>
-            <input type="submit" value="Cargar">
-        </form>
-        <form action="{% url 'download_file' %}" method="get">
-            <input type="submit" value="Plantilla Excel" name="download">
-        </form>
+        <div class="carga-mini">
+            <form method="post" enctype="multipart/form-data" class="carga-masiva">
+                {% csrf_token %}
+                <label class="label-carga-masiva" for="carga-masiva">Carga Masiva
+                    <input class="btn-select-file" id="carga-masiva" type="file" name="carga-masiva">
+                </label>
+            </form>
+            <div class="carga-micro">
+                <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar">
+                <form action="{% url 'download_file' %}" method="get">
+                    <input class="label-carga-mini" type="submit" value="Plantilla Excel" name="download">
+                </form>
+            </div>
+        </div>
         <label class="label-carga-individual" for="carga-individual">Carga Individual
             <script>
                 $('.label-carga-individual').click(function() {

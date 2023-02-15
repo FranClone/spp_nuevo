@@ -146,20 +146,26 @@ class Home(View):
         result = convert_to_dict(rows)
         #en este for loop agregamos la duración de cada producto usando las fechas
         cursor.execute("EXEC dbo.sel_pedido_productos_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        #obtenemos todo el resultado
         detalle = cursor.fetchall()
+        #obtiene los nombres de las columnas
         column_names = [column[0] for column in cursor.description]
+        #convierte a diccionario, usando el anterior
         detalle = convert_to_dict(detalle)
         cursor.close()
         for item in result:
+            #agrega un atributo de duración al diccionario
             fecha_entrega = item.get("fecha_entrega")
             fecha_recepcion = item.get("fecha_recepcion")
             if fecha_entrega and fecha_recepcion:
                 fecha_entrega = datetime.datetime.strptime(fecha_entrega, "%Y-%m-%d")
                 fecha_recepcion = datetime.datetime.strptime(fecha_recepcion, "%Y-%m-%d")
                 delta = fecha_entrega - fecha_recepcion
+                #asignación a la duración
                 item["duration"] = delta.days
                 item["producto"] = []
                 item["cantidad"] = []
+            #obtiene los productos, con su respectiva cantidad, al diccionario
             for value in detalle:
                 if item.get("id_pedido") == value.get("id_pedido"):
                     item["producto"].append(value.get("detalle_producto"))

@@ -13,26 +13,28 @@
 <body>
     {% include "partials/header.html" %}
     <div class="table-container">
-        <table class="table">
-            <br>
-            <h1 class="encabezado-pedidos">Planificador Bodega</h1>
-            <thead class="thead-pedidos">
-                <tr>
-                    <th>ID Bodega</th>
-                    <th>Nombre Bodega</th>
-                    <th>Nombre Empresa</th>
-                    <th>Descripción</th>
-                </tr>
-                {% for row in rows %}
-                <tr>
-                    <td>{{row.id_bodega}}</td>
-                    <td>{{row.nombre_bodega}}</td>
-                    <td>{{row.nombre_empresa}}</td>
-                    <td>{{row.descripcion_bodega}}</td>
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
+        <div class="table-responsive">
+            <table class="table w-100">
+                <br>
+                <h1 class="encabezado-pedidos">Planificador Bodega</h1>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>ID Bodega</th>
+                        <th>Nombre Bodega</th>
+                        <th>Nombre Empresa</th>
+                        <th>Descripción</th>
+                    </tr>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{row.id_bodega}}</td>
+                        <td>{{row.nombre_bodega}}</td>
+                        <td>{{row.nombre_empresa}}</td>
+                        <td>{{row.descripcion_bodega}}</td>
+                    </tr>
+                    {% endfor %}
+                </thead>
+            </table>
+        </div>
         <br><br>
     </div>
 </body>

@@ -13,49 +13,50 @@
 <body>
     {% include "partials/header.html" %}
     <div class="table-container container">
-        <table class="table">
-            <br>
-            <h1 class="encabezado-pedidos">Lista de Pedidos</h1>
-            <thead class="thead-pedidos">
-                <tr>
-                    <th>Número de Pedido</th>
-                    <th>Cliente</th>
-                    <th>Fecha Entrega</th>
-                    <th>Fecha Verde</th>
-                    <th>Prioridad</th>  
-                    <th>Eliminar</th>
-                    <th>Guardar</th>
-                </tr>
-                {% for row in rows %}
-                <tr>
-                    <td><a href="">{{row.numero_pedido}}</a></td>
-                    <td>Cliente X</td>
-                    <td><input type="date" id="start" name="trip-start" value={{row.fecha_recepcion}}></td>
-                    <td><input type="date" id="start" name="trip-start" value={{row.fecha_entrega}}></td> 
-                    <td>
-                        <select id="mySelect">
-                            {% for prioridad in prioridades %}
-                            <option value = {{prioridad}}>{{prioridad}}</option>
-                            {% endfor %}
-                        </select>
-                        <script>
-                            var select = document.getElementById("mySelect");
-                            var dbValue = "{{row.prioridad}}"; // Valor que viene de la base de datos
-                            console.log(dbValue);
-                            for (var i = 0; i < select.options.length; i++) {
-                                if (select.options[i].value === dbValue) {
-                                    select.options[i].selected = true;
-                                    break;
+        <div class="table-responsive">
+            <table class="table w-100">
+                <br>
+                <h1 class="encabezado-pedidos">Lista de Pedidos</h1>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>Número de Pedido</th>
+                        <th>Cliente</th>
+                        <th>Fecha Entrega</th>
+                        <th>Fecha Verde</th>
+                        <th>Prioridad</th>  
+                        <th>Eliminar</th>
+                        <th>Guardar</th>
+                    </tr>
+                    {% for row in rows %}
+                    <tr>
+                        <td><a href="">{{row.numero_pedido}}</a></td>
+                        <td>Cliente X</td>
+                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_recepcion}}></td>
+                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_entrega}}></td> 
+                        <td>
+                            <select id="mySelect">
+                                {% for prioridad in prioridades %}
+                                <option value = {{prioridad}}>{{prioridad}}</option>
+                                {% endfor %}
+                            </select>
+                            <script>
+                                var select = document.getElementById("mySelect");
+                                var dbValue = "{{row.prioridad}}"; // Valor que viene de la base de datos
+                                for (var i = 0; i < select.options.length; i++) {
+                                    if (select.options[i].value === dbValue) {
+                                        select.options[i].selected = true;
+                                        break;
+                                    }
                                 }
-                            }
-                        </script>
-                    </td>
-                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
-                    <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Guardar</a></td>
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
+                            </script>
+                        </td>
+                        <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Eliminar</a></td>
+                        <td><a class="a-eliminar" href="javascript:void(0);" onclick="del_tr(this);">Guardar</a></td>
+                    </tr>
+                    {% endfor %}
+                </thead>
+            </table>
+        </div>
         <br><br>
     </div>
 </body>

@@ -13,30 +13,32 @@
 <body>
     {% include "partials/header.html" %}
     <div class="table-container">
-        <table class="table">
-            <br>
-            <h1 class="encabezado-pedidos">Planificador Productos</h1>
-            <thead class="thead-pedidos">
-                <tr>
-                    <th>ID Producto</th>
-                    <th>Nombre Producto</th>
-                    <th>Descripción Producto</th>
-                    <th>Espesor Producto</th>
-                    <th>Ancho Producto</th>
-                    <th>Largo Producto</th>
-                </tr>
-                {% for row in rows %}
-                <tr>
-                    <td>{{row.id_producto}}</td>
-                    <td>{{row.nombre_producto}}</td>
-                    <td>{{row.descripcion_producto}}</td>
-                    <td>{{row.espesor_producto}}</td>
-                    <td>{{row.ancho_producto}}</td>
-                    <td>{{row.largo_producto}}</td>
-                </tr>
-                {% endfor %}
-            </thead>
-        </table>
+        <div class="table-responsive">
+            <table class="table w-100">
+                <br>
+                <h1 class="encabezado-pedidos">Planificador Productos</h1>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>ID Producto</th>
+                        <th>Nombre Producto</th>
+                        <th>Descripción Producto</th>
+                        <th>Espesor Producto</th>
+                        <th>Ancho Producto</th>
+                        <th>Largo Producto</th>
+                    </tr>
+                    {% for row in rows %}
+                    <tr>
+                        <td>{{row.id_producto}}</td>
+                        <td>{{row.nombre_producto}}</td>
+                        <td>{{row.descripcion_producto}}</td>
+                        <td>{{row.espesor_producto}}</td>
+                        <td>{{row.ancho_producto}}</td>
+                        <td>{{row.largo_producto}}</td>
+                    </tr>
+                    {% endfor %}
+                </thead>
+            </table>
+        </div>
         <br><br>
     </div>
 </body>

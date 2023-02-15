@@ -44,9 +44,30 @@ li {
 }
 
 .carga {
-    width: 100%;
+    display: flex;
+    justify-content: center;
     text-align: center;
     margin-top: 20px;
+}
+
+.carga-masiva {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.carga-mini {
+    flex-direction: column;
+}
+
+.carga-micro {
+    display: flex;
+    flex-direction: row;
+}
+
+.cargar-btn.verde {
+    background-color: rgb(8, 199, 8);
+    color: white;
 }
 
 .container-add {
@@ -170,9 +191,8 @@ li {
     background-color: #fd0202;
 }
 
-
-
 .label-carga-masiva {
+    height: 60px;
     cursor: pointer;
     border: 2px solid black;
     background: red;
@@ -183,7 +203,21 @@ li {
     border-radius: 5px;
 }
 
+.label-carga-mini {
+    height: 40px;
+    cursor: pointer;
+    border: 2px solid black;
+    background: rgb(255, 145, 0);
+    color: white;
+    font-size: 18px;
+    padding: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+}
+
+
 .label-carga-individual {
+    height: 60px;
     cursor: pointer;
     border: 2px solid black;
     background: red;
@@ -428,7 +462,7 @@ li {
 }
 
 .register-box {
-    width: 700px;
+    max-width: 700px;
     height: 125px;
     background: white;
     opacity: 0.9;
@@ -439,17 +473,16 @@ li {
 }
 
 .table {
-    width: 100%;
+    max-width: 100%;
     border-collapse: collapse;
     text-align: center;
-    overflow-x: auto;
 }
 
 .table-container {
     padding: 0 10%;
     margin: 40px auto 0;
     background-color: white;
-    width: 100%;
+    max-width: 100%;
     opacity: 0.9;
     border-radius: 25px;
 }
