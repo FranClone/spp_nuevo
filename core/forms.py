@@ -2,10 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
-from django.core.validators import RegexValidator
 from django.db import IntegrityError
 from .models import UserProfile
-import os
 
 class BaseForm(forms.Form):
     def clean_rut(self, is_empresa=False):

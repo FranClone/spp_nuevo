@@ -30,7 +30,6 @@ class PedidoForm(forms.Form):
     prioridad = forms.ChoiceField(choices=(('Alta','Alta'), ('Media', 'Media'), ('Baja', 'Baja'), ('Eliminada', 'Eliminada')))
     """def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-
         conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
         cursor = conexion.cursor()
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))

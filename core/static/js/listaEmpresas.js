@@ -1,3 +1,4 @@
+//Este jQuery lo que hace es darte la lista de empresas obtenida desde una solicitud GET
 $(document).ready(function() {
 // Obtener la referencia al campo de RUT y la lista de empresas
     const rutField = $('.rut-body-empresa');

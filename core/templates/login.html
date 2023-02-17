@@ -24,6 +24,9 @@
                     <div class='input-login rut-dv'>{{form.rut_dv}}</div>
                 </div>
                 <div> {{form.password}} </div>
+                {% if error_message %}
+                    <div class="error-message">{{ error_message }}</div>
+                {% endif %}
                 <input type="submit" value="Ingresar">
                 <p>© BETECH LTDA.<br>Todos los derechos reservados 2022</p><br>
             </form>

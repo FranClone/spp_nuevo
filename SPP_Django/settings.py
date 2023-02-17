@@ -26,7 +26,23 @@ DEBUG = os.environ.get('DEBUG')
 # lista de hosts/dominios del sitio
 ALLOWED_HOSTS = []
 
-AUTHENTICATION_BACKENDS = ['django.contrib.auth.backends.ModelBackend']
+AUTHENTICATION_BACKENDS = [
+    # axes tiene que ser el primer backend
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+# Settings para Django Axes
+AXES_ENABLED = True  # Activa el uso de Django Axes
+AXES_FAILURE_LIMIT = 3  # Número máximo de intentos fallidos permitidos
+AXES_COOLOFF_TIME = 30  # Tiempo de espera en segundos para permitir nuevos intentos después de un bloqueo
+AXES_USE_USER_AGENT = True  # Activar el uso de user-agent para identificar solicitudes maliciosas
+AXES_LOCKOUT_TEMPLATE = 'lockout.html' # Opcional, path al template que se muestra cuando se bloquea una IP
+
+# Configuración para pruebas unitarias
+AXES_BEHIND_REVERSE_PROXY = False  # Desactiva el uso de proxy inverso
+AXES_DISABLE_ACCESS_LOG = True  # Desactiva el registro de accesos a "django-axes"
+AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']  # Cambia el orden de verificación de IPs para pruebas detrás de un proxy
 
 # aplicaciones instaladas en el sitio
 INSTALLED_APPS = [
@@ -37,7 +53,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'core',
-    'django_bleach'
+    'django_bleach',
+    'axes'
 ]
 
 LOGIN_URL = '/login/'
@@ -55,7 +72,9 @@ MIDDLEWARE = [
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware'
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # axes tiene que ser el último middleware agregado
+    'axes.middleware.AxesMiddleware',
 ]
 # representa la ruta de importacion a la configuracion de URL
 ROOT_URLCONF = 'SPP_Django.urls'

@@ -4,14 +4,16 @@ En Django, una vista es una función de Python o basada en clases que toma una w
 Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 """
 
+from axes.decorators import axes_dispatch
 from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View
+from django.views.generic.base import ContextMixin
 from django.http import JsonResponse, FileResponse, Http404
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
@@ -125,8 +127,9 @@ class Home(View):
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
         cursor = conexion.cursor()
+        rut_empresa = request.user.userprofile.rut_empresa
         #buscamos pedidos en base de datos
-        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", [rut_empresa])
         #obtenemos datos
         rows = cursor.fetchall()
         #datos para guardarlos en un diccionarios
@@ -148,7 +151,7 @@ class Home(View):
         #aplicamos función
         result = convert_to_dict(rows)
         #en este for loop agregamos la duración de cada producto usando las fechas
-        cursor.execute("EXEC dbo.sel_pedido_productos_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        cursor.execute("EXEC dbo.sel_pedido_productos_empresa @rut_empresa=?", [rut_empresa])
         #obtenemos todo el resultado
         detalle = cursor.fetchall()
         #obtiene los nombres de las columnas
@@ -201,6 +204,7 @@ class Home(View):
         fecha_entrega = None
         destino_pedido = None
         prioridad = None
+        rut_empresa = request.user.userprofile.rut_empresa
 
         for i, fila in enumerate(hoja.iter_rows(values_only=True)):
             # Salta la primera fila
@@ -216,7 +220,7 @@ class Home(View):
                 destino_pedido = fila[3]
                 prioridad = fila[4]
                 cursor = conexion.cursor()
-                cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, os.environ.get('RUT_EMPRESA'), request.user.username, prioridad))
+                cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, request.user.username, prioridad))
                 cursor.commit()
                 cursor.close()
             # Si las dos últimas columnas están llenas, guardamos los valores en la base de datos utilizando
@@ -252,9 +256,10 @@ class Inventario_roll(View):
     def get(self, request, *args, **kwargs):
         clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", [rut_empresa])
         clas = cursor.fetchall()
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
         noclas = cursor.fetchall()
         cursor.close()
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
@@ -277,7 +282,7 @@ class Lista_pedidos(View):
 
         return render(request, 'lista_pedidos.html', context)
 
-class Login(View):
+class Login(ContextMixin, View):
     """Esta clase define la vista de Login"""
     form_class = LoginForm
     success_url = '/home/'
@@ -292,24 +297,25 @@ class Login(View):
         rut_dv = request.POST['rut_dv']
         rut = f'{rut_body}-{rut_dv}'
         password = request.POST['password']
-        rut_empresa = os.environ.get('RUT_EMPRESA')
+        def get_object_or_none(model, **kwargs):
+            try:
+                return model.objects.get(**kwargs)
+            except model.DoesNotExist:
+                return None
+        user_profile = get_object_or_none(UserProfile, rut=rut)
+        if user_profile is not None:
+            username = user_profile.user.username
+            user = authenticate(request, username=username, password=password)
+        else:
+            user = authenticate(request, username=rut, password=password)
         #hay user
-        try:
-            user_profile = UserProfile.objects.get(rut=rut, rut_empresa=rut_empresa)
-            user = user_profile.user
-            #corresponde la contraseña al usuario
-            if user.check_password(password):
-                #entra al sistema
-                login(request, user)
-                return redirect('home')
-            else:
-                #no corresponde la contraseña al usuario}
-                form = self.form_class()
-                return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
-        #no existe user
-        except UserProfile.DoesNotExist:
-            form = self.form_class()
-            return render(request, 'login.html', {'form': form, 'error_message': 'Invalid login'})
+        if user is not None:
+            login(request, user)
+            return redirect('home')
+        else:
+            #no corresponde la contraseña al usuario}
+            form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
+            return render(request, 'login.html', {'form': form, 'error_message': 'Error de Login'})
     
     #Este método kickea al usuario del login si está logueado    
     def dispatch(self, request, *args, **kwargs):
@@ -354,7 +360,8 @@ class Pedido(View):
             # id_bodega = form.cleaned_data['nombre_bodega']
             prioridad = form.cleaned_data['prioridad']
             # Ingresa Datos a Pedido
-            cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, os.environ.get('RUT_EMPRESA'), request.user.username, prioridad))
+            rut_empresa = request.user.userprofile.rut_empresa
+            cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, request.user.username, prioridad))
             cursor.commit()
             productos = request.POST.getlist('form-0-producto')
             cantidades = request.POST.getlist('form-0-cantidad')
@@ -379,7 +386,8 @@ class Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
         return render(request, 'productos.html', {"rows":rows})
@@ -409,7 +417,8 @@ class Plan_Bodega(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
@@ -418,7 +427,8 @@ class Plan_Lineas(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
         return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
@@ -427,7 +437,8 @@ class Plan_Productos(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
         return render(request, 'planificador/planificador_productos.html', {'rows':rows})
@@ -436,7 +447,8 @@ class Plan_Rollizo(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
         return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
