@@ -3,11 +3,10 @@ las urls entrantes y las mapea hacia su vista específica. El propósito de este
 URLs a la vistas que deberían manejar esas URLs. Debe trabajar en conjunto con views.py para manejar las 
 solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 """
-from django.contrib import admin
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Index, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Pedido_Multiple, Productos, Register, DownloadExcel
 from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
-from .views import get_data
+from .views import get_empresas, get_data
 
 # urlpatterns lista las rutas de las URLs a las views
 urlpatterns = [
@@ -16,6 +15,7 @@ urlpatterns = [
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
     path('home/', Home.as_view(), name = "home"),
+    path('get_empresas/', get_empresas, name="get_empresas"),
     path('', Login.as_view(), name = "login"),
     path('inventario_producto/', Inventario_pdto.as_view(), name = "inventario_producto"),
     path('inventario_rollizo/', Inventario_roll.as_view(), name = "inventario_rollizo"),

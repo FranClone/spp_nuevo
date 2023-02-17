@@ -60,13 +60,6 @@ def cliente_required(function=None):
         return actual_decorator(function)
     return actual_decorator
 
-#cursor.execute("SELECT * FROM Bodega")
-
-#rows = cursor.fetchall()
-
-#for row in rows:
-#    print(row)
-
 #Hay 2 tipos de vistas, clases y funciones esta es de clases
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
@@ -112,6 +105,17 @@ class DownloadExcel(View):
             response['Content-Disposition'] = 'attachment; filename="{}"'.format(file_name)
             return response
         raise Http404
+    
+def get_empresas(request):
+    '''Esta vista es usada en el formulario de pedidos
+    para que aparezca la busqueda'''
+    parte_rut = request.GET.get('parte_rut', '')
+    cursor = conexion.cursor()
+    cursor.execute("EXEC dbo.sel_empresa_like @parte_rut=?", parte_rut)
+    empresas = [row.nombre_empresa for row in cursor.fetchall()]
+    cursor.close()
+    print(empresas)
+    return JsonResponse({'empresas': empresas})
 
 class Home(View): 
     """Esta clase define la vista Home"""
@@ -384,6 +388,11 @@ class Register(View):
     """Esta clase define la vista de Register"""
     def get(self, request):
         form = CustomUserCreationForm()
+        cursor = conexion.cursor()
+        parte_rut = 7
+        cursor.execute("EXEC dbo.sel_empresa_like @parte_rut=?", parte_rut)
+        row = cursor.fetchone()
+        cursor.close()
         return render(request, 'register.html', {'form': form})
 
     def post(self, request):
@@ -391,7 +400,8 @@ class Register(View):
         if form.is_valid():
             user = form.save()
             rut = form.cleaned_data.get('rut')
-            UserProfile.objects.create(user=user, rut=rut)
+            rut_empresa = form.cleaned_data.get('rut_empresa')
+            UserProfile.objects.create(user=user, rut=rut, rut_empresa=rut_empresa)
             return redirect('login')
         return render(request, 'register.html', {'form': form})
 

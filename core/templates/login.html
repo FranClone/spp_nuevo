@@ -6,8 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Login</title>
     {% load static %}
-    <link rel="icon" href="{% static 'img\logo_betech.png' %}">
-    <link rel="stylesheet" href="{% static 'styles\styles.css' %}">
+    {% include "partials/resources.html" %}
+    <script src="{% static "js/bloqueaTeclas.js" %}"></script>
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
 </head>
 <body>
     <div class="login-box" id="login">

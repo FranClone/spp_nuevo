@@ -1,15 +1,20 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
+from django.core.validators import RegexValidator
 from django.db import IntegrityError
+from .models import UserProfile
 import os
 
 class BaseForm(forms.Form):
-    def clean_rut(self):
+    def clean_rut(self, is_empresa=False):
         cleaned_data = super().clean()
         rut_body = cleaned_data.get("rut_body")
         rut_dv = cleaned_data.get("rut_dv")
+        if is_empresa:
+            rut_body = cleaned_data.get("rut_empresa_body")
+            rut_dv = cleaned_data.get("rut_empresa_dv")
         rut = f"{rut_body}-{rut_dv}"
 
         if rut_body and rut_dv:
@@ -42,34 +47,57 @@ class BaseForm(forms.Form):
             except ValidationError as e:
                 raise forms.ValidationError(e)
 
-            cleaned_data["rut"] = rut
+            cleaned_data["rut" if not is_empresa else "rut_empresa"] = rut
 
         return cleaned_data
 
 
 class CustomUserCreationForm(BaseForm, UserCreationForm):
-    rut_body = forms.CharField(max_length=8, label="rut")
-    rut_dv = forms.CharField(max_length=1, label="digito rutificador")
-
+    rut_body = forms.CharField(
+        widget=forms.TextInput(attrs={'inputmode': 'numeric', 'class' : 'rut-body'}),
+        label="RUT",
+        max_length=8
+    )   
+    rut_dv = forms.CharField(
+        max_length=1, 
+        label="digito rutificador",
+        widget=forms.TextInput(attrs={'class': 'rut-dv'})
+    )
+    rut_empresa_body = forms.CharField(
+        widget=forms.TextInput(attrs={'inputmode' : 'numeric', 'class' : 'rut-body rut-body-empresa'}),
+        label="RUT empresa",
+        max_length=8
+    )
+    rut_empresa_dv = forms.CharField(
+        max_length=1, 
+        label="digito rutificador empresa", 
+        widget=forms.TextInput(attrs={'class': 'rut-dv'})
+    )
+    group = forms.ModelChoiceField(queryset=Group.objects.all(), label="grupo")
     class Meta:
         model = User
-        fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv']
+        fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv', 'rut_empresa_body', 'rut_empresa_dv', 'group']
 
     def clean(self):
         cleaned_data = super().clean()
-        self.clean_rut()
-        self.validate_unique_rut(User)
+        self.clean_rut()                # Validate the regular RUT
+        self.clean_rut(is_empresa=True) # Validate the empresa RUT
         return cleaned_data
 
     def save(self, commit=True):
         user = super().save(commit=False)
         user.rut = self.cleaned_data['rut']
-        user.rut_empresa = os.environ.get('RUT_EMPRESA')
+        user.rut_empresa = self.cleaned_data['rut_empresa']
         if commit:
             try:
+                # Validar si ya existe un UserProfile con el mismo RUT
+                if UserProfile.objects.filter(rut=user.rut).exists():
+                    raise IntegrityError('El RUT ya se encuentra registrado en el sistema.')
                 user.save()
             except IntegrityError:
                 raise forms.ValidationError('El RUT ya se encuentra registrado en el sistema.')
+        group = self.cleaned_data['group']
+        user.groups.add(group)
         return user
 
 class LoginForm(BaseForm):
