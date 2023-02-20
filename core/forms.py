@@ -6,16 +6,22 @@ from django.db import IntegrityError
 from .models import UserProfile
 
 class BaseForm(forms.Form):
+    #este método chequea que el rut, ya sea de empresa o persona, sea válido
     def clean_rut(self, is_empresa=False):
+        #obtiene los datos
         cleaned_data = super().clean()
+        #datos del rut
         rut_body = cleaned_data.get("rut_body")
         rut_dv = cleaned_data.get("rut_dv")
         if is_empresa:
+            #datos del rut de la empresa
             rut_body = cleaned_data.get("rut_empresa_body")
             rut_dv = cleaned_data.get("rut_empresa_dv")
         rut = f"{rut_body}-{rut_dv}"
 
+        #si existe
         if rut_body and rut_dv:
+            #ve si el rut son solo dígitos y hace el cálculo del rutificador
             def validate_rut(rut):
                 rut = str(rut)
                 rut = rut.replace("-", "")
@@ -23,6 +29,7 @@ class BaseForm(forms.Form):
                     raise ValidationError('El RUT solo puede contener números y un guión')
                 if len(rut) < 8:
                     raise ValidationError('El RUT es demasiado corto')
+                #aquí empieza el algoritmo módulo 11
                 dv_calculado = None
                 factor = 2
                 suma = 0
@@ -39,39 +46,47 @@ class BaseForm(forms.Form):
                 if dv_calculado != rut[-1].upper():
                     raise ValidationError('El dígito verificador es incorrecto')
 
-
+            #valida el rut
             try:
                 validate_rut(rut)
             except ValidationError as e:
                 raise forms.ValidationError(e)
 
+            #retorna el rut
             cleaned_data["rut" if not is_empresa else "rut_empresa"] = rut
 
         return cleaned_data
 
 
 class CustomUserCreationForm(BaseForm, UserCreationForm):
+    #campo rut_body
     rut_body = forms.CharField(
         widget=forms.TextInput(attrs={'inputmode': 'numeric', 'class' : 'rut-body'}),
         label="RUT",
         max_length=8
-    )   
+    )
+    #campo rut_dv
     rut_dv = forms.CharField(
         max_length=1, 
         label="digito rutificador",
         widget=forms.TextInput(attrs={'class': 'rut-dv'})
     )
+    #campo rut_empresa_body
     rut_empresa_body = forms.CharField(
         widget=forms.TextInput(attrs={'inputmode' : 'numeric', 'class' : 'rut-body rut-body-empresa'}),
         label="RUT empresa",
         max_length=8
     )
+    #campo rut_empresa_dv
     rut_empresa_dv = forms.CharField(
         max_length=1, 
         label="digito rutificador empresa", 
         widget=forms.TextInput(attrs={'class': 'rut-dv'})
     )
+    #grupos creados
     group = forms.ModelChoiceField(queryset=Group.objects.all(), label="grupo")
+
+    #class Meta especifica detalles importantes del formulario, en este caso el modelo y los campos
     class Meta:
         model = User
         fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv', 'rut_empresa_body', 'rut_empresa_dv', 'group']

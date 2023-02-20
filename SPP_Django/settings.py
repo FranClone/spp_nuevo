@@ -35,10 +35,11 @@ AUTHENTICATION_BACKENDS = [
 # Settings para Django Axes
 AXES_ENABLED = True  # Activa el uso de Django Axes
 AXES_FAILURE_LIMIT = 3  # Número máximo de intentos fallidos permitidos
-AXES_COOLOFF_TIME = 30  # Tiempo de espera en segundos para permitir nuevos intentos después de un bloqueo
+AXES_COOLOFF_TIME = 1/120  # Tiempo de espera en HORAS para permitir nuevos intentos después de un bloqueo
 AXES_USE_USER_AGENT = True  # Activar el uso de user-agent para identificar solicitudes maliciosas
 AXES_LOCKOUT_TEMPLATE = 'lockout.html' # Opcional, path al template que se muestra cuando se bloquea una IP
 
+# BORRAR CUANDO ESTÉ TERMINADO
 # Configuración para pruebas unitarias
 AXES_BEHIND_REVERSE_PROXY = False  # Desactiva el uso de proxy inverso
 AXES_DISABLE_ACCESS_LOG = True  # Desactiva el registro de accesos a "django-axes"
@@ -141,6 +142,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'django_password_validators.password_character_requirements.password_validation.PasswordCharacterValidator',
+        'OPTIONS': {
+             'min_length_digit': 1,
+             'min_length_alpha': 1,
+             'min_length_special': 1,
+             'min_length_lower': 1,
+             'min_length_upper': 1,
+             'special_characters': "~!@#$%^&*()_+{}\":;'[]"
+         }
     },
 ]
 

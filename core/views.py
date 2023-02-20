@@ -22,6 +22,7 @@ import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
 try:
+    #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
     print("conexión a base de datos exitosa")
 
@@ -75,6 +76,7 @@ class Bar_chart(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
         """Esta clase define la vista del bar chart"""
+        # calculo pedidos, estos deben venir de la base de datos
         mcubicos_pedido_producto = [4000, 5000, 6000, 7000, 8000, 7000]
         mcubicos_cortados_producto = [2000, 3000, 2500, 2000, 4000, 7000]
         produccion_global = []
@@ -88,8 +90,12 @@ class Bar_chart(View):
 class Carga_sv(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
+        # se crea un cursor de la base de datos
         cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
+        # se llama al procedimiento almacenado
+        rut_empresa = request.user.userprofile.rut_empresa
+        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", [rut_empresa])
+        # se guardan los datos del pedido
         rows = cursor.fetchall()
         cursor.commit()
         cursor.close()
@@ -97,7 +103,7 @@ class Carga_sv(View):
         return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
 class DownloadExcel(View):
-    #Descarga Excel, aún no funciona apropiadamente
+    # Descarga plantilla excel para llenar pedidos
     def get(self, request, *args, **kwargs):
         file_name = "Formato Ejemplo.xlsx"
         file_path = os.path.join(settings.MEDIA_ROOT, file_name)
@@ -110,19 +116,19 @@ class DownloadExcel(View):
     
 def get_empresas(request):
     '''Esta vista es usada en el formulario de pedidos
-    para que aparezca la busqueda'''
+    para que aparezca la busqueda del top 5 de empresas que correspondan al rut'''
     parte_rut = request.GET.get('parte_rut', '')
     cursor = conexion.cursor()
     cursor.execute("EXEC dbo.sel_empresa_like @parte_rut=?", parte_rut)
     empresas = [row.nombre_empresa for row in cursor.fetchall()]
     cursor.close()
-    print(empresas)
     return JsonResponse({'empresas': empresas})
 
 class Home(View): 
     """Esta clase define la vista Home"""
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
+        #cálculo progress
         producto_terminado = 1000
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
@@ -254,6 +260,7 @@ class Inventario_pdto(View):
 class Inventario_roll(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
+        #lista de clases diamétricas, desde 14 hasta 40
         clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
         rut_empresa = request.user.userprofile.rut_empresa
@@ -282,7 +289,7 @@ class Lista_pedidos(View):
 
         return render(request, 'lista_pedidos.html', context)
 
-class Login(ContextMixin, View):
+class Login(View):
     """Esta clase define la vista de Login"""
     form_class = LoginForm
     success_url = '/home/'
@@ -297,25 +304,34 @@ class Login(ContextMixin, View):
         rut_dv = request.POST['rut_dv']
         rut = f'{rut_body}-{rut_dv}'
         password = request.POST['password']
+        #Obtenemos el nombre de usuario desde el RUT
         def get_object_or_none(model, **kwargs):
             try:
                 return model.objects.get(**kwargs)
             except model.DoesNotExist:
                 return None
+        #Buscamos nombre de usuario con el RUT ¿Por qué? Por que necesitamos
+        #llamar a authenticate usando nombre de usuario y contraseña
+        #Se aprovecha de la característica de que RUT, al igual que
+        #Nombre de usuario, es único
         user_profile = get_object_or_none(UserProfile, rut=rut)
+        #SIEMPRE llamar a authenticate, aunque no haya username que corresponda
+        #Con el RUT, ya que AXES se activa al llamar a authenticate
         if user_profile is not None:
             username = user_profile.user.username
             user = authenticate(request, username=username, password=password)
         else:
+            form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
             user = authenticate(request, username=rut, password=password)
-        #hay user
+            return render(request, 'login.html', {'form': form, 'error_message': 'RUT no registrado'})
+        #hay user que corresponda con la contraseña
         if user is not None:
             login(request, user)
             return redirect('home')
         else:
-            #no corresponde la contraseña al usuario}
+            #no corresponde la contraseña al usuario
             form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
-            return render(request, 'login.html', {'form': form, 'error_message': 'Error de Login'})
+            return render(request, 'login.html', {'form': form, 'error_message': 'Contraseña Equivocada'})
     
     #Este método kickea al usuario del login si está logueado    
     def dispatch(self, request, *args, **kwargs):
