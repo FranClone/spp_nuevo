@@ -357,15 +357,16 @@ class Mantenedor(View):
 
 class Pedido(View):
     template_name = 'pedido.html'
-
     @method_decorator(login_required)
     def get(self, request):
-        form = PedidoForm()
+        rut_empresa = request.user.userprofile.rut_empresa
+        form = PedidoForm(rut_empresa)
         return render(request, self.template_name, {'form': form})
 
     @method_decorator(login_required)
     def post(self, request):
-        form = PedidoForm(request.POST)
+        rut_empresa = request.user.userprofile.rut_empresa
+        form = PedidoForm(rut_empresa, request.POST)
         if form.is_valid():
             cursor = conexion.cursor()
             numero_pedido = form.cleaned_data['numero_pedido']
