@@ -198,6 +198,7 @@ class Home(View):
 
         # Verifica el tamaño del archivo
         if archivo.size > 100000000:  # 100 MB
+            #falta mensaje de error
             return redirect('home')
 
         #Retorna archivo en formato Workbook
@@ -412,11 +413,7 @@ class Register(View):
     """Esta clase define la vista de Register"""
     def get(self, request):
         form = CustomUserCreationForm()
-        cursor = conexion.cursor()
-        parte_rut = 7
-        cursor.execute("EXEC dbo.sel_empresa_like @parte_rut=?", parte_rut)
-        row = cursor.fetchone()
-        cursor.close()
+        
         return render(request, 'register.html', {'form': form})
 
     def post(self, request):

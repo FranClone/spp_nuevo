@@ -61,7 +61,7 @@ class BaseForm(forms.Form):
 class CustomUserCreationForm(BaseForm, UserCreationForm):
     #campo rut_body
     rut_body = forms.CharField(
-        widget=forms.TextInput(attrs={'inputmode': 'numeric', 'class' : 'rut-body'}),
+        widget=forms.TextInput(attrs={'inputmode': 'numeric', 'class' : 'input-rut-body'}),
         label="RUT",
         max_length=8
     )
@@ -69,11 +69,11 @@ class CustomUserCreationForm(BaseForm, UserCreationForm):
     rut_dv = forms.CharField(
         max_length=1, 
         label="digito rutificador",
-        widget=forms.TextInput(attrs={'class': 'rut-dv'})
+        widget=forms.TextInput(attrs={'class': 'input-rut-dv'})
     )
     #campo rut_empresa_body
     rut_empresa_body = forms.CharField(
-        widget=forms.TextInput(attrs={'inputmode' : 'numeric', 'class' : 'rut-body rut-body-empresa'}),
+        widget=forms.TextInput(attrs={'inputmode' : 'numeric', 'class' : 'input-rut-body rut-body-empresa'}),
         label="RUT empresa",
         max_length=8
     )
@@ -81,7 +81,7 @@ class CustomUserCreationForm(BaseForm, UserCreationForm):
     rut_empresa_dv = forms.CharField(
         max_length=1, 
         label="digito rutificador empresa", 
-        widget=forms.TextInput(attrs={'class': 'rut-dv'})
+        widget=forms.TextInput(attrs={'class': 'input-rut-dv'})
     )
     #grupos creados
     group = forms.ModelChoiceField(queryset=Group.objects.all(), label="grupo")
@@ -114,9 +114,9 @@ class CustomUserCreationForm(BaseForm, UserCreationForm):
         return user
 
 class LoginForm(BaseForm):
-    rut_body = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-body', 'placeholder': 'RUT Cliente'}), max_length=8, label="")
-    rut_dv = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-login rut-dv'}), max_length=1, label="")
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'class': 'input-login', 'placeholder': 'Contraseña'}), max_length=60, label="")
+    rut_body = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-rut-body', 'placeholder': 'RUT Cliente'}), max_length=8, label="")
+    rut_dv = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-rut-dv'}), max_length=1, label="")
+    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}), max_length=25, label="")
 
     def clean(self):
         cleaned_data = super().clean()
