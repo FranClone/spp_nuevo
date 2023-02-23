@@ -47,6 +47,8 @@ AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']  # Cambia el orden de veri
 
 # aplicaciones instaladas en el sitio
 INSTALLED_APPS = [
+    'colorfield',
+    'admin_interface',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -64,7 +66,7 @@ LOGIN_REDIRECT_URL = '/home/'
 LOGOUT_REDIRECT_URL = '/login/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'core\media')
-MEDIA_URL = '/media/'
+MEDIA_URL = '/core/media/'
 
 # un middleware es un software con el que las distintas aplicaciones se comunican entre si
 MIDDLEWARE = [
@@ -168,6 +170,7 @@ USE_TZ = True
 
 # ruta para archivos estaticos como CSS, JavaScript e Imagenes
 STATIC_URL = 'static/'
+STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core\static')]
 
 # llave primaria a usar para modelos que no tienen un campo con 'primary_key = True'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'

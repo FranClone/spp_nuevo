@@ -1,0 +1,8 @@
+Como migrar los modelos de Django a 
+
+python manage.py inspectdb NOMBRE_TABLA > core/modelos/Nombre_Tabla.py
+
+
+python manage.py inspectdb PEDIDO > core/modelos/Pedido.py
+
+python manage.py inspectdb DETALLE_PEDIDO > core/modelos/Test.py

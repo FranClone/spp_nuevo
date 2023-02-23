@@ -1,0 +1,24 @@
+//cuando quieres subir a tu rama al main
+git add .
+git commit -m 'Nombre del Commit'
+git push
+git checkout main
+git merge TuRama
+git push
+-----------
+//cuando quieres obtener lo del main a tu rama
+git checkout main
+git pull
+git checkout TuRama
+git merge main
+------------
+//cuando quieres combinar lo que está en el main en tu rama
+git add .
+git commit -m 'Nombre del Commit'
+git push
+git checkout main
+git pull
+git merge TuRama
+git push
+git checkout TuRama
+git merge main

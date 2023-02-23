@@ -57,7 +57,8 @@ class BaseForm(forms.Form):
 
         return cleaned_data
 
-
+#Formulario de registro, falta hacer una verificación del RUT de empresa, 
+#si el RUT de empresa no existe en la base de datos, no se puede crear el usuario
 class CustomUserCreationForm(BaseForm, UserCreationForm):
     #campo rut_body
     rut_body = forms.CharField(

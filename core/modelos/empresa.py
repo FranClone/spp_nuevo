@@ -14,4 +14,5 @@ class Empresa(models.Model):
     telefono = models.IntegerField(blank=True, null=True)
 
     class Meta:
+        managed = False
         db_table = 'EMPRESA'

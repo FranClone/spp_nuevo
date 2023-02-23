@@ -1,0 +1,15 @@
+Actualiza regularmente tus librerías: Es importante mantener todas tus librerías actualizadas a las versiones más recientes, ya que las nuevas versiones a menudo incluyen correcciones de seguridad. Puedes utilizar herramientas como pipenv para automatizar la actualización de tus librerías.
+
+Utiliza librerías de seguridad: Como mencionaste en tu pregunta, existen librerías especializadas en seguridad para Django, como django-axes y django-password-validators. Utiliza estas librerías para fortalecer la seguridad de tu proyecto.
+
+Configura adecuadamente las variables de entorno: Para manejar datos privados, es recomendable utilizar variables de entorno y almacenarlas fuera del código fuente. Asegúrate de configurar correctamente las variables de entorno en tu proyecto.
+
+Utiliza contraseñas seguras: Es importante asegurarte de que tus usuarios utilicen contraseñas seguras. Puedes utilizar la librería django-password-validators para validar las contraseñas de tus usuarios.
+
+Añade autenticación de dos factores (2FA): La autenticación de dos factores es una capa adicional de seguridad que requiere que los usuarios proporcionen una segunda forma de autenticación, como un código generado por una aplicación móvil, además de su contraseña.
+
+Limita el acceso a recursos sensibles: Asegúrate de que los usuarios solo tengan acceso a los recursos que necesitan, y limita el acceso a los recursos sensibles, como las credenciales de la base de datos.
+
+Configura adecuadamente las políticas de seguridad: Asegúrate de configurar adecuadamente las políticas de seguridad en tu servidor web y en tu servidor de base de datos.
+
+Utiliza HTTPS: Utiliza HTTPS para proteger la comunicación entre el servidor y el cliente, y para evitar ataques de intermediario.
