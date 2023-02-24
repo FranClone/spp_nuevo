@@ -3,17 +3,12 @@ Maneja las request del usuario y responde con contenido como páginas HTML, JSON
 En Django, una vista es una función de Python o basada en clases que toma una web request y devuelve una web response.
 Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 """
-
-from axes.decorators import axes_dispatch
 from django.conf import settings
-from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render, redirect, get_object_or_404
-from django.urls import reverse_lazy
+from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import View
-from django.views.generic.base import ContextMixin
 from django.http import JsonResponse, FileResponse, Http404
 from .models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm

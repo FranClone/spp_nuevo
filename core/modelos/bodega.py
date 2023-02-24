@@ -7,6 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
+
 class Bodega(models.Model):
     id_bodega = models.AutoField(primary_key=True)
     rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, db_column='rut_empresa', blank=True, null=True)
@@ -16,5 +17,6 @@ class Bodega(models.Model):
     fecha_crea = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'BODEGA'
+
+

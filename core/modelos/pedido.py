@@ -21,5 +21,7 @@ class Pedido(models.Model):
     prioridad = models.CharField(max_length=10, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'PEDIDO'
+
+    def __str__(self):
+        return 'Número de Pedido: ' + self.numero_pedido

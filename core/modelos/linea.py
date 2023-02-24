@@ -17,5 +17,4 @@ class Linea(models.Model):
     fecha_crea = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'LINEA'

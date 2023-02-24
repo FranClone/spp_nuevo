@@ -20,5 +20,7 @@ class Producto(models.Model):
     fecha_crea = models.DateField(blank=True, null=True)
 
     class Meta:
-        managed = False
         db_table = 'PRODUCTO'
+
+    def __str__(self):
+        return self.nombre_producto
