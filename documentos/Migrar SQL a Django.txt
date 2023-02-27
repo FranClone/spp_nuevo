@@ -1,0 +1,10 @@
+Como migrar los modelos de Django a 
+
+python manage.py inspectdb NOMBRE_TABLA > core/modelos/Test.py
+
+Crear archivo en la carpeta en core/modelos/Nombre_Tabla.py
+
+Luego borrar Test.py
+
+Eso se hace porque el texto llega corrompido desde ese comando por alguna razón, puede ser que sólo sea en mi PC
+Pero también puede que sea general

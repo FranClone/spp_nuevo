@@ -1,0 +1,99 @@
+Asegurarse de tener python instalado.
+	Para ello en la cmd escribrir python.
+
+
+1.- AMBIENTE VIRTUAL: Es indispensable para la correcta ejecución de la página. Este ambiente virtual es propio para cada computador, por lo tanto el ambiente virtual no está incluido
+        en el repo de Github. Para cada ´git clone´ se debe ejecutar este paso.
+
+	a.- En la ruta
+		-pip install virtualenv (instala el ambiente virtual)
+			En caso de error buscar "how to install pip"
+		-pip -V (corrobora que pip está instalado)
+		-virtualenv env (env : nombre de la carpeta)
+			ó
+		-python -m venv venv (env: nombre de la carpeta)
+
+	b.- Activar el ambiente
+		-En Windows
+			cd venv
+			cd Scripts
+			activate o .\activate
+				o
+			.\venv\Scripts\activate
+		-En Ubuntu
+			source venv/bin/activate
+
+	
+
+2.- CREAR PROYECTO DJANGO
+	-django-admin startproject core . (Crea el proyecto)
+	-python manage.py runserver       (Corre el servidor)
+		Al correr el proyecto por primera vez, creará la base de datos db.sqlite3
+	-En settings.py
+		Ir a INSTALLED_APP
+		Agregar 'core', a la lista (Dar a Django acceso a todos los archivos de core)
+
+	-En caso de tener un error de migraciones:
+		python manage.py migrate
+
+
+3.- VISTAS
+
+	-Dentro de core
+		a.- Crear views.py con:
+
+			from django.views.generic import View
+			from django.shortcuts import render
+
+			class HomeView(View): 
+    				def get(self, request, *args, **kwargs):
+        			context={
+
+        		}
+
+        		return render(request, 'index.html', context)
+
+		b.- Crear carpeta static (Esta contendrá los archivos js, css, img)
+			-styles.css:
+				{% load static %}
+			-img
+
+			
+	-Crear carpeta templates (Esta contendrá todos los archivos HTML)
+		index.html:
+			{% load static %}
+    			<link rel="stylesheet" href="{% static 'styles.css' %}">
+	
+	-Ir a settings.py
+		import os
+			
+		En TEMPLATES:
+			'DIRS': [os.path.join(BASE_DIR, 'templates')],
+
+	-Ir a urls.py
+		from .views import HomeView
+
+		urlpatterns = [
+    			path('admin/', admin.site.urls),
+    			path('', HomeView.as_view(), name="home"), <---
+		]
+		
+
+4.- VARIABLES DE AMBIENTE
+
+		
+	-Dentro de core
+		.env
+			SECRET_KEY=django-insecure-swtegra7pvp$_alo!#scm#y#cw1q=_(3wdowntbwrfzif4up+z
+			DEBUG=True
+
+	-En settings.py
+		import environ
+
+		env = environ.Env()
+		environ.Env.read_env()
+
+		SECRET_KEY = os.environ.get('SECRET_KEY')
+		DEBUG = os.environ.get('DEBUG')
+
+		
