@@ -236,36 +236,57 @@ li {
 .label-carga-masiva {
     height: 60px;
     cursor: pointer;
-    border: 2px solid black;
+    border: 3px solid black;
     background: red;
     color: white;
     font-size: 20px;
     padding: 15px;
     margin-right: 10px;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+}
+
+.label-carga-masiva:hover{
+    background: #d20000;
+    color:antiquewhite ;
+    transition: 0.3s;
 }
 
 .label-carga-mini {
     height: 40px;
     cursor: pointer;
-    border: 2px solid black;
+    border: 3px solid black;
     background: rgb(255, 145, 0);
     color: white;
     font-size: 18px;
-    padding: 5px;
+    padding: 7px;
     margin-right: 10px;
-    border-radius: 5px;
+    border-radius: 7px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+}
+
+.label-carga-mini:hover{
+    background: rgb(222, 126, 0);
+    color:antiquewhite ;
+    transition: 0.3s;
 }
 
 .label-carga-individual {
     height: 60px;
     cursor: pointer;
-    border: 2px solid black;
+    border: 3px solid black;
     background: red;
     color: white;
     font-size: 20px;
     padding: 15px;
-    border-radius: 5px;
+    border-radius: 10px;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+}
+
+.label-carga-individual:hover{
+    background: #d20000;
+    color:antiquewhite ;
+    transition: 0.3s;
 }
 
 .li-navbar {
@@ -339,7 +360,7 @@ li {
     border-radius: 50%;
     position: absolute;
     top: -50px;
-    left: calc(50% - 50px);
+    left: calc(50% - 50px); 
 }
 
 .login-box h1 {
@@ -458,6 +479,10 @@ li {
     color: #fff !important;
 }
 
+.nav-link:hover {
+    color: #ffffffcc !important;
+    transition: 0.2s;
+}
 .navbar-red:hover .wrapper {
     clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 65% 100%);
 }
