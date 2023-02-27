@@ -324,6 +324,7 @@ class Login(View):
             form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
             user = authenticate(request, username=rut, password=password)
             return render(request, 'login.html', {'form': form, 'error_message': 'RUT no registrado'})
+        
         #hay user que corresponda con la contraseña
         if user is not None:
             login(request, user)
