@@ -1,0 +1,32 @@
+Login en Django:
+
+AbstractUser incluye los siguientes campos y métodos comunes:
+
+Campos:
+
+username: Nombre de usuario único y obligatorio.
+first_name: Nombre del usuario.
+last_name: Apellido del usuario.
+email: Dirección de correo electrónico del usuario.
+is_staff: Indica si el usuario es un miembro del equipo de la aplicación y tiene acceso al panel de administración.
+is_active: Indica si el usuario está activo o no.
+is_superuser: Indica si el usuario es un superusuario con permisos para hacer todo en la aplicación.
+last_login: Fecha y hora de la última vez que el usuario inició sesión.
+date_joined: Fecha y hora en que el usuario se unió al sistema.
+Métodos:
+
+get_full_name(): Devuelve el nombre completo del usuario.
+get_short_name(): Devuelve el nombre corto del usuario.
+has_perm(perm, obj=None): Verifica si el usuario tiene un permiso específico.
+has_module_perms(app_label): Verifica si el usuario tiene permisos para acceder a una aplicación específica.
+set_password(password): Establece una nueva contraseña para el usuario.
+check_password(password): Verifica si una contraseña dada es válida para el usuario.
+Estos son algunos de los campos y métodos proporcionados por AbstractUser. Puede haber algunos más o menos dependiendo de la versión de Django que esté utilizando.
+
+También se puede usar User, el cual tiene estos métodos, pero también se les puede poner otros o sobreescribirlos, ejemplo:
+
+from django.contrib.auth.models import User
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=20)

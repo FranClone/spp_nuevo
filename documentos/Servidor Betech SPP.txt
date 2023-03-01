@@ -1,0 +1,8 @@
+Servidor:
+ssh betech@192.168.100.19 -p22
+usuario:betech
+Contraseña Betech.2022
+
+Base de datos:
+sa
+B3t3ch1tda.2021
