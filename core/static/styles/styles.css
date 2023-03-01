@@ -483,6 +483,7 @@ li {
     color: #ffffffcc !important;
     transition: 0.2s;
 }
+
 .navbar-red:hover .wrapper {
     clip-path: polygon(81% 0, 100% 0, 100% 50%, 100% 100%, 65% 100%);
 }
