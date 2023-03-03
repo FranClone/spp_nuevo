@@ -1,0 +1,8 @@
+pip install django			// el framework
+pip install django-environ 		// te permite manejar mejor datos privados
+pip install django-bleach 		// seguridad para subir datos, en este caso Excel
+pip install django-axes 		// seguridad contra fuerza bruta, limita intentos de contraseña
+pip install openpyxl			// abre y opera Excel
+pip install mssql-django		// te conecta con la base de datos, viene con pyodbc que es el operador directo
+pip install django-password-validators	// validadores de contraseña 
+pip install django-admin-interface	// interfaz para el administrador
