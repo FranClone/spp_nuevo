@@ -43,8 +43,21 @@ $(document).ready(function() {
 
     // Cuando el RUT Body termina, pasa inmediatamente al RUT dv
     $('.input-rut-body').keyup(function(e) {
-        if ($(this).val().length >= $(this).attr('maxlength')) {
-          $('.input-rut-dv').focus();
+        if ($(this).val().length == $(this).attr('maxlength')) {
+            $('.input-rut-dv').focus();
         }
     });
+
+    $(".input-rut-dv").keyup(function(e) {
+        if( $(this).val().length == $(this).attr("maxlength")) {
+            $("#id_password").focus();
+        }
+    });
+
+    $(".input-rut-dv").keyup(function(e) {
+        if( $(this).val().length == ("")){
+            $('.input-rut-body').focus();
+        }
+    });
+
 });
