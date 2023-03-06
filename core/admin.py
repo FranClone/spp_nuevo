@@ -5,11 +5,22 @@ from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.forms.widgets import MultiWidget
 from .modelos.bodega import Bodega
+from .modelos.calidad_producto import CalidadProducto
+from .modelos.costo_rollizo import CostoRollizo
+from .modelos.costo_sobre_tiempo import CostoSobreTiempo
+from .modelos.detalle_pedido import DetallePedido
 from .modelos.empresa import Empresa
 from .modelos.linea import Linea
+from .modelos.patron_corte import PatronCorte
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
-from .modelos.detalle_pedido import DetallePedido
+from .modelos.producto_corte import ProductoCorte
+from .modelos.productos_empresa import ProductosEmpresa
+from .modelos.rollizo import Rollizo
+from .modelos.rollizo_largo import RollizoLargo
+from .modelos.stock_producto import StockProducto
+from .modelos.stock_rollizo import StockRollizo
+from .modelos.tiempo_cambio import TiempoCambio
 from .models import UserProfile
 
 #EN PROCESO DE TOTAL CAMBIO
@@ -162,6 +173,11 @@ class EmpresaAdmin(admin.ModelAdmin):
     ordering = ('rut_empresa',)
     list_filter = (EstadoEmpresaFilter,)
 
+class PatronCorteAdmin(admin.ModelAdmin):
+    #Modelo administrador para pedido
+    list_display = ('nombre_patron', 'descripcion_patron')
+    ordering = ('id_patron',)
+
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     list_display = ('numero_pedido', 'prioridad')
@@ -172,7 +188,7 @@ class ProductoAdmin(admin.ModelAdmin):
     #Modelo administrador para producto
     list_display = ('nombre_producto', 'descripcion_producto')
     ordering = ('id_producto',)
-    list_filter = ('rut_empresa__nombre_empresa', 'nombre_producto')
+    list_filter = ('nombre_producto',)
 
 class DetallePedidoAdmin(admin.ModelAdmin):
     form = DetallePedidoAdminForm
@@ -186,7 +202,6 @@ class DetallePedidoAdmin(admin.ModelAdmin):
 class LineaAdmin(admin.ModelAdmin):
     list_display = ('nombre_linea', 'descripcion_linea')
     ordering = ('nombre_linea',)
-    list_filter = ('rut_empresa__nombre_empresa', )
 
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(Producto, ProductoAdmin)
@@ -195,3 +210,4 @@ admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(DetallePedido, DetallePedidoAdmin)
 admin.site.register(Linea, LineaAdmin)
 admin.site.register(UserProfile, UserAdmin)
+admin.site.register(PatronCorte, PatronCorteAdmin)
