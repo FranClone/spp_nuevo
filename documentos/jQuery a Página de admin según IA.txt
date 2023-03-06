@@ -1,0 +1,54 @@
+En este caso, puedes utilizar el archivo admin.py para personalizar la vista del modelo User y agregar tu función jQuery personalizada. 
+Para agregar tu función jQuery, debes editar la plantilla correspondiente del modelo User en el administrador de Django.
+
+Para hacer esto, primero debes crear una nueva plantilla en la carpeta templates/admin de tu aplicación. 
+El nombre de la plantilla debe ser app_name/model_name/change_form.html. Por ejemplo, para el modelo User en la aplicación auth, la plantilla debe ser auth/user/change_form.html.
+
+Una vez que has creado la plantilla, puedes agregar tu función jQuery personalizada para el campo user__rut en el formulario de edición del modelo. 
+Para hacer esto, puedes agregar un script personalizado en la plantilla, que seleccione el elemento de entrada del campo user__rut y luego llame a tu función jQuery
+personalizada.
+
+Por ejemplo, si deseas agregar una función jQuery personalizada que limite el campo user__rut a 12 caracteres, puedes agregar el siguiente código a la plantilla:
+
+html
+{% extends "admin/change_form.html" %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('#id_user__rut').attr('maxlength', '12');
+        });
+    </script>
+{% endblock %}
+Este código se extiende de la plantilla admin/change_form.html para que la plantilla personalizada tenga el mismo estilo que el resto de la interfaz de usuario
+del administrador. Luego, en el bloque extrahead, se agrega un script de jQuery que selecciona el campo user__rut por su ID y establece el atributo maxlength
+a 12 caracteres.
+
+Al hacer esto, ahora tienes un modelo personalizado con tu función jQuery personalizada para el campo user__rut, pero con la misma apariencia que el resto del
+administrador de Django.
+
+-----------------------------------------
+
+Sí, si has instalado el módulo django-admin-interface para personalizar el aspecto del administrador de Django, 
+también puedes aplicar los cambios a la plantilla personalizada que acabamos de crear.
+
+En este caso, puedes extender la plantilla de django-admin-interface en lugar de la plantilla de django.contrib.admin. 
+Para hacer esto, debes cambiar la primera línea de la plantilla personalizada de:
+
+html
+Copy code
+{% extends "admin/change_form.html" %}
+a:
+
+html
+Copy code
+{% extends "admin_interface/model/change_form.html" %}
+Donde model es el nombre del modelo que estás personalizando, y admin_interface es la aplicación de django-admin-interface donde se encuentra la plantilla 
+que deseas extender.
+
+Luego, puedes agregar el código jQuery personalizado como se indicó anteriormente, y los estilos y elementos de la plantilla personalizada estarán en línea 
+con el diseño del administrador personalizado de django-admin-interface.
+
+Recuerda que para que los cambios en las plantillas personalizadas tengan efecto, debes asegurarte de que la aplicación que contiene las plantillas personalizadas 
+se encuentre incluida en la lista de INSTALLED_APPS en el archivo settings.py de tu proyecto Django.

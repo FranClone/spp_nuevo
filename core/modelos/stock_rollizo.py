@@ -8,16 +8,12 @@
 from django.db import models
 
 
-class Producto(models.Model):
-    id_producto = models.AutoField(primary_key=True)
-    nombre_producto = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    descripcion_producto = models.CharField(max_length=500, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    espesor_producto = models.FloatField(blank=True, null=True)
-    ancho_producto = models.FloatField(blank=True, null=True)
-    largo_producto = models.FloatField(blank=True, null=True)
+class StockRollizo(models.Model):
+    id_stock_rollizo = models.AutoField(primary_key=True)
+    id_rollizo = models.ForeignKey('Rollizo', models.DO_NOTHING, db_column='id_rollizo', blank=True, null=True)
+    cantidad = models.FloatField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     fecha_crea = models.DateField(blank=True, null=True)
-    id_tipo_calidad = models.ForeignKey('CalidadProducto', models.DO_NOTHING, db_column='id_tipo_calidad', blank=True, null=True)
 
     class Meta:
-        db_table = 'PRODUCTO'
+        db_table = 'STOCK_ROLLIZO'
