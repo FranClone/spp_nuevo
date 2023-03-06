@@ -10,11 +10,13 @@ from django.db import models
 
 class Linea(models.Model):
     id_linea = models.AutoField(primary_key=True)
-    rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, db_column='rut_empresa', blank=True, null=True)
     nombre_linea = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     descripcion_linea = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
 
     class Meta:
         db_table = 'LINEA'
+        
+    def __str__(self):
+        return self.nombre_linea

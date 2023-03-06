@@ -12,8 +12,11 @@ class TiempoCambio(models.Model):
     id_tiempo_cambio = models.AutoField(primary_key=True)
     valor = models.FloatField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     id_linea = models.ForeignKey('Linea', models.DO_NOTHING, db_column='id_linea', blank=True, null=True)
 
     class Meta:
         db_table = 'TIEMPO_CAMBIO'
+        
+    def __str__(self):
+        return f'valor de tiempo cambio = {self.valor}'

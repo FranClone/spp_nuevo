@@ -19,3 +19,6 @@ class DetallePedido(models.Model):
 
     class Meta:
         db_table = 'DETALLE_PEDIDO'
+        
+    def __str__(self):
+        return self.detalle_producto

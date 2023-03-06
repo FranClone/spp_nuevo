@@ -13,8 +13,11 @@ class StockProducto(models.Model):
     id_bodega = models.ForeignKey('Bodega', models.DO_NOTHING, db_column='id_bodega', blank=True, null=True)
     id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
     cantidad_m3 = models.FloatField(blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
 
     class Meta:
         db_table = 'STOCK_PRODUCTO'
+        
+    def __str__(self):
+        return f'Stock de {self.id_producto.nombre_producto} = {self.cantidad_m3}'

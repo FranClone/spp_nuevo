@@ -4,6 +4,7 @@ from django import forms
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.forms.widgets import MultiWidget
+from .modelos.abastecimiento_rollizo import AbastecimientoRollizo 
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
 from .modelos.costo_rollizo import CostoRollizo
@@ -11,8 +12,10 @@ from .modelos.costo_sobre_tiempo import CostoSobreTiempo
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.empresa import Empresa
 from .modelos.linea import Linea
+from .modelos.linea_hh_disponible import LineaHhDisponible
 from .modelos.patron_corte import PatronCorte
 from .modelos.pedido import Pedido
+from .modelos.periodo import Periodo
 from .modelos.producto import Producto
 from .modelos.producto_corte import ProductoCorte
 from .modelos.productos_empresa import ProductosEmpresa
@@ -21,61 +24,12 @@ from .modelos.rollizo_largo import RollizoLargo
 from .modelos.stock_producto import StockProducto
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.tiempo_cambio import TiempoCambio
+from .modelos.tipo_periodo import TipoPeriodo
 from .models import UserProfile
 
 #EN PROCESO DE TOTAL CAMBIO
 
-class RutForm(forms.ModelForm):
-    #este método chequea que el rut, ya sea de empresa o persona, sea válido
-    def clean_rut(self, is_empresa=False):
-        #obtiene los datos
-        cleaned_data = super().clean()
-        #datos del rut
-        rut_body = cleaned_data.get("rut_body")
-        rut_dv = cleaned_data.get("rut_dv")
-        if is_empresa:
-            #datos del rut de la empresa
-            rut_body = cleaned_data.get("rut_empresa_body")
-            rut_dv = cleaned_data.get("rut_empresa_dv")
-        rut = f"{rut_body}-{rut_dv}"
-
-        #si existe
-        if rut_body and rut_dv:
-            #ve si el rut son solo dígitos y hace el cálculo del rutificador
-            def validate_rut(rut):
-                rut = str(rut)
-                rut = rut.replace("-", "")
-                if not rut.isdigit() and rut[-1].upper() != 'K':
-                    raise ValidationError('El RUT solo puede contener números y un guión')
-                if len(rut) < 8:
-                    raise ValidationError('El RUT es demasiado corto')
-                #aquí empieza el algoritmo módulo 11
-                dv_calculado = None
-                factor = 2
-                suma = 0
-                for d in reversed(rut[:-1]):
-                    suma += int(d) * factor
-                    factor += 1
-                    if factor == 8:
-                        factor = 2
-                resto = suma % 11
-                if resto == 0:
-                    dv_calculado = '0'
-                else:
-                    dv_calculado = str(11 - resto)
-                if dv_calculado != rut[-1].upper():
-                    raise ValidationError('El dígito verificador es incorrecto')
-
-            #valida el rut
-            try:
-                validate_rut(rut)
-            except ValidationError as e:
-                raise forms.ValidationError(e)
-
-            #retorna el rut
-            cleaned_data["rut" if not is_empresa else "rut_empresa"] = rut
-
-        return cleaned_data
+correction = 'width:100%;'
 
 class RutEmpresaWidget(MultiWidget):
     #inicializa el widget
@@ -105,7 +59,7 @@ class RutEmpresaWidget(MultiWidget):
         values = super().value_from_datadict(data, files, name)
         return values[0] + '-' + values[1] if values[0] and values[1] else None
     
-class EmpresaForm(RutForm):
+class EmpresaForm(forms.ModelForm):
     rut_empresa = forms.CharField(widget=RutEmpresaWidget(), label='RUT Empresa')
 
     class Meta:
@@ -117,7 +71,7 @@ class BodegaAdminForm(forms.ModelForm):
         model = Bodega
         fields = '__all__'
         widgets = {
-            'rut_empresa': forms.Select(attrs={'style': 'width:100%;'}),
+            'rut_empresa': forms.Select(attrs={'style': correction}),
         }
 
 class DetallePedidoAdminForm(forms.ModelForm):
@@ -125,8 +79,8 @@ class DetallePedidoAdminForm(forms.ModelForm):
         model = DetallePedido
         fields = '__all__'
         widgets = {
-            'id_pedido': forms.Select(attrs={'style': 'width:100%;'}),
-            'id_producto': forms.Select(attrs={'style': 'width:100%;'}),
+            'id_pedido': forms.Select(attrs={'style': correction}),
+            'id_producto': forms.Select(attrs={'style': correction}),
         }
 
 class EstadoEmpresaFilter(admin.SimpleListFilter):
@@ -203,11 +157,59 @@ class LineaAdmin(admin.ModelAdmin):
     list_display = ('nombre_linea', 'descripcion_linea')
     ordering = ('nombre_linea',)
 
-admin.site.register(Empresa, EmpresaAdmin)
-admin.site.register(Producto, ProductoAdmin)
-admin.site.register(Pedido, PedidoAdmin)
+class AbastecimientoRollizoAdmin(admin.ModelAdmin):
+    pass
+
+class CalidadProductoAdmin(admin.ModelAdmin):
+    pass
+
+class CostoRollizoAdmin(admin.ModelAdmin):
+    pass
+
+class LineaHhDisponibleAdmin(admin.ModelAdmin):
+    pass
+
+class PeriodoAdmin(admin.ModelAdmin):
+    pass
+
+class ProductoCorteAdmin(admin.ModelAdmin):
+    pass
+
+class ProductosEmpresaAdmin(admin.ModelAdmin):
+    pass
+
+class RollizoAdmin(admin.ModelAdmin):
+    pass
+
+class StockProductoAdmin(admin.ModelAdmin):
+    pass
+
+class RollizoLargoAdmin(admin.ModelAdmin):
+    pass
+
+class TiempoCambioAdmin(admin.ModelAdmin):
+    pass
+
+class TipoPeriodoAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(DetallePedido, DetallePedidoAdmin)
+admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(Linea, LineaAdmin)
 admin.site.register(UserProfile, UserAdmin)
 admin.site.register(PatronCorte, PatronCorteAdmin)
+admin.site.register(CalidadProducto, CalidadProductoAdmin)
+admin.site.register(CostoRollizo, CostoRollizoAdmin)
+admin.site.register(LineaHhDisponible, LineaHhDisponibleAdmin)
+admin.site.register(Pedido, PedidoAdmin)
+admin.site.register(Periodo, PeriodoAdmin)
+admin.site.register(Producto, ProductoAdmin)
+admin.site.register(ProductoCorte, ProductoCorteAdmin)
+admin.site.register(ProductosEmpresa, ProductosEmpresaAdmin)
+admin.site.register(Rollizo, RollizoAdmin)
+admin.site.register(RollizoLargo, RollizoLargoAdmin)
+admin.site.register(StockProducto, StockProductoAdmin)
+admin.site.register(TiempoCambio, TiempoCambioAdmin)
+admin.site.register(TipoPeriodo, TipoPeriodoAdmin)

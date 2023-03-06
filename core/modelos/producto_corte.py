@@ -16,8 +16,11 @@ class ProductoCorte(models.Model):
     cantidad_producto = models.IntegerField(blank=True, null=True)
     descripcion_corte = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     id_rollizo = models.ForeignKey('Rollizo', models.DO_NOTHING, db_column='id_rollizo', blank=True, null=True)
 
     class Meta:
         db_table = 'PRODUCTO_CORTE'
+
+    def __str__(self):
+        return self.descripcion_corte
