@@ -17,7 +17,7 @@ class Producto(models.Model):
     largo_producto = models.FloatField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
-    id_tipo_calidad = models.ForeignKey('CalidadProducto', models.DO_NOTHING, db_column='id_tipo_calidad', blank=True, null=True)
+    id_tipo_calidad = models.ForeignKey('CalidadProducto', models.DO_NOTHING, verbose_name='Calidad de Producto', db_column='id_tipo_calidad', blank=True, null=True)
 
     class Meta:
         db_table = 'PRODUCTO'

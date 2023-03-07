@@ -74,6 +74,24 @@ class BodegaAdminForm(forms.ModelForm):
             'rut_empresa': forms.Select(attrs={'style': correction}),
         }
 
+class AbastecimientoRollizoAdminForm(forms.ModelForm):
+    class Meta:
+        model = DetallePedido
+        fields = '__all__'
+        widgets = {
+            'id_rollizo': forms.Select(attrs={'style': correction}),
+            'id_periodo': forms.Select(attrs={'style': correction}),
+        }
+
+class CostoRollizoAdminForm(forms.ModelForm):
+    class Meta:
+        model = CostoRollizo
+        fields = '__all__'
+        widgets = {
+            'id_linea': forms.Select(attrs={'style': correction}),
+            'rut_empresa': forms.Select(attrs={'style': correction}),
+        }
+
 class DetallePedidoAdminForm(forms.ModelForm):
     class Meta:
         model = DetallePedido
@@ -81,6 +99,92 @@ class DetallePedidoAdminForm(forms.ModelForm):
         widgets = {
             'id_pedido': forms.Select(attrs={'style': correction}),
             'id_producto': forms.Select(attrs={'style': correction}),
+        }
+
+class LineaHhDisponibleAdminForm(forms.ModelForm):
+    class Meta:
+        model = LineaHhDisponible
+        fields = '__all__'
+        widgets = {
+            'id_linea': forms.Select(attrs={'style': correction}),
+            'rut_empresa': forms.Select(attrs={'style': correction}),
+        }
+
+class PedidoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = '__all__'
+        widgets = {
+            'rut_empresa': forms.Select(attrs={'style': correction}),
+        }
+
+class PeriodoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'id_tipo_periodo': forms.Select(attrs={'style': correction}),
+        }
+
+class ProductoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'id_tipo_calidad': forms.Select(attrs={'style': correction}),
+        }
+
+class ProductoCorteAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'id_producto': forms.Select(attrs={'style': correction}),
+            'id_patron': forms.Select(attrs={'style': correction}),
+            'id_rollizo': forms.Select(attrs={'style': correction}),
+        }
+
+class ProductosEmpresaAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'id_producto': forms.Select(attrs={'style': correction}),
+            'rut_empresa': forms.Select(attrs={'style': correction}),
+        }
+
+class RollizoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Rollizo
+        fields = '__all__'
+        widgets = {
+            'id_linea': forms.Select(attrs={'style': correction}),
+            'id_largo': forms.Select(attrs={'style': correction}),
+        }
+
+class StockProductoAdminForm(forms.ModelForm):
+    class Meta:
+        model = StockProducto
+        fields = '__all__'
+        widgets = {
+            'id_bodega': forms.Select(attrs={'style': correction}),
+            'id_producto': forms.Select(attrs={'style': correction}),
+        }
+
+class TipoPeriodoAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'rut_empresa': forms.Select(attrs={'style': correction}),
+        }
+
+class TiempoCambioAdminForm(forms.ModelForm):
+    class Meta:
+        model = Periodo
+        fields = '__all__'
+        widgets = {
+            'id_linea': forms.Select(attrs={'style': correction}),
         }
 
 class EstadoEmpresaFilter(admin.SimpleListFilter):
@@ -115,33 +219,56 @@ class UserAdmin(admin.ModelAdmin):
     get_nombre_empresa.short_description = 'Empresa'
 
 class BodegaAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+
     form = BodegaAdminForm
     list_display = ('nombre_bodega', 'descripcion_bodega')
     ordering = ('id_bodega',)
+    readonly_fields = ('usuario_crea',)
     list_filter = ('rut_empresa__nombre_empresa',)
 
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
     form = EmpresaForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
     list_display = ('rut_empresa', 'nombre_empresa')
     ordering = ('rut_empresa',)
+    readonly_fields = ('usuario_crea',)
     list_filter = (EstadoEmpresaFilter,)
 
 class PatronCorteAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
     list_display = ('nombre_patron', 'descripcion_patron')
     ordering = ('id_patron',)
+    readonly_fields = ('usuario_crea',)
 
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
+    form = PedidoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
     list_display = ('numero_pedido', 'prioridad')
     ordering = ('id_pedido',)
+    readonly_fields = ('usuario_crea',)
     list_filter = ('rut_empresa__nombre_empresa',)
 
 class ProductoAdmin(admin.ModelAdmin):
     #Modelo administrador para producto
+    form = ProductoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
     list_display = ('nombre_producto', 'descripcion_producto')
     ordering = ('id_producto',)
+    readonly_fields = ('usuario_crea',)
     list_filter = ('nombre_producto',)
 
 class DetallePedidoAdmin(admin.ModelAdmin):
@@ -154,44 +281,90 @@ class DetallePedidoAdmin(admin.ModelAdmin):
     get_producto.short_description = 'Producto'
 
 class LineaAdmin(admin.ModelAdmin):
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
     list_display = ('nombre_linea', 'descripcion_linea')
     ordering = ('nombre_linea',)
+    readonly_fields = ('usuario_crea',)
 
 class AbastecimientoRollizoAdmin(admin.ModelAdmin):
-    pass
+    form = AbastecimientoRollizoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class CalidadProductoAdmin(admin.ModelAdmin):
-    pass
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class CostoRollizoAdmin(admin.ModelAdmin):
-    pass
+    form = CostoRollizoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class LineaHhDisponibleAdmin(admin.ModelAdmin):
-    pass
+    form = LineaHhDisponibleAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class PeriodoAdmin(admin.ModelAdmin):
-    pass
+    form = PeriodoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class ProductoCorteAdmin(admin.ModelAdmin):
-    pass
+    form = ProductoCorteAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class ProductosEmpresaAdmin(admin.ModelAdmin):
-    pass
+    form = ProductosEmpresaAdminForm
 
 class RollizoAdmin(admin.ModelAdmin):
-    pass
+    form = RollizoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class StockProductoAdmin(admin.ModelAdmin):
-    pass
+    form = StockProductoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class RollizoLargoAdmin(admin.ModelAdmin):
-    pass
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class TiempoCambioAdmin(admin.ModelAdmin):
-    pass
+    form = TiempoCambioAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 class TipoPeriodoAdmin(admin.ModelAdmin):
-    pass
+    form = TipoPeriodoAdminForm
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.userprofile.rut
+        obj.save()
+    readonly_fields = ('usuario_crea',)
 
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)

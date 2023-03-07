@@ -10,7 +10,7 @@ from django.db import models
 
 class LineaHhDisponible(models.Model):
     id_hh_linea = models.AutoField(primary_key=True)
-    id_linea = models.ForeignKey('Linea', models.DO_NOTHING, db_column='id_linea', blank=True, null=True)
+    id_linea = models.ForeignKey('Linea', models.DO_NOTHING, verbose_name='Linea', db_column='id_linea', blank=True, null=True)
     id_periodo = models.IntegerField(blank=True, null=True)
     numero_bloque = models.IntegerField(blank=True, null=True)
     cantidad_hh = models.IntegerField(blank=True, null=True)

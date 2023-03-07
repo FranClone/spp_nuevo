@@ -10,8 +10,8 @@ from django.db import models
 
 class StockProducto(models.Model):
     id_stock = models.AutoField(primary_key=True)
-    id_bodega = models.ForeignKey('Bodega', models.DO_NOTHING, db_column='id_bodega', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
+    id_bodega = models.ForeignKey('Bodega', models.DO_NOTHING, verbose_name='Bodega', db_column='id_bodega', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, verbose_name='Producto', db_column='id_producto', blank=True, null=True)
     cantidad_m3 = models.FloatField(blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)

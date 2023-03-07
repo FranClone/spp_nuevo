@@ -10,9 +10,8 @@ from django.db import models
 
 class ProductoCorte(models.Model):
     id_corte = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto', blank=True, null=True)
-    id_patron = models.ForeignKey('PatronCorte', models.DO_NOTHING, db_column='id_patron', blank=True, null=True)
-    id_tipo_calidad = models.IntegerField(blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, verbose_name='Producto', db_column='id_producto', blank=True, null=True)
+    id_patron = models.ForeignKey('PatronCorte', models.DO_NOTHING, verbose_name='Patrón de Corte', db_column='id_patron', blank=True, null=True)
     cantidad_producto = models.IntegerField(blank=True, null=True)
     descripcion_corte = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)

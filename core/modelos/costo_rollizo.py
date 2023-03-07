@@ -12,7 +12,7 @@ class CostoRollizo(models.Model):
     id_costo = models.AutoField(primary_key=True)
     nombre_costo = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     valor_m3 = models.FloatField(blank=True, null=True)
-    id_linea = models.ForeignKey('Linea', models.DO_NOTHING, db_column='id_linea', blank=True, null=True)
+    id_linea = models.ForeignKey('Linea', models.DO_NOTHING, db_column='id_linea', verbose_name='Linea', blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, verbose_name='Empresa', db_column='rut_empresa', blank=True, null=True)
