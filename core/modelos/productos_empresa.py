@@ -9,9 +9,13 @@ from django.db import models
 
 
 class ProductosEmpresa(models.Model):
-    rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, db_column='rut_empresa')
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
+    rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, verbose_name='Empresa', db_column='rut_empresa')
+    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, verbose_name='Producto', db_column='id_producto')
 
     class Meta:
         db_table = 'PRODUCTOS_EMPRESA'
         unique_together = (('rut_empresa', 'id_producto'),)
+
+        
+    def __str__(self):
+        return f'{self.rut_empresa} - {self.id_producto}'

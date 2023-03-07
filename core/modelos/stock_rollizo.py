@@ -13,7 +13,11 @@ class StockRollizo(models.Model):
     id_rollizo = models.ForeignKey('Rollizo', models.DO_NOTHING, db_column='id_rollizo', blank=True, null=True)
     cantidad = models.FloatField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
+    id_bodega = models.ForeignKey('Bodega', models.DO_NOTHING, db_column='id_bodega', blank=True, null=True)
 
     class Meta:
         db_table = 'STOCK_ROLLIZO'
+        
+    def __str__(self):
+        return f'Stock de {self.id_rollizo.nombre_rollizo} = {self.cantidad}'

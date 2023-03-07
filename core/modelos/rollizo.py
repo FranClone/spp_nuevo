@@ -16,9 +16,12 @@ class Rollizo(models.Model):
     diametro = models.IntegerField(blank=True, null=True)
     id_largo = models.ForeignKey('RollizoLargo', models.DO_NOTHING, db_column='id_largo', blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
     id_patron = models.IntegerField(blank=True, null=True)
     clase_diametrica = models.IntegerField(blank=True, null=True)
 
     class Meta:
         db_table = 'ROLLIZO'
+
+    def __str__(self):
+        return self.nombre_rollizo
