@@ -84,6 +84,7 @@ class CustomUserCreationForm(BaseForm, UserCreationForm):
         label="digito rutificador empresa", 
         widget=forms.TextInput(attrs={'class': 'input-rut-dv'})
     )
+
     #grupos creados
     group = forms.ModelChoiceField(queryset=Group.objects.all(), label="grupo")
 
@@ -123,3 +124,16 @@ class LoginForm(BaseForm):
         cleaned_data = super().clean()
         self.clean_rut()
         return cleaned_data
+
+#administracion limitacion de caracteres en procesos
+user_name = forms.CharField(
+        widget=forms.TextInput(attrs={'class' : 'form-control-sm'}),
+        label="Usuario",
+        max_length=20
+    )
+
+correo = forms.CharField(
+        widget=forms.TextInput(attrs={'class' : 'form-control-sm'}),
+        label="correo",
+        max_length=25
+    )
