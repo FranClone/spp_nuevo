@@ -1,4 +1,6 @@
 from django.db import models
+from django.core.exceptions import ValidationError
+from ..validators import validate_rut
 
 class Empresa(models.Model):
     rut_empresa = models.CharField(primary_key=True, max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS')
@@ -16,6 +18,15 @@ class Empresa(models.Model):
     class Meta:
         db_table = 'EMPRESA'
 
-
     def __str__(self):
         return self.nombre_empresa
+    
+    def clean(self):
+        cleaned_data = super().clean()
+
+        try:
+            validate_rut(cleaned_data["rut_empresa"])
+        except ValidationError as e:
+            raise ValidationError({'rut_empresa': e})
+
+        return cleaned_data

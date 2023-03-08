@@ -29,19 +29,22 @@ from .models import UserProfile
 
 #EN PROCESO DE TOTAL CAMBIO
 
-correction = 'width:100%;'
+correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
 
 class RutEmpresaWidget(MultiWidget):
-    #inicializa el widget
+    #rut empresa cómo rut body y rut dv
     def __init__(self, attrs=None):
         widgets = (
+            #rut body
             forms.TextInput(attrs={'style': 'width: 10%; display: inline-block'}),
+            #rut dv
             forms.TextInput(attrs={'style': 'width: 2%; display: inline-block'}),
         )
         super().__init__(widgets, attrs)
 
     def decompress(self, value):
         if value:
+            #se retorna el rut body y el rut dv en un array como value
             return [value[:-2], value[-1]]
         return [None, None]
     
