@@ -1,8 +1,9 @@
 from django.core.exceptions import ValidationError
 
 def validate_rut(rut):
-    rut = str(rut)
+    #el guión no necesita validación
     rut = rut.replace("-", "")
+    #el rut sólo puede ser digito y dígito + kK en caso del último dígito
     if not rut.isdigit() and rut[-1].upper() != 'K':
         raise ValidationError('El RUT solo puede contener números y un guión')
     if len(rut) < 8:

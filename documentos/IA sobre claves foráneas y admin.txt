@@ -1,0 +1,20 @@
+Para hacer que los botones de las claves foráneas sean útiles en Django, necesitas configurar las vistas correspondientes para cada una de las acciones que deseas que realice. A continuación, te indico los pasos básicos que puedes seguir para lograr esto:
+
+Crea una nueva vista en tu aplicación Django para cada acción que deseas realizar (Agregar, Ver, Editar, Eliminar). Puedes utilizar las vistas genéricas de Django para facilitar el proceso.
+
+Agrega las URL correspondientes en tu archivo urls.py para cada vista que creaste en el paso anterior. Las URL deberían tener una estructura similar a esta:
+
+less
+Copy code
+path('ruta/para/accion/<int:pk>/', vista_para_accion.as_view(), name='nombre_de_la_url'),
+Donde ruta/para/accion es la ruta que utilizarás para acceder a la acción (por ejemplo, /agregar/ para la acción de agregar), vista_para_accion es la vista que creaste en el paso anterior y nombre_de_la_url es el nombre que utilizarás para referirte a esta URL en tu código.
+
+En tu modelo de Django, asegúrate de que las claves foráneas estén configuradas correctamente para utilizar las vistas y las URLs que acabas de crear. Puedes hacer esto utilizando el argumento on_delete en tus definiciones de campo. Por ejemplo:
+
+cpp
+Copy code
+class Ejemplo(models.Model):
+    clave_foranea = models.ForeignKey(OtroModelo, on_delete=models.CASCADE)
+Donde OtroModelo es el modelo al que se hace referencia y on_delete=models.CASCADE especifica que se debe eliminar la instancia de Ejemplo cuando se elimina la instancia de OtroModelo.
+
+Una vez que hayas completado estos pasos, los botones de las claves foráneas en Django deberían funcionar correctamente y dirigirte a las vistas correspondientes que creaste.

@@ -10,8 +10,8 @@ from django.db import models
 
 class DetallePedido(models.Model):
     id_detalle_pedido = models.AutoField(primary_key=True)
-    id_pedido = models.ForeignKey('Pedido', models.DO_NOTHING, verbose_name='Pedido', db_column='id_pedido', blank=True, null=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, verbose_name='Producto', db_column='id_producto', blank=True, null=True)
+    id_pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, verbose_name='Pedido', db_column='id_pedido', blank=True, null=True)
+    id_producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto', db_column='id_producto', blank=True, null=True)
     detalle_producto = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     volumen_producto = models.CharField(max_length=10, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     fecha_entrega = models.DateField(blank=True, null=True)

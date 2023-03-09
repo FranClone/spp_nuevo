@@ -10,8 +10,8 @@ from django.db import models
 
 class AbastecimientoRollizo(models.Model):
     id_abastecimiento = models.AutoField(primary_key=True)
-    id_rollizo = models.ForeignKey('Rollizo', models.DO_NOTHING, db_column='id_rollizo', verbose_name='Rollizo', blank=True, null=True)
-    id_periodo = models.ForeignKey('Periodo', models.DO_NOTHING, db_column='id_periodo', verbose_name='Periodo', blank=True, null=True)
+    id_rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, db_column='id_rollizo', verbose_name='Rollizo', blank=True, null=True)
+    id_periodo = models.ForeignKey('Periodo', on_delete=models.CASCADE, db_column='id_periodo', verbose_name='Periodo', blank=True, null=True)
     numero_bloque = models.IntegerField(blank=True, null=True)
     cantidad_hh = models.IntegerField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)

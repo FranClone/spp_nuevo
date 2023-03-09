@@ -20,12 +20,12 @@ from django.db import models
 
 class ProductosEmpresa(models.Model):
     id_pempresa = models.AutoField(primary_key=True)
-    id_producto = models.ForeignKey('Producto', models.DO_NOTHING, db_column='id_producto')
-    rut_empresa = models.ForeignKey('Empresa', models.DO_NOTHING, db_column='rut_empresa')
+    id_producto = models.ForeignKey('Producto', on_delete=models.CASCADE, db_column='id_producto')
+    rut_empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, db_column='rut_empresa')
 
     class Meta:
         db_table = 'PRODUCTOS_EMPRESA'
         unique_together = (('id_producto', 'rut_empresa'),)
 
     def __str__(self):
-        return f'{self.rut_empresa} + {self.id_producto}'
+        return f'{self.id_producto} de {self.rut_empresa}'

@@ -33,7 +33,7 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Settings para Django Axes
-AXES_ENABLED = True  # Activa el uso de Django Axes
+AXES_ENABLED = False  # Activa el uso de Django Axes
 AXES_FAILURE_LIMIT = 3  # Número máximo de intentos fallidos permitidos
 AXES_COOLOFF_TIME = 1/120  # Tiempo de espera en HORAS para permitir nuevos intentos después de un bloqueo
 AXES_USE_USER_AGENT = True  # Activar el uso de user-agent para identificar solicitudes maliciosas
@@ -152,8 +152,8 @@ AUTH_PASSWORD_VALIDATORS = [
              'min_length_digit': 1,
              'min_length_alpha': 1,
              'min_length_special': 1,
-             'min_length_lower': 1,
-             'min_length_upper': 1,
+             'min_length_lower': 0,
+             'min_length_upper': 0,
              'special_characters': "~!@#$%^&*()_+{}\":;'[]"
          }
     },

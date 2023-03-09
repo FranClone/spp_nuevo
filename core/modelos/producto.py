@@ -10,7 +10,7 @@ from django.db import models
 
 class Producto(models.Model):
     id_producto = models.AutoField(primary_key=True)
-    nombre_producto = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    nombre_producto = models.CharField(max_length=300, verbose_name='Producto', db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     descripcion_producto = models.CharField(max_length=500, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
     espesor_producto = models.FloatField(blank=True, null=True)
     ancho_producto = models.FloatField(blank=True, null=True)

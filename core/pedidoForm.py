@@ -1,18 +1,19 @@
 from django import forms
 from django.forms import formset_factory
 from datetime import datetime
+from .modelos.productos_empresa import ProductosEmpresa
+from .modelos.producto import Producto
 import pyodbc, os, re
 
 class ProductoForm(forms.Form):
+    #Se obtienen los productos desde un desplegable
     producto = forms.ChoiceField()
+    #La cantidad se ingresa desde un input integer
     cantidad = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1'}))
     def __init__(self, *args, rut_empresa=None, **kwargs):
         self.rut_empresa = rut_empresa
         super().__init__(*args, **kwargs)
-        conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
-        cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", [self.rut_empresa])
-        data_productos = cursor.fetchall()
+        data_productos = Producto.objects.filter(productosempresa__rut_empresa__rut_empresa=rut_empresa)
         choices = [(producto.nombre_producto, producto.nombre_producto) for producto in data_productos]
         self.fields['producto'] = forms.ChoiceField(choices=choices)
 
