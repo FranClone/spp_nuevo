@@ -1,0 +1,268 @@
+Tengo los siguientes modelos en Django: UserProfile, Empresa, Productos, Pedidos, Bodega, Rollizo, Línea, todos conectados a Empresa de alguna manera u otra a través de cláves foráneas u otras formas.
+
+Quiero un administrador custom de Django para cada empresa, donde se incluyan todo el resto de modelos de administrador dentro de este administrador, a excepción de empresa, donde cada modelo que se cree, esté vinculado a empresa de alguna manera u otra, ojalá a través de las claves foráneas, y, por ejemplo, no puedo crear Rollizo si no se ha creado un Producto para tal empresa.
+Para crear un administrador personalizado para cada empresa en Django, puedes crear una vista personalizada que filtre los datos de acuerdo a la empresa del usuario que está conectado. Puedes hacerlo mediante una relación entre el modelo de UserProfile y el modelo de Empresa.
+
+Aquí te proporciono un ejemplo de cómo podrías hacerlo:
+
+python
+Copy code
+from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from .models import UserProfile, Empresa, Productos, Pedidos, Bodega, Rollizo, Línea
+
+class EmpresaAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de empresas
+    list_display = ('nombre', 'direccion', 'telefono')
+    search_fields = ('nombre', 'direccion', 'telefono')
+
+class ProductosAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de productos
+    list_display = ('nombre', 'precio', 'stock', 'empresa')
+    search_fields = ('nombre',)
+    list_filter = ('empresa',)
+
+class PedidosAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de pedidos
+    list_display = ('producto', 'cantidad', 'precio', 'fecha', 'empresa')
+    search_fields = ('producto__nombre', 'fecha')
+    list_filter = ('empresa',)
+
+class BodegaAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de bodegas
+    list_display = ('nombre', 'direccion', 'capacidad', 'empresa')
+    search_fields = ('nombre', 'direccion')
+    list_filter = ('empresa',)
+
+class RollizoAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de rollizos
+    list_display = ('nombre', 'largo', 'ancho', 'alto', 'producto')
+    search_fields = ('nombre',)
+    list_filter = ('producto__empresa',)
+
+class LíneaAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de líneas
+    list_display = ('nombre', 'descripcion', 'producto')
+    search_fields = ('nombre',)
+    list_filter = ('producto__empresa',)
+
+class UserProfileAdmin(UserAdmin):
+    # Define las opciones de visualización del perfil de usuario
+    list_display = ('username', 'email', 'empresa')
+    search_fields = ('username', 'email', 'empresa__nombre')
+
+    def get_queryset(self, request):
+        # Filtra los datos de acuerdo a la empresa del usuario que está conectado
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(empresa=request.user.userprofile.empresa)
+
+    def get_form(self, request, obj=None, **kwargs):
+        # Filtra las opciones de empresa según el usuario conectado
+        form = super().get_form(request, obj, **kwargs)
+        if not request.user.is_superuser:
+            form.base_fields['empresa'].queryset = Empresa.objects.filter(pk=request.user.userprofile.empresa.pk)
+        return form
+
+admin.site.register(Empresa, EmpresaAdmin)
+admin.site.register(Productos, ProductosAdmin)
+admin.site.register(Pedidos, PedidosAdmin)
+admin.site.register(Bodega, BodegaAdmin)
+admin.site.register(Rollizo, RollizoAdmin)
+admin.site.register(Línea, LíneaAdmin)
+admin.site.register(UserProfile, UserProfileAdmin)
+En este ejemplo, he creado un UserProfile que tiene una relación de clave foránea con User y una relación de clave foránea con Empresa. Esto te permite filtrar los datos de acuerdo a la empresa del usuario que está conectado.
+
+En el UserProfileAdmin, he definido una función
+
+
+
+
+Cristopher Q
+Entiendo lo que quieres hacer, de hecho lo que tienes ya lo tengo más o menos implementado, pero para que te hagas una idea, quiero administradores separados, tal que, para toda empresa, el filtro de tal empresa ya esté activado, y que cada elemento que le agreguemos al modelo, sea vinculado a tal empresa automáticamente, la idea es que cada empresa pueda usar su propio administrador.
+Entiendo lo que quieres decir. En ese caso, puedes crear un administrador personalizado para cada modelo y personalizarlo de acuerdo a las necesidades de cada empresa. Para hacer esto, debes crear una clase de administrador personalizada para cada modelo y establecer la relación de clave foránea con la empresa de manera automática.
+
+Aquí te proporciono un ejemplo de cómo podrías hacerlo para el modelo Productos:
+
+python
+Copy code
+from django.contrib import admin
+from .models import Productos
+
+class ProductosAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de productos
+    list_display = ('nombre', 'precio', 'stock', 'empresa')
+    search_fields = ('nombre',)
+    list_filter = ('empresa',)
+
+    def save_model(self, request, obj, form, change):
+        # Establece la relación de clave foránea con la empresa automáticamente
+        obj.empresa = request.user.userprofile.empresa
+        super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        # Filtra los datos de acuerdo a la empresa del usuario que está conectado
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(empresa=request.user.userprofile.empresa)
+
+admin.site.register(Productos, ProductosAdmin)
+En este ejemplo, he creado una clase de administrador personalizada para el modelo Productos. En la función save_model(), establezco la relación de clave foránea con la empresa del usuario que está conectado. De esta manera, cada vez que se cree un nuevo producto, se establecerá automáticamente la relación con la empresa correspondiente.
+
+En la función get_queryset(), filtro los datos de acuerdo a la empresa del usuario que está conectado. De esta manera, solo se mostrarán los productos correspondientes a la empresa del usuario.
+
+Debes repetir este proceso para cada modelo que desees personalizar. De esta manera, cada empresa tendrá su propio administrador personalizado con los datos filtrados y la relación de clave foránea establecida automáticamente.
+
+
+
+
+Cristopher Q
+Esa respuesta me gustó mucho, pero ¿Qué pasa con el filtro de empresa si el usuario no es superuser? ¿No aparecería ya que es sólo una empresa no?
+Tienes razón, si un usuario no es superusuario y solo tiene acceso a una empresa específica, entonces no debería ver un filtro para seleccionar la empresa en el administrador personalizado.
+
+En ese caso, puedes omitir el filtro de empresa si el usuario no es un superusuario y solo tiene acceso a una empresa. Para hacer esto, puedes verificar si el usuario tiene acceso a más de una empresa y solo mostrar el filtro de empresa si tiene acceso a más de una empresa.
+
+Aquí te proporciono un ejemplo de cómo podrías modificar la función get_queryset() y la clase ProductosAdmin para omitir el filtro de empresa si el usuario solo tiene acceso a una empresa:
+
+python
+Copy code
+from django.contrib import admin
+from .models import Productos
+
+class ProductosAdmin(admin.ModelAdmin):
+    # Define las opciones de visualización de la lista de productos
+    list_display = ('nombre', 'precio', 'stock', 'empresa')
+    search_fields = ('nombre',)
+    list_filter = ('empresa',)
+
+    def save_model(self, request, obj, form, change):
+        # Establece la relación de clave foránea con la empresa automáticamente
+        obj.empresa = request.user.userprofile.empresa
+        super().save_model(request, obj, form, change)
+
+    def get_queryset(self, request):
+        # Filtra los datos de acuerdo a la empresa del usuario que está conectado
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            # Si el usuario no es superusuario, filtra por la empresa del usuario
+            qs = qs.filter(empresa=request.user.userprofile.empresa)
+        # Si el usuario tiene acceso a más de una empresa, muestra el filtro de empresa
+        if qs.count() > 1:
+            self.list_filter = ('empresa',)
+        else:
+            self.list_filter = ()
+        return qs
+
+admin.site.register(Productos, ProductosAdmin)
+En este ejemplo, he modificado la función get_queryset() para verificar si el usuario tiene acceso a más de una empresa y mostrar el filtro de empresa solo si tiene acceso a más de una empresa. Si el usuario solo tiene acceso a una empresa, el filtro de empresa se omite y los datos se filtran automáticamente por la empresa del usuario.
+
+Ten en cuenta que debes repetir este proceso para cada modelo que desees personalizar y ajustar el código de acuerdo a las necesidades específicas de tu aplicación.
+
+
+
+
+Cristopher Q
+qs.count() retorna mayor a 1 si el user es superusuario?
+Sí, es posible que qs.count() devuelva un valor mayor a 1 incluso si el usuario es un superusuario, ya que el filtro aplicado en get_queryset() no incluye la verificación de si el usuario es un superusuario o no.
+
+En este caso, podrías agregar una verificación adicional para asegurarte de que el filtro por empresa solo se aplique si el usuario no es un superusuario. Por ejemplo, puedes modificar la función get_queryset() como sigue:
+
+python
+Copy code
+def get_queryset(self, request):
+    qs = super().get_queryset(request)
+    if not request.user.is_superuser:
+        # Si el usuario no es superusuario, filtra por la empresa del usuario
+        qs = qs.filter(empresa=request.user.userprofile.empresa)
+        # Si el usuario tiene acceso a más de una empresa, muestra el filtro de empresa
+        if qs.count() > 1:
+            self.list_filter = ('empresa',)
+        else:
+            self.list_filter = ()
+    return qs
+En este ejemplo, la verificación if qs.count() > 1 y el ajuste del filtro de empresa se aplican solo si el usuario no es un superusuario. De esta manera, el filtro de empresa se omite automáticamente para los superusuarios, quienes tienen acceso a todas las empresas.
+
+
+
+
+Cristopher Q
+Vale, entiendo, dicho esto, estoy usando django-admin-interface para darle un diseño a mi administrador ¿Puedo darle un diseño custom a cada administrador dependiendo de la empresa?
+Sí, puedes dar un diseño personalizado a cada administrador dependiendo de la empresa utilizando django-admin-interface.
+
+django-admin-interface proporciona varias formas de personalizar el aspecto de tu administrador, como cambiar el color de fondo, el logotipo, las fuentes y la apariencia general. Puedes utilizar estas características para personalizar el diseño de tu administrador para cada empresa.
+
+Para personalizar el diseño de tu administrador para cada empresa, podrías crear una vista personalizada para cada empresa que incluya la plantilla y los archivos estáticos correspondientes. Dentro de cada vista personalizada, puedes utilizar las funciones de personalización proporcionadas por django-admin-interface para personalizar el aspecto de la administración.
+
+Aquí hay un ejemplo de cómo podrías hacer esto:
+
+Crea una vista personalizada para cada empresa en tu archivo views.py. Cada vista debe incluir una plantilla y archivos estáticos personalizados para la empresa correspondiente.
+python
+Copy code
+from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
+from django_admin_interface.models import Theme
+
+@login_required
+def empresa_admin(request):
+    # Obtiene el tema personalizado de la empresa
+    theme = Theme.objects.get(userprofile__empresa=request.user.userprofile.empresa)
+    # Carga la plantilla personalizada y los archivos estáticos para la empresa
+    return render(request, 'admin/empresa.html', {'theme': theme})
+Agrega una URL para cada vista personalizada en tu archivo urls.py. Por ejemplo:
+python
+Copy code
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('admin/empresa/', views.empresa_admin, name='empresa_admin'),
+]
+Crea una plantilla personalizada para cada empresa en tu carpeta de plantillas. Por ejemplo, puedes crear una carpeta templates/admin y dentro de ella, una subcarpeta empresa para cada empresa. Cada subcarpeta debe contener una plantilla personalizada llamada base.html.
+
+Agrega archivos estáticos personalizados para cada empresa en tu carpeta de archivos estáticos. Por ejemplo, puedes crear una carpeta static/admin y dentro de ella, una subcarpeta empresa para cada empresa. Cada subcarpeta debe contener los archivos estáticos personalizados para la empresa correspondiente, como style.css, custom.js, etc.
+
+Para que Django utilice las vistas personalizadas en lugar de la vista predeterminada, debes anular la configuración de URL de django-admin-interface. Puedes hacer esto agregando la siguiente configuración a tu archivo settings.py:
+
+python
+Copy code
+ADMIN_INTERFACE_SETTINGS = {
+    'custom_admin_url': [
+        ('admin/empresa/', 'Empresa Admin'),
+    ],
+    'default_admin_site': 'admin.empresa_admin',
+}
+En este ejemplo, hemos definido una URL personalizada admin/empresa/ y hemos establecido la vista personalizada admin.empresa_admin como la vista predeterminada para la administración. También hemos definido un nombre de administrador personalizado Empresa Admin para la URL personalizada.
+
+Con esta configuración, cuando un usuario inicie sesión en el administrador y pertenezca a una empresa, Django redirigirá al usuario a la vista personalizada correspondiente en lugar de la vista predeterminada. Además, el tema personalizado de la empresa se cargará automáticamente para cada vista personalizada, lo que permitirá la personalización de la apariencia para cada empresa.
+
+
+
+
+Cristopher Q
+Entiendo, pero, ¿Cómo Django sabe para cual empresa esta customizando el modelo con esa URL? ¿No se necesitaría algo más, cómo un atributo que identifique a la empresa, o con eso basta?
+Tienes razón, necesitas algún mecanismo para identificar a la empresa en la vista personalizada para poder personalizarla según la empresa correspondiente.
+
+Una forma de hacerlo es agregar un parámetro a la URL de la vista personalizada que identifique a la empresa correspondiente. Por ejemplo, podrías agregar el ID de la empresa a la URL:
+
+python
+Copy code
+path('admin/empresa/<int:empresa_id>/', views.empresa_admin, name='empresa_admin'),
+Luego, en la vista personalizada, puedes obtener el ID de la empresa a partir de la URL y utilizarlo para identificar a la empresa correspondiente:
+
+python
+Copy code
+@login_required
+def empresa_admin(request, empresa_id):
+    # Obtiene la empresa correspondiente al ID de la URL
+    empresa = Empresa.objects.get(id=empresa_id)
+    # Obtiene el tema personalizado de la empresa
+    theme = Theme.objects.get(userprofile__empresa=empresa)
+    # Carga la plantilla personalizada y los archivos estáticos para la empresa
+    return render(request, 'admin/empresa.html', {'theme': theme})
+De esta manera, cuando un usuario accede a la URL admin/empresa/<int:empresa_id>/, el ID de la empresa se pasará como un parámetro en la URL y se utilizará en la vista personalizada para identificar la empresa correspondiente.
+
+Ten en cuenta que esto implica que el usuario que está iniciando sesión debe tener permisos para acceder a la administración de la empresa correspondiente. De lo contrario, se debería mostrar un error o redirigir al usuario a otra página.

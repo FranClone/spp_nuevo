@@ -2,7 +2,8 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.db import IntegrityError
-from .models import UserProfile
+#from .models import UserProfile
+from .modelos.empresa import Empresa
 
 #probar esto
 
@@ -51,8 +52,8 @@ class CustomUserCreationForm(UserCreationForm):
         if commit:
             try:
                 # Validar si ya existe un UserProfile con el mismo RUT
-                if UserProfile.objects.filter(rut=user.rut).exists():
-                    raise IntegrityError('El RUT ya se encuentra registrado en el sistema.')
+                #if UserProfile.objects.filter(rut=user.rut).exists():
+                    #raise IntegrityError('El RUT ya se encuentra registrado en el sistema.')
                 user.save()
             except IntegrityError:
                 raise forms.ValidationError('El RUT ya se encuentra registrado en el sistema.')

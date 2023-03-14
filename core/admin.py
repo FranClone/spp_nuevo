@@ -17,21 +17,20 @@ from .modelos.patron_corte import PatronCorte
 from .modelos.pedido import Pedido
 from .modelos.periodo import Periodo
 from .modelos.producto import Producto
-from .modelos.producto_corte import ProductoCorte
 from .modelos.productos_empresa import ProductosEmpresa
+from .modelos.producto_corte import ProductoCorte
 from .modelos.rollizo import Rollizo
 from .modelos.rollizo_largo import RollizoLargo
 from .modelos.stock_producto import StockProducto
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.tiempo_cambio import TiempoCambio
 from .modelos.tipo_periodo import TipoPeriodo
-from .models import UserProfile
 
 #EN PROCESO DE TOTAL CAMBIO
 
 correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
 
-class RutEmpresaWidget(MultiWidget):
+class RutWidget(MultiWidget):
     #rut empresa cómo rut body y rut dv
     def __init__(self, attrs=None):
         widgets = (
@@ -63,7 +62,7 @@ class RutEmpresaWidget(MultiWidget):
         return values[0] + '-' + values[1] if values[0] and values[1] else None
     
 class EmpresaForm(forms.ModelForm):
-    rut_empresa = forms.CharField(widget=RutEmpresaWidget(), label='RUT Empresa')
+    rut_empresa = forms.CharField(widget=RutWidget(), label='RUT Empresa')
 
     class Meta:
         model = Empresa
@@ -146,6 +145,9 @@ class ProductoCorteAdminForm(forms.ModelForm):
             'id_patron': forms.Select(attrs={'style': correction}),
             'id_rollizo': forms.Select(attrs={'style': correction}),
         }
+
+#class ProductoInline(admin.TabularInline):
+    #model = Empresa.productos.through
 
 class ProductosEmpresaAdminForm(forms.ModelForm):
     class Meta:
@@ -249,7 +251,7 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # usuario que crea no puede ser cambiado
     readonly_fields = ('usuario_crea',)
     # filtración por empresa
-    list_filter = ('producto__productosempresa__rut_empresa__nombre_empresa',)
+    #list_filter = ('producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
@@ -263,7 +265,7 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # no se puede cambiar usuario que crea
     readonly_fields = ('usuario_crea',)
     # se filtra por empresa
-    list_filter = ('rut_empresa__nombre_empresa',)
+    #list_filter = ('rut_empresa__nombre_empresa',)
 
 class DetallePedidoAdmin(admin.ModelAdmin):
     form = DetallePedidoAdminForm
@@ -277,6 +279,7 @@ class DetallePedidoAdmin(admin.ModelAdmin):
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
     form = EmpresaForm
+    #inline = (ProductoInline,)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.userprofile.rut
         obj.save()
@@ -311,7 +314,7 @@ class PatronCorteAdmin(admin.ModelAdmin):
     list_display = ('nombre_patron', 'descripcion_patron')
     ordering = ('id_patron',)
     readonly_fields = ('usuario_crea',)
-    list_filter = ('productocorte__id_producto__productosempresa__rut_empresa__nombre_empresa',)
+    #list_filter = ('productocorte__id_producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
@@ -342,7 +345,7 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre_producto', 'descripcion_producto')
     ordering = ('id_producto',)
     readonly_fields = ('usuario_crea',)
-    list_filter = ('productosempresa__rut_empresa__nombre_empresa',)
+    #list_filter = ('productosempresa__rut_empresa__nombre_empresa',)
 
 class ProductoCorteAdmin(admin.ModelAdmin):
     form = ProductoCorteAdminForm
@@ -351,7 +354,7 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         obj.save()
     list_display = ('cantidad_producto', 'descripcion_corte')
     readonly_fields = ('usuario_crea',)
-    list_filter = ('id_producto__productosempresa__rut_empresa__nombre_empresa',)
+    #list_filter = ('id_producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class ProductosEmpresaAdmin(admin.ModelAdmin):
     list_display = ('rut_empresa', 'id_producto')
@@ -409,17 +412,6 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     list_filter = ('rut_empresa__nombre_empresa',)
 
-class UserAdmin(admin.ModelAdmin):
-    list_display = ('get_username', 'get_nombre_empresa')
-    ordering = ('user__id',)
-    def get_username(self, obj):
-        return obj.user.username
-    def get_nombre_empresa(self, obj):
-        return obj.rut_empresa.nombre_empresa
-
-    get_username.short_description = 'Nombre de Usuario'
-    get_nombre_empresa.short_description = 'Empresa'
-    list_filter = ('rut_empresa__nombre_empresa',)
 
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
@@ -434,11 +426,9 @@ admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Periodo, PeriodoAdmin)
 admin.site.register(Producto, ProductoAdmin)
 admin.site.register(ProductoCorte, ProductoCorteAdmin)
-admin.site.register(ProductosEmpresa, ProductosEmpresaAdmin)
 admin.site.register(Rollizo, RollizoAdmin)
 admin.site.register(RollizoLargo, RollizoLargoAdmin)
 admin.site.register(StockProducto, StockProductoAdmin)
 admin.site.register(StockRollizo, StockRollizoAdmin)
 admin.site.register(TiempoCambio, TiempoCambioAdmin)
 admin.site.register(TipoPeriodo, TipoPeriodoAdmin)
-admin.site.register(UserProfile, UserAdmin)

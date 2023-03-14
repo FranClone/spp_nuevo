@@ -26,6 +26,8 @@ DEBUG = os.environ.get('DEBUG')
 # lista de hosts/dominios del sitio
 ALLOWED_HOSTS = []
 
+#AUTH_USER_MODEL = 'core.UserProfile'
+
 AUTHENTICATION_BACKENDS = [
     # axes tiene que ser el primer backend
     'axes.backends.AxesBackend',
