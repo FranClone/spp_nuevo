@@ -1,4 +1,6 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django import forms
 from django.utils.html import format_html
@@ -25,10 +27,28 @@ from .modelos.stock_producto import StockProducto
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.tiempo_cambio import TiempoCambio
 from .modelos.tipo_periodo import TipoPeriodo
+from .modelos.user_profile import UserProfile
+
 
 #EN PROCESO DE TOTAL CAMBIO
 
 correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
+
+class ProductoInline(admin.TabularInline):
+    model = Empresa.productos.through
+    extra = 1
+
+class UserProfileForm(forms.ModelForm):
+    class Meta:
+        model = UserProfile
+        fields = ['rut', 'rut_empresa']    
+        readonly_fields = ('id',)
+        
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    can_delete = False
+    verbose_name = 'Ruts'
+    form = UserProfileForm
 
 class RutWidget(MultiWidget):
     #rut empresa cómo rut body y rut dv
@@ -146,9 +166,6 @@ class ProductoCorteAdminForm(forms.ModelForm):
             'id_rollizo': forms.Select(attrs={'style': correction}),
         }
 
-#class ProductoInline(admin.TabularInline):
-    #model = Empresa.productos.through
-
 class ProductosEmpresaAdminForm(forms.ModelForm):
     class Meta:
         model = Periodo
@@ -251,7 +268,7 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # usuario que crea no puede ser cambiado
     readonly_fields = ('usuario_crea',)
     # filtración por empresa
-    #list_filter = ('producto__productosempresa__rut_empresa__nombre_empresa',)
+    list_filter = ('producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
@@ -265,7 +282,11 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # no se puede cambiar usuario que crea
     readonly_fields = ('usuario_crea',)
     # se filtra por empresa
-    #list_filter = ('rut_empresa__nombre_empresa',)
+    list_filter = ('rut_empresa__nombre_empresa',)
+
+
+class CustomUserAdmin(UserAdmin):
+    inlines = (UserProfileInline,)
 
 class DetallePedidoAdmin(admin.ModelAdmin):
     form = DetallePedidoAdminForm
@@ -279,7 +300,7 @@ class DetallePedidoAdmin(admin.ModelAdmin):
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
     form = EmpresaForm
-    #inline = (ProductoInline,)
+    inlines = (ProductoInline,)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.userprofile.rut
         obj.save()
@@ -314,7 +335,7 @@ class PatronCorteAdmin(admin.ModelAdmin):
     list_display = ('nombre_patron', 'descripcion_patron')
     ordering = ('id_patron',)
     readonly_fields = ('usuario_crea',)
-    #list_filter = ('productocorte__id_producto__productosempresa__rut_empresa__nombre_empresa',)
+    list_filter = ('productocorte__id_producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
@@ -345,7 +366,7 @@ class ProductoAdmin(admin.ModelAdmin):
     list_display = ('nombre_producto', 'descripcion_producto')
     ordering = ('id_producto',)
     readonly_fields = ('usuario_crea',)
-    #list_filter = ('productosempresa__rut_empresa__nombre_empresa',)
+    list_filter = ('productosempresa__rut_empresa__nombre_empresa',)
 
 class ProductoCorteAdmin(admin.ModelAdmin):
     form = ProductoCorteAdminForm
@@ -354,7 +375,7 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         obj.save()
     list_display = ('cantidad_producto', 'descripcion_corte')
     readonly_fields = ('usuario_crea',)
-    #list_filter = ('id_producto__productosempresa__rut_empresa__nombre_empresa',)
+    list_filter = ('id_producto__productosempresa__rut_empresa__nombre_empresa',)
 
 class ProductosEmpresaAdmin(admin.ModelAdmin):
     list_display = ('rut_empresa', 'id_producto')
@@ -432,3 +453,5 @@ admin.site.register(StockProducto, StockProductoAdmin)
 admin.site.register(StockRollizo, StockRollizoAdmin)
 admin.site.register(TiempoCambio, TiempoCambioAdmin)
 admin.site.register(TipoPeriodo, TipoPeriodoAdmin)
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)

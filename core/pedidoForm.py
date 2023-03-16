@@ -1,7 +1,6 @@
 from django import forms
 from django.forms import formset_factory
 from datetime import datetime
-#from .modelos.productos_empresa import ProductosEmpresa
 from .modelos.producto import Producto
 import pyodbc, os, re
 

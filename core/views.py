@@ -10,6 +10,7 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http import JsonResponse, FileResponse, Http404
+from .modelos.user_profile import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -284,7 +285,7 @@ class Lista_pedidos(View):
 
         return render(request, 'lista_pedidos.html', context)
 
-"""class Login(View):
+class Login(View):
     form_class = LoginForm
     success_url = '/home/'
     def get(self, request):
@@ -332,7 +333,7 @@ class Lista_pedidos(View):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated:
             return redirect('home')
-        return super().dispatch(request, *args, **kwargs)"""
+        return super().dispatch(request, *args, **kwargs)
 
 class Logout(View):
     @method_decorator(login_required)
