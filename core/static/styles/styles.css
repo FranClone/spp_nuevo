@@ -138,6 +138,11 @@ li {
     background-color: red;
 }
 
+.footer {
+    color:rgb(255, 255, 255);
+    text-align: center;
+}
+
 .form-carga-individual {
     background: white;
     width: 50%;

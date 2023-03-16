@@ -26,6 +26,7 @@ DEBUG = os.environ.get('DEBUG')
 # lista de hosts/dominios del sitio
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'core.UserProfile'
 
 AUTHENTICATION_BACKENDS = [
     # axes tiene que ser el primer backend
@@ -78,6 +79,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    #'core.middleware.SetThemeMiddleware',
     # axes tiene que ser el último middleware agregado
     'axes.middleware.AxesMiddleware',
 ]
@@ -155,7 +157,7 @@ AUTH_PASSWORD_VALIDATORS = [
              'min_length_special': 1,
              'min_length_lower': 0,
              'min_length_upper': 0,
-             'special_characters': "~!@#$%^&*()_+{}\":;'[]"
+             'special_characters': "~!@#$%^&*()_+{}\":;'[]."
          }
     },
 ]

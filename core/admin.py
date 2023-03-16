@@ -5,6 +5,7 @@ from django.core.exceptions import ValidationError
 from django import forms
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
+from django.forms.models import BaseInlineFormSet
 from django.forms.widgets import MultiWidget
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo 
 from .modelos.bodega import Bodega
@@ -27,28 +28,13 @@ from .modelos.stock_producto import StockProducto
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.tiempo_cambio import TiempoCambio
 from .modelos.tipo_periodo import TipoPeriodo
-from .modelos.user_profile import UserProfile
-
-
-#EN PROCESO DE TOTAL CAMBIO
+from .models import UserProfile
 
 correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
 
 class ProductoInline(admin.TabularInline):
     model = Empresa.productos.through
     extra = 1
-
-class UserProfileForm(forms.ModelForm):
-    class Meta:
-        model = UserProfile
-        fields = ['rut', 'rut_empresa']    
-        readonly_fields = ('id',)
-        
-class UserProfileInline(admin.StackedInline):
-    model = UserProfile
-    can_delete = False
-    verbose_name = 'Ruts'
-    form = UserProfileForm
 
 class RutWidget(MultiWidget):
     #rut empresa cómo rut body y rut dv
@@ -70,9 +56,13 @@ class RutWidget(MultiWidget):
     def render(self, name, value, attrs=None, renderer=None):
         rendered_widgets = []
         decompressed_value = self.decompress(value)
+        readonly = value is not None #verifica si existe un valor en el input
         for i, widget in enumerate(self.widgets):
             widget_value = decompressed_value[i] if decompressed_value else None
-            rendered_widgets.append(widget.render(f'{name}_{i}', widget_value, attrs))
+            widget_attrs = attrs
+            if readonly: #agrega el atributo readonly si ya existe un valor en el input
+                widget_attrs = {'readonly': 'readonly'}
+            rendered_widgets.append(widget.render(f'{name}_{i}', widget_value, widget_attrs))
             if i == 0:
                 rendered_widgets.append('<span> - </span>')
         return mark_safe(''.join(rendered_widgets))
@@ -80,7 +70,27 @@ class RutWidget(MultiWidget):
     def value_from_datadict(self, data, files, name):
         values = super().value_from_datadict(data, files, name)
         return values[0] + '-' + values[1] if values[0] and values[1] else None
-    
+
+class UserProfileForm(forms.ModelForm):
+    rut = forms.CharField(widget=RutWidget(), label='RUT')
+    class Meta:
+        model = UserProfile
+        fields = ['rut', 'rut_empresa']
+    def save(self, commit=True):
+        # Obtener la instancia del usuario asociada al perfil
+        user_instance = self.instance.user
+
+        # Establecer la instancia del usuario como valor del campo 'user'
+        self.instance.user = user_instance
+
+        return super().save(commit=commit)
+
+class UserProfileInline(admin.StackedInline):
+    model = UserProfile
+    verbose_name = 'Ruts'
+    form = UserProfileForm
+    extra = 0
+
 class EmpresaForm(forms.ModelForm):
     rut_empresa = forms.CharField(widget=RutWidget(), label='RUT Empresa')
 
@@ -284,8 +294,8 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # se filtra por empresa
     list_filter = ('rut_empresa__nombre_empresa',)
 
-
 class CustomUserAdmin(UserAdmin):
+    rut_empresa = forms.CharField(widget=RutWidget(), label='RUT')
     inlines = (UserProfileInline,)
 
 class DetallePedidoAdmin(admin.ModelAdmin):
@@ -453,5 +463,3 @@ admin.site.register(StockProducto, StockProductoAdmin)
 admin.site.register(StockRollizo, StockRollizoAdmin)
 admin.site.register(TiempoCambio, TiempoCambioAdmin)
 admin.site.register(TipoPeriodo, TipoPeriodoAdmin)
-admin.site.unregister(User)
-admin.site.register(User, CustomUserAdmin)
