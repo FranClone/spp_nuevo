@@ -9,13 +9,12 @@ from django.db import models
 
 
 class Periodo(models.Model):
-    id_periodo = models.AutoField(primary_key=True)
-    nombre_periodo = models.CharField(max_length=200, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    id_tipo_periodo = models.ForeignKey('TipoPeriodo', on_delete=models.CASCADE, verbose_name='Tipo de Periodo', db_column='id_tipo_periodo', blank=True, null=True)
-    descripcion_periodo = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    nombre_periodo = models.CharField(max_length=200, blank=True, null=True)
+    tipo_periodo = models.ForeignKey('TipoPeriodo', on_delete=models.CASCADE, verbose_name='Tipo de Periodo')
+    descripcion_periodo = models.CharField(max_length=300, blank=True, null=True)
     cantidad_periodos = models.IntegerField(blank=True, null=True)
-    usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True)
 
     class Meta:
         db_table = 'PERIODO'

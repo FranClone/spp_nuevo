@@ -9,15 +9,14 @@ from django.db import models
 
 
 class Producto(models.Model):
-    id_producto = models.AutoField(primary_key=True)
-    nombre_producto = models.CharField(max_length=300, verbose_name='Producto', db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    descripcion_producto = models.CharField(max_length=500, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
+    nombre_producto = models.CharField(max_length=300, verbose_name='Producto')
+    descripcion_producto = models.CharField(max_length=500, blank=True, null=True)
     espesor_producto = models.FloatField(blank=True, null=True)
     ancho_producto = models.FloatField(blank=True, null=True)
     largo_producto = models.FloatField(blank=True, null=True)
-    usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
-    id_tipo_calidad = models.ForeignKey('CalidadProducto', models.DO_NOTHING, verbose_name='Calidad de Producto', db_column='id_tipo_calidad', blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20)
+    fecha_crea = models.DateField(auto_now_add=True)
+    calidad_producto = models.ForeignKey('CalidadProducto', on_delete=models.CASCADE, verbose_name='Calidad de Producto')
 
     class Meta:
         db_table = 'PRODUCTO'

@@ -11,7 +11,6 @@
     <title>SPP - Carga Servidor</title>
 </head>
 <body>
-    {% include "partials/header.html" %}
     <div class="table-container container">
         <div class="table-responsive">
             <table class="table w-100">
@@ -31,8 +30,8 @@
                     <tr>
                         <td><a href="">{{row.numero_pedido}}</a></td>
                         <td>Cliente X</td>
-                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_recepcion}}></td>
-                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_entrega}}></td> 
+                        <td><input type="date" id="start" name="trip-start" value={{row.numero_pedido}}></td>
+                        <td><input type="date" id="start" name="trip-start" value={{row.numero_pedido}}></td> 
                         <td>
                             <select id="mySelect">
                                 {% for prioridad in prioridades %}
@@ -41,7 +40,7 @@
                             </select>
                             <script>
                                 var select = document.getElementById("mySelect");
-                                var dbValue = "{{row.prioridad}}"; // Valor que viene de la base de datos
+                                var dbValue = "{{row.numero_pedido}"; // Valor que viene de la base de datos
                                 for (var i = 0; i < select.options.length; i++) {
                                     if (select.options[i].value === dbValue) {
                                         select.options[i].selected = true;

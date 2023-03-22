@@ -9,21 +9,20 @@ from django.db import models
 
 
 class Pedido(models.Model):
-    id_pedido = models.AutoField(primary_key=True)
-    numero_pedido = models.CharField(max_length=200, verbose_name='Número de Pedido', db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    destino_pedido = models.CharField(max_length=300, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_recepcion = models.DateField(blank=True, null=True)
-    fecha_entrega = models.DateField(blank=True, null=True)
-    rut_empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa', blank=True, null=True)
-    usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
-    estado_pedido = models.IntegerField(blank=True, null=True)
+    numero_pedido = models.CharField(max_length=200, verbose_name='Número de Pedido')
+    destino_pedido = models.CharField(max_length=300)
+    fecha_recepcion = models.DateField()
+    fecha_entrega = models.DateField()
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
+    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True)
+    estado_pedido = models.BooleanField()
     PRIORIDAD_CHOICES = [
         ('Alta', 'Alta'),
         ('Media', 'Media'),
         ('Baja', 'Baja'),
     ]
-    prioridad = models.CharField(max_length=10, db_collation='SQL_Latin1_General_CP1_CI_AS', choices=PRIORIDAD_CHOICES, blank=True, null=True)
+    prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES)
 
     class Meta:
         db_table = 'PEDIDO'

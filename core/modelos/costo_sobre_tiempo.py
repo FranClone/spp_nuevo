@@ -9,12 +9,11 @@ from django.db import models
 
 
 class CostoSobreTiempo(models.Model):
-    id_costo_he = models.AutoField(primary_key=True)
-    valor = models.FloatField(blank=True, null=True)
-    rut_empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa', blank=True, null=True)
-    usuario_crea = models.CharField(max_length=20, db_collation='SQL_Latin1_General_CP1_CI_AS', blank=True, null=True)
-    fecha_crea = models.DateField(auto_now_add=True, blank=True, null=True)
-    id_tiempo_cambio = models.OneToOneField('TiempoCambio', on_delete=models.CASCADE, verbose_name='Tiempo de Cambio', db_column='id_tiempo_cambio', blank=True, null=True)
+    valor = models.FloatField()
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa', blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    fecha_crea = models.DateField(auto_now_add=True)
+    tiempo_cambio = models.OneToOneField('TiempoCambio', on_delete=models.CASCADE, verbose_name='Tiempo de Cambio', db_column='id_tiempo_cambio', blank=True, null=True)
 
     class Meta:
         db_table = 'COSTO_SOBRE_TIEMPO'

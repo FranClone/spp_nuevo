@@ -10,9 +10,10 @@ from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
 from django.views.generic import View
 from django.http import JsonResponse, FileResponse, Http404
-from .models import UserProfile
+from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
+from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido
 import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
@@ -85,15 +86,8 @@ class Bar_chart(View):
 class Carga_sv(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        # se crea un cursor de la base de datos
-        cursor = conexion.cursor()
-        # se llama al procedimiento almacenado
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", [rut_empresa])
-        # se guardan los datos del pedido
-        rows = cursor.fetchall()
-        cursor.commit()
-        cursor.close()
+        rut_empresa = request.user.empresa.rut_empresa
+        rows = sel_pedido_empresa(rut_empresa)
         prioridades = ['Alta', 'Media', 'Baja', 'Eliminada']
         return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
@@ -113,10 +107,9 @@ def get_empresas(request):
     '''Esta vista es usada en el formulario de pedidos
     para que aparezca la busqueda del top 5 de empresas que correspondan al rut'''
     parte_rut = request.GET.get('parte_rut', '')
-    cursor = conexion.cursor()
-    cursor.execute("EXEC dbo.sel_empresa_like @parte_rut=?", parte_rut)
-    empresas = [row.nombre_empresa for row in cursor.fetchall()]
-    cursor.close()
+    empresas = []
+    if parte_rut:
+        empresas = sel_empresa_like(parte_rut)
     return JsonResponse({'empresas': empresas})
 
 class Home(View): 
@@ -127,14 +120,11 @@ class Home(View):
         producto_terminado = 1000
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
-        cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
-        #buscamos pedidos en base de datos
-        cursor.execute("EXEC dbo.sel_pedido_empresa @rut_empresa=?", [rut_empresa])
+        rut_empresa = request.user.empresa.rut_empresa
         #obtenemos datos
-        rows = cursor.fetchall()
+        rows = sel_pedido_empresa(rut_empresa)
         #datos para guardarlos en un diccionarios
-        column_names = [column[0] for column in cursor.description]
+        column_names = [field.attname for field in rows[0]._meta.fields]
         #método para convertir en diccionario compatible con JS para parsear en JSON
         def convert_to_dict(data):
             result = []
@@ -152,14 +142,12 @@ class Home(View):
         #aplicamos función
         result = convert_to_dict(rows)
         #en este for loop agregamos la duración de cada producto usando las fechas
-        cursor.execute("EXEC dbo.sel_pedido_productos_empresa @rut_empresa=?", [rut_empresa])
         #obtenemos todo el resultado
-        detalle = cursor.fetchall()
+        detalle = sel_pedido_productos_empresa(rut_empresa)
         #obtiene los nombres de las columnas
-        column_names = [column[0] for column in cursor.description]
+        column_names = [field.attname for field in detalle[0]._meta.fields]
         #convierte a diccionario, usando el anterior
         detalle = convert_to_dict(detalle)
-        cursor.close()
         for item in result:
             #agrega un atributo de duración al diccionario
             fecha_entrega = item.get("fecha_entrega")
@@ -206,7 +194,8 @@ class Home(View):
         fecha_entrega = None
         destino_pedido = None
         prioridad = None
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
+        rut = request.user.rut
 
         for i, fila in enumerate(hoja.iter_rows(values_only=True)):
             # Salta la primera fila
@@ -221,17 +210,12 @@ class Home(View):
                 fecha_entrega = fila[2]
                 destino_pedido = fila[3]
                 prioridad = fila[4]
-                cursor = conexion.cursor()
-                cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, request.user.username, prioridad))
-                cursor.commit()
-                cursor.close()
+                insertar_pedido(numero_pedido, destino_pedido ,fecha_recepcion, fecha_entrega, rut_empresa, rut, prioridad)
             # Si las dos últimas columnas están llenas, guardamos los valores en la base de datos utilizando
             if fila[5] and fila[6] != 'None':
                 producto_nombre = fila[5]
                 cantidad = fila[6]
-                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?)}", (producto_nombre, cantidad, fecha_entrega))
-                cursor.commit()  
-                cursor.close()
+                insertar_detalle_pedido(producto_nombre, cantidad, fecha_entrega)
             
         return redirect('home')
 
@@ -259,7 +243,7 @@ class Inventario_roll(View):
         #lista de clases diamétricas, desde 14 hasta 40
         clase_diametrica = list(range(14, 41, 2))
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", [rut_empresa])
         clas = cursor.fetchall()
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
@@ -354,13 +338,13 @@ class Pedido(View):
     template_name = 'pedido.html'
     @method_decorator(login_required)
     def get(self, request):
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         form = PedidoForm(rut_empresa)
         return render(request, self.template_name, {'form': form})
 
     @method_decorator(login_required)
     def post(self, request):
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         form = PedidoForm(rut_empresa, request.POST)
         if form.is_valid():
             cursor = conexion.cursor()
@@ -373,7 +357,7 @@ class Pedido(View):
             # id_bodega = form.cleaned_data['nombre_bodega']
             prioridad = form.cleaned_data['prioridad']
             # Ingresa Datos a Pedido
-            rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+            rut_empresa = request.user.empresa.rut_empresa
             cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, request.user.username, prioridad))
             cursor.commit()
             productos = request.POST.getlist('form-0-producto')
@@ -399,7 +383,7 @@ class Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
@@ -425,7 +409,7 @@ class Plan_Bodega(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):        
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
@@ -435,7 +419,7 @@ class Plan_Lineas(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
@@ -445,7 +429,7 @@ class Plan_Productos(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
@@ -455,7 +439,7 @@ class Plan_Rollizo(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         cursor = conexion.cursor()
-        rut_empresa = request.user.userprofile.rut_empresa.rut_empresa
+        rut_empresa = request.user.empresa.rut_empresa
         cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
         rows = cursor.fetchall()
         cursor.close()
