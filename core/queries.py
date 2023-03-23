@@ -56,11 +56,11 @@ def sel_rollizo_clasificado_empresa(rut_empresa):
     ).annotate(
         nombre_largo=F('nombre_largo'),
         largo=F('largo'),
-        id_largo=F('largo_id')
+        id_largo=F('rollizolargo_id')
     ).filter(
         rollizo__stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
     ).values(
-        'largo_id',
+        'rollizolargo_id',
         'nombre_largo',
         'largo',
         'cantidad'
@@ -71,20 +71,20 @@ def sel_rollizo_empresa(rut_empresa):
     rollizo_empresa = Rollizo.objects.filter(
         stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
     ).annotate(
-        id_linea=F('id_linea__id_linea'),
-        id_largo=F('id_largo__id_largo'),
+        id_linea=F('linea_id__id'),
+        id_largo=F('rollizolargo_id__id'),
         usuario_crea=F('usuario_crea__username'),
         fecha_crea=F('fecha_crea__date'),
         nombre_empresa=F('stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__nombre_empresa'),
         largo=F('id_largo__largo')
     ).values(
-        'id_rollizo',
+        'rollizo_id',
         'nombre_rollizo',
         'descripcion_rollizo',
-        'id_linea',
+        'linea_id',
         'stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa',
         'diametro',
-        'id_largo',
+        'rollizolargo_id',
         'usuario_crea',
         'fecha_crea',
         'nombre_empresa',
