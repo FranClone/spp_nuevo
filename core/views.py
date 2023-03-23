@@ -13,7 +13,7 @@ from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido
+from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa
 import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
@@ -242,13 +242,9 @@ class Inventario_roll(View):
     def get(self, request, *args, **kwargs):
         #lista de clases diamétricas, desde 14 hasta 40
         clase_diametrica = list(range(14, 41, 2))
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_rollizo_clasificado_empresa @rut_empresa=?", [rut_empresa])
-        clas = cursor.fetchall()
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
-        noclas = cursor.fetchall()
-        cursor.close()
+        clas = sel_rollizo_clasificado_empresa(rut_empresa)
+        noclas = sel_rollizo_empresa(rut_empresa)
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Inventario_roll_nc(View):

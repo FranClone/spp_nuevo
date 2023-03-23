@@ -1,9 +1,11 @@
 from datetime import datetime, timedelta
-from django.db.models import Q, Max
+from django.db.models import Q, Max, Sum, F
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
 from .modelos.detalle_pedido import DetallePedido
+from .modelos.rollizo_largo import RollizoLargo
+from .modelos.rollizo import Rollizo
 
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''
@@ -47,3 +49,45 @@ def insertar_detalle_pedido(detalle_producto, volumen_producto, fecha_entrega):
     pedido = Pedido.objects.get(id=id_pedido)
     detalle_pedido = DetallePedido(pedido_id=pedido, producto_id=id_producto, detalle_producto=detalle_producto, volumen_producto=volumen_producto, fecha_entrega=fecha_entrega)
     detalle_pedido.save()
+
+def sel_rollizo_clasificado_empresa(rut_empresa):
+    rollizo_largo = RollizoLargo.objects.annotate(
+        cantidad=Sum('rollizo__stock_rollizo__producto_corte__producto__stock_producto__cantidad')
+    ).annotate(
+        nombre_largo=F('nombre_largo'),
+        largo=F('largo'),
+        id_largo=F('largo_id')
+    ).filter(
+        rollizo__stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
+    ).values(
+        'largo_id',
+        'nombre_largo',
+        'largo',
+        'cantidad'
+    )
+    return rollizo_largo
+
+def sel_rollizo_empresa(rut_empresa):
+    rollizo_empresa = Rollizo.objects.filter(
+        stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
+    ).annotate(
+        id_linea=F('id_linea__id_linea'),
+        id_largo=F('id_largo__id_largo'),
+        usuario_crea=F('usuario_crea__username'),
+        fecha_crea=F('fecha_crea__date'),
+        nombre_empresa=F('stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__nombre_empresa'),
+        largo=F('id_largo__largo')
+    ).values(
+        'id_rollizo',
+        'nombre_rollizo',
+        'descripcion_rollizo',
+        'id_linea',
+        'stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa',
+        'diametro',
+        'id_largo',
+        'usuario_crea',
+        'fecha_crea',
+        'nombre_empresa',
+        'largo'
+    )
+    return rollizo_empresa
