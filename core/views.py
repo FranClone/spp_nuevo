@@ -13,7 +13,7 @@ from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa
+from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
 import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
@@ -354,16 +354,15 @@ class Pedido(View):
             prioridad = form.cleaned_data['prioridad']
             # Ingresa Datos a Pedido
             rut_empresa = request.user.empresa.rut_empresa
-            cursor.execute("{CALL dbo.ins_pedido(?, ?, ?, ?, ?, ?, ?)}", (numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, request.user.username, prioridad))
-            cursor.commit()
+            rut = request.user.rut
+            insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, rut, prioridad)
             productos = request.POST.getlist('form-0-producto')
             cantidades = request.POST.getlist('form-0-cantidad')
             for i in range(len(productos)):
                 # Ingresa Productos a DETALLE_PEDIDO
                 producto_nombre = productos[i]
                 cantidad = cantidades[i]
-                cursor.execute("{CALL dbo.ins_detalle_pedido(?, ?, ?)}", (producto_nombre, cantidad, fecha_entrega))
-                cursor.commit()
+                insertar_detalle_pedido(producto_nombre, cantidad, fecha_entrega)
             return redirect('home')
         return render(request, self.template_name, {'form': form})
 
@@ -378,11 +377,8 @@ class Pedido_Multiple(View):
 class Productos(View): 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = sel_bodega_empresa(rut_empresa)
         return render(request, 'productos.html', {"rows":rows})
 
 """class Register(View):
@@ -404,41 +400,29 @@ class Productos(View):
 class Plan_Bodega(View): 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):        
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", [rut_empresa])
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = sel_bodega_empresa(rut_empresa)
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
 
 class Plan_Lineas(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_linea_empresa @rut_empresa=?", [rut_empresa])
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = sel_linea_empresa(rut_empresa)
         return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
 
 class Plan_Productos(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_producto_empresa @rut_empresa=?", [rut_empresa])
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = sel_producto_empresa(rut_empresa)
         return render(request, 'planificador/planificador_productos.html', {'rows':rows})
 
 class Plan_Rollizo(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        cursor = conexion.cursor()
         rut_empresa = request.user.empresa.rut_empresa
-        cursor.execute("EXEC dbo.sel_rollizo_empresa @rut_empresa=?", [rut_empresa])
-        rows = cursor.fetchall()
-        cursor.close()
+        rows = sel_rollizo_empresa(rut_empresa)
         return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
 
 def get_data(request):

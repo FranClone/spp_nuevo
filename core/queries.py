@@ -6,6 +6,8 @@ from .modelos.empresa import Empresa
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.rollizo_largo import RollizoLargo
 from .modelos.rollizo import Rollizo
+from .modelos.bodega import Bodega
+from .modelos.linea import Linea
 
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''
@@ -52,15 +54,11 @@ def insertar_detalle_pedido(detalle_producto, volumen_producto, fecha_entrega):
 
 def sel_rollizo_clasificado_empresa(rut_empresa):
     rollizo_largo = RollizoLargo.objects.annotate(
-        cantidad=Sum('rollizo__stock_rollizo__producto_corte__producto__stock_producto__cantidad')
-    ).annotate(
-        nombre_largo=F('nombre_largo'),
-        largo=F('largo'),
-        id_largo=F('rollizolargo_id')
+        cantidad=Sum('rollizo__productocorte__producto__stockproducto__cantidad_m3')
     ).filter(
-        rollizo__stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
+        rollizo__productocorte__producto__stockproducto__bodega__empresa__rut_empresa=rut_empresa
     ).values(
-        'rollizolargo_id',
+        'id',
         'nombre_largo',
         'largo',
         'cantidad'
@@ -69,25 +67,48 @@ def sel_rollizo_clasificado_empresa(rut_empresa):
 
 def sel_rollizo_empresa(rut_empresa):
     rollizo_empresa = Rollizo.objects.filter(
-        stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa=rut_empresa
+        productocorte__producto__stockproducto__bodega__empresa__rut_empresa=rut_empresa
     ).annotate(
-        id_linea=F('linea_id__id'),
-        id_largo=F('rollizolargo_id__id'),
-        usuario_crea=F('usuario_crea__username'),
-        fecha_crea=F('fecha_crea__date'),
-        nombre_empresa=F('stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__nombre_empresa'),
-        largo=F('id_largo__largo')
+        id_linea=F('linea__id'),
+        id_largo=F('rollizo_largo__id'),
+        nombre_empresa=F('productocorte__producto__stockproducto__bodega__empresa__nombre_empresa'),
+        largo=F('rollizo_largo__largo')
     ).values(
-        'rollizo_id',
+        'id',
         'nombre_rollizo',
         'descripcion_rollizo',
-        'linea_id',
-        'stock_rollizo__producto_corte__producto__stock_producto__bodega__empresa__rut_empresa',
+        'id_linea',
+        'productocorte__producto__stockproducto__bodega__empresa__rut_empresa',
         'diametro',
-        'rollizolargo_id',
+        'id_largo',
         'usuario_crea',
         'fecha_crea',
         'nombre_empresa',
         'largo'
     )
     return rollizo_empresa
+
+def sel_bodega_empresa(rut_empresa):
+    bodegas = Bodega.objects.filter(empresa__rut_empresa=rut_empresa).annotate(
+        nombre_empresa=F('empresa__nombre_empresa'),
+    ).values(
+        'id',
+        'empresa__rut_empresa',
+        'nombre_bodega',
+        'descripcion_bodega',
+        'usuario_crea',
+        'fecha_crea',
+        'nombre_empresa'
+    )
+    return bodegas
+
+def sel_linea_empresa(rut_empresa):
+    lineas = Linea.objects.filter(rollizo__productocorte__producto__stockproducto__bodega__empresa__rut_empresa=rut_empresa)\
+                .annotate(nombre_empresa=F('rollizo__productocorte__producto__stockproducto__bodega__empresa__nombre_empresa'))\
+                .annotate(rut_empresa=F('rollizo__productocorte__producto__stockproducto__bodega__empresa__rut_empresa'))\
+                .values('id', 'rut_empresa', 'nombre_linea', 'descripcion_linea', 'usuario_crea', 'fecha_crea', 'nombre_empresa')
+    return lineas
+
+def sel_producto_empresa(rut_empresa):
+    queryset = Producto.objects.filter(empresa__rut_empresa=rut_empresa).annotate(nombre_empresa=F('empresa__nombre_empresa'))
+    return queryset
