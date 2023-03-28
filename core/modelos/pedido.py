@@ -13,7 +13,7 @@ class Pedido(models.Model):
     destino_pedido = models.CharField(max_length=300)
     fecha_recepcion = models.DateField()
     fecha_entrega = models.DateField()
-    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
+    cliente_empresa = models.ForeignKey('ClienteEmpresa', on_delete=models.CASCADE)
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
     estado_pedido = models.BooleanField()

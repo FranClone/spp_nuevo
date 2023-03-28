@@ -88,7 +88,7 @@ class Carga_sv(View):
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
         rows = sel_pedido_empresa(rut_empresa)
-        prioridades = ['Alta', 'Media', 'Baja', 'Eliminada']
+        prioridades = ['Alta', 'Media', 'Baja']
         return render(request, 'carga_servidor.html', {"rows":rows, "prioridades":prioridades})
 
 class DownloadExcel(View):
@@ -122,54 +122,25 @@ class Home(View):
         progress = (producto_terminado / producto_pedido)*100
         rut_empresa = request.user.empresa.rut_empresa
         #obtenemos datos
-        rows = sel_pedido_empresa(rut_empresa)
+        pedidos = sel_pedido_empresa(rut_empresa)
         #datos para guardarlos en un diccionarios
-        column_names = [field.attname for field in rows[0]._meta.fields]
-        #método para convertir en diccionario compatible con JS para parsear en JSON
-        def convert_to_dict(data):
-            result = []
-            for row in data:
-                row_dict = {}
-                for i, value in enumerate(row):
-                    if value is None:
-                        #transformamos None a "null", ya que None no existe en JavaScript
-                        value = "null"
-                    #guardamos valores en diccionario
-                    row_dict[column_names[i]] = value
-                #agregamos valores a diccionario
-                result.append(row_dict)
-            return result
-        #aplicamos función
-        result = convert_to_dict(rows)
-        #en este for loop agregamos la duración de cada producto usando las fechas
-        #obtenemos todo el resultado
-        detalle = sel_pedido_productos_empresa(rut_empresa)
-        #obtiene los nombres de las columnas
-        column_names = [field.attname for field in detalle[0]._meta.fields]
-        #convierte a diccionario, usando el anterior
-        detalle = convert_to_dict(detalle)
-        for item in result:
-            #agrega un atributo de duración al diccionario
-            fecha_entrega = item.get("fecha_entrega")
-            fecha_recepcion = item.get("fecha_recepcion")
-            if fecha_entrega and fecha_recepcion:
-                fecha_entrega = datetime.datetime.strptime(fecha_entrega, "%Y-%m-%d")
-                fecha_recepcion = datetime.datetime.strptime(fecha_recepcion, "%Y-%m-%d")
-                delta = fecha_entrega - fecha_recepcion
-                #asignación a la duración
-                item["duration"] = delta.days
-                item["producto"] = []
-                item["cantidad"] = []
-            #obtiene los productos, con su respectiva cantidad, al diccionario
-            for value in detalle:
-                if item.get("id_pedido") == value.get("id_pedido"):
-                    item["producto"].append(value.get("detalle_producto"))
-                    item["cantidad"].append(value.get("volumen_producto"))
-                    
-
-        #convertimos a json para que pueda ser leído por JS
-        result = json.dumps(result)
-        return render(request, 'home.html', {'progress': progress, 'result': result})
+        # Convertir los objetos de pedido a un diccionario
+        pedidos_list = []
+        for pedido in pedidos:
+            pedido_dict = {}
+            for key, value in pedido.items():
+                if isinstance(value, (datetime.date, datetime.datetime)):
+                    pedido_dict[key] = value.isoformat()
+                else:
+                    pedido_dict[key] = value
+            pedidos_list.append(pedido_dict)
+        pedidos_json = json.dumps(pedidos_list)
+        productos = sel_pedido_productos_empresa(rut_empresa)
+        productos_dict = [pedido for pedido in productos]
+        # Convertir el diccionario a formato JSON
+        productos_json = json.dumps(productos_dict)
+        
+        return render(request, 'home.html', {'progress': progress, 'pedidos': pedidos_json, 'productos': productos_json})
     
     @method_decorator(login_required) 
     def post(self, request, *args, **kwargs):

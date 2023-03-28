@@ -7,6 +7,7 @@ from django.forms.widgets import MultiWidget
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
+from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.costo_rollizo import CostoRollizo
 from .modelos.costo_sobre_tiempo import CostoSobreTiempo
 from .modelos.detalle_pedido import DetallePedido
@@ -258,6 +259,9 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
+class ClienteEmpresaAdmin(admin.ModelAdmin):
+    pass
+
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
     form = CostoRollizoAdminForm
@@ -287,9 +291,9 @@ class DetallePedidoAdmin(admin.ModelAdmin):
     form = DetallePedidoAdminForm
     list_display = ('get_producto','volumen_producto')
     def get_producto(self, obj):
-        return obj.producto_id.nombre_producto
+        return obj.producto.nombre_producto
     ordering = ('id',)
-    list_filter = ('pedido__empresa__nombre_empresa','pedido__numero_pedido', 'producto__nombre_producto')
+    #list_filter = ('pedido__cliente_empresa__empresa_oferente__nombre_empresa','pedido__numero_pedido', 'producto__nombre_producto')
     get_producto.short_description = 'Producto'
 
 class EmpresaAdmin(admin.ModelAdmin):
@@ -341,7 +345,7 @@ class PedidoAdmin(admin.ModelAdmin):
     list_display = ('numero_pedido', 'prioridad')
     ordering = ('id',)
     readonly_fields = ('usuario_crea',)
-    list_filter = ('empresa__nombre_empresa',)
+    #list_filter = ('cliente_empresa__empresa_oferente__nombre_empresa',)
 
 class PeriodoAdmin(admin.ModelAdmin):
     form = PeriodoAdminForm
@@ -432,6 +436,7 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
+admin.site.register(ClienteEmpresa, ClienteEmpresaAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
 admin.site.register(DetallePedido, DetallePedidoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)

@@ -12,9 +12,9 @@ class DetallePedido(models.Model):
     pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, verbose_name='Pedido')
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
     detalle_producto = models.CharField(max_length=300)
-    volumen_producto = models.CharField(max_length=10)
+    volumen_producto = models.FloatField(max_length=10)
     fecha_entrega = models.DateField()
-    estado_pedido_linea = models.IntegerField(blank=True, null=True)
+    estado_pedido_linea = models.BooleanField(blank=True, null=True)
 
     class Meta:
         db_table = 'DETALLE_PEDIDO'

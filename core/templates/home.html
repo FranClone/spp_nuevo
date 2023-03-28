@@ -67,7 +67,8 @@
     <div class="gantt-container">
         <div class="gantt-here" id="gantt_here"></div>
         <script>
-            var datos = {{ result|safe }};
+            var datos = {{ pedidos|safe }};
+            var datos2 = {{ productos|safe }}
             gantt.init("gantt_here");
             var data = [];
             var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];

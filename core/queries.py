@@ -16,8 +16,8 @@ def sel_pedido_empresa(rut_empresa):
     fecha_fin = fecha_actual + timedelta(days=30)
     
     pedidos = Pedido.objects.filter(
-        Q(empresa__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-    ).all()
+        Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+    ).values('id', 'numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad' )
     
     return pedidos
 
@@ -36,8 +36,8 @@ def sel_pedido_productos_empresa(rut_empresa):
     fecha_fin = fecha_actual + timedelta(days=30)
     
     pedidos = Pedido.objects.filter(
-        Q(rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-    ).values('id_pedido', 'detallepedido__detalle_producto', 'detallepedido__volumen_producto')
+        Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+    ).values('id', 'numero_pedido', 'detallepedido__detalle_producto', 'detallepedido__volumen_producto')
     
     return pedidos
 
