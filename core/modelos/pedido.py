@@ -23,6 +23,7 @@ class Pedido(models.Model):
         ('Baja', 'Baja'),
     ]
     prioridad = models.CharField(max_length=10, choices=PRIORIDAD_CHOICES)
+    productos = models.ManyToManyField('Producto', through='detallepedido')
 
     class Meta:
         db_table = 'PEDIDO'

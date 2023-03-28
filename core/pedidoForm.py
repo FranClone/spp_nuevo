@@ -12,7 +12,7 @@ class ProductoForm(forms.Form):
     def __init__(self, *args, rut_empresa=None, **kwargs):
         self.rut_empresa = rut_empresa
         super().__init__(*args, **kwargs)
-        data_productos = Producto.objects.filter(productosempresa__rut_empresa__rut_empresa=rut_empresa)
+        data_productos = Producto.objects.filter(productosempresa__empresa__rut_empresa=rut_empresa)
         choices = [(producto.nombre_producto, producto.nombre_producto) for producto in data_productos]
         self.fields['producto'] = forms.ChoiceField(choices=choices)
 

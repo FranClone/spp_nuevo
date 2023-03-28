@@ -56,7 +56,7 @@
                     </tr>
                     {% for nc in noclas %}
                     <tr>
-                        <td>{{nc.nombre_rollizo}}</td>
+                        <td>{{nc.nombre_inventario}}</td>
                         <td>
                             <select class="form-control-sm">
                         {% for cd in clase_diametrica %}
@@ -64,7 +64,7 @@
                         {% endfor %}
                             </select>
                         </td>    
-                        <td>{{nc.largo}}</td> 
+                        <td>{{nc.cant_m3}}</td> 
                     </tr>
                     {% endfor %}
                 </thead>

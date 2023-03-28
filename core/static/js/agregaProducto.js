@@ -8,7 +8,11 @@ $(document).ready(function() {
   // Remove the product form
   $("#product-table").on("click", function(event) {
     if ($(event.target).attr("id") === "remove-button") {
-      $(event.target).parent().parent().remove();
+      if ($("#product-table tr").length > 1) { // Verificar si hay más de un producto
+        $(event.target).parent().parent().remove();
+      } else {
+        alert("No puedes eliminar el único producto"); // Mostrar un mensaje de advertencia si solo hay un producto
+      }
     } 
   });
 

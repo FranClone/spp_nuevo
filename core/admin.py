@@ -12,6 +12,7 @@ from .modelos.costo_rollizo import CostoRollizo
 from .modelos.costo_sobre_tiempo import CostoSobreTiempo
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.empresa import Empresa
+from .modelos.inv_inicial_rollizo import InvInicialRollizo
 from .modelos.linea import Linea
 from .modelos.linea_hh_disponible import LineaHhDisponible
 from .modelos.patron_corte import PatronCorte
@@ -30,6 +31,9 @@ from asignaciones.models import UserProfile
 # Register your models here.
 correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
 
+class DetalleProductoInline(admin.TabularInline):
+    model = Pedido.productos.through
+    extra = 1
 
 class ProductoInline(admin.TabularInline):
     model = Empresa.productos.through
@@ -260,7 +264,11 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
 class ClienteEmpresaAdmin(admin.ModelAdmin):
-    pass
+    readonly_fields = ('usuario_crea',)
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
+        obj.save()
+
 
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
@@ -308,6 +316,12 @@ class EmpresaAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     list_filter = (EstadoEmpresaFilter,)
 
+class InvInicialRollizoAdmin(admin.ModelAdmin):
+    readonly_fields = ('usuario_crea',)
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
+        obj.save()
+
 class LineaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
@@ -339,6 +353,7 @@ class PatronCorteAdmin(admin.ModelAdmin):
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     form = PedidoAdminForm
+    inlines = (DetalleProductoInline,)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
@@ -440,6 +455,7 @@ admin.site.register(ClienteEmpresa, ClienteEmpresaAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
 admin.site.register(DetallePedido, DetallePedidoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)
+admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
 admin.site.register(Linea, LineaAdmin)
 admin.site.register(LineaHhDisponible, LineaHhDisponibleAdmin)
 admin.site.register(PatronCorte, PatronCorteAdmin)

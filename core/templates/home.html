@@ -75,15 +75,16 @@
             for (var i = 0; i < datos.length; i++) {
                 var fechaRecepcion = new Date(datos[i].fecha_recepcion);
                 var fechaEntrega = new Date(datos[i].fecha_entrega);
+                var duration = Math.round((fechaEntrega - fechaRecepcion)/86400000)
                 fecha_recepcion = fechaRecepcion.toLocaleDateString();
                 fecha_entrega = fechaEntrega.toLocaleDateString();
                 var color = colors[i % colors.length];
                 var item = {
                     id: i+1,
-                    custom_id: datos[i].id_pedido,
-                    text: "ID Pedido " + datos[i].id_pedido,
+                    custom_id: datos[i].id,
+                    text: "ID Pedido " + datos[i].id,
                     start_date: fecha_recepcion,
-                    duration: datos[i].duration,
+                    duration: duration,
                     color: color
                 };
             data.push(item);
@@ -110,15 +111,17 @@
                     table.appendChild(headerRow);
 
                     // Crear una fila por cada producto
-                    for (var i = 0; i < datos[id-1].producto.length; i++) {
-                        var row = document.createElement('tr');
-                        var productCell = document.createElement('td');
-                        var quantityCell = document.createElement('td');
-                        productCell.innerText = datos[id-1].producto[i];
-                        quantityCell.innerText = datos[id-1].cantidad[i];
-                        row.appendChild(productCell);
-                        row.appendChild(quantityCell);
-                        table.appendChild(row);
+                    for (var i = 0; i < datos2.length; i++) {
+                        if(datos[id-1].id === datos2[i].id){
+                            var row = document.createElement('tr');
+                            var productCell = document.createElement('td');
+                            var quantityCell = document.createElement('td');
+                            productCell.innerText = datos2[i].detalle_producto;
+                            quantityCell.innerText = datos2[i].volumen_producto;
+                            row.appendChild(productCell);
+                            row.appendChild(quantityCell);
+                            table.appendChild(row);
+                        }
                     }
                     var dias = task.duration === 1 ? " día" : " días";
                     var html =

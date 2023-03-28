@@ -3,6 +3,7 @@ from django.db.models import Q, Max, Sum, F
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
+from .modelos.inv_inicial_rollizo import InvInicialRollizo
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.rollizo_largo import RollizoLargo
 from .modelos.rollizo import Rollizo
@@ -37,7 +38,9 @@ def sel_pedido_productos_empresa(rut_empresa):
     
     pedidos = Pedido.objects.filter(
         Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-    ).values('id', 'numero_pedido', 'detallepedido__detalle_producto', 'detallepedido__volumen_producto')
+        ).annotate(detalle_producto = F('detallepedido__detalle_producto'),
+                   volumen_producto = F('detallepedido__volumen_producto')
+        ).values('id', 'numero_pedido', 'detalle_producto', 'volumen_producto')
     
     return pedidos
 
@@ -56,9 +59,10 @@ def sel_rollizo_clasificado_empresa(rut_empresa):
     rollizo_largo = RollizoLargo.objects.annotate(
         cantidad=Sum('rollizo__productocorte__producto__stockproducto__cantidad_m3')
     ).filter(
-        rollizo__productocorte__producto__stockproducto__bodega__empresa__rut_empresa=rut_empresa
+        rollizo__productocorte__producto__productosempresa__empresa__rut_empresa=rut_empresa
+    ).annotate(rollizo_id=(F('rollizo__id'))     
     ).values(
-        'id',
+        'rollizo_id',
         'nombre_largo',
         'largo',
         'cantidad'
@@ -66,25 +70,14 @@ def sel_rollizo_clasificado_empresa(rut_empresa):
     return rollizo_largo
 
 def sel_rollizo_empresa(rut_empresa):
-    rollizo_empresa = Rollizo.objects.filter(
-        productocorte__producto__stockproducto__bodega__empresa__rut_empresa=rut_empresa
-    ).annotate(
-        id_linea=F('linea__id'),
-        id_largo=F('rollizo_largo__id'),
-        nombre_empresa=F('productocorte__producto__stockproducto__bodega__empresa__nombre_empresa'),
-        largo=F('rollizo_largo__largo')
+    rollizo_empresa = InvInicialRollizo.objects.filter(
+        bodega__empresa__rut_empresa=rut_empresa
     ).values(
         'id',
-        'nombre_rollizo',
-        'descripcion_rollizo',
-        'id_linea',
-        'productocorte__producto__stockproducto__bodega__empresa__rut_empresa',
+        'nombre_inventario',
+        'descripcion_inventario',
         'diametro',
-        'id_largo',
-        'usuario_crea',
-        'fecha_crea',
-        'nombre_empresa',
-        'largo'
+        'cant_m3'
     )
     return rollizo_empresa
 
