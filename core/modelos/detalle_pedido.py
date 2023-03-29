@@ -6,13 +6,13 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from django.core.validators import MinValueValidator
 
 class DetallePedido(models.Model):
     pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, verbose_name='Pedido')
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
     detalle_producto = models.CharField(max_length=300)
-    volumen_producto = models.FloatField(max_length=10)
+    volumen_producto = models.FloatField(max_length=10, validators=[MinValueValidator(0)])
     fecha_entrega = models.DateField()
     estado_pedido_linea = models.BooleanField(blank=True, null=True)
 

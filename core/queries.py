@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from django.db.models import Q, Max, Sum, F
+from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
@@ -39,14 +40,35 @@ def sel_pedido_productos_empresa(rut_empresa):
     pedidos = Pedido.objects.filter(
         Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
         ).annotate(detalle_producto = F('detallepedido__detalle_producto'),
-                   volumen_producto = F('detallepedido__volumen_producto')
-        ).values('id', 'numero_pedido', 'detalle_producto', 'volumen_producto')
+                   volumen_producto = F('detallepedido__volumen_producto'),
+                   nombre_producto = F('detallepedido__producto__nombre_producto')
+        ).values('id', 'numero_pedido', 'detalle_producto', 'volumen_producto', 'nombre_producto')
     
     return pedidos
 
-def insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, usuario_crea, prioridad):
-    pedido = Pedido(numero_pedido=numero_pedido, destino_pedido=destino_pedido, fecha_recepcion=fecha_recepcion, fecha_entrega=fecha_entrega, rut_empresa=rut_empresa, usuario_crea=usuario_crea, prioridad=prioridad)
-    pedido.save()
+def insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa_oferente, rut_empresa_cliente, usuario_crea, prioridad):
+    # Buscar las empresas por su rut
+    empresa_oferente = Empresa.objects.get(rut=rut_empresa_oferente)
+    empresa_cliente = Empresa.objects.get(rut=rut_empresa_cliente)
+
+    # Crear un nuevo ClienteEmpresa
+    cliente_empresa = ClienteEmpresa.objects.create(
+        empresa_oferente=empresa_oferente,
+        empresa_cliente=empresa_cliente,
+        usuario_crea=usuario_crea
+    )
+
+    # Crear un nuevo Pedido
+    pedido = Pedido.objects.create(
+        numero_pedido=numero_pedido,
+        destino_pedido=destino_pedido,
+        fecha_recepcion=fecha_recepcion,
+        fecha_entrega=fecha_entrega,
+        usuario_crea=usuario_crea,
+        prioridad=prioridad,
+        cliente_empresa=cliente_empresa
+    )
+    
 
 def insertar_detalle_pedido(detalle_producto, volumen_producto, fecha_entrega):
     id_pedido = Pedido.objects.aggregate(Max('id'))['id__max']

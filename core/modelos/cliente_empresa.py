@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 
 class ClienteEmpresa(models.Model):
     empresa_oferente = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='oferente')
@@ -14,3 +15,7 @@ class ClienteEmpresa(models.Model):
 
     def __str__(self):
         return self.empresa_cliente.nombre_empresa
+    
+    def clean(self):
+        if self.empresa_oferente == self.empresa_cliente:
+            raise ValidationError("La empresa oferente y la empresa cliente deben ser distintas.")

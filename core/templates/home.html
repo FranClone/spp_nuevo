@@ -43,14 +43,14 @@
                 <label class="label-carga-masiva" for="carga-masiva">Carga Masiva
                     <input class="btn-select-file" id="carga-masiva" type="file" name="carga-masiva">
                 </label>
+                <div class="carga-micro">
+                    <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar a BD">
+                    <form action="{% url 'download_file' %}" method="get">
+                        <input class="label-carga-mini" type="submit" value="Descargar Formato" name="download">
+                    </form>
+                    <img id="icono_excel" src= "{% static 'img/icono_excel.png' %}" width="40" alt="">
+                </div>
             </form>
-            <div class="carga-micro">
-                <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar a BD">
-                <form action="{% url 'download_file' %}" method="get">
-                    <input class="label-carga-mini" type="submit" value="Descargar Formato" name="download">
-                </form>
-                <img id="icono_excel" src= "{% static 'img/icono_excel.png' %}" width="40" alt="">
-            </div>
         </div>
         <label class="label-carga-individual" for="carga-individual">Carga Individual
             <script>
@@ -116,7 +116,7 @@
                             var row = document.createElement('tr');
                             var productCell = document.createElement('td');
                             var quantityCell = document.createElement('td');
-                            productCell.innerText = datos2[i].detalle_producto;
+                            productCell.innerText = datos2[i].nombre_producto;
                             quantityCell.innerText = datos2[i].volumen_producto;
                             row.appendChild(productCell);
                             row.appendChild(quantityCell);

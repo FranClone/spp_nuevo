@@ -263,6 +263,8 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
+
+
 class ClienteEmpresaAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     def save_model(self, request, obj, form, change):

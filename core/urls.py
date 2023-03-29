@@ -1,3 +1,8 @@
+"""Este módulo mapea las URLs a las vistas (views) en la aplicación Django. Define un set de patrones que se matchean con 
+las urls entrantes y las mapea hacia su vista específica. El propósito de este módulo es permitir mapear las 
+URLs a la vistas que deberían manejar esas URLs. Debe trabajar en conjunto con views.py para manejar las 
+solicitudes HTTP y determinar que hacer con esas request (solicitudes).
+"""
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path

@@ -314,7 +314,6 @@ class Pedido(View):
         rut_empresa = request.user.empresa.rut_empresa
         form = PedidoForm(rut_empresa, request.POST)
         if form.is_valid():
-            cursor = conexion.cursor()
             numero_pedido = form.cleaned_data['numero_pedido']
             fecha_recepcion = form.cleaned_data['fecha_recepcion']
             fecha_recepcion = datetime.datetime.combine(fecha_recepcion, datetime.time.min)
@@ -342,7 +341,7 @@ class Pedido_Multiple(View):
 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        form = PedidoForm()
+        form = PedidoForm(request=request)
         return render(request, self.template_name, {'form': form})
 
 class Productos(View): 

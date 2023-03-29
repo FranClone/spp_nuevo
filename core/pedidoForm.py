@@ -2,6 +2,7 @@ from django import forms
 from django.forms import formset_factory
 from datetime import datetime
 from .modelos.producto import Producto
+from .modelos.empresa import Empresa
 import pyodbc, os, re
 
 class ProductoForm(forms.Form):
@@ -30,17 +31,11 @@ class PedidoForm(forms.Form):
     fecha_entrega = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
     destino_pedido = forms.CharField(max_length=100)
     prioridad = forms.ChoiceField(choices=(('Alta','Alta'), ('Media', 'Media'), ('Baja', 'Baja'), ('Eliminada', 'Eliminada')))
+    cliente = forms.ChoiceField()
     def __init__(self, rut_empresa, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.rut_empresa = rut_empresa
         self.productos = ProductoFormSet(form_kwargs={'rut_empresa': self.rut_empresa})
-        """conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
-        cursor = conexion.cursor()
-        cursor.execute("EXEC dbo.sel_bodega_empresa @rut_empresa=?", os.environ.get('RUT_EMPRESA'))
-        data_bodegas = cursor.fetchall()
-        choices = [(bodega.id_bodega, bodega.nombre_bodega) for bodega in data_bodegas]
-        self.fields['nombre_bodega'] = forms.ChoiceField(choices=choices)"""
-    
 
     def clean(self):
         cleaned_data = super().clean()
@@ -60,3 +55,10 @@ class PedidoForm(forms.Form):
                 self.add_error("fecha_entrega", "La fecha de entrega no puede ser menor al día de hoy")
             if numero_pedido < 0:
                 self.add_error("numero_pedido", "El número de pedido no puede ser negativo")
+
+    def clean_cliente(self):
+        cliente = self.cleaned_data['cliente']
+        empresas = Empresa.objects.exclude(rut=self.rut_empresa)
+        if cliente not in empresas:
+            raise forms.ValidationError("Seleccione un cliente válido.")
+        return cliente

@@ -31,6 +31,9 @@ ALLOWED_HOSTS = []
 
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'core\media')
+MEDIA_URL = '/core/media/'
+
 # Application definition
 
 INSTALLED_APPS = [
