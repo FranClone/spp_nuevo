@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta
-from django.db.models import Q, Max, Sum, F
+from django.db.models import Q, Max, Sum, F, Count
 from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
@@ -11,6 +11,15 @@ from .modelos.rollizo import Rollizo
 from .modelos.bodega import Bodega
 from .modelos.linea import Linea
 
+def sel_cliente_admin(rut_empresa):
+    '''Querie para la vista Administración'''
+    clientes = ClienteEmpresa.objects.filter(empresa_oferente__rut_empresa=rut_empresa
+        ).annotate(cantidad_pedidos=Count('pedido'),
+                  nombre_cliente=F('empresa_cliente__nombre_empresa'),
+                  correo_cliente=F('empresa_cliente__correo_empresa'),
+        ).values('id', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'cantidad_pedidos')
+    return clientes
+
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''
     fecha_actual = datetime.now()
@@ -19,7 +28,8 @@ def sel_pedido_empresa(rut_empresa):
     
     pedidos = Pedido.objects.filter(
         Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-    ).values('id', 'numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad' )
+    ).annotate(cliente=F('cliente_empresa__empresa_cliente__nombre_empresa')        
+    ).values('id', 'cliente', 'numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad' )
     
     return pedidos
 
@@ -68,7 +78,6 @@ def insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entreg
         prioridad=prioridad,
         cliente_empresa=cliente_empresa
     )
-    
 
 def insertar_detalle_pedido(detalle_producto, volumen_producto, fecha_entrega):
     id_pedido = Pedido.objects.aggregate(Max('id'))['id__max']
@@ -82,9 +91,15 @@ def sel_rollizo_clasificado_empresa(rut_empresa):
         cantidad=Sum('rollizo__productocorte__producto__stockproducto__cantidad_m3')
     ).filter(
         rollizo__productocorte__producto__productosempresa__empresa__rut_empresa=rut_empresa
-    ).annotate(rollizo_id=(F('rollizo__id'))     
+    ).annotate(rollizo_id=F('rollizo__id'),
+               descripcion_rollizo=F('rollizo__descripcion_rollizo'),
+               linea_id=F('rollizo__linea__id'),
+               diametro=F('rollizo__diametro')     
     ).values(
         'rollizo_id',
+        'descripcion_rollizo',
+        'linea_id',
+        'diametro',
         'nombre_largo',
         'largo',
         'cantidad'
@@ -127,3 +142,10 @@ def sel_linea_empresa(rut_empresa):
 def sel_producto_empresa(rut_empresa):
     queryset = Producto.objects.filter(empresa__rut_empresa=rut_empresa).annotate(nombre_empresa=F('empresa__nombre_empresa'))
     return queryset
+
+def sel_cliente(rut_empresa):
+    empresa_oferente = Empresa.objects.get(rut_empresa=rut_empresa) # rut de la empresa oferente en cuestión
+    cliente_empresa = ClienteEmpresa.objects.filter(empresa_oferente=empresa_oferente)
+    pedidos_por_cliente = Pedido.objects.filter(cliente_empresa__in=cliente_empresa).values('cliente_empresa__empresa_cliente').annotate(total_pedidos=Count('rut_empresa'))
+
+    return pedidos_por_cliente

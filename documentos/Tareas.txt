@@ -1,0 +1,3 @@
+Hacer el admin para cada empresa
+Arreglar carga masiva
+Editar carga individual

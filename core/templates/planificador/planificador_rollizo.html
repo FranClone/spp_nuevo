@@ -26,14 +26,14 @@
                         <th>Clase Diamétrica</th>
                         <th>Largo Rollizo</th>
                     </tr>
-                    {% for row in rows %}
+                    {% for rollizo in rows %}
                     <tr>
-                        <td>{{row.id}}</td>
-                        <td>{{row.nombre_rollizo}}</td>
-                        <td>{{row.descripcion_rollizo}}</td>
-                        <td>{{row.id_linea}}</td>
-                        <td>{{row.diametro}}</td>
-                        <td>{{row.largo}}</td>
+                        <td>{{rollizo.rollizo_id}}</td>
+                        <td>{{rollizo.nombre_largo}}</td>
+                        <td>{{rollizo.descripcion_rollizo}}</td>
+                        <td>{{rollizo.linea_id}}</td>
+                        <td>{{rollizo.diametro}}</td>
+                        <td>{{rollizo.largo}}</td>
                     </tr>
                     {% endfor %}
                 </thead>

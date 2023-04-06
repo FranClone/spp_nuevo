@@ -6,6 +6,7 @@ class ClienteEmpresa(models.Model):
     empresa_cliente = models.ForeignKey('Empresa', on_delete=models.CASCADE, related_name='cliente')
     fecha_crea = models.DateField(auto_now_add=True)
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    estado_cliente = models.BooleanField(default=True)
 
     class Meta:
         db_table = 'CLIENTE_EMPRESA'

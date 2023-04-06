@@ -13,7 +13,7 @@ from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
-from .queries import sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
+from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
 import pyodbc, json, os, datetime, openpyxl, bleach
 
 # se intenta conectar a la base de datos
@@ -63,10 +63,9 @@ def cliente_required(function=None):
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
-        context={
-
-        }
-        return render(request, 'administracion.html', context) 
+        rut_empresa = request.user.empresa.rut_empresa
+        rows = sel_cliente_admin(rut_empresa)
+        return render(request, 'administracion.html', {"rows":rows}) 
 
 class Bar_chart(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
@@ -264,7 +263,7 @@ class Login(View):
         #SIEMPRE llamar a authenticate, aunque no haya username que corresponda
         #Con el RUT, ya que AXES se activa al llamar a authenticate
         if user_profile is not None:
-            username = user_profile.user.username
+            username = user_profile.username
             user = authenticate(request, username=username, password=password)
         else:
             form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
@@ -392,7 +391,7 @@ class Plan_Rollizo(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_rollizo_empresa(rut_empresa)
+        rows = sel_rollizo_clasificado_empresa(rut_empresa)
         return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
 
 def get_data(request):

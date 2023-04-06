@@ -71,7 +71,7 @@
             var datos2 = {{ productos|safe }}
             gantt.init("gantt_here");
             var data = [];
-            var colors = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink'];
+            var colors = ['red', 'orange', 'brown', 'green', 'blue', 'purple', 'pink'];
             for (var i = 0; i < datos.length; i++) {
                 var fechaRecepcion = new Date(datos[i].fecha_recepcion);
                 var fechaEntrega = new Date(datos[i].fecha_entrega);
@@ -82,7 +82,7 @@
                 var item = {
                     id: i+1,
                     custom_id: datos[i].id,
-                    text: "ID Pedido " + datos[i].id,
+                    text: "Pedido N° " + datos[i].numero_pedido,
                     start_date: fecha_recepcion,
                     duration: duration,
                     color: color

@@ -3,7 +3,7 @@ from django.forms import formset_factory
 from datetime import datetime
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
-import pyodbc, os, re
+import re
 
 class ProductoForm(forms.Form):
     #Se obtienen los productos desde un desplegable

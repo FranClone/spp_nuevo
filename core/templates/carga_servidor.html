@@ -30,9 +30,9 @@
                     {% for row in rows %}
                     <tr>
                         <td><a href="">{{row.numero_pedido}}</a></td>
-                        <td>Cliente X</td>
-                        <td><input type="date" id="start" name="trip-start" value={{row.numero_pedido}}></td>
-                        <td><input type="date" id="start" name="trip-start" value={{row.numero_pedido}}></td> 
+                        <td>{{row.cliente}}</td>
+                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_recepcion|date:'Y-m-d'}}></td>
+                        <td><input type="date" id="start" name="trip-start" value={{row.fecha_entrega|date:'Y-m-d'}}></td> 
                         <td>
                             <select id="mySelect">
                                 {% for prioridad in prioridades %}

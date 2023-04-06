@@ -263,8 +263,6 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
-
-
 class ClienteEmpresaAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     def save_model(self, request, obj, form, change):
@@ -297,15 +295,6 @@ class UserProfileAdmin(UserAdmin):
     fieldsets = ((None, {'fields': ('rut', 'empresa')}),) + UserAdmin.fieldsets
     list_display = ('rut', 'username', 'email', 'first_name', 'last_name', 'is_staff')
 
-class DetallePedidoAdmin(admin.ModelAdmin):
-    form = DetallePedidoAdminForm
-    list_display = ('get_producto','volumen_producto')
-    def get_producto(self, obj):
-        return obj.producto.nombre_producto
-    ordering = ('id',)
-    #list_filter = ('pedido__cliente_empresa__empresa_oferente__nombre_empresa','pedido__numero_pedido', 'producto__nombre_producto')
-    get_producto.short_description = 'Producto'
-
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
     form = EmpresaForm
@@ -313,8 +302,8 @@ class EmpresaAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    list_display = ('rut_empresa', 'nombre_empresa')
-    ordering = ('rut_empresa',)
+    list_display = ('__str__', 'rut_empresa')
+    ordering = ('nombre_empresa',)
     readonly_fields = ('usuario_crea',)
     list_filter = (EstadoEmpresaFilter,)
 
@@ -455,7 +444,6 @@ admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
 admin.site.register(ClienteEmpresa, ClienteEmpresaAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
-admin.site.register(DetallePedido, DetallePedidoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
 admin.site.register(Linea, LineaAdmin)
