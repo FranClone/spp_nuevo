@@ -350,7 +350,7 @@ class Productos(View):
         rows = sel_bodega_empresa(rut_empresa)
         return render(request, 'productos.html', {"rows":rows})
 
-"""class Register(View):
+class Register(View):
     def get(self, request):
         form = CustomUserCreationForm()
         
@@ -364,7 +364,7 @@ class Productos(View):
             rut_empresa = form.cleaned_data.get('rut_empresa')
             UserProfile.objects.create(user=user, rut=rut, rut_empresa=rut_empresa.rut_empresa)
             return redirect('login')
-        return render(request, 'register.html', {'form': form})"""
+        return render(request, 'register.html', {'form': form})
 
 class Plan_Bodega(View): 
     @method_decorator(login_required)

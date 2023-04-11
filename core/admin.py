@@ -1,9 +1,11 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserChangeForm
-from django.utils.safestring import mark_safe
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.forms import ModelChoiceField
 from django.forms.widgets import MultiWidget
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
@@ -284,6 +286,19 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # se filtra por empresa
     list_filter = ('empresa__nombre_empresa',)
 
+class EmpresaChoiceField(ModelChoiceField):
+    def label_from_instance(self, obj):
+        return obj.nombre
+
+class UserProfileCreationForm(UserCreationForm):
+    rut = forms.CharField(widget=RutWidget(), label='RUT')
+    empresa = EmpresaChoiceField(queryset=Empresa.objects.all(), label='Empresa')
+
+    class Meta:
+        model = UserProfile
+        fields = ('username', 'rut', 'empresa', 'password1', 'password2', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')
+
+
 class UserProfileChangeForm(UserChangeForm):
     rut = forms.CharField(widget=RutWidget(), label='RUT')
 
@@ -291,12 +306,21 @@ class UserProfileChangeForm(UserChangeForm):
         model = UserProfile
 
 class UserProfileAdmin(UserAdmin):
+    add_form = UserProfileCreationForm
     form = UserProfileChangeForm
-    fieldsets = ((None, {'fields': ('rut', 'empresa')}),) + UserAdmin.fieldsets
+    fieldsets = (
+        (None, {'fields': ('username', 'rut', 'empresa', 'password')}),
+        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
+        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
     list_display = ('rut', 'username', 'email', 'first_name', 'last_name', 'is_staff')
 
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
+    def has_permission(self, request):
+        # Verificar si el usuario es un superusuario
+        return request.user.is_superuser
     form = EmpresaForm
     inlines = (ProductoInline,)
     def save_model(self, request, obj, form, change):

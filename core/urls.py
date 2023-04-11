@@ -6,7 +6,7 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Pedido_Multiple, Productos, DownloadExcel
+from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Pedido_Multiple, Productos, Register, DownloadExcel
 from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
 from .views import get_empresas, get_data
 
@@ -28,7 +28,7 @@ urlpatterns = [
     path('pedido/', Pedido.as_view(), name = "pedido"),
     path('pedido_multiple/', Pedido_Multiple.as_view(), name = "pedido_multiple"),
     path('productos/', Productos.as_view(), name = "productos"),
-    ##path('register/',Register.as_view(), name="register"),
+    path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_bodega/', Plan_Bodega.as_view(), name = "plan_bodega"),
     path('planificador_lineas/', Plan_Lineas.as_view(), name = "plan_lineas"),
