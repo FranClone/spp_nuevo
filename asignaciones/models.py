@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from core.validators import validate_rut
 from core.modelos.empresa import Empresa

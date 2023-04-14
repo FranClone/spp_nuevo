@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
 from django.forms import ModelChoiceField
 from django.forms.widgets import MultiWidget
 from django.utils.safestring import mark_safe
@@ -286,35 +286,35 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # se filtra por empresa
     list_filter = ('empresa__nombre_empresa',)
 
-class EmpresaChoiceField(ModelChoiceField):
-    def label_from_instance(self, obj):
-        return obj.nombre
-
 class UserProfileCreationForm(UserCreationForm):
     rut = forms.CharField(widget=RutWidget(), label='RUT')
-    empresa = EmpresaChoiceField(queryset=Empresa.objects.all(), label='Empresa')
 
     class Meta:
         model = UserProfile
-        fields = ('username', 'rut', 'empresa', 'password1', 'password2', 'first_name', 'last_name', 'email', 'is_staff', 'is_active', 'is_superuser', 'groups', 'user_permissions')
-
-
-class UserProfileChangeForm(UserChangeForm):
-    rut = forms.CharField(widget=RutWidget(), label='RUT')
-
-    class Meta(UserChangeForm.Meta):
-        model = UserProfile
+        fields = ('username', 'rut', 'empresa')
+        help_texts = {
+            'username': '30 caracteres o menos. Letras, números y @/./+/-/_ solamente.',
+            'password1': '<ul class="password-help"><li>La contraseña no puede ser demasiado similar a su otro información personal.</li><li>La contraseña debe contener al menos 8 caracteres.</li><li>La contraseña no puede ser una contraseña comúnmente utilizada.</li><li>La contraseña no puede ser completamente numérica.</li></ul>',
+            'rut': 'Ingrese su rut',
+            'empresa': 'Ingrese su empresa'
+        }
 
 class UserProfileAdmin(UserAdmin):
     add_form = UserProfileCreationForm
-    form = UserProfileChangeForm
-    fieldsets = (
-        (None, {'fields': ('username', 'rut', 'empresa', 'password')}),
-        (_('Personal info'), {'fields': ('first_name', 'last_name', 'email')}),
-        (_('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
-        (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': ('username', 'rut', 'empresa', 'password1', 'password2', ),
+        }),
     )
-    list_display = ('rut', 'username', 'email', 'first_name', 'last_name', 'is_staff')
+    #form = UserProfileChangeForm
+    fieldsets = (
+        (None, {'fields': ('username', 'password')}),
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+    )
+    change_password_form = AdminPasswordChangeForm
 
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
