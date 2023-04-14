@@ -14,3 +14,4 @@ class AbastecimientoRollizo(models.Model):
         
     def __str__(self):
         return str(self.id_abastecimiento)
+ # Hola
