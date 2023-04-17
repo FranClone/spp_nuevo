@@ -1,0 +1,21 @@
+Cuentas de usuario SPP:
+
+1- Cristopher Quintana
+
+    user: 19334407-0
+    pass: gelatina20!
+
+2.- Nicolás Loyola
+
+    user: 
+    pass:
+
+3.- Marcelo Becar
+
+    user: 
+    pass: 
+
+4.- Cristian Oliva
+
+    user: 
+    pass: 

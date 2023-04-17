@@ -139,7 +139,7 @@ li {
 }
 
 .footer {
-    color:rgb(255, 255, 255);
+    color: rgb(255, 255, 255);
     text-align: center;
 }
 
@@ -248,12 +248,12 @@ li {
     padding: 15px;
     margin-right: 10px;
     border-radius: 10px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.label-carga-masiva:hover{
+.label-carga-masiva:hover {
     background: #d20000;
-    color:antiquewhite ;
+    color: antiquewhite;
     transition: 0.3s;
 }
 
@@ -267,12 +267,12 @@ li {
     padding: 7px;
     margin-right: 10px;
     border-radius: 7px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.label-carga-mini:hover{
+.label-carga-mini:hover {
     background: rgb(222, 126, 0);
-    color:antiquewhite ;
+    color: antiquewhite;
     transition: 0.3s;
 }
 
@@ -285,12 +285,12 @@ li {
     font-size: 20px;
     padding: 15px;
     border-radius: 10px;
-    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3) ;
+    box-shadow: 0 1px 0 rgba(0, 0, 0, 0.3);
 }
 
-.label-carga-individual:hover{
+.label-carga-individual:hover {
     background: #d20000;
-    color:antiquewhite ;
+    color: antiquewhite;
     transition: 0.3s;
 }
 
@@ -344,9 +344,12 @@ li {
     transform: scaleX(1);
 }
 
+
+/* estilos login */
+
 .login-box {
-    width: 250px;
-    height: 420px;
+    width: 20%;
+    height: 60%;
     background: #000;
     color: #fff;
     top: 50%;
@@ -365,7 +368,7 @@ li {
     border-radius: 50%;
     position: absolute;
     top: -50px;
-    left: calc(50% - 50px); 
+    left: calc(50% - 50px);
 }
 
 .login-box h1 {
