@@ -7,8 +7,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Pedido_Multiple, Productos, Register, DownloadExcel
-from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo
+from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo, Dashboard 
 from .views import get_empresas, get_data
+
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -35,5 +36,7 @@ urlpatterns = [
     path('planificador_productos/', Plan_Productos.as_view(), name = "plan_productos"),
     path('planificador_rollizo/', Plan_Rollizo.as_view(), name = "plan_rollizo"),
     # url para desplegar el bar chart vertical
-    path('get-data/', get_data, name='get-data')
+    path('get-data/', get_data, name='get-data'),
+    path('dashboard/', Dashboard.as_view(), name = "dashboard")
+
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

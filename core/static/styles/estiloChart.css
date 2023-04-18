@@ -1,14 +1,117 @@
-/* {
-    % load static %
-} */
+/* ----------------------------------- GERMAN ---------------------------*/
 
 body {
     margin: 0;
     padding: 0;
-    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/header-bg2.jpg') no-repeat center top;
+    background: linear-gradient(rgba(41, 38, 38, 0.5), rgba(0, 0, 0, 0.5)), url('../img/header-bg2.jpg') no-repeat center top;
     background-size: cover;
     font-family: sans-serif;
-    height: 100vh;
+    height: 100%;
+}
+
+html {
+  padding: 20px;
+  font-weight: 300;
+}
+
+/* ----Main----------*/
+.master {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 20px;
+    color: #fff;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #000;
+    font-size: 1.4em;
+    margin: 2px;
+    text-align: left;
+    display: block;
+    align-self: flex-start;
+}
+
+
+hr {
+    border-color: white;
+    margin: 10px 0;
+}
+
+figure {
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.637);
+    padding: 30px 10% 35%;
+    padding-top: 2%;
+    text-align: right;
+    display: flex; /* Agregado */
+    justify-content: right; /* Agregado */
+    align-items: center; /* Agregado */
+    margin-top: 0; /* Eliminar el margin-top anterior */
+    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
+    border-radius: 20px;
+}
+
+#modelsChart {
+    width:800%;
+    margin: 5px auto 0;
+    display: block;
+}
+
+#modelsChart canvas {
+    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
+}
+
+[class*='cols'] {
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.cols-1 > * {
+    width: 50%;
+    margin: 10px;
+}
+
+.cols-2 > * {
+    width: 50%;
+    margin: 10px
+}
+
+
+@media  (max-width: 200px) {
+
+    main {
+        padding: 10%;
+    }
+
+    h1 {
+        font-size: 2.1em;
+        font-weight: 100;
+    }
+
+    [class*='cols'] {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .cols-2 > * {
+        width: 50%;
+    }
+}
+
+.footer {
+    color:rgb(255, 255, 255);
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
 
 li {
@@ -138,11 +241,7 @@ li {
     background-color: red;
 }
 
-.footer {
-    color:rgb(255, 255, 255);
-    text-align: center;
-    margin-top: 10px;
-}
+
 
 .form-carga-individual {
     background: white;
@@ -164,74 +263,7 @@ li {
     margin-bottom: 5px;
 }
 
-.gantt-here {
-    margin: 0 auto;
-    text-align: center;
-    width: 90%;
-    height: 400px;
-}
 
-.gantt_popup_text {
-    margin-bottom: 0;
-    padding-bottom: 0;
-}
-
-.gantt_modal_table {
-    max-width: 100%;
-    width: 100%;
-    margin: 0 auto;
-    border-collapse: collapse;
-    font-size: 1.2em;
-    padding: 5px;
-}
-
-.gantt_modal_table td,
-.gantt_modal_table th {
-    padding: 0.5em;
-    border: 1px solid black;
-    width: 50%
-}
-
-.gantt_modal_table th {
-    background-color: #B3D9D9;
-}
-
-.gantt_modal_table td {
-    background-color: #E0F7FA;
-}
-
-.gantt_popup_text span {
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: none;
-    text-align: left;
-    width: 400px;
-    margin: 0 auto;
-}
-
-.gantt_popup_text span p h2 {
-    font-size: 24px;
-    margin-bottom: 10px;
-}
-
-.gantt_popup_text span p {
-    font-size: 18px;
-    margin-bottom: 10px;
-}
-
-.gantt_popup_button {
-    background-color: #fb5807db;
-    border: none;
-    box-shadow: none;
-    color: #fff;
-    font-size: 18px;
-    width: 100px;
-    height: 30px;
-}
-
-.gantt_popup_button:hover {
-    background-color: #fd0202;
-}
 
 .h1-carga-individual {
     color: white;
