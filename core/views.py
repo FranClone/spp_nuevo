@@ -8,13 +8,14 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
 from django.utils.decorators import method_decorator
-from django.views.generic import View
+from django.views.generic import View,TemplateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .pedidoForm import PedidoForm
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
 import pyodbc, json, os, datetime, openpyxl, bleach
+from django.http import JsonResponse
 
 # se intenta conectar a la base de datos
 try:
@@ -418,3 +419,13 @@ def my_view(request):
     # crea una variable de progreso y la envía a 'home.html'
     progress = 0
     return render(request, 'home.html', {'progress': progress})
+
+class Dashboard(View): 
+    """Esta clase define la vista Index"""
+    def get(self, request, *args, **kwargs):
+        context={
+
+        }
+
+        return render(request, 'dashboard.html', context)
+
