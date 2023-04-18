@@ -2,8 +2,10 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
-from django.forms import ModelChoiceField
+from django.db.models import Q
+from django.forms.widgets import TextInput
 from django.forms.widgets import MultiWidget
+from django.http import Http404
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
@@ -61,15 +63,17 @@ class RutWidget(MultiWidget):
     def render(self, name, value, attrs=None, renderer=None):
         rendered_widgets = []
         decompressed_value = self.decompress(value)
-        readonly = value is not None #verifica si existe un valor en el input
+        readonly = value is not None and 'readonly' in attrs.get('class', '') #verifica si existe un valor en el input y si el atributo readonly ya se encuentra en la clase de los atributos
+
         for i, widget in enumerate(self.widgets):
             widget_value = decompressed_value[i] if decompressed_value else None
             widget_attrs = attrs
-            if readonly: #agrega el atributo readonly si ya existe un valor en el input
-                widget_attrs = {'readonly': 'readonly'}
+            if readonly and 'readonly' not in widget_attrs.get('class', ''): #agrega el atributo readonly solo si ya existe un valor en el input y si el atributo readonly no se encuentra ya en la clase de los atributos del widget
+                widget_attrs['class'] = (widget_attrs.get('class', '') + ' readonly').strip()
             rendered_widgets.append(widget.render(f'{name}_{i}', widget_value, widget_attrs))
             if i == 0:
                 rendered_widgets.append('<span> - </span>')
+
         return mark_safe(''.join(rendered_widgets))
     
     def value_from_datadict(self, data, files, name):
@@ -251,7 +255,11 @@ class BodegaAdmin(admin.ModelAdmin):
     # se ordena por id
     ordering = ('id',)
     # usuario que crea no puede ser cambiado
-    readonly_fields = ('usuario_crea',)
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
     # filtración por empresa
     list_filter = ('empresa__nombre_empresa',)
 
@@ -265,11 +273,42 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
+
 class ClienteEmpresaAdmin(admin.ModelAdmin):
-    readonly_fields = ('usuario_crea',)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
+        if not request.user.is_superuser:
+            obj.empresa_oferente = request.user.empresa
         obj.save()
+    
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa_oferente']
+        
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if db_field.name == 'empresa_cliente':
+            # Obtener la empresa del usuario actual
+            empresa_actual = request.user.empresa
+            
+            # Obtener todas las empresas que aparecen en la búsqueda de ClienteEmpresa
+            empresas_con_relacion = ClienteEmpresa.objects.filter(empresa_oferente=empresa_actual).values_list('empresa_cliente__rut_empresa', flat=True)
+            
+            # Crear un queryset que excluya la empresa del usuario actual y las empresas que aparecen en la búsqueda de ClienteEmpresa
+            queryset = Empresa.objects.exclude(rut_empresa=empresa_actual.rut_empresa).exclude(rut_empresa__in=empresas_con_relacion)
+            
+            # Actualizar el queryset de la llave foránea empresa_cliente
+            kwargs['queryset'] = queryset
+        
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if request.user.is_superuser:
+            return qs
+        else:
+            return qs.filter(empresa_oferente=request.user.empresa)
 
 
 class CostoRollizoAdmin(admin.ModelAdmin):
@@ -311,7 +350,7 @@ class UserProfileAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
-        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     change_password_form = AdminPasswordChangeForm
@@ -369,13 +408,30 @@ class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     form = PedidoAdminForm
     inlines = (DetalleProductoInline,)
+    list_display = ('numero_pedido', 'prioridad', 'cliente_empresa')
+    ordering = ('id',)
+    readonly_fields = ('usuario_crea',)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    list_display = ('numero_pedido', 'prioridad')
-    ordering = ('id',)
-    readonly_fields = ('usuario_crea',)
-    #list_filter = ('cliente_empresa__empresa_oferente__nombre_empresa',)
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todos los pedidos
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar los pedidos por la empresa del usuario actual
+            return queryset.filter(Q(cliente_empresa__empresa_oferente=empresa) | Q(cliente_empresa__empresa_cliente=empresa))
+
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        if not request.user.is_superuser and db_field.name == "cliente_empresa":
+            # Filtrar las opciones por la empresa del usuario actual
+            kwargs["queryset"] = ClienteEmpresa.objects.filter(empresa_oferente=request.user.empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class PeriodoAdmin(admin.ModelAdmin):
     form = PeriodoAdminForm

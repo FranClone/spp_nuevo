@@ -141,6 +141,7 @@ li {
 .footer {
     color:rgb(255, 255, 255);
     text-align: center;
+    margin-top: 10px;
 }
 
 .form-carga-individual {
