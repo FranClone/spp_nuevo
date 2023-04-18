@@ -1,1 +1,3 @@
-ClienteEmpresa
+ClienteEmpresa (Problema con edición de Cliente)
+Pedido
+Bodega

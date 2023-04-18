@@ -254,6 +254,15 @@ class BodegaAdmin(admin.ModelAdmin):
     list_display = ('nombre_bodega', 'descripcion_bodega')
     # se ordena por id
     ordering = ('id',)
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('nombre_bodega', 'descripcion_bodega')}),
+            )
     # usuario que crea no puede ser cambiado
     def get_readonly_fields(self, request, obj=None):
         if request.user.is_superuser:
@@ -297,6 +306,10 @@ class ClienteEmpresaAdmin(admin.ModelAdmin):
             
             # Crear un queryset que excluya la empresa del usuario actual y las empresas que aparecen en la búsqueda de ClienteEmpresa
             queryset = Empresa.objects.exclude(rut_empresa=empresa_actual.rut_empresa).exclude(rut_empresa__in=empresas_con_relacion)
+            
+            # Si obj existe, agregar su empresa_oferente al queryset
+            if 'obj' in kwargs and kwargs['obj'] is not None:
+                queryset |= Empresa.objects.filter(rut_empresa=kwargs['obj'].empresa_oferente.rut_empresa)
             
             # Actualizar el queryset de la llave foránea empresa_cliente
             kwargs['queryset'] = queryset
@@ -353,7 +366,40 @@ class UserProfileAdmin(UserAdmin):
         (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
-    change_password_form = AdminPasswordChangeForm
+    def get_fieldsets(self, request, obj=None):
+        # Si se quiere editar
+        if obj is not None and not request.user.is_superuser:
+            # Usuarios no superusuarios no pueden editar el campo is_superuser
+            return (
+                (None, {'fields': ('username', 'password')}),
+                (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
+                (('Permissions'), {'fields': ('groups',)}),
+                (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+            )
+        if obj is None and not request.user.is_superuser:
+            return(None, {
+                'classes': ('wide',),
+                'fields': ('username', 'rut', 'password1', 'password2', ),
+            }),
+        else:
+            return super().get_fieldsets(request, obj)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            qs = qs.filter(empresa=request.user.empresa)
+            qs = qs.exclude(is_superuser=True)
+        return qs
+    
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            return ['empresa']
+        return []
+    
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
+        obj.save()
 
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
