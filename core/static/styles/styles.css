@@ -141,7 +141,13 @@ li {
 .footer {
     color:rgb(255, 255, 255);
     text-align: center;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
 }
+
+    
+    
 
 .form-carga-individual {
     background: white;
@@ -611,3 +617,137 @@ li {
     transition: 1s all;
 }
 
+/* -----  Dashboard/Charts ----- */ 
+
+.dash {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(rgba(41, 38, 38, 0.5), rgba(0, 0, 0, 0.5)), url('../img/header-bg2.jpg') no-repeat center top;
+    max-width: 100%;
+    background-size: cover;
+    font-family: sans-serif;
+    height: 100%;
+}
+
+/*Main*/
+.master {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 70px;
+    color: #fff;
+}
+
+section {
+    margin-bottom: 30px;
+}
+
+h2 {
+    color: #000;
+    font-size: 1.4em;
+    margin: 2px;
+    text-align: left;
+    display: block;
+    align-self: flex-start;
+}
+
+
+hr {
+    border-color: white;
+    margin: 10px 0;
+}
+
+.fig1 {
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.637);
+    padding: 10% 10% 25%;
+    padding-top: 0%;
+    text-align: right;
+    display: flex; /* Agregado */
+    justify-content: right; /* Agregado */
+    align-items: center; /* Agregado */
+    margin: 40px auto 0;
+    margin-top: 0; /* Eliminar el margin-top anterior */
+    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
+    border-radius: 25px;
+    width:500%;
+}
+#modelsChart canvas {
+    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
+}
+
+.fig2 {
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.637);
+    padding: 10% 10% 25%;
+    padding-top: 2%;
+    text-align: right;
+    display: flex; /* Agregado */
+    justify-content: right; /* Agregado */
+    align-items: center; /* Agregado */
+    margin: 40px auto 0;
+    margin-top: 0; /* Eliminar el margin-top anterior */
+    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
+    border-radius: 25px;
+}
+#featuresOptions canvas {
+    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
+}
+.fig3 {
+    flex-direction: column;
+    background-color: rgba(255, 255, 255, 0.637);
+    padding: 10% 5% 25%;
+    padding-top: 2%;
+    text-align: right;
+    display: flex; /* Agregado */
+    justify-content: right; /* Agregado */
+    align-items: center; /* Agregado */
+    margin: 40px auto 0;
+    margin-top: 0; /* Eliminar el margin-top anterior */
+    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
+    border-radius: 25px;
+}
+#yearsChart canvas {
+    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
+}
+
+
+
+[class*='cols'] {
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+}
+
+.cols-1 > * {
+    width: 50%;
+    margin: 10px;
+}
+
+.cols-2 > * {
+    width: 50%;
+    margin: 10px
+}
+
+@media  (max-width: 200px) {
+
+    main {
+        padding: 10%;
+    }
+
+    h1 {
+        font-size: 2.1em;
+        font-weight: 100;
+    }
+
+    [class*='cols'] {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+
+    .cols-2 > * {
+        width: 50%;
+    }
+}

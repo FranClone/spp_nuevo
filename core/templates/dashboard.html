@@ -4,49 +4,47 @@
     {% load static %}
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Dashboard</title>
-    <link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300" rel="stylesheet" />  
-     
-
 </head>
-<body>
+<body class="dash">
     {% include "partials/header.html" %}
-    {% load static %}
-        <main class="master">
+    <main class="master">
     
-            <section class="cols-2">
+        <section class="cols-2">
     
-                <figure>
-                    <h2>Comparativa de ventas</h2>
-                    <canvas id="modelsChart"></canvas>
-                </figure>
+            <figure class="fig1">
+                <h2>Comparativa de ventas</h2>
+                <canvas id="modelsChart"></canvas>
+            </figure>
     
-                <figure>
-                    <h2>Comparativa de características:
-                        <select id="featuresOptions">
-                            <option value="height">Altura (m)</option>
-                            <option value="length">Longitud (m)</option>
-                            <option value="speed">Velocidad (km/h)</option>
-                        </select>
-                    </h2>
-                    <canvas id="featuresChart"></canvas>
-                </figure>
+            <figure class="fig2">
+                <h2>Comparativa de características:
+                    <select id="featuresOptions">
+                        <option value="height">Altura (m)</option>
+                        <option value="length">Longitud (m)</option>
+                        <option value="speed">Velocidad (km/h)</option>
+                    </select>
+                </h2>
+                <canvas id="featuresChart"></canvas>
+            </figure>
+            <figure class="fig3">
+                <h2>Comparativa de ventas</h2>
+                <canvas id="yearsChart"></canvas>
+            </figure>
     
-            </section>
-    
-          
-    
-        </main>
-    </div>
+        </section>
+    </main>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
     <script src="{% static 'js/helpers.js'%}"></script>
     <script src="{% static 'js/handlers.js'%}"></script>
     <script src="{% static 'js/printChart.js'%}"></script>
-    <link rel="stylesheet" href="{% static 'styles/estiloChart.css' %}"> 
+    <!--<link rel="stylesheet" href="{% static 'styles/estiloChart.css' %}">   -->
 
 </body>
 {% include "partials/footer.html" %}
