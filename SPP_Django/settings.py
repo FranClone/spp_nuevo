@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_password_validators',
     'asignaciones',
     'core',
 ]
@@ -113,6 +114,17 @@ AUTH_PASSWORD_VALIDATORS = [
     },
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+    {
+        'NAME': 'django_password_validators.password_character_requirements.password_validation.PasswordCharacterValidator',
+        'OPTIONS': {
+             'min_length_digit': 0,
+             'min_length_alpha': 0,
+             'min_length_special': 1,
+             'min_length_lower': 1,
+             'min_length_upper': 1,
+             'special_characters': "~!@#$%^&*()_+{}\":;'[]."
+         }
     },
 ]
 
