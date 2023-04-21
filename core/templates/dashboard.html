@@ -8,36 +8,57 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://kit.fontawesome.com/cab6de82a6.js" crossorigin="anonymous"></script>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet"> 
     <title>SPP - Dashboard</title>
 </head>
-<body class="dash">
+<body class="dashboard">
     {% include "partials/header.html" %}
-    <main class="master">
-    
-        <section class="cols-2">
-    
-            <figure class="fig1">
-                <h2>Comparativa de ventas</h2>
-                <canvas id="modelsChart"></canvas>
-            </figure>
-    
-            <figure class="fig2">
-                <h2>Comparativa de características:
-                    <select id="featuresOptions">
-                        <option value="height">Altura (m)</option>
-                        <option value="length">Longitud (m)</option>
-                        <option value="speed">Velocidad (km/h)</option>
-                    </select>
-                </h2>
-                <canvas id="featuresChart"></canvas>
-            </figure>
-            <figure class="fig3">
-                <h2>Comparativa de ventas</h2>
-                <canvas id="yearsChart"></canvas>
-            </figure>
-    
-        </section>
+    <main class="chart">
+        <div class="contenedor">
+            <form action="">
+                <div class="selectbox">
+                    <div class="select active" id="select">
+                        <div class="contenido-select">
+                            <h1 class="titulo">Tipo de gráfico</h1>
+                        </div>
+                        <i class="fas fa-angle-down"></i>
+                    </div>
+                    <div class="opciones active" id="opciones">
+                        <a href="#" id="opcion">
+                            <div class="contenido-opcion">
+                                <img src="{% static 'img/pieChart.png' %}" alt="">
+                                <div class="textos">
+                                    <h2 class="titulo">Gráfico de Pastel</h2>
+                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" id="opcion">
+                            <div class="contenido-opcion">
+                                <img src="{% static 'img/radarChart.png' %}" alt="">
+                                <div class="textos">
+                                    <h2 class="titulo">Gráfico de Radar</h2>
+                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
+                                </div>
+                            </div>
+                        </a>
+                        <a href="#" id="opcion">
+                            <div class="contenido-opcion">
+                                <img src="{% static 'img/barChart.png' %}" alt="">
+                                <div class="textos">
+                                    <h2 class="titulo">Gráfico de Barra</h2>
+                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </form>
+        </div>
     </main>
+    
+      
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
