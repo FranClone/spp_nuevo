@@ -11,6 +11,7 @@ from django.utils.translation import gettext as _
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
+from .modelos.cliente import Cliente
 from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.costo_rollizo import CostoRollizo
 from .modelos.costo_sobre_tiempo import CostoSobreTiempo
@@ -37,10 +38,6 @@ correction = 'width:100%;' #Estira un widget para ocultar comportamiento no busc
 
 class DetalleProductoInline(admin.TabularInline):
     model = Pedido.productos.through
-    extra = 1
-
-class ProductoInline(admin.TabularInline):
-    model = Empresa.productos.through
     extra = 1
 
 class RutWidget(MultiWidget):
@@ -282,46 +279,23 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
+class ClienteForm(forms.ModelForm):
+    rut_cliente = forms.CharField(widget=RutWidget(), label='RUT Cliente')
 
-class ClienteEmpresaAdmin(admin.ModelAdmin):
+    class Meta:
+        model = Cliente
+        fields = '__all__'
+
+class ClienteAdmin(admin.ModelAdmin):
+
+    form = ClienteForm
+
+    list_display = ('id', 'nombre_cliente')
+    readonly_fields = ('usuario_crea',)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
-        if not request.user.is_superuser:
-            obj.empresa_oferente = request.user.empresa
         obj.save()
-    
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return ['usuario_crea']
-        else:
-            return ['usuario_crea', 'empresa_oferente']
-        
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if db_field.name == 'empresa_cliente':
-            # Obtener la empresa del usuario actual
-            empresa_actual = request.user.empresa
-            
-            # Obtener todas las empresas que aparecen en la búsqueda de ClienteEmpresa
-            empresas_con_relacion = ClienteEmpresa.objects.filter(empresa_oferente=empresa_actual).values_list('empresa_cliente__rut_empresa', flat=True)
-            
-            # Crear un queryset que excluya la empresa del usuario actual y las empresas que aparecen en la búsqueda de ClienteEmpresa
-            queryset = Empresa.objects.exclude(rut_empresa=empresa_actual.rut_empresa).exclude(rut_empresa__in=empresas_con_relacion)
-            
-            # Si obj existe, agregar su empresa_oferente al queryset
-            if 'obj' in kwargs and kwargs['obj'] is not None:
-                queryset |= Empresa.objects.filter(rut_empresa=kwargs['obj'].empresa_oferente.rut_empresa)
-            
-            # Actualizar el queryset de la llave foránea empresa_cliente
-            kwargs['queryset'] = queryset
-        
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
-    def get_queryset(self, request):
-        qs = super().get_queryset(request)
-        if request.user.is_superuser:
-            return qs
-        else:
-            return qs.filter(empresa_oferente=request.user.empresa)
 
 
 class CostoRollizoAdmin(admin.ModelAdmin):
@@ -401,13 +375,21 @@ class UserProfileAdmin(UserAdmin):
             obj.empresa = request.user.empresa
         obj.save()
 
+class ProductoInline(admin.TabularInline):
+    model = Empresa.productos.through
+    extra = 1
+
+class ClienteInline(admin.TabularInline):
+    model = Empresa.cliente.through
+    extra = 1
+
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
     def has_permission(self, request):
         # Verificar si el usuario es un superusuario
         return request.user.is_superuser
     form = EmpresaForm
-    inlines = (ProductoInline,)
+    inlines = (ProductoInline, ClienteInline)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
@@ -454,7 +436,7 @@ class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     form = PedidoAdminForm
     inlines = (DetalleProductoInline,)
-    list_display = ('numero_pedido', 'prioridad', 'cliente_empresa')
+    list_display = ('numero_pedido', 'prioridad',)
     ordering = ('id',)
     readonly_fields = ('usuario_crea',)
 
@@ -462,22 +444,7 @@ class PedidoAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        if request.user.is_superuser:
-            # Superusuarios pueden ver todos los pedidos
-            return queryset
-        else:
-            # Obtener la empresa del usuario actual
-            empresa = request.user.empresa
-            # Filtrar los pedidos por la empresa del usuario actual
-            return queryset.filter(Q(cliente_empresa__empresa_oferente=empresa) | Q(cliente_empresa__empresa_cliente=empresa))
 
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if not request.user.is_superuser and db_field.name == "cliente_empresa":
-            # Filtrar las opciones por la empresa del usuario actual
-            kwargs["queryset"] = ClienteEmpresa.objects.filter(empresa_oferente=request.user.empresa)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
 class PeriodoAdmin(admin.ModelAdmin):
     form = PeriodoAdminForm
@@ -568,7 +535,7 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
-admin.site.register(ClienteEmpresa, ClienteEmpresaAdmin)
+admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)

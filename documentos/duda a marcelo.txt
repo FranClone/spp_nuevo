@@ -1,2 +1,4 @@
 Línea tiene que estar conectado de alguna manera a empresa no? de momento está suelt
 y considero que tiene poco sentido
+
+Clientes ¿Pueden ser muchos no? ¿Si bien pueden ser empresas, también no necesariamente no?

@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 from django.db.models import Q, Max, Sum, F, Count
-from .modelos.cliente_empresa import ClienteEmpresa
+from .modelos.cliente import Cliente
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
@@ -13,10 +13,8 @@ from .modelos.linea import Linea
 
 def sel_cliente_admin(rut_empresa):
     '''Querie para la vista Administración'''
-    clientes = ClienteEmpresa.objects.filter(empresa_oferente__rut_empresa=rut_empresa
+    clientes = Cliente.objects.filter(empresa__rut_empresa=rut_empresa
         ).annotate(cantidad_pedidos=Count('pedido'),
-                  nombre_cliente=F('empresa_cliente__nombre_empresa'),
-                  correo_cliente=F('empresa_cliente__correo_empresa'),
         ).values('id', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'cantidad_pedidos')
     return clientes
 
@@ -27,9 +25,9 @@ def sel_pedido_empresa(rut_empresa):
     fecha_fin = fecha_actual + timedelta(days=30)
     
     pedidos = Pedido.objects.filter(
-        Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-    ).annotate(cliente=F('cliente_empresa__empresa_cliente__nombre_empresa')        
-    ).values('id', 'cliente', 'numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad' )
+        Q(cliente__empresa__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+    ).annotate(nombre_cliente=F('cliente__nombre_cliente')        
+    ).values('id', 'nombre_cliente', 'numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad' )
     
     return pedidos
 
@@ -48,7 +46,7 @@ def sel_pedido_productos_empresa(rut_empresa):
     fecha_fin = fecha_actual + timedelta(days=30)
     
     pedidos = Pedido.objects.filter(
-        Q(cliente_empresa__empresa_oferente__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+        Q(cliente__rut_cliente=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
         ).annotate(detalle_producto = F('detallepedido__detalle_producto'),
                    volumen_producto = F('detallepedido__volumen_producto'),
                    nombre_producto = F('detallepedido__producto__nombre_producto')
@@ -58,13 +56,12 @@ def sel_pedido_productos_empresa(rut_empresa):
 
 def insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa_oferente, rut_empresa_cliente, usuario_crea, prioridad):
     # Buscar las empresas por su rut
-    empresa_oferente = Empresa.objects.get(rut=rut_empresa_oferente)
-    empresa_cliente = Empresa.objects.get(rut=rut_empresa_cliente)
+    empresa_oferente = Empresa.objects.get(rut_empresa=rut_empresa_oferente)
 
     # Crear un nuevo ClienteEmpresa
-    cliente_empresa = ClienteEmpresa.objects.create(
-        empresa_oferente=empresa_oferente,
-        empresa_cliente=empresa_cliente,
+    cliente_empresa = Cliente.objects.create(
+        rut_cliente=rut_empresa_cliente,
+        empresa=empresa_oferente,
         usuario_crea=usuario_crea
     )
 
@@ -145,7 +142,7 @@ def sel_producto_empresa(rut_empresa):
 
 def sel_cliente(rut_empresa):
     empresa_oferente = Empresa.objects.get(rut_empresa=rut_empresa) # rut de la empresa oferente en cuestión
-    cliente_empresa = ClienteEmpresa.objects.filter(empresa_oferente=empresa_oferente)
+    cliente_empresa = Cliente.objects.filter(empresa=empresa_oferente)
     pedidos_por_cliente = Pedido.objects.filter(cliente_empresa__in=cliente_empresa).values('cliente_empresa__empresa_cliente').annotate(total_pedidos=Count('rut_empresa'))
 
     return pedidos_por_cliente
