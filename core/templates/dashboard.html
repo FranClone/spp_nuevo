@@ -30,7 +30,6 @@
                                 <img src="{% static 'img/pieChart.png' %}" alt="">
                                 <div class="textos">
                                     <h2 class="titulo">Gráfico de Pastel</h2>
-                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
                                 </div>
                             </div>
                         </a>
@@ -39,7 +38,6 @@
                                 <img src="{% static 'img/radarChart.png' %}" alt="">
                                 <div class="textos">
                                     <h2 class="titulo">Gráfico de Radar</h2>
-                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
                                 </div>
                             </div>
                         </a>
@@ -48,13 +46,12 @@
                                 <img src="{% static 'img/barChart.png' %}" alt="">
                                 <div class="textos">
                                     <h2 class="titulo">Gráfico de Barra</h2>
-                                    <p class="descripcion"> Lorem ipsum dolor sit.</p>
                                 </div>
                             </div>
                         </a>
                     </div>
                 </div>
-                <input type="hidden" name="grafico">    
+                <input type="hidden" name="grafico" id="inputSelect" value="">    
             </form>
         </div>
     </main>
@@ -65,7 +62,7 @@
     
     <script src="{% static 'js/helpers.js'%}"></script>
     <script src="{% static 'js/handlers.js'%}"></script>
-    <script src="{% static 'js/printChart.js'%}"></script>
+    <!--<script src="{% static 'js/printChart.js'%}"></script> -->
     <script src="{% static 'js/despliegaSelect.js'%}"></script>
     <!--<link rel="stylesheet" href="{% static 'styles/estiloChart.css' %}">   -->
 

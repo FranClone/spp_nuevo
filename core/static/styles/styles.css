@@ -652,6 +652,7 @@ h2 {
     text-align: left;
     display: block;
     align-self: flex-start;
+    text-decoration: none;
 }
 
 
@@ -757,13 +758,14 @@ hr {
 /*    estiloDash *****************************/
 
 .chart{
+    width: 100%;
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }  
 
 .contenedor{
-    width: 90%;
+    width: 100%;
     max-width: 800px;
     margin: auto;
     padding: 40px 0;
@@ -777,7 +779,7 @@ hr {
 }
 
 .select{
-    background: #fff;
+    background: #ffffffe3;
     width: 100%;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, .16);
     border-radius: 10px;
@@ -824,10 +826,18 @@ hr {
     background-color: transparent;
     color: #000;
     font-weight: 500;
-    font-size: 25px;
+    font-size: 23px;
     text-decoration-line: none;
     text-decoration: none;
 }
+
+.opciones h2.titulo {
+    text-decoration: none;
+}
+
+h2.titulo {
+    text-decoration: none;
+}  
 
 .descripcion{
     font-size: 18px;
@@ -837,7 +847,7 @@ hr {
 }
 
 .opciones{
-    background: #fff;
+    background: #ffffffd7;
     border-radius: 10px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
     max-height: 400px;
@@ -848,16 +858,29 @@ hr {
 }
 .opciones.active{
     display: block;
+    animation: fadeIn .3s forwards;
 }
 
 /* Animacion list*/
+@keyframes fadeIn{
+    from{
+        transform: translateY(-180px)scale(.5);
+    }
+    to{
+        transform: translateY(0)scale(1);
+    }
+}
+/**/
 
 .contenido-opcion{
     width: 100%;
     display: flex;
     align-items: center; 
     transition: .2 ease all;
-    padding: 20px; /*****************************/   
+    /* padding: 20px; /*****************************/   
+}
+.opciones .contenido-opcion{
+    padding: 30px;
 }
 
 .contenido-opcion img{
@@ -866,18 +889,13 @@ hr {
     margin-right: 50px;
 }
 
-.contenido-opcion:hover{
+.opciones .contenido-opcion:hover{
     background: #fd0202;
 }
 
-.contenido-opcion:hover .titulo,
-.contenido-opcion:hover .descripcion{
+.opciones .contenido-opcion:hover .titulo,
+.opciones .contenido-opcion:hover .descripcion{
     background: #fd0202;
     text-decoration: none;
 }
 
-h2.titulo{
-    text-decoration: none;
-    background-color: transparent;
-    color:black;
-}
