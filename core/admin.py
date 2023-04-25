@@ -2,13 +2,16 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm, AdminPasswordChangeForm
-from django.forms import ModelChoiceField
+from django.db.models import Q
+from django.forms.widgets import TextInput
 from django.forms.widgets import MultiWidget
+from django.http import Http404
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
+from .modelos.cliente import Cliente
 from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.costo_rollizo import CostoRollizo
 from .modelos.costo_sobre_tiempo import CostoSobreTiempo
@@ -37,10 +40,6 @@ class DetalleProductoInline(admin.TabularInline):
     model = Pedido.productos.through
     extra = 1
 
-class ProductoInline(admin.TabularInline):
-    model = Empresa.productos.through
-    extra = 1
-
 class RutWidget(MultiWidget):
     #rut empresa cómo rut body y rut dv
     def __init__(self, attrs=None):
@@ -61,15 +60,17 @@ class RutWidget(MultiWidget):
     def render(self, name, value, attrs=None, renderer=None):
         rendered_widgets = []
         decompressed_value = self.decompress(value)
-        readonly = value is not None #verifica si existe un valor en el input
+        readonly = value is not None and 'readonly' in attrs.get('class', '') #verifica si existe un valor en el input y si el atributo readonly ya se encuentra en la clase de los atributos
+
         for i, widget in enumerate(self.widgets):
             widget_value = decompressed_value[i] if decompressed_value else None
             widget_attrs = attrs
-            if readonly: #agrega el atributo readonly si ya existe un valor en el input
-                widget_attrs = {'readonly': 'readonly'}
+            if readonly and 'readonly' not in widget_attrs.get('class', ''): #agrega el atributo readonly solo si ya existe un valor en el input y si el atributo readonly no se encuentra ya en la clase de los atributos del widget
+                widget_attrs['class'] = (widget_attrs.get('class', '') + ' readonly').strip()
             rendered_widgets.append(widget.render(f'{name}_{i}', widget_value, widget_attrs))
             if i == 0:
                 rendered_widgets.append('<span> - </span>')
+
         return mark_safe(''.join(rendered_widgets))
     
     def value_from_datadict(self, data, files, name):
@@ -250,8 +251,21 @@ class BodegaAdmin(admin.ModelAdmin):
     list_display = ('nombre_bodega', 'descripcion_bodega')
     # se ordena por id
     ordering = ('id',)
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('nombre_bodega', 'descripcion_bodega')}),
+            )
     # usuario que crea no puede ser cambiado
-    readonly_fields = ('usuario_crea',)
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
     # filtración por empresa
     list_filter = ('empresa__nombre_empresa',)
 
@@ -265,8 +279,20 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa
     list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
-class ClienteEmpresaAdmin(admin.ModelAdmin):
+class ClienteForm(forms.ModelForm):
+    rut_cliente = forms.CharField(widget=RutWidget(), label='RUT Cliente')
+
+    class Meta:
+        model = Cliente
+        fields = '__all__'
+
+class ClienteAdmin(admin.ModelAdmin):
+
+    form = ClienteForm
+
+    list_display = ('id', 'nombre_cliente')
     readonly_fields = ('usuario_crea',)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
@@ -311,10 +337,51 @@ class UserProfileAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
-        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups', 'user_permissions')}),
+        (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
-    change_password_form = AdminPasswordChangeForm
+    def get_fieldsets(self, request, obj=None):
+        # Si se quiere editar
+        if obj is not None and not request.user.is_superuser:
+            # Usuarios no superusuarios no pueden editar el campo is_superuser
+            return (
+                (None, {'fields': ('username', 'password')}),
+                (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
+                (('Permissions'), {'fields': ('groups',)}),
+                (('Important dates'), {'fields': ('last_login', 'date_joined')}),
+            )
+        if obj is None and not request.user.is_superuser:
+            return(None, {
+                'classes': ('wide',),
+                'fields': ('username', 'rut', 'password1', 'password2', ),
+            }),
+        else:
+            return super().get_fieldsets(request, obj)
+    
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        if not request.user.is_superuser:
+            qs = qs.filter(empresa=request.user.empresa)
+            qs = qs.exclude(is_superuser=True)
+        return qs
+    
+    def get_readonly_fields(self, request, obj=None):
+        if not request.user.is_superuser:
+            return ['empresa']
+        return []
+    
+    def save_model(self, request, obj, form, change):
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
+        obj.save()
+
+class ProductoInline(admin.TabularInline):
+    model = Empresa.productos.through
+    extra = 1
+
+class ClienteInline(admin.TabularInline):
+    model = Empresa.cliente.through
+    extra = 1
 
 class EmpresaAdmin(admin.ModelAdmin):
     #Modelo administrador para empresa
@@ -322,7 +389,7 @@ class EmpresaAdmin(admin.ModelAdmin):
         # Verificar si el usuario es un superusuario
         return request.user.is_superuser
     form = EmpresaForm
-    inlines = (ProductoInline,)
+    inlines = (ProductoInline, ClienteInline)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
@@ -369,13 +436,15 @@ class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     form = PedidoAdminForm
     inlines = (DetalleProductoInline,)
+    list_display = ('numero_pedido', 'prioridad',)
+    ordering = ('id',)
+    readonly_fields = ('usuario_crea',)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    list_display = ('numero_pedido', 'prioridad')
-    ordering = ('id',)
-    readonly_fields = ('usuario_crea',)
-    #list_filter = ('cliente_empresa__empresa_oferente__nombre_empresa',)
+
+
 
 class PeriodoAdmin(admin.ModelAdmin):
     form = PeriodoAdminForm
@@ -466,7 +535,7 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
-admin.site.register(ClienteEmpresa, ClienteEmpresaAdmin)
+admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
