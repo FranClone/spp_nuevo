@@ -821,7 +821,7 @@ hr {
     background-color: transparent;
     color: #000;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 25px;
     text-decoration-line: none;
     text-decoration: none;
 }
@@ -869,5 +869,12 @@ hr {
 
 .contenido-opcion:hover .titulo,
 .contenido-opcion:hover .descripcion{
-    background:#fff;
+    background: #fd0202;
+    text-decoration: none;
+}
+
+h2.titulo{
+    text-decoration: none;
+    background-color: transparent;
+    color:black;
 }
