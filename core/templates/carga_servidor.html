@@ -30,7 +30,7 @@
                     {% for row in rows %}
                     <tr>
                         <td><a href="">{{row.numero_pedido}}</a></td>
-                        <td>{{row.cliente}}</td>
+                        <td>{{row.nombre_cliente}}</td>
                         <td><input type="date" id="start" name="trip-start" value={{row.fecha_recepcion|date:'Y-m-d'}}></td>
                         <td><input type="date" id="start" name="trip-start" value={{row.fecha_entrega|date:'Y-m-d'}}></td> 
                         <td>

@@ -1,4 +1,5 @@
 from django.db import models
+
 class ClienteEmpresa(models.Model):
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE)
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE)
