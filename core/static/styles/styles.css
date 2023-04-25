@@ -899,3 +899,12 @@ h2.titulo {
     text-decoration: none;
 }
 
+@media screen and (max-width: 800px){
+    .selectbox{
+        width: 100%;
+    }
+    .select{
+        width: 100%;
+    }
+
+}
