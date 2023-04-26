@@ -20,7 +20,7 @@ const renderModelsChart = () => {
     }
     const options = {
         plugins: {
-            legend: { position : 'bottom'}
+            legend: { position : 'top'}
         }
     }
 

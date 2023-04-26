@@ -717,21 +717,18 @@ hr {
 
 
 
-[class*='cols'] {
-    height: 300px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
 
-.cols-1 > * {
-    width: 50%;
+
+.cols-1{
+    flex: 0 0 26%;
     margin: 10px;
 }
 
-.cols-2 > * {
-    width: 50%;
-    margin: 10px
+.cols-2{
+    flex: 0 0 70%;
+    margin: 10px;
+    margin-right: 0;
+    max-height: 100%;
 }
 
 @media  (max-width: 200px) {
@@ -747,40 +744,52 @@ hr {
 
     [class*='cols'] {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
     }
+}
+/*Figure es el recuadro en el que ira el grafico a desplegar*/
+figure{
+    background-color: #ffffffd7;
+    padding: 10px 10px 30px;
+    border-radius: 10px;
+    width: 1000px;
+    height: 560px;
+    display:flex;
+}
 
-    .cols-2 > * {
-        width: 50%;
-    }
+canvas {
+    display: flex;
 }
 /*    estiloDash *****************************/
 
-.chart{
-    width: 100%;
+.dashboard{
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
 }  
+
+.cont {
+    margin-top: 2%;
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    
+}
 
 .contenedor{
     width: 100%;
-    max-width: 800px;
-    margin: auto;
-    padding: 40px 0;
+    max-width: 100%;
+    margin: 0;
 }
 
 .selectbox{
-    width: 50%;
+    width: 100%;
     height: 20px;
-    margin: auto;
+    margin-left: 10px;
     position: relative;
 }
 
 .select{
     background: #ffffffe3;
-    width: 100%;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, .16);
     border-radius: 10px;
     cursor: pointer;
@@ -855,6 +864,7 @@ h2.titulo {
     z-index: 100;
     width: 100%;
     display: none;
+    position: absolute;
 }
 .opciones.active{
     display: block;
@@ -906,5 +916,11 @@ h2.titulo {
     .select{
         width: 100%;
     }
+    .contenedor{
+        align-self: center;
+        width: 100%;
+    }
 
 }
+
+/*----Desplegar Recuadro al seleccionar----*/
