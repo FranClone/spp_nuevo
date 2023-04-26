@@ -748,7 +748,7 @@ hr {
 }
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
 figure{
-    background-color: #ffffffd7;
+    background-color:#ffffffe3;
     padding: 10px 10px 30px;
     border-radius: 10px;
     width: 1000px;
