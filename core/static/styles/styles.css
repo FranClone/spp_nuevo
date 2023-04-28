@@ -652,6 +652,7 @@ h2 {
     text-align: left;
     display: block;
     align-self: flex-start;
+    text-decoration: none;
 }
 
 
@@ -660,77 +661,20 @@ hr {
     margin: 10px 0;
 }
 
-.fig1 {
-    flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.637);
-    padding: 10% 10% 25%;
-    padding-top: 0%;
-    text-align: right;
-    display: flex; /* Agregado */
-    justify-content: right; /* Agregado */
-    align-items: center; /* Agregado */
-    margin: 40px auto 0;
-    margin-top: 0; /* Eliminar el margin-top anterior */
-    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
-    border-radius: 25px;
-    width:500%;
-}
-#modelsChart canvas {
-    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
-}
-
-.fig2 {
-    flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.637);
-    padding: 10% 10% 25%;
-    padding-top: 2%;
-    text-align: right;
-    display: flex; /* Agregado */
-    justify-content: right; /* Agregado */
-    align-items: center; /* Agregado */
-    margin: 40px auto 0;
-    margin-top: 0; /* Eliminar el margin-top anterior */
-    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
-    border-radius: 25px;
-}
-#featuresOptions canvas {
-    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
-}
-.fig3 {
-    flex-direction: column;
-    background-color: rgba(255, 255, 255, 0.637);
-    padding: 10% 5% 25%;
-    padding-top: 2%;
-    text-align: right;
-    display: flex; /* Agregado */
-    justify-content: right; /* Agregado */
-    align-items: center; /* Agregado */
-    margin: 40px auto 0;
-    margin-top: 0; /* Eliminar el margin-top anterior */
-    margin-bottom: 0; /* Eliminar el margin-bottom anterior */
-    border-radius: 25px;
-}
-#yearsChart canvas {
-    max-width: 100%; /* Para ajustar el tamaño del canvas dentro de #modelsChart */
-}
 
 
 
-[class*='cols'] {
-    height: 300px;
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-}
 
-.cols-1 > * {
-    width: 50%;
+.cols-1{
+    flex: 0 0 26%;
     margin: 10px;
 }
 
-.cols-2 > * {
-    width: 50%;
-    margin: 10px
+.cols-2{
+    flex: 0 0 70%;
+    margin: 10px;
+    margin-right: 0;
+    max-height: 100%;
 }
 
 @media  (max-width: 200px) {
@@ -746,39 +690,61 @@ hr {
 
     [class*='cols'] {
         display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
     }
-
-    .cols-2 > * {
-        width: 50%;
-    }
+}
+/*Figure es el recuadro en el que ira el grafico a desplegar*/
+figure{
+    background-color:#ffffffe3;
+    padding: 10px 10px 30px;
+    border-radius: 10px;
+    width: 1000px;
+    height: 560px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+figure canvas {
+    max-width: 100%;
+    max-height: 400px;
+    overflow: auto;
+  }
+  
+canvas {
+    max-width: 100;
+    width: 100%;
+    height: 100%;
 }
 /*    estiloDash *****************************/
 
-.chart{
+.dashboard{
     padding: 0;
     margin: 0;
-    box-sizing: border-box;
 }  
 
+.cont {
+    margin-top: 2%;
+    margin-left: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: stretch;
+    
+}
+
 .contenedor{
-    width: 90%;
-    max-width: 800px;
-    margin: auto;
-    padding: 40px 0;
+    width: 100%;
+    max-width: 100%;
+    margin: 0;
 }
 
 .selectbox{
-    width: 50%;
+    width: 100%;
     height: 20px;
-    margin: auto;
+    margin-left: 10px;
     position: relative;
 }
 
 .select{
-    background: #fff;
-    width: 100%;
+    background: #ffffffe3;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, .16);
     border-radius: 10px;
     cursor: pointer;
@@ -791,12 +757,15 @@ hr {
     position: relative;
     z-index: 200;
     border: 2px solid transparent;
+    align-self: center;
 }
+
 
 .select.active,
 .select:hover {
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
     border: 2px solid red; 
+    align-items: center;
 }
 
 .select.active:before {
@@ -811,6 +780,7 @@ hr {
     position: absolute; 
     bottom: -30px;
     left: calc(50% - 15px);
+    align-self: center;
 }
 
 .select i{
@@ -820,14 +790,24 @@ hr {
 }
 
 .titulo{
-    margin-bottom: 10px;
+    margin: 10px;
     background-color: transparent;
     color: #000;
     font-weight: 500;
-    font-size: 30px;
+    font-size: 23px;
     text-decoration-line: none;
     text-decoration: none;
 }
+
+.opciones h2.titulo {
+    text-decoration: none;
+    text-decoration-line: none;
+}
+
+h2.titulo {
+    text-decoration: none;
+    text-decoration-line: none;
+}  
 
 .descripcion{
     font-size: 18px;
@@ -837,7 +817,7 @@ hr {
 }
 
 .opciones{
-    background: #fff;
+    background: #ffffffd7;
     border-radius: 10px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
     max-height: 400px;
@@ -845,19 +825,32 @@ hr {
     z-index: 100;
     width: 100%;
     display: none;
+    position: absolute;
 }
 .opciones.active{
     display: block;
+    animation: fadeIn .3s forwards;
 }
 
 /* Animacion list*/
-
+@keyframes fadeIn{
+    from{
+        transform: translateY(-180px)scale(.5);
+    }
+    to{
+        transform: translateY(0)scale(1);
+    }
+}
+/**/
 .contenido-opcion{
     width: 100%;
     display: flex;
     align-items: center; 
     transition: .2 ease all;
-    padding: 20px; /*****************************/   
+    /* padding: 20px; /*****************************/   
+}
+.opciones .contenido-opcion{
+    padding: 30px;
 }
 
 .contenido-opcion img{
@@ -866,11 +859,28 @@ hr {
     margin-right: 50px;
 }
 
-.contenido-opcion:hover{
+.opciones .contenido-opcion:hover{
     background: #fd0202;
 }
 
-.contenido-opcion:hover .titulo,
-.contenido-opcion:hover .descripcion{
-    background:#fff;
+.opciones .contenido-opcion:hover .titulo,
+.opciones .contenido-opcion:hover .descripcion{
+    background: #fd0202;
+    text-decoration: none;
 }
+
+@media screen and (max-width: 800px){
+    .selectbox{
+        width: 100%;
+    }
+    .select{
+        width: 100%;
+    }
+    .contenedor{
+        align-self: center;
+        width: 100%;
+    }
+
+}
+
+/*----Desplegar Recuadro al seleccionar----*/

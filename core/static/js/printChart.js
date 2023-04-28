@@ -1,81 +1,108 @@
-Chart.defaults.color = '#fff'
-Chart.defaults.borderColor = '#444'
+// Variable global para almacenar el gráfico anterior
+var chartAnterior = null;
 
-const printCharts = () => {
+function mostrarGrafico(tipo) {
+    // Obtener el canvas y el contexto
+    var canvas = document.getElementById("myChart");
+    var ctx = canvas.getContext("2d");
 
-    renderModelsChart(),
-    renderFeaturesChart(),
-    renderYearsChart()
-    
-}
-
-const renderModelsChart = () => {
-    const data = {
-        labels: ['uno','dos','tres','cuatro'],
-        datasets: [{
-            data: [60,20,30,40],
-            borderColor: getDataColors(),
-            backgroundColor: getDataColors(70)
-        }]
-    }
-    const options = {
-        plugins: {
-            legend: { position : 'bottom'}
-        }
+    // Eliminar el gráfico anterior si lo hay
+    if (chartAnterior != null) {
+        chartAnterior.destroy();
     }
 
-    new Chart('modelsChart', { type: 'doughnut', data, options})
-}
-
-const renderFeaturesChart = () => {
-    const data = {
-        labels: ['uno','dos','tres','cuatro','cinco','seis','siete'],
-        datasets: [{
-            label: 'Altura',
-            data: [74,50,68,50,70,68,56],
-            borderColor: getDataColors(),
-            backgroundColor: getDataColors(70)
-        }]
-    }
-    const options = {
-        plugins: {
-            legend: {display : false }
-        },
-        scales : {
-            r:{
-                ticks: { display : false }
+    // Crear el gráfico correspondiente al tipo seleccionado
+    if (tipo == "pie") {
+        chartAnterior = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
             }
-        }
+        });
+    } else if (tipo == "radar") {
+        chartAnterior = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+                datasets: [{
+                    label: 'My First Dataset',
+                    data: [65, 59, 90, 81, 56, 55, 40],
+                    fill: true,
+                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    borderColor: 'rgb(255, 99, 132)',
+                    pointBackgroundColor: 'rgb(255, 99, 132)',
+                    pointBorderColor: '#fff',
+                    pointHoverBackgroundColor: '#fff',
+                    pointHoverBorderColor: 'rgb(255, 99, 132)'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
+    } else if (tipo == "bar") {
+        chartAnterior = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                datasets: [{
+                    label: '# of Votes',
+                    data: [12, 19, 3, 5, 2, 3],
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.2)',
+                        'rgba(54, 162, 235, 0.2)',
+                        'rgba(255, 206, 86, 0.2)',
+                        'rgba(75, 192, 192, 0.2)',
+                        'rgba(153, 102, 255, 0.2)',
+                        'rgba(255, 159, 64, 0.2)'
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(255, 206, 86, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(153, 102, 255, 1)',
+                        'rgba(255, 159, 64, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    }
+                }
+            }
+        });
     }
-
-    new Chart('featuresChart', { type: 'radar', data, options})
 }
-
-const renderYearsChart = () => {
-
-    const years = ['2015','2016','2017','2018','2019','2020','2021','2022','2023']
-    const ventas = ['5','3','57','60','43','55','49','80','169']
-
-    const data = {
-        labels: years,
-        datasets: [{
-            data: (years,ventas),
-            tension: 1,
-            borderColor: getDataColors()[1],
-            backgroundColor: getDataColors(70)[1],
-            fill: true,
-            pointBorderWidth: 5
-        }]
-    }
-
-    const options = {
-        plugins: {
-            legend: { display: false }
-        }
-    }
-
-    new Chart('yearsChart', { type: 'bar', data, options })
-}
-
-
-printCharts()
