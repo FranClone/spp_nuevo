@@ -1,4 +1,4 @@
-from core.modelos.stock_producto import StockProducto as MiModelo
+from core.modelos.linea_hh_disponible import LineaHhDisponible as MiModelo
 
 campos = MiModelo._meta.get_fields()
 nombres = []
@@ -8,6 +8,7 @@ for campo in campos:
 
 nombres = tuple(nombres)
 print(nombres)
+
 
 ('periodo', 'nombre_tipo_periodo', 'descripcion_tipo_periodo', 'dias', 'empresa')
 
@@ -63,6 +64,7 @@ print(nombres)
             return queryset.filter(empresa=empresa)
     # guarda usuario logueado
     def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
         if not request.user.is_superuser:
             obj.empresa = request.user.empresa
         obj.save()

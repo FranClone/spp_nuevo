@@ -7,4 +7,6 @@ CalidadProducto
 TipoPeriodo
 Periodo
 StockProducto
-LineaHhDisponible (Ver caso de Foreign Key de Linea)
+LineaHhDisponible
+Linea
+Usuario
