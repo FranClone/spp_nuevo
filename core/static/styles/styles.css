@@ -687,6 +687,12 @@ hr {
         font-size: 2.1em;
         font-weight: 100;
     }
+    figure{
+        width: 100%;
+    }
+    canvas{
+        width: 100%;
+    }
 
     [class*='cols'] {
         display: flex;
@@ -695,6 +701,8 @@ hr {
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
 figure{
     background-color:#ffffffe3;
+    /* background: linear-gradient(rgba(255, 254, 254, 0.747), rgba(255, 255, 255, 0.747)), url('../img/charts.png') no-repeat center top; */
+    background-size: cover;
     padding: 10px 10px 30px;
     border-radius: 10px;
     width: 1000px;
