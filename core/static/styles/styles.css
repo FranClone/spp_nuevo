@@ -802,12 +802,15 @@ canvas {
     position: relative;
     z-index: 200;
     border: 2px solid transparent;
+    align-self: center;
 }
+
 
 .select.active,
 .select:hover {
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
     border: 2px solid red; 
+    align-items: center;
 }
 
 .select.active:before {
@@ -822,6 +825,7 @@ canvas {
     position: absolute; 
     bottom: -30px;
     left: calc(50% - 15px);
+    align-self: center;
 }
 
 .select i{
@@ -831,7 +835,7 @@ canvas {
 }
 
 .titulo{
-    margin-bottom: 10px;
+    margin: 10px;
     background-color: transparent;
     color: #000;
     font-weight: 500;
@@ -842,10 +846,12 @@ canvas {
 
 .opciones h2.titulo {
     text-decoration: none;
+    text-decoration-line: none;
 }
 
 h2.titulo {
     text-decoration: none;
+    text-decoration-line: none;
 }  
 
 .descripcion{
@@ -881,7 +887,6 @@ h2.titulo {
     }
 }
 /**/
-
 .contenido-opcion{
     width: 100%;
     display: flex;

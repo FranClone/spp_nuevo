@@ -1,12 +1,19 @@
+// Variable global para almacenar el gráfico anterior
+var chartAnterior = null;
+
 function mostrarGrafico(tipo) {
     // Obtener el canvas y el contexto
     var canvas = document.getElementById("myChart");
     var ctx = canvas.getContext("2d");
 
+    // Eliminar el gráfico anterior si lo hay
+    if (chartAnterior != null) {
+        chartAnterior.destroy();
+    }
+
     // Crear el gráfico correspondiente al tipo seleccionado
-    var chart = null;
     if (tipo == "pie") {
-        chart = new Chart(ctx, {
+        chartAnterior = new Chart(ctx, {
             type: 'pie',
             data: {
                 labels: ['Red', 'Blue', 'Yellow'],
@@ -31,16 +38,12 @@ function mostrarGrafico(tipo) {
                 plugins: {
                     legend: {
                         position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gráfico de Pastel'
                     }
                 }
             }
         });
     } else if (tipo == "radar") {
-        chart = new Chart(ctx, {
+        chartAnterior = new Chart(ctx, {
             type: 'radar',
             data: {
                 labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
@@ -61,16 +64,12 @@ function mostrarGrafico(tipo) {
                 plugins: {
                     legend: {
                         position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gráfico de Radar'
                     }
                 }
             }
         });
     } else if (tipo == "bar") {
-        chart = new Chart(ctx, {
+        chartAnterior = new Chart(ctx, {
             type: 'bar',
             data: {
                 labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
@@ -101,10 +100,6 @@ function mostrarGrafico(tipo) {
                 plugins: {
                     legend: {
                         position: 'top',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Gráfico de Barras'
                     }
                 }
             }
