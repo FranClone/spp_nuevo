@@ -655,7 +655,9 @@ h2 {
     text-decoration: none;
 }
 
-
+a{
+    text-decoration: none;
+}
 hr {
     border-color: white;
     margin: 10px 0;
@@ -806,6 +808,10 @@ canvas {
     text-decoration-line: none;
     text-decoration: none;
 }
+ 
+.textos{
+    text-decoration: none;
+}
 
 .opciones h2.titulo {
     text-decoration: none;
@@ -891,4 +897,4 @@ h2.titulo {
 
 }
 
-/*----Desplegar Recuadro al seleccionar----*/
+/*----Responsive----*/
