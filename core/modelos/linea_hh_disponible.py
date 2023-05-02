@@ -14,4 +14,4 @@ class LineaHhDisponible(models.Model):
         db_table = 'LINEA_HH_DISPONIBLE'
 
     def __str__(self):
-        return 'id de Linea Horas Hombre Disponible: ' + str(self.id_hh_linea)
+        return 'id de Linea Horas Hombre Disponible: ' + str(self.id)

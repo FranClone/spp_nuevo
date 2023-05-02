@@ -6,3 +6,7 @@ Producto
 CalidadProducto
 TipoPeriodo
 Periodo
+StockProducto
+LineaHhDisponible
+Linea
+Usuario

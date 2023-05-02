@@ -1,0 +1,93 @@
+from core.modelos.linea_hh_disponible import LineaHhDisponible as MiModelo
+
+campos = MiModelo._meta.get_fields()
+nombres = []
+for campo in campos:
+    if campo.name not in ('id', 'usuario_crea', 'fecha_crea'):
+    	nombres.append(campo.name)
+
+nombres = tuple(nombres)
+print(nombres)
+
+
+('periodo', 'nombre_tipo_periodo', 'descripcion_tipo_periodo', 'dias', 'empresa')
+
+-------------------------------------------------------------------------------------
+
+    #Cambia los campos que se muestran
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('nombre_bodega', 'descripcion_bodega')}),
+            )
+    # usuario que crea no puede ser cambiado
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
+    # filtración por empresa
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('empresa__nombre_empresa',)
+        else:
+            return []
+    # devuelve los sólo las bodegas pertenecientes a la empresa
+
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'bodega':
+            kwargs['queryset'] = Bodega.objects.filter(empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+    # filtra los resultados
+
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las bodegas
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las bodegas por la empresa del usuario actual
+            return queryset.filter(empresa=empresa)
+    # guarda usuario logueado
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
+        obj.save()
+    # obtiene los campos necesarios para cada caso
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('nombre_inventario', 'descripcion_inventario', 'diametro', 'cant_m3', 'bodega')}),
+            )
+
+class BodegaFilter(admin.SimpleListFilter):
+    title = 'Bodega'
+    parameter_name = 'bodega'
+
+    def lookups(self, request, model_admin):
+        empresa = request.user.empresa
+        bodegas = Bodega.objects.filter(empresa=empresa)
+        return [(bodega.id, bodega.nombre_bodega) for bodega in bodegas]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(bodega__id=self.value())
