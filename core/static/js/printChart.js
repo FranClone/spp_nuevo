@@ -11,24 +11,37 @@ function mostrarGrafico(tipo) {
         chartAnterior.destroy();
     }
 
-    // Crear el gráfico correspondiente al tipo seleccionado
+    // Obtener los datos de pedidos
+    var pedidos = pedido_cliente;
+    
+    // Crear los arrays de etiquetas y datos
+    var labels = [];
+    var data = [];
+
+    // Iterar sobre los datos de pedidos y agregar los valores correspondientes a los arrays
+    for (var i = 0; i < pedidos.length; i++) {
+        labels.push(pedidos[i].nombre_cliente);
+        data.push(pedidos[i].cantidad_pedidos);
+    }
+
+    // Crear el gráfico correspondiente al tipo seleccionado y usar los porcentajes como datos y etiquetas
     if (tipo == "pie") {
         chartAnterior = new Chart(ctx, {
             type: 'pie',
             data: {
-                labels: ['Red', 'Blue', 'Yellow'],
+                labels: labels,
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3],
+                    label: 'Clientes',
+                    data: data,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)'
+                        'rgba(219, 213, 213, 10)',
+                        'rgba(131, 131, 131, 10)',
+                        'rgba(74, 74, 74, 10)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)'
+                        'rgba(0, 0, 0, 8)',
+                        'rgba(0, 0, 0, 8)',
+                        'rgba(0, 0, 0, 8)'
                     ],
                     borderWidth: 1
                 }]
@@ -37,21 +50,21 @@ function mostrarGrafico(tipo) {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'left',
                     }
                 }
             }
         });
-    } else if (tipo == "radar") {
+    } else if (tipo == "line") {
         chartAnterior = new Chart(ctx, {
-            type: 'radar',
+            type: 'line',
             data: {
-                labels: ['Eating', 'Drinking', 'Sleeping', 'Designing', 'Coding', 'Cycling', 'Running'],
+                labels: labels,
                 datasets: [{
-                    label: 'My First Dataset',
-                    data: [65, 59, 90, 81, 56, 55, 40],
+                    label: '',
+                    data: data,
                     fill: true,
-                    backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                    backgroundColor: 'rgba(255,  99, 132, 0.2)',
                     borderColor: 'rgb(255, 99, 132)',
                     pointBackgroundColor: 'rgb(255, 99, 132)',
                     pointBorderColor: '#fff',
@@ -63,7 +76,7 @@ function mostrarGrafico(tipo) {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'left',
                     }
                 }
             }
@@ -72,37 +85,32 @@ function mostrarGrafico(tipo) {
         chartAnterior = new Chart(ctx, {
             type: 'bar',
             data: {
-                labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                labels: labels,
                 datasets: [{
-                    label: '# of Votes',
-                    data: [12, 19, 3, 5, 2, 3],
+                    label: '',
+                    data: data,
                     backgroundColor: [
-                        'rgba(255, 99, 132, 0.2)',
-                        'rgba(54, 162, 235, 0.2)',
-                        'rgba(255, 206, 86, 0.2)',
-                        'rgba(75, 192, 192, 0.2)',
-                        'rgba(153, 102, 255, 0.2)',
-                        'rgba(255, 159, 64, 0.2)'
+                        'rgba(219, 213, 213, 10)',
+                        'rgba(131, 131, 131, 10)',
+                        'rgba(74, 74, 74, 10)'
                     ],
                     borderColor: [
-                        'rgba(255, 99, 132, 1)',
-                        'rgba(54, 162, 235, 1)',
-                        'rgba(255, 206, 86, 1)',
-                        'rgba(75, 192, 192, 1)',
-                        'rgba(153, 102, 255, 1)',
-                        'rgba(255, 159, 64, 1)'
+                        'rgba(0, 0, 0, 8)',
+                        'rgba(0, 0, 0, 8)',
+                        'rgba(0, 0, 0, 8)'
                     ],
-                    borderWidth: 1
+                    borderWidth: 2
                 }]
             },
             options: {
                 responsive: true,
                 plugins: {
                     legend: {
-                        position: 'top',
+                        position: 'left',
                     }
                 }
             }
         });
     }
+
 }

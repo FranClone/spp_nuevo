@@ -1,5 +1,7 @@
 from datetime import datetime, timedelta
 from django.db.models import Q, Max, Sum, F, Count
+from django.db.models.functions import ExtractMonth
+from django.db.models import Count
 from .modelos.cliente import Cliente
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
@@ -11,12 +13,28 @@ from .modelos.rollizo import Rollizo
 from .modelos.bodega import Bodega
 from .modelos.linea import Linea
 
+
 def sel_cliente_admin(rut_empresa):
     '''Querie para la vista Administración'''
     clientes = Cliente.objects.filter(empresa__rut_empresa=rut_empresa
         ).annotate(cantidad_pedidos=Count('pedido'),
         ).values('id', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'cantidad_pedidos')
     return clientes
+
+# def pedido_mes():
+#     '''Querie para la vista Dashboard'''
+#     fecha_actual = datetime.now()
+#     fecha_inicio = fecha_actual - timedelta(days=30)
+#     fecha_fin = fecha_actual + timedelta(days=30)
+    
+#     pedidos = Pedido.objects.filter(
+#         Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+#     ).annotate(mes=ExtractMonth('fecha_crea')
+#     ).values('numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'prioridad', 'mes'
+#     ).annotate(num_pedidos=Count('id')
+#     ).order_by('mes')
+    
+#     return pedidos
 
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''
