@@ -6,6 +6,7 @@ class TiempoCambio(models.Model):
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
+    costosobretiempo = models.OneToOneField('CostoSobreTiempo', on_delete=models.CASCADE, verbose_name='Tiempo de Cambio', blank=True, null=True)
 
     class Meta:
         db_table = 'TIEMPO_CAMBIO'

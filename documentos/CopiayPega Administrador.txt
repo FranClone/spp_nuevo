@@ -1,4 +1,4 @@
-from core.modelos.linea_hh_disponible import LineaHhDisponible as MiModelo
+from core.modelos.abastecimiento_rollizo import AbastecimientoRollizo as MiModelo
 
 campos = MiModelo._meta.get_fields()
 nombres = []
@@ -10,8 +10,7 @@ nombres = tuple(nombres)
 print(nombres)
 
 
-('periodo', 'nombre_tipo_periodo', 'descripcion_tipo_periodo', 'dias', 'empresa')
-
+('rollizo', 'periodo', 'numero_bloque', 'cantidad_hh')
 -------------------------------------------------------------------------------------
 
     #Cambia los campos que se muestran
@@ -36,7 +35,6 @@ print(nombres)
             return ('empresa__nombre_empresa',)
         else:
             return []
-    # devuelve los sólo las bodegas pertenecientes a la empresa
 
     # filtra las claves foráneas para que sólo sean las de la empresa    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):

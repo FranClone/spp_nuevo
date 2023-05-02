@@ -5,6 +5,7 @@ class PatronCorte(models.Model):
     descripcion_patron = models.CharField(max_length=500, blank=True, null=True)
     usuario_crea = models.CharField(max_length=30, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
 
     class Meta:
         db_table = 'PATRON_CORTE'

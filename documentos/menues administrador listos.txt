@@ -10,3 +10,9 @@ StockProducto
 LineaHhDisponible
 Linea
 Usuario
+Rollizo
+ProductoCorte
+TiempoCambio
+CostoSobreTiempo
+CostoRollizo
+RollizoLargo

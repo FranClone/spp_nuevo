@@ -14,6 +14,7 @@ class RollizoLargo(models.Model):
     largo = models.FloatField()
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
 
     class Meta:
         db_table = 'ROLLIZO_LARGO'

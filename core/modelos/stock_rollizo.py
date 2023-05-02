@@ -12,4 +12,4 @@ class StockRollizo(models.Model):
         db_table = 'STOCK_ROLLIZO'
         
     def __str__(self):
-        return f'Stock de {self.id_rollizo.nombre_rollizo} en {self.id_bodega.nombre_bodega} = {self.cantidad}'
+        return f'Stock de {self.rollizo.nombre_rollizo} en {self.bodega.nombre_bodega} = {self.cantidad}'

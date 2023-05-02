@@ -13,5 +13,5 @@ class AbastecimientoRollizo(models.Model):
         ordering = ['id']
         
     def __str__(self):
-        return str(self.id_abastecimiento)
+        return f'Abastecimiento de rollizo = {self.numero_bloque} y cantidad = {self.cantidad_hh}'
  # Hola

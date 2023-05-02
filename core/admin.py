@@ -97,16 +97,55 @@ class AbastecimientoRollizoAdmin(admin.ModelAdmin):
     '''Administrador para el modelo de Abastecimiento Rollizo'''
     # cambio de apariencia
     form = AbastecimientoRollizoAdminForm
+    # muestra tales columnas de la BD 
+    list_display = ('id', 'numero_bloque', 'cantidad_hh')
+    # usuario que crea no puede ser modificado
+    readonly_fields = ('usuario_crea',)
+    # se filtra por periodo
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('periodo__tipo_periodo__empresa__nombre_empresa',)
+        else:
+            return []
+        
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().get_fieldsets(request, obj)
+        else:
+            if obj:
+                return [(None, {'fields': ('rollizo', 'periodo', 'numero_bloque', 'cantidad_hh', 'usuario_crea')})]
+            else:
+                return [(None, {'fields': ('rollizo', 'periodo', 'numero_bloque', 'cantidad_hh')})]
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las calidades producto
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las calidades producto por la empresa del usuario actual
+            return queryset.filter(periodo__tipo_periodo__empresa=empresa)
+    
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'rollizo':
+            kwargs['queryset'] = Rollizo.objects.filter(linea__empresa=empresa)
+        if db_field.name == 'periodo':
+            kwargs['queryset'] = Periodo.objects.filter(tipo_periodo__empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
     # guarda el usuario que crea la instancia
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    # muestra tales columnas de la BD 
-    list_display = ('id', 'numero_bloque', 'cantidad_hh')
-    # se filtra por empresa
-    list_filter = ('periodo__tipo_periodo__empresa__nombre_empresa',)
-    # usuario que crea no puede ser modificado
-    readonly_fields = ('usuario_crea',)
 
 class BodegaAdminForm(forms.ModelForm):
     class Meta:
@@ -258,15 +297,99 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     ordering = ('nombre_costo',)
     # no se puede cambiar usuario que crea
     readonly_fields = ('usuario_crea',)
-    # se filtra por empresa
+    # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
             return ('empresa__nombre_empresa',)
         else:
             return []
+        
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
+        
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().get_fieldsets(request, obj)
+        else:
+            if obj:
+                return [(None, {'fields': ('nombre_costo', 'valor_m3', 'linea', 'empresa', 'usuario_crea')})]
+            else:
+                return [(None, {'fields': ('nombre_costo', 'valor_m3', 'linea')})]
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las calidades producto
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las calidades producto por la empresa del usuario actual
+            return queryset.filter(empresa=empresa)
+        
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'linea':
+            kwargs['queryset'] = Linea.objects.filter(empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+        
+    # se guarda usuario logueado
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
+        #si no es superusuario, aparte del rut guarda la empresa
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
+        obj.save()
+
+class CostoSobreTiempoAdmin(admin.ModelAdmin):
+    # filtración por empresa sólo para superusuarios
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('empresa__nombre_empresa',)
+        else:
+            return []
+        
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
+        
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().get_fieldsets(request, obj)
+        else:
+            if obj:
+                return [(None, {'fields': ('valor', 'empresa', 'usuario_crea')})]
+            else:
+                return [(None, {'fields': ('valor',)})]
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las calidades producto
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las calidades producto por la empresa del usuario actual
+            return queryset.filter(empresa=empresa)
+        
+    # se guarda usuario logueado
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
+        #si no es superusuario, aparte del rut guarda la empresa
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
         obj.save()
 
 class ProductoInline(admin.TabularInline):
@@ -661,12 +784,56 @@ class ProductoCorteAdminForm(forms.ModelForm):
 
 class ProductoCorteAdmin(admin.ModelAdmin):
     form = ProductoCorteAdminForm
+    list_display = ('cantidad_producto', 'descripcion_corte')
+    readonly_fields = ('usuario_crea',)
+    #Cambia los campos que se muestran
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('producto', 'patron', 'cantidad_producto', 'descripcion_corte', 'rollizo')
+}),
+            )
+    # filtra los resultados
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las bodegas
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las bodegas por la empresa del usuario actual
+            return queryset.filter(producto__empresa=empresa)
+        
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('producto__empresa__nombre_empresa',)
+        else:
+            return []
+        
+     # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'producto':
+            kwargs['queryset'] = Producto.objects.filter(empresa=empresa)
+        if db_field.name == 'rollizo':
+            kwargs['queryset'] = Rollizo.objects.filter(linea__empresa=empresa)
+        if db_field.name == 'patron_corte':
+            kwargs['queryset'] = PatronCorte.objects.filter(empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+    
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    list_display = ('cantidad_producto', 'descripcion_corte')
-    readonly_fields = ('usuario_crea',)
-    list_filter = ('producto__productosempresa__empresa__nombre_empresa',)
 
 class ProductosEmpresaAdminForm(forms.ModelForm):
     class Meta:
@@ -690,23 +857,117 @@ class RollizoAdminForm(forms.ModelForm):
             'linea': forms.Select(attrs={'style': correction}),
             'rollizo_largo': forms.Select(attrs={'style': correction}),
         }
-        
+
+class LineaFilter(admin.SimpleListFilter):
+    title = 'Linea'
+    parameter_name = 'linea'
+
+    def lookups(self, request, model_admin):
+        empresa = request.user.empresa
+        lineas = Linea.objects.filter(empresa=empresa)
+        return [(linea.id, linea.nombre_linea) for linea in lineas]
+
+    def queryset(self, request, queryset):
+        if self.value():
+            return queryset.filter(linea__id=self.value())
+
 class RollizoAdmin(admin.ModelAdmin):
     form = RollizoAdminForm
-    def save_model(self, request, obj, form, change):
-        obj.usuario_crea = request.user.rut
-        obj.save()
     list_display = ('nombre_rollizo', 'descripcion_rollizo', 'linea')
     readonly_fields = ('usuario_crea',)
-    list_filter = ('linea__lineahhdisponible__empresa__nombre_empresa','linea__nombre_linea')
 
-class RollizoLargoAdmin(admin.ModelAdmin):
+    #Cambia los campos que se muestran
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('nombre_rollizo', 'descripcion_rollizo', 'linea', 'diametro', 'rollizo_largo', 'clase_diametrica')
+}),
+            )
+
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('rollizo_largo__empresa__nombre_empresa','linea__nombre_linea')
+        else:
+            return (LineaFilter,)
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las bodegas
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las bodegas por la empresa del usuario actual
+            return queryset.filter(rollizo_largo__empresa=empresa)
+        
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'linea':
+            kwargs['queryset'] = Linea.objects.filter(empresa=empresa)
+        if db_field.name == 'rollizo_largo':
+            kwargs['queryset'] = RollizoLargo.objects.filter(empresa=empresa)
+
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+        
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
+
+
+class RollizoLargoAdmin(admin.ModelAdmin):
     list_display = ('nombre_largo', 'descripcion_largo')
     readonly_fields = ('usuario_crea',)
-    list_filter = ('rollizo__linea__lineahhdisponible__empresa__nombre_empresa',)
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('empresa__nombre_empresa',)
+        else:
+            return []
+        
+    def get_readonly_fields(self, request, obj=None):
+        if request.user.is_superuser:
+            return ['usuario_crea']
+        else:
+            return ['usuario_crea', 'empresa']
+        
+    def get_fieldsets(self, request, obj=None):
+        if request.user.is_superuser:
+            return super().get_fieldsets(request, obj)
+        else:
+            if obj:
+                return [(None, {'fields': ('nombre_largo', 'descripcion_largo', 'largo', 'empresa', 'usuario_crea')})]
+            else:
+                return [(None, {'fields': ('nombre_largo', 'descripcion_largo', 'largo',)})]
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las calidades producto
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las calidades producto por la empresa del usuario actual
+            return queryset.filter(empresa=empresa)
+        
+    # se guarda usuario logueado
+    def save_model(self, request, obj, form, change):
+        obj.usuario_crea = request.user.rut
+        #si no es superusuario, aparte del rut guarda la empresa
+        if not request.user.is_superuser:
+            obj.empresa = request.user.empresa
+        obj.save()
+
 
 #Filtro custom para filtrar sólo las bodegas correspondientes a la empresa
 class BodegaFilter(admin.SimpleListFilter):
@@ -754,6 +1015,16 @@ class StockProductoAdmin(admin.ModelAdmin):
             # Filtrar los stock de bodega por la empresa del usuario actual
             return queryset.filter(bodega__empresa=empresa)
         
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('bodega', 'producto', 'cantidad_m3')}),
+            )    
+    
     # filtra las claves foráneas para que sólo sean las de la empresa    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
         # Si el usuario es superusuario, no filtramos las bodegas
@@ -772,6 +1043,27 @@ class StockProductoAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
+class StockRollizoAdmin(admin.ModelAdmin):
+    list_display = ('rollizo', 'cantidad', 'bodega')
+    readonly_fields = ('usuario_crea',)
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('bodega__empresa__nombre_empresa', 'bodega__nombre_bodega')
+        else:
+            return (BodegaFilter,)
+        
+    # devuelve los sólo los stock de bodega pertenecientes a la empresa
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todos los stock de bodega
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar los stock de bodega por la empresa del usuario actual
+            return queryset.filter(bodega__empresa=empresa)
+        
     def get_fieldsets(self, request, obj=None):
         if obj or request.user.is_superuser:
             # Superusuarios pueden editar todos los campos
@@ -779,24 +1071,76 @@ class StockProductoAdmin(admin.ModelAdmin):
         else:
             # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
             return (
-                (None, {'fields': ('bodega', 'producto', 'cantidad_m3')}),
-            )
+                (None, {'fields': ('rollizo', 'cantidad', 'bodega')}),
+            )    
+    
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos las bodegas
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-class StockRollizoAdmin(admin.ModelAdmin):
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'bodega':
+            kwargs['queryset'] = Bodega.objects.filter(empresa=empresa)
+        if db_field.name == 'rollizo':
+            kwargs['queryset'] = Rollizo.objects.filter(linea__empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    list_display = ('rollizo', 'cantidad', 'bodega')
-    readonly_fields = ('usuario_crea',)
-    list_filter = ('bodega__empresa__nombre_empresa', 'bodega__nombre_bodega')
 
 class TiempoCambioAdmin(admin.ModelAdmin):
     form = TiempoCambioAdminForm
+    readonly_fields = ('usuario_crea',)
+    #Cambia los campos que se muestran
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos valor y linea
+            return (
+                (None, {'fields': ('valor', 'linea')}),
+            )
+    # filtración por empresa
+    def get_list_filter(self, request):
+        if request.user.is_superuser:
+            return ('costosobretiempo__empresa__nombre_empresa',)
+        else:
+            return []
+    
+    # filtra los resultados
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas los tiempo cambio
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar los tiempo cambio por la empresa del usuario actual
+            return queryset.filter(costosobretiempo__empresa=empresa)
+    
+    # filtra las claves foráneas para que sólo sean las de la empresa    
+    def formfield_for_foreignkey(self, db_field, request, **kwargs):
+        # Si el usuario es superusuario, no filtramos los tiempo cambio
+        if request.user.is_superuser:
+            return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
+        # Filtramos las bodegas según la empresa del usuario actual
+        empresa = request.user.empresa
+        if db_field.name == 'linea':
+            kwargs['queryset'] = Linea.objects.filter(empresa=empresa)
+        if db_field.name == 'costosobretiempo':
+            kwargs['queryset'] = CostoSobreTiempo.objects.filter(empresa=empresa)
+        return super().formfield_for_foreignkey(db_field, request, **kwargs)
+
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
-    readonly_fields = ('usuario_crea',)
-    list_filter = ('costosobretiempo__empresa__nombre_empresa',)
 
 class TipoPeriodoAdminForm(forms.ModelForm):
     class Meta:
@@ -834,6 +1178,17 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
             return (
                 (None, {'fields': ('nombre_tipo_periodo', 'descripcion_tipo_periodo', 'dias')}),
             )
+        
+    def get_queryset(self, request):
+        queryset = super().get_queryset(request)
+        if request.user.is_superuser:
+            # Superusuarios pueden ver todas las calidades producto
+            return queryset
+        else:
+            # Obtener la empresa del usuario actual
+            empresa = request.user.empresa
+            # Filtrar las calidades producto por la empresa del usuario actual
+            return queryset.filter(empresa=empresa)
     
     # guarda usuario logueado
     def save_model(self, request, obj, form, change):
@@ -919,6 +1274,7 @@ admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
 admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
+admin.site.register(CostoSobreTiempo, CostoSobreTiempoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
 admin.site.register(Linea, LineaAdmin)
