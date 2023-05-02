@@ -1,81 +1,132 @@
-Chart.defaults.color = '#fff'
-Chart.defaults.borderColor = '#444'
+// Variable global para almacenar el gráfico anterior
+var chartAnterior = null;
 
-const printCharts = () => {
+function mostrarGrafico(tipo) {
+    // Obtener el canvas y el contexto
+    var canvas = document.getElementById("myChart");
+    var ctx = canvas.getContext("2d");
 
-    renderModelsChart(),
-    renderFeaturesChart(),
-    renderYearsChart()
-    
-}
+    // Realizar una solicitud HTTP GET a la API de Rick y Morty
+    fetch("https://rickandmortyapi.com/api/character")
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            // Crear un array de nombres a partir de los objetos JSON de la respuesta
+            var nombres = data.results.map(function (personaje) {
+                return personaje.name;
+            });
 
-const renderModelsChart = () => {
-    const data = {
-        labels: ['uno','dos','tres','cuatro'],
-        datasets: [{
-            data: [60,20,30,40],
-            borderColor: getDataColors(),
-            backgroundColor: getDataColors(70)
-        }]
-    }
-    const options = {
-        plugins: {
-            legend: { position : 'top'}
-        }
-    }
+            // Crear un objeto para almacenar el recuento de los diferentes estados de los personajes
+            var estados = {
+                "Alive": 0,
+                "Dead": 0,
+                "unknown": 0
+            };
 
-    new Chart('modelsChart', { type: 'doughnut', data, options})
-}
+            // Iterar a través de los objetos JSON de la respuesta y contar el número de personajes en cada estado
+            data.results.forEach(function (personaje) {
+                estados[personaje.status] += 1;
+            });
 
-const renderFeaturesChart = () => {
-    const data = {
-        labels: ['uno','dos','tres','cuatro','cinco','seis','siete'],
-        datasets: [{
-            label: 'Altura',
-            data: [74,50,68,50,70,68,56],
-            borderColor: getDataColors(),
-            backgroundColor: getDataColors(70)
-        }]
-    }
-    const options = {
-        plugins: {
-            legend: {display : false }
-        },
-        scales : {
-            r:{
-                ticks: { display : false }
+            // Calcular el porcentaje de cada estado en función del número total de personajes
+            var totalPersonajes = data.results.length;
+            var porcentajeAlive = (estados["Alive"] / totalPersonajes * 100).toFixed(0);
+            var porcentajeDead = (estados["Dead"] / totalPersonajes * 100).toFixed(0);
+            var porcentajeUnknown = (estados["unknown"] / totalPersonajes * 100).toFixed(0);
+
+            // Eliminar el gráfico anterior si lo hay
+            if (chartAnterior != null) {
+                chartAnterior.destroy();
             }
-        }
-    }
 
-    new Chart('featuresChart', { type: 'radar', data, options})
+            // Crear el gráfico correspondiente al tipo seleccionado y usar los porcentajes como datos y etiquetas
+            if (tipo == "pie") {
+                chartAnterior = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ["Alive (" + porcentajeAlive + "%)", "Dead (" + porcentajeDead + "%)", "Unknown (" + porcentajeUnknown + "%)"],
+                        datasets: [{
+                            label: 'Status',
+                            data: [estados["Alive"], estados["Dead"], estados["unknown"]],
+                            backgroundColor: [
+                                'rgba(219, 213, 213, 10)',
+                                'rgba(131, 131, 131, 10)',
+                                'rgba(74, 74, 74, 10)'
+                            ],
+                            borderColor: [
+                                'rgba(0, 0, 0, 8)',
+                                'rgba(0, 0, 0, 8)',
+                                'rgba(0, 0, 0, 8)'
+                            ],
+                            borderWidth: 1  
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'left',
+                            }
+                        }
+                    }
+                });
+                } else if (tipo == "radar") {
+                    chartAnterior = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: nombres,
+                            datasets: [{
+                                label: 'Estado',
+                                data: [estados["Alive"], estados["Dead"], estados["unknown"]],
+                                fill: true,
+                                backgroundColor: 'rgba(255,  99, 132, 0.2)',
+                                borderColor: 'rgb(255, 99, 132)',
+                                pointBackgroundColor: 'rgb(255, 99, 132)',
+                                pointBorderColor: '#fff',
+                                pointHoverBackgroundColor: '#fff',
+                                pointHoverBorderColor: 'rgb(255, 99, 132)'
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            plugins: {
+                                legend: {
+                                    position: 'left',
+                                }
+                            }
+                        }
+                    });
+            } else if (tipo == "bar") {
+                chartAnterior = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                        datasets: [{
+                            label: '# of Votes',
+                            data: [12, 19, 3, 5, 2, 3],
+                            backgroundColor: [
+                                'rgba(219, 213, 213, 10)',
+                                'rgba(131, 131, 131, 10)',
+                                'rgba(74, 74, 74, 10)'
+                            ],
+                            borderColor: [
+                                'rgba(0, 0, 0, 8)',
+                                'rgba(0, 0, 0, 8)',
+                                'rgba(0, 0, 0, 8)'
+                            ],
+                            borderWidth: 2
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                position: 'left',
+                            }
+                        }
+                    }
+                });
+            }
+        })
 }
-
-const renderYearsChart = () => {
-
-    const years = ['2015','2016','2017','2018','2019','2020','2021','2022','2023']
-    const ventas = ['5','3','57','60','43','55','49','80','169']
-
-    const data = {
-        labels: years,
-        datasets: [{
-            data: (years,ventas),
-            tension: 1,
-            borderColor: getDataColors()[1],
-            backgroundColor: getDataColors(70)[1],
-            fill: true,
-            pointBorderWidth: 5
-        }]
-    }
-
-    const options = {
-        plugins: {
-            legend: { display: false }
-        }
-    }
-
-    new Chart('yearsChart', { type: 'bar', data, options })
-}
-
-
-printCharts()

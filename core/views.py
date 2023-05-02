@@ -4,6 +4,7 @@ En Django, una vista es una función de Python o basada en clases que toma una w
 Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 """
 from django.conf import settings
+from django.core import serializers
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.shortcuts import render, redirect
@@ -421,11 +422,20 @@ def my_view(request):
     return render(request, 'home.html', {'progress': progress})
 
 class Dashboard(View): 
-    """Esta clase define la vista Index"""
+    """Esta clase define la vista Dashboard"""
+    @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
-        context={
+        rut_empresa = request.user.empresa.rut_empresa
+        clientes = sel_cliente_admin(rut_empresa)
+        rows = []
+        for cliente in clientes:
+            cliente_dict = {
+                'id': cliente['id'],
+                'nombre_cliente': cliente['nombre_cliente'],
+                'correo_cliente': cliente['correo_cliente'],
+                'estado_cliente': cliente['estado_cliente'],
+                'cantidad_pedidos': cliente['cantidad_pedidos'],
+            }
+            rows.append(cliente_dict)
 
-        }
-
-        return render(request, 'dashboard.html', context)
-
+        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)})

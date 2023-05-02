@@ -36,11 +36,11 @@
                                         </div>
                                     </div>
                                 </a>
-                                <a href="#" id="opcion" onclick="mostrarGrafico('radar')">
+                                <a href="#" id="opcion" onclick="mostrarGrafico('line')">
                                     <div class="contenido-opcion">
                                         <img src="{% static 'img/radarChart.png' %}" alt="">
                                         <div class="textos">
-                                            <h2 class="titulo">Gráfico de Radar</h2>
+                                            <h2 class="titulo">Gráfico de Línea</h2>
                                         </div>
                                     </div>
                                 </a>
@@ -66,6 +66,7 @@
             </figure>
         </section>
     </div>
+    <script> var pedido_cliente = {{ pedidos|safe }}; </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
     
