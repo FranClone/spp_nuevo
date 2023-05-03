@@ -622,29 +622,6 @@ li {
 
 /* -----  Dashboard/Charts ----- */ 
 
-.dash {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(rgba(41, 38, 38, 0.5), rgba(0, 0, 0, 0.5)), url('../img/header-bg2.jpg') no-repeat center top;
-    max-width: 100%;
-    background-size: cover;
-    font-family: sans-serif;
-    height: 100%;
-}
-
-/*Main*/
-.master {
-    display: flex;
-    flex-direction: column;
-    min-height: 100%;
-    padding: 70px;
-    color: #fff;
-}
-
-section {
-    margin-bottom: 30px;
-}
-
 h2 {
     color: #000;
     font-size: 1.4em;
@@ -658,31 +635,34 @@ h2 {
 a{
     text-decoration: none;
 }
+
 hr {
     border-color: white;
     margin: 10px 0;
 }
 
-
-
-
-
 .cols-1{
     flex: 0 0 26%;
     margin: 10px;
+    /* max-height: 100%; Eliminar esta propiedad */
 }
 
 .cols-2{
     flex: 0 0 70%;
     margin: 10px;
     margin-right: 0;
-    max-height: 100%;
+    /* max-height: 100%; Eliminar esta propiedad */
 }
 
-@media  (max-width: 200px) {
+@media  (max-width: 768px) {
 
     main {
         padding: 10%;
+    }
+    .cont {
+        flex-direction: column;
+        margin-top: 0;
+        align-items: center;
     }
 
     h1 {
@@ -695,11 +675,15 @@ hr {
     canvas{
         width: 100%;
     }
+    .cols-2{
+        flex: 1 0 auto;
+    }
 
     [class*='cols'] {
         display: flex;
     }
 }
+
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
 figure{
     background-color:#ffffffe3;
@@ -713,9 +697,10 @@ figure{
     justify-content: center;
     align-items: center;
 }
+
 figure canvas {
     max-width: 100%;
-    max-height: 400px;
+    max-height: 100%;
     overflow: auto;
   }
   
@@ -724,11 +709,12 @@ canvas {
     width: 100%;
     height: 100%;
 }
-/*    estiloDash *****************************/
 
+/*    estiloDash *****************************/
 .dashboard{
     padding: 0;
     margin: 0;
+    box-sizing: border-box; /* Agregar esta propiedad */
 }  
 
 .cont {
@@ -736,8 +722,8 @@ canvas {
     margin-left: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: stretch;
-    
+    align-items: stretch; 
+    flex-wrap: wrap; /* Agregar esta propiedad */
 }
 
 .contenedor{
@@ -748,7 +734,8 @@ canvas {
 
 .selectbox{
     width: 100%;
-    height: 20px;
+    /* height: 20px; Modificar esta propiedad */
+    height: auto;
     margin-left: 10px;
     position: relative;
 }
@@ -769,7 +756,6 @@ canvas {
     border: 2px solid transparent;
     align-self: center;
 }
-
 
 .select.active,
 .select:hover {
@@ -808,20 +794,10 @@ canvas {
     text-decoration-line: none;
     text-decoration: none;
 }
- 
+
 .textos{
     text-decoration: none;
-}
-
-.opciones h2.titulo {
-    text-decoration: none;
-    text-decoration-line: none;
-}
-
-h2.titulo {
-    text-decoration: none;
-    text-decoration-line: none;
-}  
+} 
 
 .descripcion{
     font-size: 18px;
@@ -841,6 +817,7 @@ h2.titulo {
     display: none;
     position: absolute;
 }
+
 .opciones.active{
     display: block;
     animation: fadeIn .3s forwards;
@@ -855,6 +832,7 @@ h2.titulo {
         transform: translateY(0)scale(1);
     }
 }
+
 /**/
 .contenido-opcion{
     width: 100%;
@@ -863,6 +841,7 @@ h2.titulo {
     transition: .2 ease all;
     /* padding: 20px; /*****************************/   
 }
+
 .opciones .contenido-opcion{
     padding: 30px;
 }
