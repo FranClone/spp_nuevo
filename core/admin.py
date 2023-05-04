@@ -1215,7 +1215,7 @@ class UserProfileAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'rut', 'empresa', 'password1', 'password2', ),
+            'fields': ('username', 'rut', 'empresa', 'email', 'password1', 'password2',),
         }),
     )
     #form = UserProfileChangeForm
@@ -1238,7 +1238,7 @@ class UserProfileAdmin(UserAdmin):
         if obj is None and not request.user.is_superuser:
             return(None, {
                 'classes': ('wide',),
-                'fields': ('username', 'rut', 'password1', 'password2', ),
+                'fields': ('username', 'rut', 'email', 'password1', 'password2', ),
             }),
         else:
             return super().get_fieldsets(request, obj)
