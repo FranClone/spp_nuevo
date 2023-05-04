@@ -1,0 +1,10 @@
+Cosas que faltan:
+
+Arreglar Excel
+Dar funcionalidad a vistas
+Integrar Lingo
+Detalles Administrador
+Reestablecer Axes (Protección contra Fuerza Bruta)
+Ver integridad de datos Administrador
+Integrar ¿Olvidaste la contraseña?
+Integrar Correo para utilidades

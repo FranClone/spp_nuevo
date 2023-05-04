@@ -1,4 +1,4 @@
-pip install django			// el framework
+pip install django			    // el framework
 pip install django-environ 		// te permite manejar mejor datos privados
 pip install django-bleach 		// seguridad para subir datos, en este caso Excel
 pip install django-axes 		// seguridad contra fuerza bruta, limita intentos de contraseña
