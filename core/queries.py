@@ -64,7 +64,7 @@ def sel_pedido_productos_empresa(rut_empresa):
     fecha_fin = fecha_actual + timedelta(days=30)
     
     pedidos = Pedido.objects.filter(
-        Q(cliente__rut_cliente=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
+        Q(cliente__empresa__rut_empresa=rut_empresa) & Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
         ).annotate(detalle_producto = F('detallepedido__detalle_producto'),
                    volumen_producto = F('detallepedido__volumen_producto'),
                    nombre_producto = F('detallepedido__producto__nombre_producto')
