@@ -438,4 +438,4 @@ class Dashboard(View):
             }
             rows.append(cliente_dict)
 
-        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)})
+        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)}) 

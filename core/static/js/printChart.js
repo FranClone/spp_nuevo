@@ -1,10 +1,12 @@
 // Variable global para almacenar el gráfico anterior
 var chartAnterior = null;
 
+
 function mostrarGrafico(tipo) {
     // Obtener el canvas y el contexto
     var canvas = document.getElementById("myChart");
     var ctx = canvas.getContext("2d");
+    var imgChart = document.getElementById("imgChart");
 
     // Eliminar el gráfico anterior si lo hay
     if (chartAnterior != null) {
@@ -36,8 +38,6 @@ function mostrarGrafico(tipo) {
         // Agregar el valor de cantidad_pedidos como dato
         numPedidos.push(pedidos[i].cantidad_pedidos);
     }
-
-
     // Crear el gráfico correspondiente al tipo seleccionado y usar los porcentajes como datos y etiquetas
     if (tipo == "pie") {
         chartAnterior = new Chart(ctx, {
@@ -50,7 +50,6 @@ function mostrarGrafico(tipo) {
                     backgroundColor: [
                         '#fb040595',
                         '#21130e95',
-                        '#a0432895',
                         '#7a6d5795',
                         '#61525c95'
                     ],
@@ -71,11 +70,15 @@ function mostrarGrafico(tipo) {
                     title: {
                         display: true,
                         text: 'Cantidad de pedidos por clientes',
-                        align: 'start', 
+                        align: 'start',
                         padding: {
                             top: 20
                         },
-                        
+                        font: {
+                            size: 25,
+                            family: "Arial",
+                            weight: "normal"
+                        },
                     },
                     tooltip: {
                         callbacks: {
@@ -90,22 +93,24 @@ function mostrarGrafico(tipo) {
                 }
             }
         });
+        imgChart.parentNode.removeChild(imgChart);
     } else if (tipo == "line") {
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
         chartAnterior = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: nomCliente,
+                labels: meses,
                 datasets: [{
-                    label: '',
-                    data: numPedidos,
+                    label: 'Ventas',
+                    data: ['1', '2', '4', '7', '5', '', '', '', '', '', '', ''],
                     fill: true,
-                    backgroundColor: '#ff000080',
+                    backgroundColor: '#fb040595',
                     borderColor: '#61525c95',
                     pointBackgroundColor: '#61525c95',
                     pointBorderColor: '#fff',
                     pointHoverBackgroundColor: '#fff',
                     pointHoverBorderColor: 'rgb(255, 99, 132)',
-                    beginAtZero: true
+                    pointRadius: 5,
                 }]
             },
             options: {
@@ -118,11 +123,16 @@ function mostrarGrafico(tipo) {
             },
             title: {
                 display: true,
-                text: 'Cantidad de pedidos por mes (EN CONSTUCCIÓN)',
-                align: 'start', 
+                text: 'Cantidad de pedidos por clientes',
+                align: 'start',
                 padding: {
                     top: 20
-                }
+                },
+                font: {
+                    size: 30,
+                    family: "Arial",
+                    weight: "normal"
+                },
             },
             scales: {
                 x: {
@@ -143,8 +153,9 @@ function mostrarGrafico(tipo) {
                         beginAtZero: true
                     }
                 }]
-            } 
+            }
         });
+        imgChart.parentNode.removeChild(imgChart);
     } else if (tipo == "bar") {
         chartAnterior = new Chart(ctx, {
             type: 'bar',
@@ -154,9 +165,10 @@ function mostrarGrafico(tipo) {
                     label: '',
                     data: numPedidos,
                     backgroundColor: [
-                        'rgba(219, 213, 213, 10)',
-                        'rgba(131, 131, 131, 10)',
-                        'rgba(74, 74, 74, 10)'
+                        '#fb040595',
+                        '#21130e95',
+                        '#7a6d5795',
+                        '#61525c95'
                     ],
                     borderColor: [
                         'rgba(0, 0, 0, 8)',
@@ -169,7 +181,7 @@ function mostrarGrafico(tipo) {
             title: {
                 display: true,
                 text: 'pensando que debo mostrar(EN CONSTUCCIÓN)',
-                align: 'start', 
+                align: 'start',
                 padding: {
                     top: 20
                 }
@@ -198,8 +210,8 @@ function mostrarGrafico(tipo) {
                         beginAtZero: true
                     }
                 }]
-            } 
+            }
         });
+        imgChart.parentNode.removeChild(imgChart);
     }
-
 }

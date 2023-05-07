@@ -876,4 +876,10 @@ canvas {
 
 }
 
+#imgChart{
+    padding-left: 9%;
+    width: fit-content;
+    filter: grayscale(1);
+}
+
 /*----Responsive----*/
