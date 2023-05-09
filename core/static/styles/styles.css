@@ -141,7 +141,6 @@ li {
 .footer {
     color: rgb(255, 255, 255);
     text-align: center;
-    position: absolute;
     bottom: 0;
     width: 100%;
 }
@@ -661,7 +660,6 @@ hr {
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
 figure{
     background-color:#ffffffe3;
-    /* background: linear-gradient(rgba(255, 254, 254, 0.747), rgba(255, 255, 255, 0.747)), url('../img/charts.png') no-repeat center top; */
     background-size: cover;
     padding: 10px 10px 30px;
     border-radius: 10px;
@@ -677,7 +675,7 @@ figure canvas {
     max-height: 100%;
     overflow: auto;
   }
-  
+
 canvas {
     max-width: 100%;
     width: 100%;
@@ -842,4 +840,3 @@ canvas {
     filter: grayscale(1);
 }
 
-/*----Responsive----*/

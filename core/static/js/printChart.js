@@ -51,7 +51,10 @@ function mostrarGrafico(tipo) {
                         '#fb040595',
                         '#21130e95',
                         '#7a6d5795',
-                        '#61525c95'
+                        '#61525c95',
+                        '#6F518895',
+                        '#9A776995',
+                        '#ffffff95'
                     ],
                     borderColor: [
                         'rgba(0, 0, 0, 8)',
@@ -66,19 +69,6 @@ function mostrarGrafico(tipo) {
                 plugins: {
                     legend: {
                         position: 'left',
-                    },
-                    title: {
-                        display: true,
-                        text: 'Cantidad de pedidos por clientes',
-                        align: 'start',
-                        padding: {
-                            top: 20
-                        },
-                        font: {
-                            size: 25,
-                            family: "Arial",
-                            weight: "normal"
-                        },
                     },
                     tooltip: {
                         callbacks: {
@@ -102,7 +92,7 @@ function mostrarGrafico(tipo) {
                 labels: meses,
                 datasets: [{
                     label: 'Ventas',
-                    data: ['1', '2', '4', '7', '5', '', '', '', '', '', '', ''],
+                    data: ['1', '2', '4', '7', '5', null, null, null, null, null, null, null],
                     fill: true,
                     backgroundColor: '#fb040595',
                     borderColor: '#61525c95',
@@ -120,19 +110,6 @@ function mostrarGrafico(tipo) {
                         position: 'left',
                     }
                 }
-            },
-            title: {
-                display: true,
-                text: 'Cantidad de pedidos por clientes',
-                align: 'start',
-                padding: {
-                    top: 20
-                },
-                font: {
-                    size: 30,
-                    family: "Arial",
-                    weight: "normal"
-                },
             },
             scales: {
                 x: {
@@ -165,10 +142,13 @@ function mostrarGrafico(tipo) {
                     label: '',
                     data: numPedidos,
                     backgroundColor: [
-                        '#fb040595',
                         '#21130e95',
                         '#7a6d5795',
-                        '#61525c95'
+                        '#fb040595',
+                        '#61525c95',
+                        '#6F518895',
+                        '#9A776995',
+                        '#ffffff95'
                     ],
                     borderColor: [
                         'rgba(0, 0, 0, 8)',
@@ -177,14 +157,6 @@ function mostrarGrafico(tipo) {
                     ],
                     borderWidth: 2
                 }]
-            },
-            title: {
-                display: true,
-                text: 'pensando que debo mostrar(EN CONSTUCCIÓN)',
-                align: 'start',
-                padding: {
-                    top: 20
-                }
             },
             options: {
                 responsive: true,
@@ -201,13 +173,15 @@ function mostrarGrafico(tipo) {
                         labelString: 'Eje X'
                     }
                 },
-                yAxes: [{
+                y: [{
                     scaleLabel: {
                         display: true,
                         labelString: 'Eje Y'
                     },
                     ticks: {
-                        beginAtZero: true
+                        beginAtZero: true,
+                        stepSize: 1,
+                        precision: 0 
                     }
                 }]
             }

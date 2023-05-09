@@ -439,3 +439,14 @@ class Dashboard(View):
             rows.append(cliente_dict)
 
         return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)}) 
+    
+     
+
+
+
+    # def cantidad_pedidos_mes(request):
+    #     pedidos_por_mes = sel_cantidad_pedidos_mes()
+        
+    #     resultados = [{'mes': p['month'], 'cantidad_pedidos': p['cantidad_pedidos']} for p in pedidos_por_mes]
+        
+    #     return JsonResponse(resultados, safe=False)
