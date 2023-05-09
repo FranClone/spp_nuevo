@@ -654,35 +654,9 @@ hr {
     /* max-height: 100%; Eliminar esta propiedad */
 }
 
-@media  (max-width: 768px) {
-
-    main {
-        padding: 10%;
-    }
-    .cont {
-        flex-direction: column;
-        margin-top: 0;
-        align-items: center;
-    }
-
-    h1 {
-        font-size: 2.1em;
-        font-weight: 100;
-    }
-    figure{
-        width: 100%;
-    }
-    canvas{
-        width: 100%;
-    }
-    .cols-2{
-        flex: 1 0 auto;
-    }
-
-    [class*='cols'] {
-        display: flex;
-    }
-}
+@media (max-width: 768px) {
+  
+  }
 
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
 figure{
@@ -691,7 +665,7 @@ figure{
     background-size: cover;
     padding: 10px 10px 30px;
     border-radius: 10px;
-    width: 1000px;
+    width: 97%;
     height: 560px;
     display:flex;
     justify-content: center;
@@ -705,7 +679,7 @@ figure canvas {
   }
   
 canvas {
-    max-width: 100;
+    max-width: 100%;
     width: 100%;
     height: 100%;
 }
@@ -860,20 +834,6 @@ canvas {
 .opciones .contenido-opcion:hover .descripcion{
     background: #fd0202;
     text-decoration: none;
-}
-
-@media screen and (max-width: 800px){
-    .selectbox{
-        width: 100%;
-    }
-    .select{
-        width: 100%;
-    }
-    .contenedor{
-        align-self: center;
-        width: 100%;
-    }
-
 }
 
 #imgChart{
