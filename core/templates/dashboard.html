@@ -7,18 +7,16 @@
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://kit.fontawesome.com/cab6de82a6.js" crossorigin="anonymous"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0""maximum-scale=1.0", "minimum-scale=1.0">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,600&display=swap" rel="stylesheet"> 
     <title>SPP - Dashboard</title>
 </head>
-<body class="dashboard">
+<body>
     {% include "partials/header.html" %}
     <div class="cont">
 
         <section class="cols-1">
-            <main class="chart">
-                <div class="contenedor">
+                <div>
                     <form action="">
                         <div class="selectbox">
                             <div class="select" id="select">
@@ -38,7 +36,7 @@
                                 </a>
                                 <a href="#" id="opcion" onclick="mostrarGrafico('line')">
                                     <div class="contenido-opcion">
-                                        <img src="{% static 'img/radarChart.png' %}" alt="">
+                                        <img src="{% static 'img/lineChart.png' %}" alt="">
                                         <div class="textos">
                                             <h2 class="titulo">Gráfico de Línea</h2>
                                         </div>
@@ -62,6 +60,7 @@
         </section>
         <section class="cols-2">
             <figure>
+                <img id="imgChart" src="{% static 'img/charts.png' %}" alt="">
                 <canvas id="myChart" class="chart-canvas"></canvas>
             </figure>
         </section>
@@ -69,7 +68,7 @@
     <script> var pedido_cliente = {{ pedidos|safe }}; </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.7.0/chart.min.js"></script>
-    
+    <script src="https://kit.fontawesome.com/cab6de82a6.js" crossorigin="anonymous"></script>
     <script src="{% static 'js/helpers.js'%}"></script>
     <script src="{% static 'js/handlers.js'%}"></script>
     <script src="{% static 'js/printChart.js'%}"></script> 
