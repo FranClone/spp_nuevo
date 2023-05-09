@@ -1,12 +1,11 @@
 // Variable global para almacenar el gráfico anterior
-var chartAnterior = null;
-
+let chartAnterior = null;
 
 function mostrarGrafico(tipo) {
     // Obtener el canvas y el contexto
-    var canvas = document.getElementById("myChart");
-    var ctx = canvas.getContext("2d");
-    var imgChart = document.getElementById("imgChart");
+    const canvas = $('#myChart')[0];
+    const ctx = canvas.getContext('2d');
+    const imgChart = $('#imgChart');
 
     // Eliminar el gráfico anterior si lo hay
     if (chartAnterior != null) {
@@ -14,30 +13,28 @@ function mostrarGrafico(tipo) {
     }
 
     // Obtener los datos de pedidos
-    var pedidos = pedido_cliente;
+    const pedidos = pedido_cliente;
 
     // Calcular la cantidad total de pedidos
-    var totalPedidos = 0;
-    for (var i = 0; i < pedidos.length; i++) {
-        totalPedidos += pedidos[i].cantidad_pedidos;
-    }
+    const totalPedidos = pedidos.reduce((total, pedido) => total + pedido.cantidad_pedidos, 0);
 
     // Crear los arrays de etiquetas y datos
-    var nomCliente = [];
-    var numPedidos = [];
-    var porcentajes = [];
+    const nomCliente = [];
+    const numPedidos = [];
+    const porcentajes = [];
 
     // Iterar sobre los datos de pedidos y agregar los valores correspondientes a los arrays
-    for (var i = 0; i < pedidos.length; i++) {
-        nomCliente.push(pedidos[i].nombre_cliente);
+    pedidos.forEach(pedido => {
+        nomCliente.push(pedido.nombre_cliente);
 
         // Calcular el porcentaje correspondiente a cada valor
-        var porcentaje = (pedidos[i].cantidad_pedidos / totalPedidos) * 100;
-        porcentajes.push(porcentaje.toFixed(1) + "%");
+        const porcentaje = (pedido.cantidad_pedidos / totalPedidos) * 100;
+        porcentajes.push(porcentaje.toFixed(0) + "%");
 
         // Agregar el valor de cantidad_pedidos como dato
-        numPedidos.push(pedidos[i].cantidad_pedidos);
-    }
+        numPedidos.push(pedido.cantidad_pedidos);
+    });
+
     // Crear el gráfico correspondiente al tipo seleccionado y usar los porcentajes como datos y etiquetas
     if (tipo == "pie") {
         chartAnterior = new Chart(ctx, {
@@ -73,9 +70,9 @@ function mostrarGrafico(tipo) {
                     tooltip: {
                         callbacks: {
                             label: function (context) {
-                                var label = context.label || '';
-                                var value = context.parsed || 0;
-                                var porcentaje = porcentajes[context.dataIndex];
+                                const label = context.label || '';
+                                const value = context.parsed || 0;
+                                const porcentaje = porcentajes[context.dataIndex];
                                 return label + ': ' + value + ' (' + porcentaje + ')';
                             }
                         }
@@ -83,9 +80,9 @@ function mostrarGrafico(tipo) {
                 }
             }
         });
-        imgChart.parentNode.removeChild(imgChart);
+        imgChart.remove();
     } else if (tipo == "line") {
-        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
+        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
         chartAnterior = new Chart(ctx, {
             type: 'line',
             data: {
@@ -132,7 +129,7 @@ function mostrarGrafico(tipo) {
                 }]
             }
         });
-        imgChart.parentNode.removeChild(imgChart);
+        imgChart.remove();
     } else if (tipo == "bar") {
         chartAnterior = new Chart(ctx, {
             type: 'bar',
@@ -181,11 +178,11 @@ function mostrarGrafico(tipo) {
                     ticks: {
                         beginAtZero: true,
                         stepSize: 1,
-                        precision: 0 
+                        precision: 0
                     }
                 }]
             }
         });
-        imgChart.parentNode.removeChild(imgChart);
+        imgChart.remove();
     }
 }
