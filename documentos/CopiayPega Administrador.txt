@@ -1,4 +1,4 @@
-from core.modelos.abastecimiento_rollizo import AbastecimientoRollizo as MiModelo
+from core.modelos.cliente import Cliente as MiModelo
 
 campos = MiModelo._meta.get_fields()
 nombres = []
@@ -10,7 +10,7 @@ nombres = tuple(nombres)
 print(nombres)
 
 
-('rollizo', 'periodo', 'numero_bloque', 'cantidad_hh')
+('rut_cliente', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'fecha_vigencia', 'nombre_fantasia', 'ciudad', 'telefono')
 -------------------------------------------------------------------------------------
 
     #Cambia los campos que se muestran

@@ -279,6 +279,16 @@ class ClienteAdmin(admin.ModelAdmin):
             return ('empresa__nombre_empresa',)
         else:
             return []
+        
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('rut_cliente', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'fecha_vigencia', 'nombre_fantasia', 'ciudad', 'telefono')}),
+            )
 
 
 class CostoRollizoAdminForm(forms.ModelForm):
@@ -289,6 +299,7 @@ class CostoRollizoAdminForm(forms.ModelForm):
             'linea': forms.Select(attrs={'style': correction}),
             'empresa': forms.Select(attrs={'style': correction}),
         }
+
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
     form = CostoRollizoAdminForm
