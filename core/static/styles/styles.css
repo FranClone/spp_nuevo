@@ -506,6 +506,13 @@ li {
     color: #fff;
 }
 
+.pedidoform {
+    background-color: red;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
 .progress {
     width: 10%;
     height: 30px;

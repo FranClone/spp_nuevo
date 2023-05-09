@@ -164,3 +164,8 @@ def sel_cliente(rut_empresa):
     pedidos_por_cliente = Pedido.objects.filter(cliente_empresa__in=cliente_empresa).values('cliente_empresa__empresa_cliente').annotate(total_pedidos=Count('rut_empresa'))
 
     return pedidos_por_cliente
+
+def obtener_productos_de_empresa(rut_empresa):
+    '''Uso de query en formulario de pedidos'''
+    productos = Producto.objects.filter(productoempresa__empresa__rut_empresa=rut_empresa)
+    return productos

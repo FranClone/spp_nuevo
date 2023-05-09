@@ -7,12 +7,15 @@ from django.conf import settings
 from django.core import serializers
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.db import transaction
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
-from django.views.generic import View,TemplateView
+from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
+from .modelos.pedido import Pedido
 from .pedidoForm import PedidoForm
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -302,40 +305,51 @@ class Mantenedor(View):
 
         return render(request, 'mantenedor.html', context)
 
-class Pedido(View):
+# Esta vista es para crear un nuevo pedido y sus detalles relacionados
+class Pedido(CreateView):
+    # El modelo que se usará para crear un nuevo pedido
+    model = Pedido
+    # El formulario que se usará para ingresar los datos del pedido
+    form_class = PedidoForm
+    # El éxito URL a donde se dirigirá al usuario después de crear el pedido
+    success_url = reverse_lazy('home')
+    # El nombre de la plantilla HTML que se usará para mostrar la página de creación de pedido
     template_name = 'pedido.html'
-    @method_decorator(login_required)
-    def get(self, request):
-        rut_empresa = request.user.empresa.rut_empresa
-        form = PedidoForm(rut_empresa)
-        return render(request, self.template_name, {'form': form})
 
-    @method_decorator(login_required)
-    def post(self, request):
-        rut_empresa = request.user.empresa.rut_empresa
-        form = PedidoForm(rut_empresa, request.POST)
-        if form.is_valid():
-            numero_pedido = form.cleaned_data['numero_pedido']
-            fecha_recepcion = form.cleaned_data['fecha_recepcion']
-            fecha_recepcion = datetime.datetime.combine(fecha_recepcion, datetime.time.min)
-            fecha_entrega = form.cleaned_data['fecha_entrega']
-            fecha_entrega = datetime.datetime.combine(fecha_entrega, datetime.time.min)
-            destino_pedido = form.cleaned_data['destino_pedido']
-            # id_bodega = form.cleaned_data['nombre_bodega']
-            prioridad = form.cleaned_data['prioridad']
-            # Ingresa Datos a Pedido
-            rut_empresa = request.user.empresa.rut_empresa
-            rut = request.user.rut
-            insertar_pedido(numero_pedido, destino_pedido, fecha_recepcion, fecha_entrega, rut_empresa, rut, prioridad)
-            productos = request.POST.getlist('form-0-producto')
-            cantidades = request.POST.getlist('form-0-cantidad')
-            for i in range(len(productos)):
-                # Ingresa Productos a DETALLE_PEDIDO
-                producto_nombre = productos[i]
-                cantidad = cantidades[i]
-                insertar_detalle_pedido(producto_nombre, cantidad, fecha_entrega)
-            return redirect('home')
-        return render(request, self.template_name, {'form': form})
+    # Este método se utiliza para obtener los datos necesarios para renderizar la plantilla
+    def get_context_data(self, **kwargs):
+        # Obtener los datos de contexto que se proporcionan por la superclase
+        data = super().get_context_data(**kwargs)
+        # Si la solicitud es un POST, entonces se recibieron datos del formulario
+        if self.request.POST:
+            # Crea un formulario en línea para ingresar los detalles del pedido
+            # y asocia el formulario en línea con los datos recibidos del formulario de pedido principal
+            data['detalles'] = DetallePedidoInlineFormSet(self.request.POST)
+        else:
+            # Si la solicitud no es un POST, entonces no hay datos para el formulario en línea
+            # Así que se crea un formulario en línea vacío
+            data['detalles'] = DetallePedidoInlineFormSet()
+        return data
+
+    # Este método se llama cuando el formulario es válido
+    def form_valid(self, form):
+        # Obtener los datos de contexto necesarios para guardar los detalles del pedido
+        context = self.get_context_data()
+        detalles = context['detalles']
+        # Utiliza una transacción de la base de datos para guardar el pedido y sus detalles relacionados
+        with transaction.atomic():
+            # Asigna el usuario actual como el creador del pedido
+            form.instance.creado_por = self.request.user
+            # Guarda el pedido principal
+            self.object = form.save()
+            # Si el formulario en línea es válido, asocia los detalles del pedido con el pedido principal
+            if detalles.is_valid():
+                # Asigna el pedido principal como la instancia de los detalles del pedido
+                detalles.instance = self.object
+                # Guarda los detalles del pedido relacionados con el pedido principal
+                detalles.save()
+        # Retorna la respuesta HTTP para indicar que el formulario fue validado correctamente
+        return super().form_valid(form)
 
 class Pedido_Multiple(View):
     template_name = 'pedido_multiple.html'
