@@ -17,7 +17,7 @@ from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .modelos.pedido import Pedido
 from .pedidoForm import PedidoForm
-from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa
+from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
 
@@ -441,6 +441,7 @@ class Dashboard(View):
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
         clientes = sel_cliente_admin(rut_empresa)
+        pedidos_por_mes = cantidad_pedidos_por_mes(rut_empresa)
         rows = []
         for cliente in clientes:
             cliente_dict = {
@@ -451,5 +452,5 @@ class Dashboard(View):
                 'cantidad_pedidos': cliente['cantidad_pedidos'],
             }
             rows.append(cliente_dict)
-
+        print(pedidos_por_mes)
         return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)}) 
