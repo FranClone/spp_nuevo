@@ -16,81 +16,17 @@
 </head>
 
 <body>
+  {% include "partials/header.html" %}
 
-    {% include "partials/header.html" %}
-
-    <h1 class="h1-carga-individual">Carga Individual Pedidos</h1>
-
-    <form class="form-carga-individual" method="post" id="form-container">
-      {% csrf_token %}
-      <div class="container-pedidos">
-        {{ form.numero_pedido.label_tag }}
-        {{ form.numero_pedido }}
-
-        {{ form.destino_pedido.label_tag }}
-        {{ form.destino_pedido }}
-        {% if form.destino_pedido.errors %}
-          {% for error in form.destino_pedido.errors %}
-              <div class="alert alert-danger">
-                  <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                  {{ error }}
-              </div>
-          {% endfor %}
-        {% endif %}
-      </div>
-
-      <div class="container-fechas">
-      <br>
-      {{ form.fecha_recepcion.label_tag }}
-      {{ form.fecha_recepcion }}
-      {% if form.fecha_recepcion.errors %}
-        {% for error in form.fecha_recepcion.errors %}
-            <div class="alert alert-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                {{ error }}
-            </div>
-        {% endfor %}
-      {% endif %}
-      <br>
-      {{ form.fecha_entrega.label_tag }}
-      {{ form.fecha_entrega }}
-      {% if form.fecha_entrega.errors %}
-        {% for error in form.fecha_entrega.errors %}
-            <div class="alert alert-danger">
-                <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
-                {{ error }}
-            </div>
-        {% endfor %}
-      {% endif %}
-      <br>
-      {{ form.prioridad.label_tag }}
-      {{ form.prioridad }}
-      <br>
-      </div>
-      <br>
-      <div class="container-lista-pedidos">
-        <table>
-          <tbody id="product-table">
-            {% for form in form.productos %}
-              <tr id="product-form">
-                <td>{{ form.producto.label_tag }}</td>
-                <td>{{ form.producto }}</td>
-                <td>{{ form.cantidad.label_tag }}</td>
-                <td>{{ form.cantidad }}</td>
-                <td><button type="button" id="remove-button">Borrar</button></td>
-              </tr>
-            {% endfor %}
-          </tbody>
-        </table>
-      </div>
-      <br>
-      <div>
-          <button type="button" id="add-button">Agregar Producto</button>
-          <input type="submit" value="Ingresar Pedido">  
-      </div>
-      
-    </form>
-</body>
-{% include "partials/footer.html" %}
-</html>
-
+  <h1 class="h1-carga-individual">Carga Individual Pedidos</h1>
+  <div class="pedidoform">
+    {% block content %}
+      <h1>Crear Pedido</h1>
+      <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {{ detalles.as_table }}
+        <button type="submit">Guardar</button>
+      </form>
+    {% endblock %}
+  </div> 

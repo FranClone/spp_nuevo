@@ -104,7 +104,7 @@ class AbastecimientoRollizoAdmin(admin.ModelAdmin):
     # se filtra por periodo
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('periodo__tipo_periodo__empresa__nombre_empresa',)
+            return ('periodo__tipo_periodo__empresa',)
         else:
             return []
         
@@ -180,7 +180,7 @@ class BodegaAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
     # devuelve los sólo las bodegas pertenecientes a la empresa
@@ -215,7 +215,7 @@ class CalidadProductoAdmin(admin.ModelAdmin):
     # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -276,9 +276,19 @@ class ClienteAdmin(admin.ModelAdmin):
         
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
+        
+    def get_fieldsets(self, request, obj=None):
+        if obj or request.user.is_superuser:
+            # Superusuarios pueden editar todos los campos
+            return super().get_fieldsets(request, obj)
+        else:
+            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+            return (
+                (None, {'fields': ('rut_cliente', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'fecha_vigencia', 'nombre_fantasia', 'ciudad', 'telefono')}),
+            )
 
 
 class CostoRollizoAdminForm(forms.ModelForm):
@@ -289,6 +299,7 @@ class CostoRollizoAdminForm(forms.ModelForm):
             'linea': forms.Select(attrs={'style': correction}),
             'empresa': forms.Select(attrs={'style': correction}),
         }
+
 class CostoRollizoAdmin(admin.ModelAdmin):
     # cambios en diseño
     form = CostoRollizoAdminForm
@@ -300,7 +311,7 @@ class CostoRollizoAdmin(admin.ModelAdmin):
     # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -354,7 +365,7 @@ class CostoSobreTiempoAdmin(admin.ModelAdmin):
     # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -483,7 +494,7 @@ class InvInicialRollizoAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('bodega__empresa__nombre_empresa',)
+            return ('bodega__empresa',)
         else:
             return []
     # devuelve los sólo las bodegas pertenecientes a la empresa
@@ -538,7 +549,7 @@ class LineaAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -592,7 +603,7 @@ class LineaHhDisponibleAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -678,7 +689,7 @@ class PedidoAdmin(admin.ModelAdmin):
     
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('cliente__empresa__nombre_empresa',)
+            return ('cliente__empresa',)
         else:
             return []
 
@@ -697,7 +708,7 @@ class PeriodoAdmin(admin.ModelAdmin):
     # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('tipo_periodo__empresa__nombre_empresa',)
+            return ('tipo_periodo__empresa',)
         else:
             return []
     # devuelve los sólo los tipo periodo pertenecientes a la empresa
@@ -757,7 +768,7 @@ class ProductoAdmin(admin.ModelAdmin):
     #Si es superusuario puede filtrar por empresa, si no no
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('productosempresa__empresa__nombre_empresa',)
+            return ('productosempresa__empresa',)
         else:
             return []
         
@@ -811,7 +822,7 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('producto__empresa__nombre_empresa',)
+            return ('producto__empresa',)
         else:
             return []
         
@@ -930,7 +941,7 @@ class RollizoLargoAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []
         
@@ -999,7 +1010,7 @@ class StockProductoAdmin(admin.ModelAdmin):
     
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('bodega__empresa__nombre_empresa', 'bodega__nombre_bodega')
+            return ('bodega__empresa', 'bodega__nombre_bodega')
         else:
             return (BodegaFilter,)
         
@@ -1048,7 +1059,7 @@ class StockRollizoAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('bodega__empresa__nombre_empresa', 'bodega__nombre_bodega')
+            return ('bodega__empresa', 'bodega__nombre_bodega')
         else:
             return (BodegaFilter,)
         
@@ -1108,7 +1119,7 @@ class TiempoCambioAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('costosobretiempo__empresa__nombre_empresa',)
+            return ('costosobretiempo__empresa',)
         else:
             return []
     
@@ -1164,7 +1175,7 @@ class TipoPeriodoAdmin(admin.ModelAdmin):
 
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('empresa__nombre_empresa',)
+            return ('empresa',)
         else:
             return []    
         

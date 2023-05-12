@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
-from django.db.models import Q, Max, Sum, F, Count
-from django.db.models.functions import ExtractMonth
+from django.db.models import Q, Max, Sum, F, Count, IntegerField, CharField, Case, When, Value
+from django.db.models.functions import TruncMonth, Cast, ExtractMonth
 from django.db.models import Count
 from .modelos.cliente import Cliente
 from .modelos.pedido import Pedido
@@ -21,6 +21,46 @@ def sel_cliente_admin(rut_empresa):
                                                  ).values('id', 'nombre_cliente', 'correo_cliente', 'estado_cliente', 'cantidad_pedidos')
     return clientes
 
+def cantidad_pedidos_por_mes(rut_empresa):
+    seis_meses_atras = datetime.now() - timedelta(days=180)
+
+    meses = {
+        1: 'Enero',
+        2: 'Febrero',
+        3: 'Marzo',
+        4: 'Abril',
+        5: 'Mayo',
+        6: 'Junio',
+        7: 'Julio',
+        8: 'Agosto',
+        9: 'Septiembre',
+        10: 'Octubre',
+        11: 'Noviembre',
+        12: 'Diciembre'
+    }
+
+    cantidad_recepciones_por_mes = Pedido.objects.filter(
+        cliente__empresa__rut_empresa=rut_empresa,
+        fecha_recepcion__gte=seis_meses_atras
+    ).annotate(
+        mes=TruncMonth('fecha_recepcion'),
+        mes_numero=ExtractMonth('fecha_recepcion')
+    ).annotate(
+        mes_texto=Value('', output_field=CharField())
+    ).values(
+        'mes',
+        'mes_numero',
+        'mes_texto'
+    ).annotate(
+        cantidad=Count('id', output_field=IntegerField())
+    ).order_by(
+        'mes'
+    )
+
+    for item in cantidad_recepciones_por_mes:
+        item['mes_texto'] = meses[item['mes_numero']]
+
+    return cantidad_recepciones_por_mes
 
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''

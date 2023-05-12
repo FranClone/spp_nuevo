@@ -1,64 +1,37 @@
 from django import forms
-from django.forms import formset_factory
+from django.forms import formset_factory, inlineformset_factory
+from django.forms.models import BaseInlineFormSet, BaseModelFormSet, inlineformset_factory
+from django.forms.widgets import DateInput
 from datetime import datetime
-from .modelos.producto import Producto
-from .modelos.empresa import Empresa
+from .modelos.pedido import Pedido
+from .modelos.detalle_pedido import DetallePedido
+from .modelos.cliente import Cliente
+
 import re
 
-class ProductoForm(forms.Form):
-    #Se obtienen los productos desde un desplegable
-    producto = forms.ChoiceField()
-    #La cantidad se ingresa desde un input integer
-    cantidad = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1'}))
-    def __init__(self, *args, rut_empresa=None, **kwargs):
-        self.rut_empresa = rut_empresa
+class PedidoForm(forms.ModelForm):
+    fecha_recepcion = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+    fecha_entrega = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
+
+    class Meta:
+        model = Pedido
+        fields = ['numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'cliente', 'prioridad', 'estado_pedido']
+
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
         super().__init__(*args, **kwargs)
-        data_productos = Producto.objects.filter(productosempresa__empresa__rut_empresa=rut_empresa)
-        choices = [(producto.nombre_producto, producto.nombre_producto) for producto in data_productos]
-        self.fields['producto'] = forms.ChoiceField(choices=choices)
+        if user:
+            self.fields['cliente'].queryset = Cliente.objects.filter(empresa=user.empresa)
 
-    def clean(self):
-        cleaned_data = super().clean()
-        cantidad = cleaned_data.get('cantidad')
-        if cantidad < 1:
-            self.add_error("cantidad", "La cantidad no puede ser negativa o 0")
+class DetallePedidoForm(forms.ModelForm):
+    fecha_entrega = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
 
-ProductoFormSet = formset_factory(ProductoForm, extra=1)
+    class Meta:
+        model = DetallePedido
+        fields = ['producto', 'detalle_producto', 'volumen_producto', 'fecha_entrega', 'estado_pedido_linea']
+        
 
-class PedidoForm(forms.Form):
-    numero_pedido = forms.IntegerField(widget=forms.NumberInput(attrs={'min':'1'}), label="Número Pedido")
-    fecha_recepcion = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
-    fecha_entrega = forms.DateField(widget=forms.DateInput(attrs={'class':'form-control', 'type':'date'}))
-    destino_pedido = forms.CharField(max_length=100)
-    prioridad = forms.ChoiceField(choices=(('Alta','Alta'), ('Media', 'Media'), ('Baja', 'Baja'), ('Eliminada', 'Eliminada')))
-    cliente = forms.ChoiceField()
-    def __init__(self, rut_empresa, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.rut_empresa = rut_empresa
-        self.productos = ProductoFormSet(form_kwargs={'rut_empresa': self.rut_empresa})
-
-    def clean(self):
-        cleaned_data = super().clean()
-        numero_pedido = cleaned_data.get("numero_pedido")
-        fecha_recepcion = cleaned_data.get("fecha_recepcion")
-        fecha_entrega = cleaned_data.get("fecha_entrega")
-        destino_pedido = self.cleaned_data.get('destino_pedido')
-        if not re.match(r'^[a-zA-ZÁÉÍÓÚÑáéíóúñ ]+$', destino_pedido):
-            self.add_error("destino_pedido", "El destino ingresado no es una ciudad válida.")
-
-        if fecha_recepcion and fecha_entrega and numero_pedido:
-            if fecha_recepcion > fecha_entrega:
-                self.add_error("fecha_recepcion", "La fecha de recepción no puede ser mayor a la fecha de entrega")
-            if fecha_recepcion < datetime.today().date():
-                self.add_error("fecha_recepcion", "La fecha de recepción no puede ser menor al día de hoy")
-            if fecha_entrega < datetime.today().date():
-                self.add_error("fecha_entrega", "La fecha de entrega no puede ser menor al día de hoy")
-            if numero_pedido < 0:
-                self.add_error("numero_pedido", "El número de pedido no puede ser negativo")
-
-    def clean_cliente(self):
-        cliente = self.cleaned_data['cliente']
-        empresas = Empresa.objects.exclude(rut=self.rut_empresa)
-        if cliente not in empresas:
-            raise forms.ValidationError("Seleccione un cliente válido.")
-        return cliente
+class DetallePedidoBaseFormSet(BaseInlineFormSet):
+    def add_fields(self, form, index):
+        super().add_fields(form, index)
+        form.fields["DELETE"] = forms.BooleanField(required=False)
