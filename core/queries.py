@@ -14,6 +14,7 @@ from .modelos.bodega import Bodega
 from .modelos.linea import Linea
 
 
+
 def sel_cliente_admin(rut_empresa):
     '''Querie para la vista Administración'''
     clientes = Cliente.objects.filter(empresa__rut_empresa=rut_empresa
@@ -168,16 +169,13 @@ def sel_cliente(rut_empresa):
 
     return pedidos_por_cliente
 
-# def sel_cantidad_pedidos_mes():
+# def sel_pedidos_mes():
 #     '''Query para obtener la cantidad de pedidos por mes'''
-#     fecha_actual = datetime.now()
-#     fecha_inicio = fecha_actual - timedelta(days=365)
-#     fecha_fin = fecha_actual + timedelta(days=30)
-    
+
 #     pedidos_mes = Pedido.objects.filter(
-#         Q(fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
-#     ).annotate(month=ExtractMonth('fecha_entrega')
-#     ).values('month').annotate(cantidad_pedidos=Count('id')
-#     ).values('month', 'cantidad_pedidos').order_by('month')
+#      ).annotate(month=ExtractMonth('fecha_crea')
+#      ).values('month').annotate(cantidad_pedidos=Count('id')
+#      ).values('month', 'cantidad_pedidos').order_by('month')
 
 #     return pedidos_mes
+

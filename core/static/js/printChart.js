@@ -12,7 +12,7 @@ function mostrarGrafico(tipo) {
         chartAnterior.destroy();
     }
 
-    // Obtener los datos de pedidos
+    // Obtener los datos de pedidos x cliente
     const pedidos = pedido_cliente;
 
     // Calcular la cantidad total de pedidos
