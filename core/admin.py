@@ -93,6 +93,23 @@ class AbastecimientoRollizoAdminForm(forms.ModelForm):
             'rollizo': forms.Select(attrs={'style': correction}),
             'periodo': forms.Select(attrs={'style': correction,}),
         }
+
+class AbEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(periodo__tipo_periodo__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
+class AbastecimientoRollizoAdmin(admin.ModelAdmin):
+    list_filter = ('periodo__tipo_periodo', AbEmpresaFilter)
+
 class AbastecimientoRollizoAdmin(admin.ModelAdmin):
     '''Administrador para el modelo de Abastecimiento Rollizo'''
     # cambio de apariencia
@@ -104,7 +121,7 @@ class AbastecimientoRollizoAdmin(admin.ModelAdmin):
     # se filtra por periodo
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('periodo__tipo_periodo__empresa',)
+            return (AbEmpresaFilter,)
         else:
             return []
         
@@ -479,6 +496,32 @@ class EmpresaAdmin(admin.ModelAdmin):
         else:
             return ['rut_empresa', 'usuario_crea']
 
+class IIEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(periodo__tipo_periodo__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
+class IIEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(bodega__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class InvInicialRollizoAdmin(admin.ModelAdmin):
     readonly_fields = ('usuario_crea',)
     # Obtiene los campos necesarios para cada caso
@@ -494,7 +537,7 @@ class InvInicialRollizoAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('bodega__empresa',)
+            return [IIEmpresaFilter]
         else:
             return []
     # devuelve los sólo las bodegas pertenecientes a la empresa
@@ -669,6 +712,19 @@ class PedidoAdminForm(forms.ModelForm):
             'empresa': forms.Select(attrs={'style': correction}),
         }
 
+class PedidoEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(cliente__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
     form = PedidoAdminForm
@@ -689,7 +745,7 @@ class PedidoAdmin(admin.ModelAdmin):
     
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('cliente__empresa',)
+            return (PedidoEmpresaFilter,)
         else:
             return []
 
@@ -701,6 +757,19 @@ class PeriodoAdminForm(forms.ModelForm):
             'tipo_periodo': forms.Select(attrs={'style': correction}),
         }
         
+class PeriodoEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(tipo_periodo__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class PeriodoAdmin(admin.ModelAdmin):
     form = PeriodoAdminForm
     list_display = ('nombre_periodo', 'descripcion_periodo', 'cantidad_periodos')
@@ -708,7 +777,7 @@ class PeriodoAdmin(admin.ModelAdmin):
     # filtración por empresa sólo para superusuarios
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('tipo_periodo__empresa',)
+            return (PeriodoEmpresaFilter,)
         else:
             return []
     # devuelve los sólo los tipo periodo pertenecientes a la empresa
@@ -793,6 +862,19 @@ class ProductoCorteAdminForm(forms.ModelForm):
             'rollizo': forms.Select(attrs={'style': correction}),
         }
 
+class ProductoCorteEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(producto__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class ProductoCorteAdmin(admin.ModelAdmin):
     form = ProductoCorteAdminForm
     list_display = ('cantidad_producto', 'descripcion_corte')
@@ -822,7 +904,7 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('producto__empresa',)
+            return (ProductoCorteEmpresaFilter,)
         else:
             return []
         
@@ -882,6 +964,19 @@ class LineaFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(linea__id=self.value())
 
+class RollizoLargoEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(rollizo_largo__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class RollizoAdmin(admin.ModelAdmin):
     form = RollizoAdminForm
     list_display = ('nombre_rollizo', 'descripcion_rollizo', 'linea')
@@ -901,9 +996,9 @@ class RollizoAdmin(admin.ModelAdmin):
 
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('rollizo_largo__empresa__nombre_empresa','linea__nombre_linea')
+            return (RollizoLargoEmpresaFilter,'linea__nombre_linea')
         else:
-            return (LineaFilter,)
+            return (LineaFilter, )
         
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
@@ -994,6 +1089,19 @@ class BodegaFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(bodega__id=self.value())
 
+class RollizoLargoEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(bodega__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
 class StockProductoAdminForm(forms.ModelForm):
     class Meta:
         model = StockProducto
@@ -1010,7 +1118,7 @@ class StockProductoAdmin(admin.ModelAdmin):
     
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('bodega__empresa', 'bodega__nombre_bodega')
+            return (RollizoLargoEmpresaFilter, 'bodega__nombre_bodega')
         else:
             return (BodegaFilter,)
         

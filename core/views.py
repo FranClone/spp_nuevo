@@ -325,8 +325,10 @@ class Pedido(CreateView):
         with transaction.atomic():
             self.object = form.save()
             if formset.is_valid():
-                formset.instance = self.object
-                formset.save()
+                with transaction.atomic():
+                    for form in formset:
+                        form.instance.pedido = self.object
+                        form.save()
         return super().form_valid(form)
 
 DetallePedidoFormSet.formset_js_template_name = 'dynamic_formsets/formset_js.html'
