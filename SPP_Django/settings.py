@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'django_password_validators',
     'asignaciones',
     'core',
+    'dynamic_formsets',
 ]
 
 MIDDLEWARE = [

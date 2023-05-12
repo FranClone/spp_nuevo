@@ -16,7 +16,7 @@ from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .modelos.pedido import Pedido
-from .pedidoForm import PedidoForm
+from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
@@ -305,51 +305,31 @@ class Mantenedor(View):
 
         return render(request, 'mantenedor.html', context)
 
-# Esta vista es para crear un nuevo pedido y sus detalles relacionados
 class Pedido(CreateView):
-    # El modelo que se usará para crear un nuevo pedido
     model = Pedido
-    # El formulario que se usará para ingresar los datos del pedido
     form_class = PedidoForm
-    # El éxito URL a donde se dirigirá al usuario después de crear el pedido
-    success_url = reverse_lazy('home')
-    # El nombre de la plantilla HTML que se usará para mostrar la página de creación de pedido
     template_name = 'pedido.html'
+    success_url = '/'
 
-    # Este método se utiliza para obtener los datos necesarios para renderizar la plantilla
     def get_context_data(self, **kwargs):
-        # Obtener los datos de contexto que se proporcionan por la superclase
         data = super().get_context_data(**kwargs)
-        # Si la solicitud es un POST, entonces se recibieron datos del formulario
         if self.request.POST:
-            # Crea un formulario en línea para ingresar los detalles del pedido
-            # y asocia el formulario en línea con los datos recibidos del formulario de pedido principal
-            data['detalles'] = DetallePedidoInlineFormSet(self.request.POST)
+            data['formset'] = DetallePedidoFormSet(self.request.POST)
         else:
-            # Si la solicitud no es un POST, entonces no hay datos para el formulario en línea
-            # Así que se crea un formulario en línea vacío
-            data['detalles'] = DetallePedidoInlineFormSet()
+            data['formset'] = DetallePedidoFormSet()
         return data
 
-    # Este método se llama cuando el formulario es válido
     def form_valid(self, form):
-        # Obtener los datos de contexto necesarios para guardar los detalles del pedido
         context = self.get_context_data()
-        detalles = context['detalles']
-        # Utiliza una transacción de la base de datos para guardar el pedido y sus detalles relacionados
+        formset = context['formset']
         with transaction.atomic():
-            # Asigna el usuario actual como el creador del pedido
-            form.instance.creado_por = self.request.user
-            # Guarda el pedido principal
             self.object = form.save()
-            # Si el formulario en línea es válido, asocia los detalles del pedido con el pedido principal
-            if detalles.is_valid():
-                # Asigna el pedido principal como la instancia de los detalles del pedido
-                detalles.instance = self.object
-                # Guarda los detalles del pedido relacionados con el pedido principal
-                detalles.save()
-        # Retorna la respuesta HTTP para indicar que el formulario fue validado correctamente
+            if formset.is_valid():
+                formset.instance = self.object
+                formset.save()
         return super().form_valid(form)
+
+DetallePedidoFormSet.formset_js_template_name = 'dynamic_formsets/formset_js.html'
 
 class Pedido_Multiple(View):
     template_name = 'pedido_multiple.html'

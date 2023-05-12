@@ -1,0 +1,13 @@
+{% load static %}
+
+{% block scripts %}
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{% static 'dynamic_formsets/jquery.formset.js' %}"></script>
+  <script>
+    $('.detallepedido-formset').formset({
+      addText: 'Agregar Producto',
+      deleteText: 'Eliminar',
+      prefix: '{{ formset.prefix }}'
+    });
+  </script>
+{% endblock %}

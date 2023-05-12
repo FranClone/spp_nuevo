@@ -31,7 +31,8 @@ class DetallePedidoForm(forms.ModelForm):
         fields = ['producto', 'detalle_producto', 'volumen_producto', 'fecha_entrega', 'estado_pedido_linea']
         
 
-class DetallePedidoBaseFormSet(BaseInlineFormSet):
-    def add_fields(self, form, index):
-        super().add_fields(form, index)
-        form.fields["DELETE"] = forms.BooleanField(required=False)
+DetallePedidoFormSet = formset_factory(
+    DetallePedidoForm,
+    extra=1,
+    can_delete=True,
+)
