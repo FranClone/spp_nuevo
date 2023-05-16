@@ -40,7 +40,7 @@ def cantidad_pedidos_por_mes(rut_empresa):
         12: 'Diciembre'
     }
 
-    cantidad_recepciones_por_mes = Pedido.objects.filter(
+    pedidos_por_mes = Pedido.objects.filter(
         cliente__empresa__rut_empresa=rut_empresa,
         fecha_recepcion__gte=seis_meses_atras
     ).annotate(
@@ -58,10 +58,10 @@ def cantidad_pedidos_por_mes(rut_empresa):
         'mes'
     )
 
-    for item in cantidad_recepciones_por_mes:
+    for item in pedidos_por_mes:
         item['mes_texto'] = meses[item['mes_numero']]
 
-    return cantidad_recepciones_por_mes
+    return pedidos_por_mes
 
 def sel_pedido_empresa(rut_empresa):
     '''Querie para la vista Carga_sv'''
@@ -208,14 +208,4 @@ def sel_cliente(rut_empresa):
         'cliente_empresa__empresa_cliente').annotate(total_pedidos=Count('rut_empresa'))
 
     return pedidos_por_cliente
-
-# def sel_pedidos_mes():
-#     '''Query para obtener la cantidad de pedidos por mes'''
-
-#     pedidos_mes = Pedido.objects.filter(
-#      ).annotate(month=ExtractMonth('fecha_crea')
-#      ).values('month').annotate(cantidad_pedidos=Count('id')
-#      ).values('month', 'cantidad_pedidos').order_by('month')
-
-#     return pedidos_mes
 

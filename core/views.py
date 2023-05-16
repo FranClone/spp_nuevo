@@ -452,13 +452,13 @@ class Dashboard(View):
                 'cantidad_pedidos': cliente['cantidad_pedidos'],
             }
             rows.append(cliente_dict)
-        print(pedidos_por_mes)
-        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows)})
-    
-    # def get(request):
-    #     cantPedidoMes = sel_pedidos_por_mes()
-    #     meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
-    #     cantidad_pedidos = [dato['cantidad'] for dato in cantPedidoMes]
-    #     datos_cantPedidos = json.dumps({'meses': meses, 'cantidad_pedidos': cantidad_pedidos})
+        raw = []
+        for pedido in pedidos_por_mes:
+            pedidos_dict = {
+                'mes': pedido ['mes_texto'],
+                'cantidad': pedido ['cantidad']
+            }
+            raw.append(pedidos_dict)
 
-    #     return render(request, 'dashboard.html', {'cantidad pedidos': datos_cantPedidos})  
+        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows), 'pedidosMes' : json.dumps(raw)})
+     

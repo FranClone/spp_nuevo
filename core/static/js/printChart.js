@@ -22,6 +22,8 @@ function mostrarGrafico(tipo) {
     const nomCliente = [];
     const numPedidos = [];
     const porcentajes = [];
+    const meses = [];
+    const cantidad = [];
 
     // Iterar sobre los datos de pedidos y agregar los valores correspondientes a los arrays
     pedidos.forEach(pedido => {
@@ -82,15 +84,13 @@ function mostrarGrafico(tipo) {
         });
         imgChart.remove();
     } else if (tipo == "line") {
-        const meses = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
         chartAnterior = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: meses,
+                labels: cantidad,
                 datasets: [{
                     label: 'Ventas',
-                    data: ['1', '2', '4', '7', '5', null, null, null, null, null, null, null],
-                    fill: true,
+                    data: meses,
                     backgroundColor: '#fb040595',
                     borderColor: '#61525c95',
                     pointBackgroundColor: '#61525c95',
