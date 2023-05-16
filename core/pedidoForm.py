@@ -2,6 +2,7 @@ from django import forms
 from django.forms import formset_factory, inlineformset_factory
 from django.forms.models import BaseInlineFormSet, BaseModelFormSet, inlineformset_factory
 from django.forms.widgets import DateInput
+from django.core.validators import MinValueValidator
 from datetime import datetime
 from .modelos.pedido import Pedido
 from .modelos.detalle_pedido import DetallePedido
@@ -25,10 +26,21 @@ class PedidoForm(forms.ModelForm):
 
 class DetallePedidoForm(forms.ModelForm):
     fecha_entrega = forms.DateField(widget=DateInput(attrs={'type': 'date'}))
-
+    espesor_producto = forms.DecimalField(
+        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={'style': 'width: 100px;'})
+    )
+    largo_producto = forms.DecimalField(
+        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={'style': 'width: 100px;'})
+    )
+    volumen_producto = forms.DecimalField(
+        validators=[MinValueValidator(0)],
+        widget=forms.NumberInput(attrs={'style': 'width: 100px;'})
+    )
     class Meta:
         model = DetallePedido
-        fields = ['producto', 'detalle_producto', 'volumen_producto', 'fecha_entrega', 'estado_pedido_linea']
+        fields = ['producto', 'detalle_producto', 'espesor_producto', 'ancho_producto', 'largo_producto', 'volumen_producto', 'fecha_entrega', 'estado_pedido_linea']
         
 
 DetallePedidoFormSet = formset_factory(

@@ -69,6 +69,17 @@
         <script>
             var datos = {{ pedidos|safe }};
             var datos2 = {{ productos|safe }}
+            // pedidos no se pueden mover
+            gantt.config.drag_move = false;
+            // pedido por default está bien
+            // no se pueden mover flechas
+            gantt.config.drag_links = false;
+            // no se puede mover el progreso
+            gantt.config.drag_progress = false;
+            // no se puede agrandar o achicar
+            gantt.config.drag_resize = false;
+            // no se pueden agregar más task
+            gantt.config.readonly = true;
             gantt.init("gantt_here");
             var data = [];
             var colors = ['red', 'orange', 'brown', 'green', 'blue', 'purple', 'pink'];

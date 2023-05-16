@@ -159,39 +159,28 @@ class Home(View):
             #falta mensaje de error
             return redirect('home')
 
-        #Retorna archivo en formato Workbook
-        wb = openpyxl.load_workbook(archivo)
-        #Obtiene la página que se obtiene al inicio
-        hoja = wb.active
-        #Itera sobre la hoja
-        numero_pedido = None
-        fecha_recepcion = None
-        fecha_entrega = None
-        destino_pedido = None
-        prioridad = None
-        rut_empresa = request.user.empresa.rut_empresa
-        rut = request.user.rut
+        # Carga el archivo utilizando openpyxl
+        libro = openpyxl.load_workbook(archivo)
+        hoja = libro.active
+        # Itera sobre las filas de la hoja (a partir de la fila donde se encuentra "N°ORDEN")
+        inicio_lectura = False
+        datos_limpio = []
 
-        for i, fila in enumerate(hoja.iter_rows(values_only=True)):
-            # Salta la primera fila
-            if i == 0:
+        for fila in hoja.iter_rows():
+            # Ignora todas las filas hasta que se encuentra "N° ORDEN"
+            if not inicio_lectura:
+                if fila[0].value == "N° ORDEN":
+                    inicio_lectura = True
                 continue
-            # Sanitiza los datos en la fila
-            fila = [bleach.clean(str(x), tags=[], strip=True) for x in fila]
-            # Si las 5 primeras columnas están llenas, guardamos los valores en las variables correspondientes
-            if fila[0] and fila[1] and fila[2] and fila[3] and fila[4] != 'None':
-                numero_pedido = fila[0]
-                fecha_recepcion = fila[1]
-                fecha_entrega = fila[2]
-                destino_pedido = fila[3]
-                prioridad = fila[4]
-                insertar_pedido(numero_pedido, destino_pedido ,fecha_recepcion, fecha_entrega, rut_empresa, rut, prioridad)
-            # Si las dos últimas columnas están llenas, guardamos los valores en la base de datos utilizando
-            if fila[5] and fila[6] != 'None':
-                producto_nombre = fila[5]
-                cantidad = fila[6]
-                insertar_detalle_pedido(producto_nombre, cantidad, fecha_entrega)
             
+            # Finaliza la lectura si la primera columna está vacía
+            if not fila[0].value:
+                break
+
+            # Procesa los datos relevantes y aplica la limpieza con bleach
+            fila_limpia = [bleach.clean(str(celda.value)) for celda in fila]
+            datos_limpio.append(fila_limpia)
+
         return redirect('home')
 
 class Index(View): 
@@ -318,6 +307,11 @@ class Pedido(CreateView):
         else:
             data['formset'] = DetallePedidoFormSet()
         return data
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user  # Agregar request.user a los kwargs del formulario
+        return kwargs
 
     def form_valid(self, form):
         context = self.get_context_data()

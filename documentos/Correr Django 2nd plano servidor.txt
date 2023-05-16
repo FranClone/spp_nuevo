@@ -1,0 +1,8 @@
+Para iniciar el proceso:
+sudo supervisorctl start django
+Para detener el proceso:
+sudo supervisorctl stop django
+Para reiniciar el proceso:
+sudo supervisorctl restart django
+Para verificar el estado del proceso:
+sudo supervisorctl status django
