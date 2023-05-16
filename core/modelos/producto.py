@@ -11,9 +11,6 @@ from django.db import models
 class Producto(models.Model):
     nombre_producto = models.CharField(max_length=300, verbose_name='Producto')
     descripcion_producto = models.CharField(max_length=500, blank=True, null=True)
-    espesor_producto = models.FloatField(blank=True, null=True)
-    ancho_producto = models.FloatField(blank=True, null=True)
-    largo_producto = models.FloatField(blank=True, null=True)
     usuario_crea = models.CharField(max_length=20)
     fecha_crea = models.DateField(auto_now_add=True)
     calidad_producto = models.ForeignKey('CalidadProducto', on_delete=models.CASCADE, verbose_name='Calidad de Producto')
