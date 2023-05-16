@@ -1089,7 +1089,7 @@ class BodegaFilter(admin.SimpleListFilter):
         if self.value():
             return queryset.filter(bodega__id=self.value())
 
-class RollizoLargoEmpresaFilter(admin.SimpleListFilter):
+class StockProductoEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
     parameter_name = 'empresa'
 
@@ -1118,7 +1118,7 @@ class StockProductoAdmin(admin.ModelAdmin):
     
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return (RollizoLargoEmpresaFilter, 'bodega__nombre_bodega')
+            return (StockProductoEmpresaFilter, 'bodega__nombre_bodega')
         else:
             return (BodegaFilter,)
         
@@ -1211,6 +1211,20 @@ class StockRollizoAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
+class TiempoCambioEmpresaFilter(admin.SimpleListFilter):
+    title = 'Empresa'
+    parameter_name = 'empresa'
+
+    def queryset(self, request, queryset):
+        if self.value() is not None:
+            return queryset.filter(costosobretiempo__empresa=self.value())
+        return queryset
+
+    def lookups(self, request, model_admin):
+        empresas = Empresa.objects.all()
+        return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
+
+
 class TiempoCambioAdmin(admin.ModelAdmin):
     form = TiempoCambioAdminForm
     readonly_fields = ('usuario_crea',)
@@ -1227,7 +1241,7 @@ class TiempoCambioAdmin(admin.ModelAdmin):
     # filtración por empresa
     def get_list_filter(self, request):
         if request.user.is_superuser:
-            return ('costosobretiempo__empresa',)
+            return (TiempoCambioEmpresaFilter,)
         else:
             return []
     
