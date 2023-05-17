@@ -22,8 +22,16 @@ function mostrarGrafico(tipo) {
     const nomCliente = [];
     const numPedidos = [];
     const porcentajes = [];
-    const meses = [];
-    const cantidad = [];
+    
+    // Obtener los datos de pedidos por mes
+    const datosMes = pedidosMes.map(pedido => ({
+        mes: pedido.mes,
+        cantidad: pedido.cantidad
+      }));
+  
+      // Separar los meses y las cantidades en arrays separados
+      const meses = datosMes.map(dato => dato.mes);
+      const cantidad = datosMes.map(dato => dato.cantidad);
 
     // Iterar sobre los datos de pedidos y agregar los valores correspondientes a los arrays
     pedidos.forEach(pedido => {
@@ -87,10 +95,10 @@ function mostrarGrafico(tipo) {
         chartAnterior = new Chart(ctx, {
             type: 'line',
             data: {
-                labels: cantidad,
+                labels: meses,
                 datasets: [{
                     label: 'Ventas',
-                    data: meses,
+                    data: cantidad,
                     backgroundColor: '#fb040595',
                     borderColor: '#61525c95',
                     pointBackgroundColor: '#61525c95',
