@@ -2,7 +2,6 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from django.db.models import Q, Max, Sum, F, Count, IntegerField, CharField, Value
 from django.db.models.functions import TruncMonth, ExtractMonth
-from django.db.models import Count
 from .modelos.cliente import Cliente
 from .modelos.pedido import Pedido
 from .modelos.producto import Producto
@@ -82,8 +81,8 @@ def sel_pedido_empresa(rut_empresa):
 def sel_empresa_like(parte_rut):
     '''Seleccionar empresa like'''
     empresas = Empresa.objects.filter(
-        Q(rut__startswith=parte_rut) & Q(estado_empresa=1)
-    ).values('nombre_empresa')[:5]
+        Q(rut_empresa__startswith=parte_rut) & Q(estado_empresa=1)
+    ).values_list('nombre_empresa', flat=True)[:5]
 
     return empresas
 

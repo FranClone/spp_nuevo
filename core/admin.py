@@ -847,7 +847,7 @@ class ProductoAdmin(admin.ModelAdmin):
         #Si no es superusuario, el producto a guardar se asocia a la empresa
         empresa = request.user.empresa
         producto_empresa = ProductosEmpresa.objects.filter(producto=obj, empresa=empresa).first()
-        if not producto_empresa:
+        if not producto_empresa and not request.user.is_superuser:
             # Si no existe, crear una nueva instancia y guardarla
             producto_empresa = ProductosEmpresa(producto=obj, empresa=empresa)
             producto_empresa.save()

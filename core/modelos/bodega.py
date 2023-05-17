@@ -6,6 +6,7 @@ class Bodega(models.Model):
     descripcion_bodega = models.CharField(max_length=300, blank=True, null=True)
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True, null=True)
+    ubicacion = models.CharField(max_length=20, blank=True, null=True)
 
     class Meta:
         db_table = 'BODEGA'
