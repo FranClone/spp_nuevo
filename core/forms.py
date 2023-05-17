@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
 from django.db import IntegrityError
-#from .models import UserProfile
+from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 
 #probar esto
@@ -33,13 +33,11 @@ class CustomUserCreationForm(UserCreationForm):
         widget=forms.TextInput(attrs={'class': 'input-rut-dv'})
     )
 
-    #grupos creados
-    group = forms.ModelChoiceField(queryset=Group.objects.all(), label="grupo")
 
     #class Meta especifica detalles importantes del formulario, en este caso el modelo y los campos
     class Meta:
-        model = User
-        fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv', 'rut_empresa_body', 'rut_empresa_dv', 'group']
+        model = UserProfile
+        fields = ['username', 'password1', 'password2', 'rut_body', 'rut_dv', 'rut_empresa_body', 'rut_empresa_dv']
 
     def clean(self):
         #se hace la validación del modelo
@@ -47,18 +45,17 @@ class CustomUserCreationForm(UserCreationForm):
 
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.rut = self.cleaned_data['rut']
-        user.rut_empresa = self.cleaned_data['rut_empresa']
-        if commit:
-            try:
-                # Validar si ya existe un UserProfile con el mismo RUT
-                #if UserProfile.objects.filter(rut=user.rut).exists():
-                    #raise IntegrityError('El RUT ya se encuentra registrado en el sistema.')
-                user.save()
-            except IntegrityError:
-                raise forms.ValidationError('El RUT ya se encuentra registrado en el sistema.')
-        group = self.cleaned_data['group']
-        user.groups.add(group)
+        rut_body = self.cleaned_data['rut_body']
+        rut_dv = self.cleaned_data['rut_dv']
+        rut_body_e = self.cleaned_data['rut_empresa_body']
+        rut_dv_e = self.cleaned_data['rut_empresa_dv']
+        rut_empresa = f'{rut_body_e}-{rut_dv_e}'
+        user.rut = f'{rut_body}-{rut_dv}'
+        empresa = Empresa.objects.filter(rut_empresa=rut_empresa).first()
+        if empresa:
+            user.empresa = empresa
+        else:
+            raise ValueError('No se encontró una instancia válida de Empresa')
         return user
 
 class LoginForm(forms.Form):

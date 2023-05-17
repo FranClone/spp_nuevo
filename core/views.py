@@ -16,6 +16,7 @@ from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
 from .forms import CustomUserCreationForm, LoginForm
 from .modelos.pedido import Pedido
+from .modelos.empresa import Empresa
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -113,7 +114,7 @@ def get_empresas(request):
     parte_rut = request.GET.get('parte_rut', '')
     empresas = []
     if parte_rut:
-        empresas = sel_empresa_like(parte_rut)
+        empresas = list(sel_empresa_like(parte_rut))
     return JsonResponse({'empresas': empresas})
 
 class Home(View): 
@@ -180,6 +181,12 @@ class Home(View):
             # Procesa los datos relevantes y aplica la limpieza con bleach
             fila_limpia = [bleach.clean(str(celda.value)) for celda in fila]
             datos_limpio.append(fila_limpia)
+
+        # DE MOMENTO ESTE CÓDIGO TE DA LOS DATOS DE LA FILA LIMPIOS
+        # FALTA AGREGAR LOS DATOS A LA BASE DE DATOS
+        # VER COMO AGREGAR PRODUCTOS Y CLIENTE
+        # ANALIZAR SI ES NECESARIO QUE PRODUCTOS Y CLIENTE ESTÉN PREVIAMENTE AGREGADOS
+        # O SI SE AGREGA DIRECTAMENTE, CREAR EN DJANGO ORM CONSULTAS
 
         return redirect('home')
 
@@ -303,9 +310,9 @@ class Pedido(CreateView):
     def get_context_data(self, **kwargs):
         data = super().get_context_data(**kwargs)
         if self.request.POST:
-            data['formset'] = DetallePedidoFormSet(self.request.POST)
+            data['formset'] = DetallePedidoFormSet(self.request.POST, user=self.request.user)  # Pasar user=self.request.user directamente al instanciar el formulario
         else:
-            data['formset'] = DetallePedidoFormSet()
+            data['formset'] = DetallePedidoFormSet(user=self.request.user)  # Pasar user=self.request.user directamente al instanciar el formulario
         return data
     
     def get_form_kwargs(self):
@@ -345,16 +352,12 @@ class Productos(View):
 class Register(View):
     def get(self, request):
         form = CustomUserCreationForm()
-        
         return render(request, 'register.html', {'form': form})
 
     def post(self, request):
         form = CustomUserCreationForm(request.POST)
         if form.is_valid():
-            user = form.save()
-            rut = form.cleaned_data.get('rut')
-            rut_empresa = form.cleaned_data.get('rut_empresa')
-            UserProfile.objects.create(user=user, rut=rut, rut_empresa=rut_empresa.rut_empresa)
+            form.save()
             return redirect('login')
         return render(request, 'register.html', {'form': form})
 

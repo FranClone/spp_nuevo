@@ -7,6 +7,7 @@ from datetime import datetime
 from .modelos.pedido import Pedido
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.cliente import Cliente
+from .modelos.producto import Producto
 
 import re
 
@@ -42,9 +43,25 @@ class DetallePedidoForm(forms.ModelForm):
         model = DetallePedido
         fields = ['producto', 'detalle_producto', 'espesor_producto', 'ancho_producto', 'largo_producto', 'volumen_producto', 'fecha_entrega', 'estado_pedido_linea']
         
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        if user:
+            self.fields['producto'].queryset = Producto.objects.filter(empresa=user.empresa)
+
+class DetallePedidoFormSetBase(forms.BaseFormSet):
+    def __init__(self, *args, **kwargs):
+        user = kwargs.pop('user', None)
+        super().__init__(*args, **kwargs)
+        self.user = user
+
+    def _construct_form(self, i, **kwargs):
+        kwargs['user'] = self.user
+        return super()._construct_form(i, **kwargs)
 
 DetallePedidoFormSet = formset_factory(
     DetallePedidoForm,
+    formset = DetallePedidoFormSetBase,
     extra=1,
     can_delete=True,
 )

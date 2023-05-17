@@ -31,7 +31,7 @@ ALLOWED_HOSTS = ['localhost','sppprod.servehttp.com', '127.0.0.1', '192.168.100.
 
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'core\media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'core/media')
 MEDIA_URL = '/core/media/'
 
 # Application definition
