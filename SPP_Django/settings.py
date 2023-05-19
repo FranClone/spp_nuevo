@@ -31,6 +31,30 @@ ALLOWED_HOSTS = ['localhost','sppprod.servehttp.com', '127.0.0.1', '192.168.100.
 
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 
+AUTHENTICATION_BACKENDS = [
+    # axes tiene que ser el primer backend
+    'axes.backends.AxesBackend',
+    'django.contrib.auth.backends.ModelBackend'
+]
+
+# Settings para Django Axes
+AXES_ENABLED = False  # Activa el uso de Django Axes
+AXES_FAILURE_LIMIT = 3  # Número máximo de intentos fallidos permitidos
+AXES_COOLOFF_TIME = 1/120  # Tiempo de espera en HORAS para permitir nuevos intentos después de un bloqueo
+AXES_USE_USER_AGENT = True  # Activar el uso de user-agent para identificar solicitudes maliciosas
+AXES_LOCKOUT_TEMPLATE = 'lockout.html' # Opcional, path al template que se muestra cuando se bloquea una IP
+
+# BORRAR CUANDO ESTÉ TERMINADO
+# Configuración para pruebas unitarias
+AXES_BEHIND_REVERSE_PROXY = False  # Desactiva el uso de proxy inverso
+AXES_DISABLE_ACCESS_LOG = True  # Desactiva el registro de accesos a "django-axes"
+AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']  # Cambia el orden de verificación de IPs para pruebas detrás de un proxy
+
+
+LOGIN_URL = '/login/'
+LOGIN_REDIRECT_URL = '/home/'
+LOGOUT_REDIRECT_URL = '/login/'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'core/media')
 MEDIA_URL = '/core/media/'
 
@@ -49,6 +73,8 @@ INSTALLED_APPS = [
     'asignaciones',
     'core',
     'dynamic_formsets',
+    'django_bleach',
+    'axes'
 ]
 
 MIDDLEWARE = [
@@ -59,10 +85,28 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    # axes tiene que ser el último middleware agregado
+    'axes.middleware.AxesMiddleware'
 ]
 
+# representa la ruta de importacion a la configuracion de URL
 ROOT_URLCONF = 'SPP_Django.urls'
+"""Configuración de seguridad, al terminar el development
+poner estos comandos en true"""
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+#segundos para avisarte de que tienes que usar HTTPS
+SECURE_HSTS_SECONDS = 0
 
+"""Este comando sirve para cuando esto sea subido a una URL, 
+para que Chrome y otros navegadores lo detecten, antes de activar
+esto, subir el sitio aquí https://hstspreload.org/"""
+SECURE_HSTS_INCLUDE_SUBDOMAINS = False
+
+SECURE_HSTS_PRELOAD = False     
+#Redigir a SSL
+SECURE_SSL_REDIRECT = False
+# contiene las configuraciones para las plantillas a utilizar
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -78,13 +122,10 @@ TEMPLATES = [
         },
     },
 ]
-
+# ruta de la aplicacion WSGI 
 WSGI_APPLICATION = 'SPP_Django.wsgi.application'
 
-
-# Database
-# https://docs.djangoproject.com/en/4.1/ref/settings/#databases
-
+# contiene las configuraciones para las bases de datos 
 DATABASES = {
     'default': {
         'ENGINE': 'mssql',
@@ -100,9 +141,7 @@ DATABASES = {
 }
 
 
-# Password validation
-# https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
-
+# validadores para checkear la seguridad de las passwords de usuario
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -133,22 +172,19 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
+# representa el codigo del lenguaje
 LANGUAGE_CODE = 'es-cl'
-
+# representa la zona horaria para la aplicacion
 TIME_ZONE = 'UTC'
-
+# debe estar en True para que haga efecto el cambio de idioma
 USE_I18N = True
-
+# zona horaria por defecto de Django
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/4.1/howto/static-files/
-
+# ruta para archivos estaticos como CSS, JavaScript e Imagenes
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
-
+# llave primaria a usar para modelos que no tienen un campo con 'primary_key = True'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
