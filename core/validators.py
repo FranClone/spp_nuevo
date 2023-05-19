@@ -21,6 +21,8 @@ def validate_rut(rut):
         resto = suma % 11
         if resto == 0:
             dv_calculado = '0'
+        elif resto == 1:
+            dv_calculado = 'K'
         else:
             dv_calculado = str(11 - resto)
         if dv_calculado != rut[-1].upper():

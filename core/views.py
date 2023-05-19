@@ -334,14 +334,6 @@ class Pedido(CreateView):
 
 DetallePedidoFormSet.formset_js_template_name = 'dynamic_formsets/formset_js.html'
 
-class Pedido_Multiple(View):
-    template_name = 'pedido_multiple.html'
-
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
-        form = PedidoForm(request=request)
-        return render(request, self.template_name, {'form': form})
-
 class Productos(View): 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):

@@ -1,0 +1,49 @@
+Que avanzar en el SPP
+
+Darle un diseño a los formularios de Pedidos y de Registros
+Crear un ¿Olvidaste tu contraseña?
+Integración de Lingo a la base de datos, probar datos, ver que cambios hacer a la base de datos o a las conexiones
+siempre tener en cuenta integridad de los datos.
+Darle utilidad a las vistas.
+Seguridad de datos.
+Recordar darle diseño a la página de lockout y crear una en caso de error 404.
+
+Potenciales cambios y cosas a tener en cuenta:
+UserProfile: Tienen que tener en cuenta que la forma de reconocer el usuario en el proyecto no es RUT si no Username,
+de hecho, en el login usamos el RUT para obtener el Username y así poner el login, y si alguien quiere hacer login 
+desde el administrador le pedirá el Username y no el RUT, aunque esto debería ser problema sólo del administrador
+de todas formas, pero de todas formas esta puede ser una inconsistencia que pueden resolver, aunque recomendaría sólo
+hacerlo si tienen tiempo, de todas formas es bueno tener esto en cuenta.
+
+Relación Cliente-Empresa y Producto-Empresa: Cómo está creada ahora la base de datos, hay una relación muchos a muchos
+usando una tabla intermedia entre esas, pero cada empresa puede crear sus propios clientes y productos, lo cual hace
+que clientes y productos sean "propios" de la empresa, entre comillas ya que claramente en la vida real la relación
+es muchos a muchos, pero en el software puede que esa relación sea uno es a muchos, debido a que cada empresa puede
+crear su producto/cliente en el administrador (y quizás en una vista) y esta estará directamente anclada a la empresa, bueno
+tener en cuenta esto.
+
+Consejos:
+Intentar que las soluciones sean simples y usando las herramientas que te de el framework y/o librerías de Django
+ya que Django incluye capas de seguridad.
+
+ChatGPT es muy útil para programar pero nunca olvidar la documentación de Django o de librerías, la documentación
+usualmente te puede dar una respuesta más concreta, si alguna solución es muy complicada pero consideras que es un
+problema común que no debería tener una solución difícil, lo más probable es que ya exista un método de Django o
+una librería que cubra esa solución (ejemplos: django-dynamic-formsets hace el formulario de capas mucho más fácil,
+ChatGPT no me daba la solución para remover las líneas de la carta gantt pero la librería lo decía claramente y
+fácilmente)
+
+SIEMPRE cuando hagas una busqueda de datos o inserción, conectar la búsqueda a la empresa a través del usuario que se
+obtiene en las vistas a través de "request.user.empresa" o "request.user.empresa.rut_empresa".
+
+Deberían existir métodos sencillos para agregar vistas que actúen como un CRUD, averiguar, quizás librerías que
+hagan el diseño más sencillo.
+
+Cada vez que instalen una libería, guardarla en requirements.txt para que avanzen
+
+DISEÑO RESPONSIVO, recomendable usar Bootstrap para todo
+
+Errores que se cometieron al en este proyecto:
+
+El archivo .env no debió haberse subido a GitHub aún cuando el proyecto está en privado, ya que es el que contiene
+información potencialmente sensible.

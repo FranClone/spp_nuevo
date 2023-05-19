@@ -25,9 +25,9 @@ environ.Env.read_env()
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['localhost','sppprod.servehttp.com', '127.0.0.1', '192.168.100.19']
+ALLOWED_HOSTS = ['localhost', 'sppprod.servehttp.com', '127.0.0.1', '192.168.100.19']
 
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 
@@ -38,17 +38,15 @@ AUTHENTICATION_BACKENDS = [
 ]
 
 # Settings para Django Axes
-AXES_ENABLED = False  # Activa el uso de Django Axes
+AXES_ENABLED = True  # Activa el uso de Django Axes
 AXES_FAILURE_LIMIT = 3  # Número máximo de intentos fallidos permitidos
 AXES_COOLOFF_TIME = 1/120  # Tiempo de espera en HORAS para permitir nuevos intentos después de un bloqueo
-AXES_USE_USER_AGENT = True  # Activar el uso de user-agent para identificar solicitudes maliciosas
 AXES_LOCKOUT_TEMPLATE = 'lockout.html' # Opcional, path al template que se muestra cuando se bloquea una IP
 
 # BORRAR CUANDO ESTÉ TERMINADO
 # Configuración para pruebas unitarias
 AXES_BEHIND_REVERSE_PROXY = False  # Desactiva el uso de proxy inverso
 AXES_DISABLE_ACCESS_LOG = True  # Desactiva el registro de accesos a "django-axes"
-AXES_META_PRECEDENCE_ORDER = ['HTTP_X_FORWARDED_FOR']  # Cambia el orden de verificación de IPs para pruebas detrás de un proxy
 
 
 LOGIN_URL = '/login/'

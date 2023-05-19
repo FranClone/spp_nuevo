@@ -30,7 +30,7 @@
 <body>
     {% include "partials/header.html" %}
     <div class="carga">
-        <label class="label-carga-masiva" for="carga-multiple">Carga Múltiple
+        <label class="label-carga-masiva" for="carga-multiple">Carga Excel
             <script>
                 $('.label-carga-masiva').click(function() {
                     window.location.href = "/pedido_multiple/";
@@ -40,11 +40,8 @@
         <div class="carga-mini">
             <form method="post" enctype="multipart/form-data" class="carga-masiva">
                 {% csrf_token %}
-                <label class="label-carga-masiva" for="carga-masiva">Carga Masiva
-                    <input class="btn-select-file" id="carga-masiva" type="file" name="carga-masiva">
-                </label>
                 <div class="carga-micro">
-                    <input class ="label-carga-mini cargar-btn" type="submit" value="Cargar a BD">
+                    <input class ="label-carga-mini cargar-btn" type="submit" value="Carga datos Excel">
                     <form action="{% url 'download_file' %}" method="get">
                         <input class="label-carga-mini" type="submit" value="Descargar Formato" name="download">
                     </form>
