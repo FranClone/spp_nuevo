@@ -6,7 +6,10 @@ Integración de Lingo a la base de datos, probar datos, ver que cambios hacer a 
 siempre tener en cuenta integridad de los datos.
 Darle utilidad a las vistas.
 Seguridad de datos.
-Recordar darle diseño a la página de lockout y crear una en caso de error 404.
+Recordar darle diseño a la página de lockout, registro y pedido singular, crear una en caso de error 404.
+Ver que hacer con Grupos en administrador y vistas, de momento está sin restricción, agregar restricciones, vincular grupo a
+Empresa.
+Revisar jQuery de Login y Registro.
 
 Potenciales cambios y cosas a tener en cuenta:
 UserProfile: Tienen que tener en cuenta que la forma de reconocer el usuario en el proyecto no es RUT si no Username,
