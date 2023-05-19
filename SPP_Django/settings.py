@@ -183,6 +183,9 @@ USE_TZ = True
 # ruta para archivos estaticos como CSS, JavaScript e Imagenes
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
+STATIC_ROOT = os.path.join(BASE_DIR, 'core/static_recopiled')
 
 # llave primaria a usar para modelos que no tienen un campo con 'primary_key = True'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+X_FRAME_OPTIONS = "SAMEORIGIN"

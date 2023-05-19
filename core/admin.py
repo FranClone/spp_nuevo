@@ -35,7 +35,6 @@ from .modelos.tiempo_cambio import TiempoCambio
 from .modelos.tipo_periodo import TipoPeriodo
 from asignaciones.models import UserProfile
 # Register your models here.
-correction = 'width:100%;' #Estira un widget para ocultar comportamiento no buscado
 
 class RutWidget(MultiWidget):
     '''Esta Clase nos da un widget para que el RUT sea más cómodo de ingresar en el admin'''
@@ -77,22 +76,6 @@ class RutWidget(MultiWidget):
         values = super().value_from_datadict(data, files, name)
         return values[0] + '-' + values[1] if values[0] and values[1] else None
 
-class TiempoCambioAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'linea': forms.Select(attrs={'style': correction}),
-        }
-
-class AbastecimientoRollizoAdminForm(forms.ModelForm):
-    class Meta:
-        model = DetallePedido
-        fields = '__all__'
-        widgets = {
-            'rollizo': forms.Select(attrs={'style': correction}),
-            'periodo': forms.Select(attrs={'style': correction,}),
-        }
 
 class AbEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
@@ -112,8 +95,6 @@ class AbastecimientoRollizoAdmin(admin.ModelAdmin):
 
 class AbastecimientoRollizoAdmin(admin.ModelAdmin):
     '''Administrador para el modelo de Abastecimiento Rollizo'''
-    # cambio de apariencia
-    form = AbastecimientoRollizoAdminForm
     # muestra tales columnas de la BD 
     list_display = ('id', 'numero_bloque', 'cantidad_hh')
     # usuario que crea no puede ser modificado
@@ -164,17 +145,7 @@ class AbastecimientoRollizoAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-class BodegaAdminForm(forms.ModelForm):
-    class Meta:
-        model = Bodega
-        fields = '__all__'
-        widgets = {
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
-
 class BodegaAdmin(admin.ModelAdmin):
-    # cambios en diseño
-    form = BodegaAdminForm
     # muestra tales columnas de BD
     list_display = ('nombre_bodega', 'descripcion_bodega')
     # se ordena por id
@@ -308,18 +279,7 @@ class ClienteAdmin(admin.ModelAdmin):
             )
 
 
-class CostoRollizoAdminForm(forms.ModelForm):
-    class Meta:
-        model = CostoRollizo
-        fields = '__all__'
-        widgets = {
-            'linea': forms.Select(attrs={'style': correction}),
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
-
 class CostoRollizoAdmin(admin.ModelAdmin):
-    # cambios en diseño
-    form = CostoRollizoAdminForm
     # se guarda usuario logueado
     list_display = ('nombre_costo', 'valor_m3')
     ordering = ('nombre_costo',)
@@ -612,17 +572,8 @@ class LineaAdmin(admin.ModelAdmin):
             obj.empresa = request.user.empresa
         obj.save()
 
-class LineaHhDisponibleAdminForm(forms.ModelForm):
-    class Meta:
-        model = LineaHhDisponible
-        fields = '__all__'
-        widgets = {
-            'linea': forms.Select(attrs={'style': correction}),
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
 
 class LineaHhDisponibleAdmin(admin.ModelAdmin):
-    form = LineaHhDisponibleAdminForm
     list_display = ('id', 'numero_bloque')
     readonly_fields = ('usuario_crea',)
     list_filter = ('empresa__nombre_empresa',)
@@ -704,13 +655,6 @@ class DetalleProductoInline(admin.TabularInline):
 
         return super().formfield_for_foreignkey(db_field, request, **kwargs)
 
-class PedidoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Pedido
-        fields = '__all__'
-        widgets = {
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
 
 class PedidoEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
@@ -727,7 +671,6 @@ class PedidoEmpresaFilter(admin.SimpleListFilter):
 
 class PedidoAdmin(admin.ModelAdmin):
     #Modelo administrador para pedido
-    form = PedidoAdminForm
     inlines = (DetalleProductoInline,)
     list_display = ('numero_pedido', 'prioridad',)
     ordering = ('id',)
@@ -749,13 +692,6 @@ class PedidoAdmin(admin.ModelAdmin):
         else:
             return []
 
-class PeriodoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'tipo_periodo': forms.Select(attrs={'style': correction}),
-        }
         
 class PeriodoEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
@@ -771,7 +707,6 @@ class PeriodoEmpresaFilter(admin.SimpleListFilter):
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
 class PeriodoAdmin(admin.ModelAdmin):
-    form = PeriodoAdminForm
     list_display = ('nombre_periodo', 'descripcion_periodo', 'cantidad_periodos')
     readonly_fields = ('usuario_crea',)
     # filtración por empresa sólo para superusuarios
@@ -809,17 +744,8 @@ class PeriodoAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-class ProductoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'tipo_calidad': forms.Select(attrs={'style': correction}),
-        }
-
 class ProductoAdmin(admin.ModelAdmin):
     #Modelo administrador para producto
-    form = ProductoAdminForm
     list_display = ('nombre_producto', 'descripcion_producto')
     ordering = ('id',)
     readonly_fields = ('usuario_crea',)
@@ -852,15 +778,6 @@ class ProductoAdmin(admin.ModelAdmin):
             producto_empresa = ProductosEmpresa(producto=obj, empresa=empresa)
             producto_empresa.save()
 
-class ProductoCorteAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'producto': forms.Select(attrs={'style': correction}),
-            'patron': forms.Select(attrs={'style': correction}),
-            'rollizo': forms.Select(attrs={'style': correction}),
-        }
 
 class ProductoCorteEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
@@ -876,7 +793,6 @@ class ProductoCorteEmpresaFilter(admin.SimpleListFilter):
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
 class ProductoCorteAdmin(admin.ModelAdmin):
-    form = ProductoCorteAdminForm
     list_display = ('cantidad_producto', 'descripcion_corte')
     readonly_fields = ('usuario_crea',)
     #Cambia los campos que se muestran
@@ -928,28 +844,9 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-class ProductosEmpresaAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'producto': forms.Select(attrs={'style': correction}),
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
-
 class ProductosEmpresaAdmin(admin.ModelAdmin):
     list_display = ('empresa', 'producto')
-    form = ProductosEmpresaAdminForm
     list_filter = ('empresa__nombre_empresa', 'producto__nombre_producto')
-
-class RollizoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Rollizo
-        fields = '__all__'
-        widgets = {
-            'linea': forms.Select(attrs={'style': correction}),
-            'rollizo_largo': forms.Select(attrs={'style': correction}),
-        }
 
 class LineaFilter(admin.SimpleListFilter):
     title = 'Linea'
@@ -978,7 +875,6 @@ class RollizoLargoEmpresaFilter(admin.SimpleListFilter):
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
 class RollizoAdmin(admin.ModelAdmin):
-    form = RollizoAdminForm
     list_display = ('nombre_rollizo', 'descripcion_rollizo', 'linea')
     readonly_fields = ('usuario_crea',)
 
@@ -1102,17 +998,8 @@ class StockProductoEmpresaFilter(admin.SimpleListFilter):
         empresas = Empresa.objects.all()
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
-class StockProductoAdminForm(forms.ModelForm):
-    class Meta:
-        model = StockProducto
-        fields = '__all__'
-        widgets = {
-            'bodega': forms.Select(attrs={'style': correction}),
-            'producto': forms.Select(attrs={'style': correction}),
-        }
 
 class StockProductoAdmin(admin.ModelAdmin):
-    form = StockProductoAdminForm
     list_display = ('producto', 'cantidad_m3', 'bodega')
     readonly_fields = ('usuario_crea',)
     
@@ -1226,7 +1113,6 @@ class TiempoCambioEmpresaFilter(admin.SimpleListFilter):
 
 
 class TiempoCambioAdmin(admin.ModelAdmin):
-    form = TiempoCambioAdminForm
     readonly_fields = ('usuario_crea',)
     #Cambia los campos que se muestran
     def get_fieldsets(self, request, obj=None):
@@ -1275,16 +1161,7 @@ class TiempoCambioAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-class TipoPeriodoAdminForm(forms.ModelForm):
-    class Meta:
-        model = Periodo
-        fields = '__all__'
-        widgets = {
-            'empresa': forms.Select(attrs={'style': correction}),
-        }
-
 class TipoPeriodoAdmin(admin.ModelAdmin):
-    form = TipoPeriodoAdminForm
     list_display = ('__str__',)
     readonly_fields = ('usuario_crea',)
     list_filter = ('empresa__nombre_empresa',)
