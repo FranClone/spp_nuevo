@@ -746,7 +746,7 @@ class PeriodoAdmin(admin.ModelAdmin):
 
 class ProductoAdmin(admin.ModelAdmin):
     #Modelo administrador para producto
-    list_display = ('nombre_producto', 'descripcion_producto')
+    list_display = ('nombre_producto', 'descripcion_producto',)
     ordering = ('id',)
     readonly_fields = ('usuario_crea',)
     def get_queryset(self, request):

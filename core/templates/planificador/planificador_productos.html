@@ -5,41 +5,226 @@
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .filter-form {
+            display: none;
+        }
+        .show-filter .filter-form {
+            display: block;
+        }
+        .filters-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+        .filter-input {
+            padding: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 150px;
+        }
+        .filter-button {
+            padding: 5px 10px;
+            background-color: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .no-data-message {
+            display: none;
+            color: red;
+            font-weight: bold;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <title>SPP - Planificador Productos</title>
 </head>
 <body>
     {% include "partials/header.html" %}
     <div class="table-container">
         <div class="table-responsive">
+            <h1 class="encabezado-pedidos">Productos</h1>
+            <div class="show-filter">
+                <button class="filter-button">Filtrar</button>
+                <form class="filter-form">
+                    <div class="filters-container">
+                        <label for="filter-by">Filtrar por:</label>
+                        <select id="filter-by" name="filter-by" class="filter-select">
+                            <option value="nombre">Nombre del producto</option>
+                            <option value="codigo">Código del producto</option>
+                        </select>
+                        <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                        <select name="filter-option" class="filter-select">
+                            <option value="partial">Parcial</option>
+                            <option value="exact">Exacto</option>
+                        </select>
+                        <br>
+                        <label for="advanced-search">Búsqueda avanzada:</label>
+                        <input type="checkbox" id="advanced-search" name="advanced-search">
+                        <div id="advanced-search-options" style="display: none;">
+                            <label for="filter-length">Largo:</label>
+                            <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
+                            <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                            <br>
+                            <label for="filter-width">Ancho:</label>
+                            <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
+                            <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                            <br>
+                            <label for="filter-thickness">Grosor:</label>
+                            <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
+                            <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                            <br>
+                        </div>
+                        <button type="submit" class="filter-button">Buscar</button>
+                        <button type="button" class="clear-filter-button">Cancelar</button>
+                    </div>
+                </form>
+            </div>
             <table class="table w-100">
-                <br>
-                <h1 class="encabezado-pedidos">Planificador Productos</h1>
                 <thead class="thead-pedidos">
                     <tr>
-                        <th>ID Producto</th>
-                        <th>Nombre Producto</th>
-                        <th>Descripción Producto</th>
-                        <th>Espesor Producto</th>
-                        <th>Ancho Producto</th>
-                        <th>Largo Producto</th>
+                        <th>Código</th>
+                        <th>Nombre</th>
+                        <th>Grosor</th>
+                        <th>Ancho</th>
+                        <th>Largo</th>
                     </tr>
-                    {% for row in rows %}
-                    <tr>
-                        <td>{{row.id}}</td>
-                        <td>{{row.nombre_producto}}</td>
-                        <td>{{row.descripcion_producto}}</td>
-                        <td>{{row.espesor_producto}}</td>
-                        <td>{{row.ancho_producto}}</td>
-                        <td>{{row.largo_producto}}</td>
-                    </tr>
-                    {% endfor %}
                 </thead>
+                <tbody>
+                    <tr>
+                        <td>p01</td>
+                        <td>producto 1</td>
+                        <td>10</td>
+                        <td>5</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>p02</td>
+                        <td>producto 12</td>
+                        <td>15</td>
+                        <td>8</td>
+                        <td>7</td>
+                    </tr>
+                    <tr>
+                        <td>p03</td>
+                        <td>producto 3</td>
+                        <td>7</td>
+                        <td>3</td>
+                        <td>9</td>
+                    </tr>
+                    <tr>
+                        <td>p04</td>
+                        <td>producto 4</td>
+                        <td>20</td>
+                        <td>12</td>
+                        <td>3</td>
+                    </tr>
+                    <tr>
+                        <td>p05</td>
+                        <td>producto 5</td>
+                        <td>18</td>
+                        <td>7</td>
+                        <td>5</td>
+                    </tr>
+                </tbody>
             </table>
+            <p class="no-data-message">No hay datos para los filtros ingresados.</p>
         </div>
         <br><br>
     </div>
+    <script>
+        $(document).ready(function() {
+            $(".filter-button").click(function() {
+                $(".show-filter .filter-form").toggle();
+            });
+
+            $("#advanced-search").change(function() {
+                if (this.checked) {
+                    $("#advanced-search-options").show();
+                } else {
+                    $("#advanced-search-options").hide();
+                }
+            });
+
+            $(".filter-form").submit(function(e) {
+                e.preventDefault();
+                filterTable();
+            });
+
+            $(".filter-input").keyup(function() {
+                filterTable();
+            });
+
+            $(".clear-filter-button").click(function() {
+                $(".filter-form")[0].reset();
+                $(".table tbody tr").show();
+                $(".no-data-message").hide();
+            });
+
+            function filterTable() {
+                $(".table tbody tr").hide();
+
+                var filterBy = $(".filter-select[name='filter-by']").val();
+                var filterValue = $(".filter-input[name='filter-value']").val().toLowerCase();
+                var filterOption = $(".filter-select[name='filter-option']").val();
+                var filterLength = parseFloat($("#filter-length").val());
+                var filterLengthMax = parseFloat($("#filter-length-max").val());
+                var filterWidth = parseFloat($("#filter-width").val());
+                var filterWidthMax = parseFloat($("#filter-width-max").val());
+                var filterThickness = parseFloat($("#filter-thickness").val());
+                var filterThicknessMax = parseFloat($("#filter-thickness-max").val());
+                var advancedSearch = $("#advanced-search").is(":checked");
+
+                $(".table tbody tr").each(function() {
+                    var row = $(this);
+                    var rowData = row.find("td:nth-child(" + (getFieldIndex(filterBy) + 1) + ")").text().toLowerCase();
+                    var rowLength = parseFloat(row.find("td:nth-child(5)").text());
+                    var rowWidth = parseFloat(row.find("td:nth-child(4)").text());
+                    var rowThickness = parseFloat(row.find("td:nth-child(3)").text());
+
+                    if (advancedSearch) {
+                        if (filterLength && (rowLength < filterLength || rowLength > filterLengthMax)) {
+                            return;
+                        }
+                        if (filterWidth && (rowWidth < filterWidth || rowWidth > filterWidthMax)) {
+                            return;
+                        }
+                        if (filterThickness && (rowThickness < filterThickness || rowThickness > filterThicknessMax)) {
+                            return;
+                        }
+                    }
+
+                    if (filterOption === "partial" && rowData.includes(filterValue)) {
+                        row.show();
+                    } else if (filterOption === "exact" && rowData === filterValue) {
+                        row.show();
+                    }
+                });
+
+                if ($(".table tbody tr:visible").length === 0) {
+                    $(".no-data-message").show();
+                } else {
+                    $(".no-data-message").hide();
+                }
+            }
+
+            function getFieldIndex(fieldName) {
+                var index = 0;
+
+                switch (fieldName) {
+                    case "nombre":
+                        index = 1;
+                        break;
+                    case "codigo":
+                        index = 0;
+                        break;
+                }
+
+                return index;
+            }
+        });
+    </script>
 </body>
 </html>
