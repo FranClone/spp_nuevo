@@ -6,9 +6,12 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/filtro-productos.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.js"></script>
     <title>SPP - Planificador Productos</title>
+    
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -105,5 +108,10 @@
         </div>
         <br><br>
     </div>
+    <script>
+        $(document).ready(function() {
+            $('.table').DataTable();
+        });
+    </script>
 </body>
 </html>
