@@ -5,40 +5,9 @@
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-    <style>
-        .filter-form {
-            display: none;
-        }
-        .show-filter .filter-form {
-            display: block;
-        }
-        .filters-container {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 10px;
-        }
-        .filter-input {
-            padding: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            width: 150px;
-        }
-        .filter-button {
-            padding: 5px 10px;
-            background-color: #ff0000;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .no-data-message {
-            display: none;
-            color: red;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="{% static 'js/filtro-productos.js' %}"></script>
     <title>SPP - Planificador Productos</title>
 </head>
 <body>
@@ -134,97 +103,6 @@
         </div>
         <br><br>
     </div>
-    <script>
-        $(document).ready(function() {
-            $(".filter-button").click(function() {
-                $(".show-filter .filter-form").toggle();
-            });
-
-            $("#advanced-search").change(function() {
-                if (this.checked) {
-                    $("#advanced-search-options").show();
-                } else {
-                    $("#advanced-search-options").hide();
-                }
-            });
-
-            $(".filter-form").submit(function(e) {
-                e.preventDefault();
-                filterTable();
-            });
-
-            $(".filter-input").keyup(function() {
-                filterTable();
-            });
-
-            $(".clear-filter-button").click(function() {
-                $(".filter-form")[0].reset();
-                $(".table tbody tr").show();
-                $(".no-data-message").hide();
-            });
-
-            function filterTable() {
-                $(".table tbody tr").hide();
-
-                var filterBy = $(".filter-select[name='filter-by']").val();
-                var filterValue = $(".filter-input[name='filter-value']").val().toLowerCase();
-                var filterOption = $(".filter-select[name='filter-option']").val();
-                var filterLength = parseFloat($("#filter-length").val());
-                var filterLengthMax = parseFloat($("#filter-length-max").val());
-                var filterWidth = parseFloat($("#filter-width").val());
-                var filterWidthMax = parseFloat($("#filter-width-max").val());
-                var filterThickness = parseFloat($("#filter-thickness").val());
-                var filterThicknessMax = parseFloat($("#filter-thickness-max").val());
-                var advancedSearch = $("#advanced-search").is(":checked");
-
-                $(".table tbody tr").each(function() {
-                    var row = $(this);
-                    var rowData = row.find("td:nth-child(" + (getFieldIndex(filterBy) + 1) + ")").text().toLowerCase();
-                    var rowLength = parseFloat(row.find("td:nth-child(5)").text());
-                    var rowWidth = parseFloat(row.find("td:nth-child(4)").text());
-                    var rowThickness = parseFloat(row.find("td:nth-child(3)").text());
-
-                    if (advancedSearch) {
-                        if (filterLength && (rowLength < filterLength || rowLength > filterLengthMax)) {
-                            return;
-                        }
-                        if (filterWidth && (rowWidth < filterWidth || rowWidth > filterWidthMax)) {
-                            return;
-                        }
-                        if (filterThickness && (rowThickness < filterThickness || rowThickness > filterThicknessMax)) {
-                            return;
-                        }
-                    }
-
-                    if (filterOption === "partial" && rowData.includes(filterValue)) {
-                        row.show();
-                    } else if (filterOption === "exact" && rowData === filterValue) {
-                        row.show();
-                    }
-                });
-
-                if ($(".table tbody tr:visible").length === 0) {
-                    $(".no-data-message").show();
-                } else {
-                    $(".no-data-message").hide();
-                }
-            }
-
-            function getFieldIndex(fieldName) {
-                var index = 0;
-
-                switch (fieldName) {
-                    case "nombre":
-                        index = 1;
-                        break;
-                    case "codigo":
-                        index = 0;
-                        break;
-                }
-
-                return index;
-            }
-        });
-    </script>
+    
 </body>
 </html>
