@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, Group
 from django.db import IntegrityError
 from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
+from .modelos.materia_prima import MateriaPrima
 
 #probar esto
 
@@ -78,3 +79,10 @@ correo = forms.CharField(
         label="correo",
         max_length=25
     )
+
+class ActualizarMateriaPrimaForm(forms.ModelForm):
+    """Esta clase permite actualizar la materia prima de la vista de 'Materia Prima'"""
+
+    class Meta:
+        model = MateriaPrima
+        fields = ['numero_buzon', 'tipo_madera', 'clase_diametrica', 'longitud', 'cantidad']

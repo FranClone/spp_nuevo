@@ -742,41 +742,7 @@ class PeriodoAdmin(admin.ModelAdmin):
         
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
-        obj.save()
-
-class ProductoAdmin(admin.ModelAdmin):
-    #Modelo administrador para producto
-    list_display = ('nombre_producto', 'descripcion_producto',)
-    ordering = ('id',)
-    readonly_fields = ('usuario_crea',)
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        if request.user.is_superuser:
-            # Superusuarios pueden ver todas los productos
-            return queryset
-        else:
-            # Obtener la empresa del usuario actual
-            empresa = request.user.empresa
-            # Filtrar los productos por la empresa del usuario actual
-            return queryset.filter(empresa=empresa)
-    
-    #Si es superusuario puede filtrar por empresa, si no no
-    def get_list_filter(self, request):
-        if request.user.is_superuser:
-            return ('productosempresa__empresa',)
-        else:
-            return []
-        
-    def save_model(self, request, obj, form, change):
-        obj.usuario_crea = request.user.rut
-        obj.save()
-        #Si no es superusuario, el producto a guardar se asocia a la empresa
-        empresa = request.user.empresa
-        producto_empresa = ProductosEmpresa.objects.filter(producto=obj, empresa=empresa).first()
-        if not producto_empresa and not request.user.is_superuser:
-            # Si no existe, crear una nueva instancia y guardarla
-            producto_empresa = ProductosEmpresa(producto=obj, empresa=empresa)
-            producto_empresa.save()
+        obj.save()     
 
 
 class ProductoCorteEmpresaFilter(admin.SimpleListFilter):
@@ -1292,7 +1258,6 @@ admin.site.register(LineaHhDisponible, LineaHhDisponibleAdmin)
 admin.site.register(PatronCorte, PatronCorteAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Periodo, PeriodoAdmin)
-admin.site.register(Producto, ProductoAdmin)
 admin.site.register(ProductoCorte, ProductoCorteAdmin)
 admin.site.register(Rollizo, RollizoAdmin)
 admin.site.register(RollizoLargo, RollizoLargoAdmin)

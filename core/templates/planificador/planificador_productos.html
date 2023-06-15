@@ -16,40 +16,6 @@
         <div class="table-responsive">
             <h1 class="encabezado-pedidos">Productos</h1>
             <div class="show-filter">
-                <button class="filter-button">Filtrar</button>
-                <form class="filter-form">
-                    <div class="filters-container">
-                        <label for="filter-by">Filtrar por:</label>
-                        <select id="filter-by" name="filter-by" class="filter-select">
-                            <option value="nombre">Nombre del producto</option>
-                            <option value="codigo">Código del producto</option>
-                        </select>
-                        <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
-                        <select name="filter-option" class="filter-select">
-                            <option value="partial">Parcial</option>
-                            <option value="exact">Exacto</option>
-                        </select>
-                        <br>
-                        <label for="advanced-search">Búsqueda avanzada:</label>
-                        <input type="checkbox" id="advanced-search" name="advanced-search">
-                        <div id="advanced-search-options" style="display: none;">
-                            <label for="filter-length">Largo:</label>
-                            <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                            <label for="filter-width">Ancho:</label>
-                            <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                            <label for="filter-thickness">Grosor:</label>
-                            <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                        </div>
-                        <button type="submit" class="filter-button">Buscar</button>
-                        <button type="button" class="clear-filter-button">Cancelar</button>
-                    </div>
-                </form>
             </div>
             <table class="table w-100">
                 <thead class="thead-pedidos">
@@ -62,47 +28,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>p01</td>
-                        <td>producto 1</td>
-                        <td>10</td>
-                        <td>5</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>p02</td>
-                        <td>producto 12</td>
-                        <td>15</td>
-                        <td>8</td>
-                        <td>7</td>
-                    </tr>
-                    <tr>
-                        <td>p03</td>
-                        <td>producto 3</td>
-                        <td>7</td>
-                        <td>3</td>
-                        <td>9</td>
-                    </tr>
-                    <tr>
-                        <td>p04</td>
-                        <td>producto 4</td>
-                        <td>20</td>
-                        <td>12</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>p05</td>
-                        <td>producto 5</td>
-                        <td>18</td>
-                        <td>7</td>
-                        <td>5</td>
-                    </tr>
+                    {% for producto in productos %}
+                        <tr>
+                            <td>{{ producto.codigo }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.grosor }}</td>
+                            <td>{{ producto.ancho }}</td>
+                            <td>{{ producto.largo }}</td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
-            <p class="no-data-message">No hay datos para los filtros ingresados.</p>
         </div>
         <br><br>
     </div>
-    
 </body>
 </html>

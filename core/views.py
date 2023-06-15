@@ -14,9 +14,11 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm
+from .modelos.producto import Producto
 from .modelos.pedido import Pedido
 from .modelos.empresa import Empresa
+from .modelos.materia_prima import MateriaPrima
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -334,12 +336,10 @@ class Pedido(CreateView):
 
 DetallePedidoFormSet.formset_js_template_name = 'dynamic_formsets/formset_js.html'
 
-class Productos(View): 
-    @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_bodega_empresa(rut_empresa)
-        return render(request, 'productos.html', {"rows":rows})
+def productos_view(request):
+    productos = Producto.objects.all()
+    context = {'productos': productos}
+    return render(request, 'planificador/planificador_productos.html', context)
 
 class Register(View):
     def get(self, request):
@@ -432,4 +432,27 @@ class Dashboard(View):
             raw.append(pedidos_dict)
 
         return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows), 'pedidosMes' : json.dumps(raw)})
+
+def materia_prima(request):
+    materias_primas = MateriaPrima.objects.all()
+
+    if request.method == 'POST':
+        if 'editar' in request.POST:
+            pass
+        elif 'eliminar' in request.POST:
+            pass
+        elif 'crear' in request.POST:
+            form = ActualizarMateriaPrimaForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('materia_prima')
+
+    else:
+        form = ActualizarMateriaPrimaForm()
+
+    context = {
+        'form': form,
+        'materias_primas': materias_primas
+    }
+    return render(request, 'planificador/planificador_materia_prima.html', context)
      

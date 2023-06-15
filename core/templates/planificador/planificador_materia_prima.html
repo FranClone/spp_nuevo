@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-materia-prima.css' %}">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Materia Prima</title>
+</head>
+<body>
+    
+{% include "partials/header.html" %}    
+
+<div class="form-container-materia-prima">
+    <form method="POST" action="{% url 'materia_prima' %}">
+        {% csrf_token %}
+                           
+        <label for="id_numero_buzon">N° Buzón</label>
+        {{ form.numero_buzon }}
+                                
+        <label for="id_tipo_madera">Madera</label>
+        {{ form.tipo_madera }}
+                                
+        <label for="id_clase_diametrica">Clase diamétrica</label>
+        {{ form.clase_diametrica }}
+
+        <label for="id_longitud">Longitud [m]</label>
+        {{ form.longitud }}
+                                
+        <label for="id_cantidad">Cantidad [m³]</label>
+        {{ form.cantidad }}
+
+        <button type="submit" name="crear">Crear</button>
+    </form>
+</div>
+
+<div class="table-container">
+    <div class="table-responsive">
+        <h1 class="encabezado-pedidos">Materia Prima</h1>
+        <table class="table w-100">
+            <thead class="thead-pedidos">
+                <tr>
+                    <th>Número de buzón</th>
+                    <th>Tipo de madera</th>
+                    <th>Clase diamétrica</th>
+                    <th>Longitud</th>
+                    <th>Cantidad (m³)</th>
+                    <th></th> 
+                </tr>
+            </thead>
+            <tbody>
+                {% for materia_prima in materias_primas %}
+                <tr>
+                    <td>{{ materia_prima.numero_buzon }}</td>
+                    <td>{{ materia_prima.tipo_madera }}</td>
+                    <td>{{ materia_prima.clase_diametrica }}</td>
+                    <td>{{ materia_prima.longitud }}</td>
+                    <td>{{ materia_prima.cantidad }}</td>
+                    <td>
+                        <button type="button" class="editar-button">Editar</button>
+                        <button type="button" class="eliminar-button">Eliminar</button>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
+

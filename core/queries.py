@@ -98,7 +98,7 @@ def sel_pedido_productos_empresa(rut_empresa):
             fecha_recepcion__gte=fecha_inicio) & Q(fecha_entrega__lte=fecha_fin)
     ).annotate(detalle_producto=F('detallepedido__detalle_producto'),
                volumen_producto=F('detallepedido__volumen_producto'),
-               nombre_producto=F('detallepedido__producto__nombre_producto')
+               nombre_producto=F('detallepedido__producto__nombre')
                ).values('id', 'numero_pedido', 'detalle_producto', 'volumen_producto', 'nombre_producto')
 
     return pedidos
