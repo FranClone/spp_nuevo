@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm
 from .modelos.producto import Producto
 from .modelos.pedido import Pedido
 from .modelos.empresa import Empresa
@@ -455,4 +455,28 @@ def materia_prima(request):
         'materias_primas': materias_primas
     }
     return render(request, 'planificador/planificador_materia_prima.html', context)
+
+def crear_producto(request):
+    productos = Producto.objects.all()
+
+    if request.method == 'POST':
+        if 'editar' in request.POST:
+            pass
+        elif 'eliminar' in request.POST:
+            pass
+        elif 'crear' in request.POST:
+            form = CrearProductoForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('plan_productos')
+
+    else:
+        form = CrearProductoForm()
+
+    context = {
+        'form': form,
+        'productos': productos
+    }
+    return render(request, 'planificador/planificador_productos.html', context)
+ 
      

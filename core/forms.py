@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
+from .modelos.producto import Producto
 
 #probar esto
 
@@ -86,3 +87,10 @@ class ActualizarMateriaPrimaForm(forms.ModelForm):
     class Meta:
         model = MateriaPrima
         fields = ['numero_buzon', 'tipo_madera', 'clase_diametrica', 'longitud', 'cantidad']
+        
+class CrearProductoForm(forms.ModelForm):
+    """Esta clase permite crear un nuevo producto"""
+
+    class Meta:
+        model = Producto
+        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo']
