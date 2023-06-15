@@ -360,12 +360,12 @@ class Plan_Bodega(View):
         rows = sel_bodega_empresa(rut_empresa)
         return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
 
-class Plan_Lineas(View):
+class Plan_Patrones_Corte(View):
     @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
         rows = sel_linea_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_lineas.html', {'rows':rows})
+        return render(request, 'planificador/planificador_patrones_corte.html', {'rows':rows})
 
 class Plan_Productos(View):
     @method_decorator(login_required) 
@@ -445,7 +445,7 @@ def materia_prima(request):
             form = ActualizarMateriaPrimaForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('materia_prima')
+                return redirect('plan_materia_prima')
 
     else:
         form = ActualizarMateriaPrimaForm()

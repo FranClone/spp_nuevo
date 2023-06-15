@@ -16,7 +16,7 @@
 {% include "partials/header.html" %}    
 
 <div class="form-container-materia-prima">
-    <form method="POST" action="{% url 'materia_prima' %}">
+    <form method="POST" action="{% url 'plan_materia_prima' %}">
         {% csrf_token %}
                            
         <label for="id_numero_buzon">N° Buzón</label>

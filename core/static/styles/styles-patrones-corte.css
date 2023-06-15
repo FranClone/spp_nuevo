@@ -1,0 +1,71 @@
+.filter-section {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.filter-form {
+    display: flex;
+    align-items: center;
+}
+
+.filter-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.filter-select,
+.filter-input {
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+
+.clear-filter-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.table-container {
+    margin-top: 20px;
+}
+
+.table-responsive {
+    overflow-x: auto;
+}
+
+.table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+.table th,
+.table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.table th {
+    background-color: #f2f2f2;
+}
+
+.encabezado-pedidos {
+    margin-top: 0;
+}
+
+.no-data-message {
+    display: none;
+    color: red;
+    margin-top: 10px;
+}

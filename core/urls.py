@@ -7,10 +7,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
-from .views import Plan_Bodega, Plan_Lineas, Plan_Productos, Plan_Rollizo, Dashboard 
+from .views import Plan_Bodega, Plan_Patrones_Corte, Plan_Productos, Plan_Rollizo, Dashboard 
 from .views import get_empresas, get_data
 from .views import productos_view, materia_prima
-
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -27,15 +26,13 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
-    path('materia_prima/', materia_prima, name = "materia_prima"),
     path('pedido/', Pedido.as_view(), name = "pedido"),
-    path('productos/', productos_view, name = "productos"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_bodega/', Plan_Bodega.as_view(), name = "plan_bodega"),
-    path('planificador_lineas/', Plan_Lineas.as_view(), name = "plan_lineas"),
-    path('planificador_productos/', Plan_Productos.as_view(), name = "plan_productos"),
-    path('planificador_materia_prima/', Plan_Rollizo.as_view(), name = "plan_rollizo"),
+    path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
+    path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
+    path('planificador_productos/', productos_view, name = "plan_productos"),
     # url para desplegar el bar chart vertical
     path('get-data/', get_data, name='get-data'),
     path('dashboard/', Dashboard.as_view(), name = "dashboard")
