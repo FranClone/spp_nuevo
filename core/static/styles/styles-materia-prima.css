@@ -44,3 +44,11 @@ form select {
     width: 100%;
     margin-bottom: 10px;
 }
+.filter-section {
+    background-color: white;
+}
+
+.filter-button {
+    background-color: red;
+    color: white;
+}
