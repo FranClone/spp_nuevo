@@ -1,0 +1,50 @@
+/* Estilos para el formulario */
+
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form label {
+    flex: 0 0 120px;
+    margin-right: 10px;
+}
+
+form input,
+form select {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+
+/* Estilos para el contenedor del formulario */
+
+.form-container-productos-terminados {
+    width: 90%;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+}
+
+.form-container-productos-terminados form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container-productos-terminados label {
+    flex: 0 0 120px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.form-container-productos-terminados input,
+.form-container-productos-terminados select {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+}

@@ -4,11 +4,12 @@
     {% load static %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-productos-terminados.css' %}">
     {% include "partials/resources.html" %}
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SPP - Planificador Bodega</title>
+    <title>SPP - Productos Terminados</title>
     <style>
         /* Estilos para el popup */
         .popup {
@@ -79,11 +80,19 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    <div class="form-container-productos-terminados">
+        <form method="post" action="{% url 'plan_productos_terminados' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Guardar</button>
+        </form>
+    </div>
+    
     <div class="table-container">
         <div class="table-responsive">
             <table class="table w-100">
                 <br>
-                <h1 class="encabezado-pedidos">Planificador Bodega</h1>
+                <h1 class="encabezado-pedidos">Productos Terminados</h1>
                 <thead class="thead-pedidos">
                     <tr>
                         <th>ID Bodega</th>

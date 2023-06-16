@@ -14,11 +14,12 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm
 from .modelos.producto import Producto
 from .modelos.pedido import Pedido
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
+from .modelos.productos_terminados import ProductoTerminado
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -353,12 +354,22 @@ class Register(View):
             return redirect('login')
         return render(request, 'register.html', {'form': form})
 
-class Plan_Bodega(View): 
+class ProductosTerminados(View):
     @method_decorator(login_required)
-    def get(self, request, *args, **kwargs):        
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_bodega_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_bodega.html', {'rows':rows})
+    def get(self, request, *args, **kwargs):
+        productos_terminados = ProductoTerminado.objects.all()
+        form = ProductoTerminadoForm()
+        return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
+
+    @method_decorator(login_required)
+    def post(self, request, *args, **kwargs):
+        form = ProductoTerminadoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('plan_productos_terminados')
+        
+        productos_terminados = ProductoTerminado.objects.all()
+        return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
 class Plan_Patrones_Corte(View):
     @method_decorator(login_required) 
