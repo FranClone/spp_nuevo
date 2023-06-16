@@ -33,7 +33,6 @@ form select {
 
 .form-container-materia-prima label {
     flex: 0 0 120px;
-    /* Ajusta el ancho del label según tus necesidades */
     margin-right: 10px;
     text-align: right;
 }
@@ -44,6 +43,7 @@ form select {
     width: 100%;
     margin-bottom: 10px;
 }
+
 .filter-section {
     background-color: white;
 }
