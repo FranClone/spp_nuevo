@@ -84,7 +84,7 @@
         <form method="post" action="{% url 'plan_productos_terminados' %}">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Guardar</button>
+            <button type="submit">crear</button>
         </form>
     </div>
     
@@ -95,18 +95,27 @@
                 <h1 class="encabezado-pedidos">Productos Terminados</h1>
                 <thead class="thead-pedidos">
                     <tr>
-                        <th>ID Bodega</th>
-                        <th>Nombre Bodega</th>
-                        <th>Nombre Empresa</th>
-                        <th>Descripción</th>
-                        <th>Detalles</th>
+                        <th>Codigo</th>
+                        <th>Nombre </th>
+                        <th>Grosor</th>
+                        <th>Ancho</th>
+                        <th>Largo</th>
+                        <th>Clase diametrica</th>
+                        <th>Patron corte</th>
+                        <th>Cantidad producida</th>
+                        <th>Fecha produccion</th>
                     </tr>
-                    {% for row in rows %}
+                    {% for productoterminado in productos_terminados %}
                     <tr>
-                        <td>{{row.id}}</td>
-                        <td>{{row.nombre_bodega}}</td>
-                        <td>{{row.nombre_empresa}}</td>
-                        <td>{{row.descripcion_bodega}}</td>
+                        <td>{{productoterminado.codigo}}</td>
+                        <td>{{productoterminado.nombre}}</td>
+                        <td>{{productoterminado.grosor}}</td>
+                        <td>{{productoterminado.ancho}}</td>
+                        <td>{{productoterminado.largo}}</td>
+                        <td>{{productoterminado.clase_diametrica}}</td>
+                        <td>{{productoterminado.patron_corte}}</td>
+                        <td>{{productoterminado.cantidad_producida}}</td>
+                        <td>{{productoterminado.fecha_produccion}}</td>
                         <td>
                             <button class="popup-button" onclick="openPopup('{{ row.id }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')">Mostrar detalles</button>
                         </td>
