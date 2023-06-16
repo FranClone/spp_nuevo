@@ -7,6 +7,7 @@
     <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
     <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,6 +16,7 @@
         $(document).ready(function() {
             var input = $('input[type="file"]');
             
+
             input.change(function() {
                 var file = input[0].files[0];
             
@@ -29,6 +31,20 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    <div class="radio-buttons">
+        
+        <input type="radio" id="radio1" name="radio" value="option1" checked>
+        <label for="radio1">Dia</label>
+    <br>
+        <input type="radio" id="radio2" name="radio" value="option2">
+        <label for="radio2">Semana</label>
+    <br>
+        <input type="radio" id="radio3" name="radio" value="option3">
+        <label for="radio3">Mes</label>
+    </div>
+
+
+<!--
     <div class="carga">
         <label class="label-carga-masiva" for="carga-multiple">Carga Excel
             <script>
@@ -61,6 +77,10 @@
     <div class="progress">
             <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
     </div>
+
+-->
+
+
     <div class="gantt-container">
         <div class="gantt-here" id="gantt_here"></div>
         <script>
