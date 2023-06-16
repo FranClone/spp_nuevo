@@ -70,7 +70,6 @@ form select {
 
 .form-container-productos label {
     flex: 0 0 120px;
-    /* Ajusta el ancho del label según tus necesidades */
     margin-right: 10px;
     text-align: right;
 }
