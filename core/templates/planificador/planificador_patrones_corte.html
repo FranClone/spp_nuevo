@@ -6,7 +6,10 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-patrones-corte.css' %}">
-    <title>SPP - Planificador Líneas</title>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    
+    <title>SPP - Planificador Patrones de corte</title>
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -47,7 +50,7 @@
     </div>
     <div class="table-container">
         <div class="table-responsive">
-            <table class="table w-100">
+            <table id="patrones-table" class="table w-100">
                 <h1 class="encabezado-pedidos">Patrones de corte</h1>
                 <thead class="thead-pedidos">
                     <tr>
@@ -177,12 +180,13 @@
                         <td>producto20</td>
                         <td>3</td>
                     </tr>
+                   
                 </tbody>
             </table>
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
     </div>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
     <script>
         $(document).ready(function() {
             $(".filter-button").click(function() {
@@ -214,7 +218,7 @@
                 var filterProducto = $(".filter-input[name='filter-producto']").val().toLowerCase();
                 var filterClase = $(".filter-select[name='filter-clase']").val().toLowerCase();
                 
-                $(".table tbody tr").hide().each(function() {
+                $("#patrones-table tbody tr").hide().each(function() {
                     var rowDataCodigo = $(this).find("td:nth-child(1)").text().toLowerCase();
                     var rowDataNombre = $(this).find("td:nth-child(2)").text().toLowerCase();
                     var rowDataProducto = $(this).find("td:nth-child(3)").text().toLowerCase();
@@ -230,13 +234,19 @@
                     }
                 });
                 
-                if ($(".table tbody tr:visible").length === 0) {
+                if ($("#patrones-table tbody tr:visible").length === 0) {
                     $(".no-data-message").show();
                 } else {
                     $(".no-data-message").hide();
                 }
             }
+
+            // Configuración de DataTables
+            $("#patrones-table").DataTable({
+
+            });
         });
     </script>
+    
 </body>
 </html>

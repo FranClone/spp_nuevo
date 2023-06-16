@@ -6,16 +6,52 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/jquery.dataTables.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/filtro-productos.js' %}"></script>
-    <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.js"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <title>SPP - Planificador Productos</title>
     
 </head>
 <body>
     {% include "partials/header.html" %}
-
+    <div class="show-filter">
+        <button class="filter-button">Filtrar</button>
+        <form class="filter-form">
+            <div class="filters-container">
+                <label for="filter-by">Filtrar por:</label>
+                <select id="filter-by" name="filter-by" class="filter-select">
+                    <option value="nombre">Nombre del producto</option>
+                    <option value="codigo">Código del producto</option>
+                </select>
+                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                <select name="filter-option" class="filter-select">
+                    <option value="partial">Parcial</option>
+                    <option value="exact">Exacto</option>
+                </select>
+                <br>
+                <label for="advanced-search">Búsqueda avanzada:</label>
+                <input type="checkbox" id="advanced-search" name="advanced-search">
+                <div id="advanced-search-options" style="display: none;">
+                    <label for="filter-length">Largo:</label>
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-width">Ancho:</label>
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-thickness">Grosor:</label>
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
+                </div>
+                <button type="submit" class="filter-button">Buscar</button>
+                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    <!-- 
     <div class="form-container-productos">
         <form method="POST" action="{% url 'plan_productos' %}">
             {% csrf_token %}
@@ -38,46 +74,11 @@
             <button type="submit" name="crear">Crear</button>
         </form>
     </div>
-
+        -->
     <div class="table-container">
         <div class="table-responsive">
             <h1 class="encabezado-pedidos">Productos</h1>
-            <div class="show-filter">
-                <button class="filter-button">Filtrar</button>
-                <form class="filter-form">
-                    <div class="filters-container">
-                        <label for="filter-by">Filtrar por:</label>
-                        <select id="filter-by" name="filter-by" class="filter-select">
-                            <option value="nombre">Nombre del producto</option>
-                            <option value="codigo">Código del producto</option>
-                        </select>
-                        <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
-                        <select name="filter-option" class="filter-select">
-                            <option value="partial">Parcial</option>
-                            <option value="exact">Exacto</option>
-                        </select>
-                        <br>
-                        <label for="advanced-search">Búsqueda avanzada:</label>
-                        <input type="checkbox" id="advanced-search" name="advanced-search">
-                        <div id="advanced-search-options" style="display: none;">
-                            <label for="filter-length">Largo:</label>
-                            <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                            <label for="filter-width">Ancho:</label>
-                            <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                            <label for="filter-thickness">Grosor:</label>
-                            <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                            <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
-                            <br>
-                        </div>
-                        <button type="submit" class="filter-button">Buscar</button>
-                        <button type="button" class="clear-filter-button">Cancelar</button>
-                    </div>
-                </form>
-            </div>
+            
             <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
@@ -112,6 +113,8 @@
         $(document).ready(function() {
             $('.table').DataTable();
         });
+
+        
     </script>
 </body>
 </html>
