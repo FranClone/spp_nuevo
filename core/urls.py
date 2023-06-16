@@ -7,7 +7,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
-from .views import Plan_Bodega, Plan_Patrones_Corte, Plan_Productos, Plan_Rollizo, Dashboard 
+from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
 from .views import get_empresas, get_data
 from .views import productos_view, materia_prima
 
@@ -29,7 +29,7 @@ urlpatterns = [
     path('pedido/', Pedido.as_view(), name = "pedido"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
-    path('planificador_bodega/', Plan_Bodega.as_view(), name = "plan_bodega"),
+    path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
     path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
     path('planificador_productos/', productos_view, name = "plan_productos"),

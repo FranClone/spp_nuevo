@@ -6,6 +6,7 @@ from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.producto import Producto
+from .modelos.productos_terminados import ProductoTerminado
 
 #probar esto
 
@@ -94,3 +95,8 @@ class CrearProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo']
+        
+class ProductoTerminadoForm(forms.ModelForm):
+    class Meta:
+        model = ProductoTerminado
+        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
