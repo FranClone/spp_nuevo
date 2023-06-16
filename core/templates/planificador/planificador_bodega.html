@@ -9,6 +9,73 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Planificador Bodega</title>
+    <style>
+        /* Estilos para el popup */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 40px;
+            border: none;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            z-index: 9999;
+            display: none;
+            width: 80%;
+            text-align: left;
+            font-family: Arial, sans-serif;
+        }
+        
+        .popup h2 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            text-align: center;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+        }
+        
+        .popup-item {
+            margin-bottom: 10px;
+            font-size: 18px;
+        }
+        
+        .popup-item strong {
+            font-weight: bold;
+        }
+        
+        .popup-button {
+            background-color: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            color: inherit;
+            font: inherit;
+        }
+        
+        .close-button {
+            display: block;
+            margin: 0 auto;
+            text-align: center;
+            width: 100px;
+            background-color: #fb5807db;
+            color: white;
+            border-radius: 5px; 
+        }
+        
+        /* Estilos para el fondo oscurecido */
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.4);
+            display: none;
+            z-index: 9998;
+        }
+    </style>
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -23,6 +90,7 @@
                         <th>Nombre Bodega</th>
                         <th>Nombre Empresa</th>
                         <th>Descripción</th>
+                        <th>Detalles</th>
                     </tr>
                     {% for row in rows %}
                     <tr>
@@ -30,6 +98,10 @@
                         <td>{{row.nombre_bodega}}</td>
                         <td>{{row.nombre_empresa}}</td>
                         <td>{{row.descripcion_bodega}}</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('{{ row.id }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')">Mostrar detalles</button>
+                        </td>
+                        </td>
                     </tr>
                     {% endfor %}
                 </thead>
@@ -37,5 +109,40 @@
         </div>
         <br><br>
     </div>
+    
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="popup">
+        <h2>Detalles de la bodega</h2>
+        <div class="popup-item">
+            <strong>ID:</strong> <span id="popupId"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Nombre:</strong> <span id="popupNombreBodega"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Nombre de la empresa:</strong> <span id="popupNombreEmpresa"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Descripción:</strong> <span id="popupDescripcion"></span>
+        </div>
+        <button class="close-button" onclick="closePopup()">Cerrar</button>
+    </div>
+
+    <script>
+        function openPopup(id, nombreBodega, nombreEmpresa, descripcion) {
+            document.getElementById('popupId').innerText = id;
+            document.getElementById('popupNombreBodega').innerText = nombreBodega;
+            document.getElementById('popupNombreEmpresa').innerText = nombreEmpresa;
+            document.getElementById('popupDescripcion').innerText = descripcion;
+            document.getElementById('popupOverlay').style.display = 'block';
+            document.getElementById('popup').style.display = 'block';
+        }
+
+        function closePopup() {
+            document.getElementById('popupOverlay').style.display = 'none';
+            document.getElementById('popup').style.display = 'none';
+        }
+    </script>
+
 </body>
 </html>
