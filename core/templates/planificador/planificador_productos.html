@@ -6,82 +6,18 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/filtro-productos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <title>SPP - Productos</title>
-    <style>
-        /* Estilos para el popup */
-        .popup {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 40px;
-            border: none;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            z-index: 9999;
-            display: none;
-            width: 80%;
-            text-align: left;
-            font-family: Arial, sans-serif;
-        }
-        
-        .popup h2 {
-            font-size: 20px;
-            margin-bottom: 10px;
-            text-align: center;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-        }
-        
-        .popup-item {
-            margin-bottom: 10px;
-            font-size: 18px;
-        }
-        
-        .popup-item strong {
-            font-weight: bold;
-        }
-        
-        .product-button {
-            background-color: transparent;
-            border: none;
-            padding: 0;
-            cursor: pointer;
-            color: inherit;
-            font: inherit;
-        }
-        
-        .close-button {
-            display: block;
-            margin: 0 auto;
-            text-align: center;
-            width: 100px;
-            background-color: #fb5807db;
-            color: white;
-            border-radius: 5px; 
-        }
-        
-        /* Estilos para el fondo oscurecido */
-        .popup-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4);
-            display: none;
-            z-index: 9998;
-        }
-    </style>
+  
     
 </head>
 <body>
     {% include "partials/header.html" %}
+    
     <div class="show-filter">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form">

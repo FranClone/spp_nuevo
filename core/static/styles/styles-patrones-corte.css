@@ -1,12 +1,13 @@
 .filter-section {
-    background-color: #f2f2f2;
-    padding: 10px;
-    margin-bottom: 20px;
+    display: flex;
+    flex-direction: row;
+    padding-left: 5px;
 }
 
 .filter-form {
-    display: flex;
-    align-items: center;
+    flex: 1;
+  margin-right: 10px;
+  width: 30%;
 }
 
 .filter-button {
@@ -38,10 +39,21 @@
 
 .table-container {
     margin-top: 20px;
+    margin-right:4%;
+    margin-left:4%;   
+    background-color: white;
+    opacity: 0.9;
+    border-radius: 25px;
+    padding:2%;
+    height: 80%;
 }
 
 .table-responsive {
-    overflow-x: auto;
+    flex: 5;
+    margin:1px;
+    width: 70%;
+    height: 80%;
+    display: block;
 }
 
 .table {
