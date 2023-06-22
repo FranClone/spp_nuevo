@@ -112,6 +112,7 @@
                     <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
                     <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
                     <br>
+                    
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
                 <button type="button" class="clear-filter-button">Cancelar</button>
@@ -218,10 +219,11 @@
             document.getElementById('popup').style.display = 'none';
         }
         $(document).ready(function() {
-            $('.table').DataTable();
-        });
+            $('.table').DataTable({
+                paging: true,   
 
-        
+            });
+        });
     </script>
     
 </body>
