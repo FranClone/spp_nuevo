@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-patrones-corte.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <script src="{% static 'js/vista-pedidos.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Pedidos</title>
+</head>
+
+<body>
+    {% include "partials/header.html" %}
+    <div class="filter-section">
+        <form class="filter-form show-filter">
+            <button type="button" class="filter-button">Mostrar filtro</button>
+            <div class="filter-form-fields">
+                <div class="filter-field">
+                    <label for="filter-nombre">Nombre de cliente:</label>
+                    <input type="text" name="filter-nombre" class="filter-input" placeholder="Ingrese el nombre">
+                </div>
+                <label for="advanced-search">Búsqueda avanzada:</label>
+                <input type="checkbox" id="advanced-search" name="advanced-search">
+                <div id="advanced-search-options" style="display: none;">
+                    <div class="filter-field">
+                        <label for="filter-producto">Producto asociado:</label>
+                        <input type="text" name="filter-producto" class="filter-input" placeholder="Ingrese el producto">
+                    </div>
+                </div>
+                <button type="submit" class="filter-button">Buscar</button>
+                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    <div class="table-container container">
+        <h1 class="encabezado-pedidos">Tabla de pedidos</h1>
+        <div class="table-responsive">
+            <table class="table w-100">
+                <caption></caption>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>Cliente</th>
+                        <th>Producto solicitado</th>
+                        <th>Cantidad solicitada</th>
+                        <th>Fecha de entrega</th>
+                        <th>Mostrar detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Cliente 1</td>
+                        <td>Producto A</td>
+                        <td>5</td>
+                        <td>2023-06-30</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('1', 'Bodega A', 'Empresa X', 'Descripción de la bodega A')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 2</td>
+                        <td>Producto B</td>
+                        <td>10</td>
+                        <td>2023-07-05</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('2', 'Bodega B', 'Empresa Y', 'Descripción de la bodega B')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 3</td>
+                        <td>Producto C</td>
+                        <td>8</td>
+                        <td>2023-07-10</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('3', 'Bodega C', 'Empresa Z', 'Descripción de la bodega C')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 4</td>
+                        <td>Producto D</td>
+                        <td>15</td>
+                        <td>2023-07-15</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('4', 'Bodega D', 'Empresa W', 'Descripción de la bodega D')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 5</td>
+                        <td>Producto E</td>
+                        <td>3</td>
+                        <td>2023-07-20</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('5', 'Bodega E', 'Empresa V', 'Descripción de la bodega E')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 6</td>
+                        <td>Producto F</td>
+                        <td>7</td>
+                        <td>2023-07-25</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('6', 'Bodega F', 'Empresa U', 'Descripción de la bodega F')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 7</td>
+                        <td>Producto G</td>
+                        <td>12</td>
+                        <td>2023-07-30</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('7', 'Bodega G', 'Empresa T', 'Descripción de la bodega G')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 8</td>
+                        <td>Producto H</td>
+                        <td>9</td>
+                        <td>2023-08-05</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('8', 'Bodega H', 'Empresa S', 'Descripción de la bodega H')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 9</td>
+                        <td>Producto I</td>
+                        <td>6</td>
+                        <td>2023-08-10</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('9', 'Bodega I', 'Empresa R', 'Descripción de la bodega I')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 10</td>
+                        <td>Producto J</td>
+                        <td>4</td>
+                        <td>2023-08-15</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('10', 'Bodega J', 'Empresa Q', 'Descripción de la bodega J')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cliente 11</td>
+                        <td>Producto k</td>
+                        <td>4</td>
+                        <td>2023-08-15</td>
+                        <td>
+                            <button class="popup-button" onclick="openPopup('10', 'Bodega J', 'Empresa Q', 'Descripción de la bodega J')">Mostrar detalles</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="popup-overlay" id="popupOverlay"></div>
+    <div class="popup" id="popup">
+        <h2>Detalles de la bodega</h2>
+        <div class="popup-item">
+            <strong>ID:</strong> <span id="popupId"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Nombre:</strong> <span id="popupNombreBodega"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Nombre de la empresa:</strong> <span id="popupNombreEmpresa"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Descripción:</strong> <span id="popupDescripcion"></span>
+        </div>
+        <button class="close-button" onclick="closePopup()">Cerrar</button>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+    const filterForm = document.querySelector('.filter-form');
+    const filterNombreInput = document.querySelector('input[name="filter-nombre"]');
+    const clearFilterButton = document.querySelector('.clear-filter-button');
+
+    let dataTable = $('.table').DataTable();
+
+    filterForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        applyFilters();
+    });
+
+    clearFilterButton.addEventListener('click', function() {
+        filterNombreInput.value = '';
+        applyFilters();
+    });
+
+    function applyFilters() {
+        const nombreFilter = filterNombreInput.value.toLowerCase();
+        dataTable.column(0).search(nombreFilter, true, false).draw();
+    }
+});
+
+    </script>
+    
+    {% include "partials/footer.html" %}
+</body>
+
+</html>
