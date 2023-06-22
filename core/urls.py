@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
-from .views import productos_view, materia_prima
+from .views import crear_producto, materia_prima
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -28,7 +28,7 @@ urlpatterns = [
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
     path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
-    path('planificador_productos/', productos_view, name = "plan_productos"),
+    path('planificador_productos/', crear_producto, name = "plan_productos"),
     path('dashboard/', Dashboard.as_view(), name = "dashboard")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
