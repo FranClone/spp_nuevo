@@ -8,5 +8,5 @@ class MateriaPrima(models.Model):
     cantidad = models.FloatField()
         
     def __str__(self):
-        return f'Buzón {self.numero_buzon}: {self.tipo_madera} - {self.clase_diametrica}'
+        return f'Buzón {self.numero_buzon}: {self.tipo_madera}'
 

@@ -34,40 +34,6 @@ try:
 except Exception as ex:
     print(ex)
 
-def superuser_required(view_func):
-    """Restrict a view to superusers only"""
-    decorated_view_func = user_passes_test(lambda u: u.is_superuser)(view_func)
-    return decorated_view_func
-
-def staff_required(view_func):
-    """Restrict a view to staff members only"""
-    decorated_view_func = user_passes_test(lambda u: u.is_staff)(view_func)
-    return decorated_view_func
-
-def aserradero_required(function=None):
-    """
-    Decorador que verifica si el usuario es del aserradero o es superusuario.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists()),
-        login_url='/login/'
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
-
-def cliente_required(function=None):
-    """
-    Decorador que verifica si el usuario es del aserradero, el cliente o es superusuario.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists() or u.groups.filter(name='cliente').exists()),
-        login_url='/login/'
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
-
 #Hay 2 tipos de vistas, clases y funciones esta es de clases
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
@@ -355,13 +321,11 @@ class Register(View):
         return render(request, 'register.html', {'form': form})
 
 class ProductosTerminados(View):
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         productos_terminados = ProductoTerminado.objects.all()
         form = ProductoTerminadoForm()
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
-
-    @method_decorator(login_required)
+    
     def post(self, request, *args, **kwargs):
         form = ProductoTerminadoForm(request.POST)
         if form.is_valid():
@@ -372,54 +336,15 @@ class ProductosTerminados(View):
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
 class Plan_Patrones_Corte(View):
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_linea_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_patrones_corte.html', {'rows':rows})
+        return render(request, 'planificador/planificador_patrones_corte.html')
 
 class Plan_Productos(View):
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_producto_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_productos.html', {'rows':rows})
-
-class Plan_Rollizo(View):
-    @method_decorator(login_required) 
-    def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_rollizo_clasificado_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
-
-def get_data(request):
-    """Esta función asigna los valores a cada barra del bar chart"""
-    P1 = 100
-    P2 = 77
-    P3 = 89
-    P4 = 87
-    P5 = 100
-    data = {
-        'labels': ['P1', 'P2', 'P3', 'P4', 'P5'],
-        'datasets': [
-            {
-                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
-                'borderColor': 'rgba(255, 99, 132, 1)',
-                'borderWidth': 1,
-                'data': [P1, P2, P3, P4, P5]
-            }
-        ]
-    }
-    return JsonResponse(data)
-
-def my_view(request):
-    # crea una variable de progreso y la envía a 'home.html'
-    progress = 0
-    return render(request, 'home.html', {'progress': progress})
+        return render(request, 'planificador/planificador_productos.html')
 
 class Dashboard(View): 
     """Esta clase define la vista Dashboard"""
-    @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
         clientes = sel_cliente_admin(rut_empresa)
