@@ -5,6 +5,7 @@ from django.db import IntegrityError
 from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
+from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.productos_terminados import ProductoTerminado
 
@@ -95,7 +96,14 @@ class CrearProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo']
-        
+
+class CrearPatronCorteForm(forms.ModelForm):
+    """Esta clase permite crear un nuevo patrón de corte"""
+
+    class Meta:
+        model = PatronCorte
+        fields = ['codigo_patron', 'nombre_patron', 'producto_asociado', 'clase_diametrica_rollizo']
+
 class ProductoTerminadoForm(forms.ModelForm):
     class Meta:
         model = ProductoTerminado

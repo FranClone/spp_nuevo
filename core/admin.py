@@ -630,16 +630,6 @@ class LineaHhDisponibleAdmin(admin.ModelAdmin):
             obj.empresa = request.user.empresa
         obj.save()
 
-class PatronCorteAdmin(admin.ModelAdmin):
-    #Modelo administrador para pedido
-    def save_model(self, request, obj, form, change):
-        obj.usuario_crea = request.user.rut
-        obj.save()
-    list_display = ('nombre_patron', 'descripcion_patron')
-    ordering = ('id',)
-    readonly_fields = ('usuario_crea',)
-    list_filter = ('productocorte__producto__productosempresa__empresa__nombre_empresa',)
-
 class DetalleProductoInline(admin.TabularInline):
     model = Pedido.productos.through
     extra = 1
@@ -1255,7 +1245,6 @@ admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
 admin.site.register(Linea, LineaAdmin)
 admin.site.register(LineaHhDisponible, LineaHhDisponibleAdmin)
-admin.site.register(PatronCorte, PatronCorteAdmin)
 admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Periodo, PeriodoAdmin)
 admin.site.register(ProductoCorte, ProductoCorteAdmin)
