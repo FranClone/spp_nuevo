@@ -187,14 +187,11 @@ class Inventario_roll(View):
         noclas = sel_rollizo_empresa(rut_empresa)
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
-class Inventario_roll_nc(View):
-    """Esta clase define la vista de Inventario"""
+class Pedidos(View):
+
     def get(self, request, *args, **kwargs):
-        context={
 
-        }
-
-        return render(request, 'inventario_rollizo_nc.html', context) 
+        return render(request, 'pedidos.html') 
 
 class Lista_pedidos(View): 
     """Esta clase define la vista de Lista de Pedidos"""
