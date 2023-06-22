@@ -91,3 +91,24 @@ $(document).ready(function() {
         return index;
     }
 });
+
+function openPopup(codigo, nombre, grosor, ancho, largo) {
+    document.getElementById('popupCodigo').innerText = codigo;
+    document.getElementById('popupNombre').innerText = nombre;
+    document.getElementById('popupGrosor').innerText = grosor;
+    document.getElementById('popupAncho').innerText = ancho;
+    document.getElementById('popupLargo').innerText = largo;
+    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+}
+$(document).ready(function() {
+    $('.table').DataTable({
+        paging: true,
+
+    });
+});
