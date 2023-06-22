@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
 from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
-from .views import productos_view, materia_prima
+from .views import productos_view, materia_prima,eliminar_materia_prima
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -16,6 +16,7 @@ urlpatterns = [
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
     path('home/', Home.as_view(), name = "home"),
+
     path('', Login.as_view(), name = "login"),
     path('inventario_producto/', Inventario_pdto.as_view(), name = "inventario_producto"),
     path('inventario_rollizo/', Inventario_roll.as_view(), name = "inventario_rollizo"),
@@ -31,6 +32,9 @@ urlpatterns = [
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
     path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
     path('planificador_productos/', productos_view, name = "plan_productos"),
+    path('eliminarmateria/<int:id>', eliminar_materia_prima,name='eliminarmateria' ),
+    # url para desplegar el bar chart vertical
+
     path('dashboard/', Dashboard.as_view(), name = "dashboard")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

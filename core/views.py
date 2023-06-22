@@ -416,3 +416,8 @@ def crear_producto(request):
     return render(request, 'planificador/planificador_productos.html', context)
  
      
+def eliminar_materia_prima(request,id):
+    materia_prima=MateriaPrima.objects.get(id=id)
+    materia_prima.delete()
+
+    return redirect('plan_materia_prima')
