@@ -6,15 +6,9 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-<<<<<<< HEAD
 from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
 from .views import crear_producto, materia_prima, crear_patron_corte
-=======
-from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
-from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
-from .views import crear_producto, materia_prima
->>>>>>> 0aca28392d39739c2abad73ac35d2de6c185f736
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
