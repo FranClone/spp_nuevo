@@ -76,7 +76,7 @@
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
-                        <th>Eliminar</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -89,8 +89,7 @@
                             <td>{{ producto.largo }}</td>
                             <td>
                                 <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                            </td>
-                            <td><a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
+                            <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                         </tr>
                     {% empty %}
                     </tr>

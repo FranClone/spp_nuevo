@@ -99,7 +99,7 @@
                         <th>Cantidad producida</th>
                         <th>Fecha produccion</th>
                         <th>Acciones</th>
-                        <th>Eliminar</th>
+                        
 
                     </tr>
                 </thead>
@@ -117,8 +117,7 @@
                         <td>{{productoterminado.fecha_produccion}}</td>
                         <td>
                             <button class="btn block" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                        </td>
-                        <td><a href="eliminarproducto_terminado/{{productoterminado.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
+                        <a href="eliminarproducto_terminado/{{productoterminado.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                     </tr>
                     {% endfor %}
                 </tbody>
