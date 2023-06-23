@@ -48,3 +48,47 @@ form select {
     width: 100%;
     margin-bottom: 10px;
 }
+
+.show-filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: white;
+}
+
+.filter-button {
+    margin-bottom: 10px;
+}
+
+.filter-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filters-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.filter-input {
+    margin-bottom: 5px;
+}
+
+.filter-select {
+    margin-bottom: 5px;
+}
+
+#advanced-search-options {
+    display: none;
+}
+
+.clear-filter-button {
+    margin-top: 10px;
+}
+
+a {
+    text-decoration: none;
+    color: inherit; 
+  }

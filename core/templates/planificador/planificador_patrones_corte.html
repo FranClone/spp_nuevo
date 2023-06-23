@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Patrones de Corte</title>
 </head>
 <body>
@@ -57,6 +58,8 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
+            <button type="submit" name="crear">Carga masiva</button>
+            
         </form>
     </div>
     <div class="table-container">
@@ -81,10 +84,10 @@
                             <td>{{ patron.producto_asociado }}</td>
                             <td>{{ patron.clase_diametrica_rollizo }}</td>
                             <td>
-                                <button class="product-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">Mostrar detalles</button>
+                                <button class="fa-sharp fa-regular fa-clipboard fa-bounce" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')"></button>
                             </td>
                       
-                            <td><a href="eliminarpatron/{{patron.id}}" class="btn btn-block">Eliminar</a></td>
+                            <td><a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                         </tr>
                     {% empty %}
                         <tr>

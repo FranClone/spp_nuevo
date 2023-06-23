@@ -11,6 +11,7 @@
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-productos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
     
 </head>
@@ -59,6 +60,7 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
+            <button type="submit" name="crear">Carga masiva</button>
         </form>
     </div>
     <div class="table-container">
@@ -86,9 +88,9 @@
                             <td>{{ producto.ancho }}</td>
                             <td>{{ producto.largo }}</td>
                             <td>
-                                <button class="product-button" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')">Mostrar detalles</button>
+                                <button class="fa-sharp fa-regular fa-clipboard fa-bounce" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')"></button>
                             </td>
-                            <td><a href="eliminarproducto/{{producto.id}}" class="btn btn-block">Eliminar</a></td>
+                            <td><a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                         </tr>
                     {% empty %}
                     </tr>

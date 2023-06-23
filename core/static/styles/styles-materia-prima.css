@@ -52,3 +52,9 @@ form select {
     background-color: red;
     color: white;
 }
+
+  /* Estilos personalizados para el enlace */
+  a {
+    text-decoration: none;
+    color: inherit; 
+  }
