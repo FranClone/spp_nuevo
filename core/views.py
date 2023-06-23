@@ -422,3 +422,21 @@ def eliminar_materia_prima(request,id):
     materia_prima.delete()
 
     return redirect('plan_materia_prima')
+
+def eliminar_patron(request,id):
+    patron=PatronCorte.objects.get(id=id)
+    patron.delete()
+
+    return redirect('plan_patrones_corte')
+
+def eliminar_producto(request,id):
+    producto=Producto.objects.get(id=id)
+    producto.delete()
+
+    return redirect('plan_productos')
+
+def eliminar_producto_terminado(request,id):
+    producto_terminado=ProductoTerminado.objects.get(id=id)
+    producto_terminado.delete()
+
+    return redirect('plan_productos_terminados')
