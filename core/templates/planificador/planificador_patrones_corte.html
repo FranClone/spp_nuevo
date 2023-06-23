@@ -84,7 +84,7 @@
                             <td>{{ patron.producto_asociado }}</td>
                             <td>{{ patron.clase_diametrica_rollizo }}</td>
                             <td>
-                                <button class="fa-sharp fa-regular fa-clipboard fa-bounce" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')"></button>
+                                <button class="btn block" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                             </td>
                       
                             <td><a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>

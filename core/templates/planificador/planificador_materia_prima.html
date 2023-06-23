@@ -13,7 +13,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
     <title>SPP - Materia Prima</title>
 </head>
 <body>
@@ -102,7 +101,7 @@
                         <td>{{ materia_prima.longitud }}</td>
                         <td>{{ materia_prima.cantidad }}</td>
                         <td>
-                            <button class="fa-sharp fa-regular fa-clipboard fa-bounce " onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"></button>
+                            <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                             
     
                         <td><a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>

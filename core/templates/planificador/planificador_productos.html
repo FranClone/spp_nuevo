@@ -88,7 +88,7 @@
                             <td>{{ producto.ancho }}</td>
                             <td>{{ producto.largo }}</td>
                             <td>
-                                <button class="fa-sharp fa-regular fa-clipboard fa-bounce" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')"></button>
+                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                             </td>
                             <td><a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                         </tr>
