@@ -421,3 +421,8 @@ def crear_patron_corte(request):
 
  
      
+def eliminar_materia_prima(request,id):
+    materia_prima=MateriaPrima.objects.get(id=id)
+    materia_prima.delete()
+
+    return redirect('plan_materia_prima')
