@@ -3,7 +3,7 @@ from dateutil.relativedelta import relativedelta
 from django.db.models import Q, Max, Sum, F, Count, IntegerField, CharField, Value
 from django.db.models.functions import TruncMonth, ExtractMonth
 from .modelos.cliente import Cliente
-from .modelos.pedido import Pedido
+from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
 from .modelos.empresa import Empresa
 from .modelos.inv_inicial_rollizo import InvInicialRollizo

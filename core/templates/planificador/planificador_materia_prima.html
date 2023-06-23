@@ -17,7 +17,6 @@
 <body>
     
     {% include "partials/header.html" %}    
-
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
         <form id="filter-form" class="filter-form" style="display: none;">
@@ -112,19 +111,19 @@
     </div>
 
     <div class="popup-overlay" id="popupOverlay"></div>
-<div class="popup" id="popup">
-    <h2>Detalles de la Materia Prima</h2>
-    <div class="popup-content">
-        <p><strong>Número de buzón: </strong> <span id="popupNumeroBuzon"></span></p>
-        <p><strong>Tipo de madera: </strong> <span id="popupTipoMadera"></span></p>
-        <p><strong>Clase diamétrica: </strong> <span id="popupClaseDiametrica"></span></p>
-        <p><strong>Longitud: </strong> <span id="popupLongitud"></span></p>
-        <p><strong>Cantidad (m³): </strong><span id="popupCantidad"></span></p>
-        <div style="text-align: center;">
-            <button class="close-button" onclick="closePopup()">Cerrar</button> 
+    <div class="popup" id="popup">
+        <h2>Detalles de la Materia Prima</h2>
+        <div class="popup-content">
+            <p><strong>Número de buzón: </strong> <span id="popupNumeroBuzon"></span></p>
+            <p><strong>Tipo de madera: </strong> <span id="popupTipoMadera"></span></p>
+            <p><strong>Clase diamétrica: </strong> <span id="popupClaseDiametrica"></span></p>
+            <p><strong>Longitud: </strong> <span id="popupLongitud"></span></p>
+            <p><strong>Cantidad (m³): </strong><span id="popupCantidad"></span></p>
+            <div style="text-align: center;">
+                <button class="close-button" onclick="closePopup()">Cerrar</button> 
+            </div>
         </div>
     </div>
-</div>
 
     <script>
         const filterForm = document.getElementById('filter-form');

@@ -6,6 +6,7 @@ from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.patron_corte import PatronCorte
+from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
 from .modelos.productos_terminados import ProductoTerminado
 
@@ -108,3 +109,8 @@ class ProductoTerminadoForm(forms.ModelForm):
     class Meta:
         model = ProductoTerminado
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
+        
+class ActualizarPedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = ['cliente', 'fecha_entrega', 'codigo', 'nombre', 'grosor', 'ancho', 'largo', 'productos_a_producir', 'cantidad']

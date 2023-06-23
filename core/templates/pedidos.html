@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -40,8 +39,30 @@
             </div>
         </form>
     </div>
+    <div class="form-container-materia-prima">
+        <form method="POST" action="{% url 'pedidos' %}">
+            {% csrf_token %}
+                           
+            <label for="id_numero_buzon">N° Buzón</label>
+            {{ form.numero_buzon }}
+                                
+            <label for="id_tipo_madera">Madera</label>
+            {{ form.tipo_madera }}
+                                
+            <label for="id_clase_diametrica">Clase diamétrica</label>
+            {{ form.clase_diametrica }}
+
+            <label for="id_longitud">Longitud [m]</label>
+            {{ form.longitud }}
+                                
+            <label for="id_cantidad">Cantidad [m³]</label>
+            {{ form.cantidad }}
+
+            <button type="submit" name="crear">Crear</button>
+        </form>
+    </div>
     <div class="table-container container">
-        <h1 class="encabezado-pedidos">Tabla de pedidos</h1>
+        <h1 class="encabezado-pedidos">Pedidos</h1>
         <div class="table-responsive">
             <table class="table w-100">
                 <caption></caption>
@@ -55,105 +76,21 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {% for materia_prima in materias_primas %}
                     <tr>
-                        <td>Cliente 1</td>
-                        <td>Producto A</td>
-                        <td>5</td>
-                        <td>2023-06-30</td>
+                        <td>{{ materia_prima.numero_buzon }}</td>
+                        <td>{{ materia_prima.tipo_madera }}</td>
+                        <td>{{ materia_prima.clase_diametrica }}</td>
+                        <td>{{ materia_prima.longitud }}</td>
+                        <td>{{ materia_prima.cantidad }}</td>
                         <td>
-                            <button class="popup-button" onclick="openPopup('1', 'Bodega A', 'Empresa X', 'Descripción de la bodega A')">Mostrar detalles</button>
+                            <button class="details-button popup-button" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')">Mostrar detalles</button>
                         </td>
+    
+                        <td><a href="eliminarmateria/{{materia_prima.id}}" class="btn btn-block">Eliminar</a></td>
+                   
                     </tr>
-                    <tr>
-                        <td>Cliente 2</td>
-                        <td>Producto B</td>
-                        <td>10</td>
-                        <td>2023-07-05</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('2', 'Bodega B', 'Empresa Y', 'Descripción de la bodega B')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 3</td>
-                        <td>Producto C</td>
-                        <td>8</td>
-                        <td>2023-07-10</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('3', 'Bodega C', 'Empresa Z', 'Descripción de la bodega C')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 4</td>
-                        <td>Producto D</td>
-                        <td>15</td>
-                        <td>2023-07-15</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('4', 'Bodega D', 'Empresa W', 'Descripción de la bodega D')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 5</td>
-                        <td>Producto E</td>
-                        <td>3</td>
-                        <td>2023-07-20</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('5', 'Bodega E', 'Empresa V', 'Descripción de la bodega E')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 6</td>
-                        <td>Producto F</td>
-                        <td>7</td>
-                        <td>2023-07-25</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('6', 'Bodega F', 'Empresa U', 'Descripción de la bodega F')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 7</td>
-                        <td>Producto G</td>
-                        <td>12</td>
-                        <td>2023-07-30</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('7', 'Bodega G', 'Empresa T', 'Descripción de la bodega G')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 8</td>
-                        <td>Producto H</td>
-                        <td>9</td>
-                        <td>2023-08-05</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('8', 'Bodega H', 'Empresa S', 'Descripción de la bodega H')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 9</td>
-                        <td>Producto I</td>
-                        <td>6</td>
-                        <td>2023-08-10</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('9', 'Bodega I', 'Empresa R', 'Descripción de la bodega I')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 10</td>
-                        <td>Producto J</td>
-                        <td>4</td>
-                        <td>2023-08-15</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('10', 'Bodega J', 'Empresa Q', 'Descripción de la bodega J')">Mostrar detalles</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Cliente 11</td>
-                        <td>Producto k</td>
-                        <td>4</td>
-                        <td>2023-08-15</td>
-                        <td>
-                            <button class="popup-button" onclick="openPopup('10', 'Bodega J', 'Empresa Q', 'Descripción de la bodega J')">Mostrar detalles</button>
-                        </td>
-                    </tr>
+                    {% endfor %}
                 </tbody>
             </table>
         </div>
@@ -179,31 +116,31 @@
 
     <script>
         $(document).ready(function() {
-    const filterForm = document.querySelector('.filter-form');
-    const filterNombreInput = document.querySelector('input[name="filter-nombre"]');
-    const clearFilterButton = document.querySelector('.clear-filter-button');
+            const filterForm = document.querySelector('.filter-form');
+            const filterNombreInput = document.querySelector('input[name="filter-nombre"]');
+            const clearFilterButton = document.querySelector('.clear-filter-button');
 
-    let dataTable = $('.table').DataTable();
+            let dataTable = $('.table').DataTable();
 
-    filterForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        applyFilters();
-    });
+            filterForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                applyFilters();
+            });
 
-    clearFilterButton.addEventListener('click', function() {
-        filterNombreInput.value = '';
-        applyFilters();
-    });
+            clearFilterButton.addEventListener('click', function() {
+                filterNombreInput.value = '';
+                applyFilters();
+            });
 
-    function applyFilters() {
-        const nombreFilter = filterNombreInput.value.toLowerCase();
-        dataTable.column(0).search(nombreFilter, true, false).draw();
-    }
-});
+            function applyFilters() {
+                const nombreFilter = filterNombreInput.value.toLowerCase();
+                dataTable.column(0).search(nombreFilter, true, false).draw();
+            }
+        });
 
-    </script>
-    
-    {% include "partials/footer.html" %}
+        </script>
+        
+        {% include "partials/footer.html" %}
 </body>
 
 </html>
