@@ -6,7 +6,7 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
+from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
 from .views import crear_producto, materia_prima, crear_patron_corte
 
