@@ -3289,9 +3289,9 @@ var jsc = {
 };
 
 
-//================================
+
 // Public properties and methods
-//================================
+
 
 //
 // These will be publicly available via jscolor.<name> and JSColor.<name>
