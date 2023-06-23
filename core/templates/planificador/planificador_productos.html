@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
-    <script src="{% static 'js/filtro-productos.js' %}"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <title>SPP - Productos</title>
     
@@ -90,8 +90,8 @@
                         </tr>
                     {% empty %}
                     </tr>
-                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
-                        <tr>
+                        <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <tr>
                     {% endfor %}
                 </tbody>
             </table>

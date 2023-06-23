@@ -7,8 +7,9 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
-from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
-from .views import productos_view, materia_prima
+from .views import ProductosTerminados, Dashboard 
+from .views import crear_producto, materia_prima, crear_patron_corte,eliminar_materia_prima
+
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -28,7 +29,7 @@ urlpatterns = [
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
-    path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
+    path('planificador_patrones_corte/', crear_patron_corte, name = "plan_patrones_corte"),
     path('planificador_productos/', crear_producto, name = "plan_productos"),
     path('eliminarmateria/<int:id>', eliminar_materia_prima,name='eliminarmateria' ),
     # url para desplegar el bar chart vertical

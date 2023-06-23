@@ -14,7 +14,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm, CrearPatronCorteForm
+from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedido import Pedido
 from .modelos.empresa import Empresa
@@ -394,6 +395,28 @@ def crear_producto(request):
         'productos': productos
     }
     return render(request, 'planificador/planificador_productos.html', context)
+
+def crear_patron_corte(request):
+    patrones_corte = PatronCorte.objects.all()
+    form = CrearPatronCorteForm()
+
+    if request.method == 'POST':
+        if 'editar' in request.POST:
+            pass
+        elif 'eliminar' in request.POST:
+            pass
+        elif 'crear' in request.POST:
+            form = CrearPatronCorteForm(request.POST)
+            if form.is_valid():
+                nuevo_patron_corte = form.save()
+                return redirect('plan_patrones_corte')
+    
+    context = {
+        'form': form,
+        'patrones_corte': patrones_corte
+    }
+    return render(request, 'planificador/planificador_patrones_corte.html', context)
+
 
 
  

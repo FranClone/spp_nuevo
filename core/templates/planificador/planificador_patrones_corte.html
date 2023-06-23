@@ -9,8 +9,13 @@
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+<<<<<<< HEAD
+    <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
+    <title>SPP - Patrones de Corte</title>
+=======
     <title>SPP - Patrones de corte</title>
 
+>>>>>>> 0aca28392d39739c2abad73ac35d2de6c185f736
 
 </head>
 <body>
@@ -51,6 +56,14 @@
             </div>
         </form>
     </div>
+
+    <div class="form-container-patron-corte">
+        <form method="post" action="{% url 'plan_patrones_corte' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear">Crear</button>
+        </form>
+    </div>
     <div class="table-container">
         <div class="table-responsive">
             <table id="patrones-table" class="table w-100">
@@ -65,134 +78,27 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td>corte1</td>
-                        <td>producto1</td>
-                        <td>1</td>
-                        <td><button class="details-button">Mostrar detalles</button></td>
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td>corte12</td>
-                        <td>producto2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td>corte3</td>
-                        <td>producto3</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>04</td>
-                        <td>corte4</td>
-                        <td>producto4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>05</td>
-                        <td>corte5</td>
-                        <td>producto5</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>06</td>
-                        <td>corte6</td>
-                        <td>producto6</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>07</td>
-                        <td>corte7</td>
-                        <td>producto7</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>08</td>
-                        <td>corte8</td>
-                        <td>producto8</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>09</td>
-                        <td>corte9</td>
-                        <td>producto9</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>corte10</td>
-                        <td>producto10</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>corte11</td>
-                        <td>producto11</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>corte12</td>
-                        <td>producto12</td>
-                        <td>3</td>
-                    </tr><tr>
-                        <td>13</td>
-                        <td>corte13</td>
-                        <td>producto13</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>corte14</td>
-                        <td>producto14</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td>corte15</td>
-                        <td>producto15</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>16</td>
-                        <td>corte16</td>
-                        <td>producto16</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>17</td>
-                        <td>corte17</td>
-                        <td>producto17</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>corte18</td>
-                        <td>producto18</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>19</td>
-                        <td>corte19</td>
-                        <td>producto19</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>20</td>
-                        <td>corte20</td>
-                        <td>producto20</td>
-                        <td>3</td>
-                    </tr>
-                   
+                    {% for patron in patrones_corte %}
+                        <tr>
+                            <td>{{ patron.codigo_patron }}</td>
+                            <td>{{ patron.nombre_patron }}</td>
+                            <td>{{ patron.producto_asociado }}</td>
+                            <td>{{ patron.clase_diametrica_rollizo }}</td>
+                            <td>
+                                <button class="product-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">Mostrar detalles</button>
+                            </td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
     </div>
-
-    <div class="popup-overlay" id="popupOverlay"></div>
+<!--<div class="popup-overlay" id="popupOverlay"></div>
     <div id="popup" class="popup">
         <div class="popup-content">
             <h2>Detalles del patrón</h2>
@@ -211,78 +117,8 @@
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
-        </div>
+        </div>-->
+    
     </div>
-
-    <script>
-        $(document).ready(function() {
-            $(".filter-button").click(function() {
-                $(".filter-form-fields").toggle();
-                $(".filter-button").toggleClass("show-filter");
-            });
-            
-            $("#advanced-search").change(function() {
-                if ($(this).is(":checked")) {
-                    $("#advanced-search-options").show();
-                } else {
-                    $("#advanced-search-options").hide();
-                }
-            });
-            
-            $(".filter-form").submit(function(e) {
-                e.preventDefault();
-                applyFilter();
-            });
-            
-            $(".clear-filter-button").click(function() {
-                $(".filter-form")[0].reset();
-                applyFilter();
-            });
-            $(".details-button").click(function() {
-                $("#popup").show();
-                $("#popupOverlay").show();
-            });
-            
-            $(".close-button").click(function() {
-                $("#popup").hide();
-                $("#popupOverlay").hide();
-            });
-            
-            function applyFilter() {
-                var filterCodigo = $(".filter-input[name='filter-codigo']").val().toLowerCase();
-                var filterNombre = $(".filter-input[name='filter-nombre']").val().toLowerCase();
-                var filterProducto = $(".filter-input[name='filter-producto']").val().toLowerCase();
-                var filterClase = $(".filter-select[name='filter-clase']").val().toLowerCase();
-                
-                $("#patrones-table tbody tr").hide().each(function() {
-                    var rowDataCodigo = $(this).find("td:nth-child(1)").text().toLowerCase();
-                    var rowDataNombre = $(this).find("td:nth-child(2)").text().toLowerCase();
-                    var rowDataProducto = $(this).find("td:nth-child(3)").text().toLowerCase();
-                    var rowDataClase = $(this).find("td:nth-child(4)").text().toLowerCase();
-                    
-                    var matchesCodigo = filterCodigo === '' || rowDataCodigo === filterCodigo;
-                    var matchesNombre = filterNombre === '' || rowDataNombre.includes(filterNombre);
-                    var matchesProducto = filterProducto === '' || rowDataProducto.includes(filterProducto);
-                    var matchesClase = filterClase === '' || rowDataClase === filterClase;
-                    
-                    if (matchesCodigo && matchesNombre && matchesProducto && matchesClase) {
-                        $(this).show();
-                    }
-                });
-                
-                if ($("#patrones-table tbody tr:visible").length === 0) {
-                    $(".no-data-message").show();
-                } else {
-                    $(".no-data-message").hide();
-                }
-            }
-
-            // Configuración de DataTables
-            $("#patrones-table").DataTable({
-                
-
-            });
-        });
-    </script>
 </body>
 </html>
