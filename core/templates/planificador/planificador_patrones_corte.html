@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <title>SPP - Patrones de Corte</title>
-
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -93,27 +93,26 @@
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
     </div>
-<!--<div class="popup-overlay" id="popupOverlay"></div>
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <h2>Detalles del patrón</h2>
-            <div class="popup-item">
-                <strong>Código del patrón:</strong> <span >01</span>
+    <div class="popup-overlay" id="popupOverlay"></div>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2>Detalles del patrón</h2>
+                <div class="popup-item">
+                    <strong>Código del patrón:</strong> <span >01</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Nombre del patrón:</strong> <span >corte1</span>
+                </div>
+                <div class="popup-item">
+                    <strong>producto asociado:</strong> <span>producto1</span>
+                </div>
+                <div class="popup-item">
+                    <strong>clase diametrica:</strong> <span>1</span>
+                </div>
             </div>
-            <div class="popup-item">
-                <strong>Nombre del patrón:</strong> <span >corte1</span>
-            </div>
-            <div class="popup-item">
-                <strong>producto asociado:</strong> <span>producto1</span>
-            </div>
-            <div class="popup-item">
-                <strong>clase diametrica:</strong> <span>1</span>
-            </div>
+            <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
-        <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
-        </div>-->
-    
     </div>
 </body>
 </html>
