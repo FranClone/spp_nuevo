@@ -6,20 +6,27 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
+<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
+=======
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+>>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
-    <script src="{% static 'js/filtro-productos.js' %}"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <title>SPP - Productos</title>
+<<<<<<< HEAD
   
+=======
+>>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
     
 </head>
 <body>
     {% include "partials/header.html" %}
     
     <div class="show-filter">
-        <button class="filter-button">Filtrar</button>
+        <button class="filter-button" >Filtrar</button>
         <form class="filter-form">
             <div class="filters-container">
                 <label for="filter-by">Filtrar por:</label>
@@ -48,38 +55,21 @@
                     <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
                     <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
                     <br>
+                    
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
                 <button type="button" class="clear-filter-button">Cancelar</button>
             </div>
         </form>
     </div>
-    <!-- 
+    
     <div class="form-container-productos">
-        <form method="POST" action="{% url 'plan_productos' %}">
+        <form method="post" action="{% url 'plan_productos' %}">
             {% csrf_token %}
-                            
-            <label for="id_codigo">Código</label>
-            {{ form.codigo }}
-                                    
-            <label for="id_nombre">Nombre</label>
-            {{ form.nombre }}
-                                    
-            <label for="id_grosor">Grosor</label>
-            {{ form.grosor }}
-
-            <label for="id_ancho">Ancho</label>
-            {{ form.ancho }}
-                                    
-            <label for="id_largo">Largo</label>
-            {{ form.largo }}
-
+            {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
         </form>
     </div>
-        -->
-
-        
     <div class="table-container">
         <div class="table-responsive">
             <h1 class="encabezado-pedidos">Productos</h1>
@@ -93,6 +83,7 @@
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -106,11 +97,12 @@
                             <td>
                                 <button class="product-button" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')">Mostrar detalles</button>
                             </td>
+                            <td><a href="eliminarproducto/{{producto.id}}" class="btn btn-block">Eliminar</a></td>
                         </tr>
                     {% empty %}
                     </tr>
-                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
-                        <tr>
+                        <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <tr>
                     {% endfor %}
                 </tbody>
             </table>
@@ -138,27 +130,6 @@
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
-    <script>
-    function openPopup(codigo, nombre, grosor, ancho, largo) {
-            document.getElementById('popupCodigo').innerText = codigo;
-            document.getElementById('popupNombre').innerText = nombre;
-            document.getElementById('popupGrosor').innerText = grosor;
-            document.getElementById('popupAncho').innerText = ancho;
-            document.getElementById('popupLargo').innerText = largo;
-            document.getElementById('popupOverlay').style.display = 'block';
-            document.getElementById('popup').style.display = 'block';
-        }
-
-        function closePopup() {
-            document.getElementById('popupOverlay').style.display = 'none';
-            document.getElementById('popup').style.display = 'none';
-        }
-        $(document).ready(function() {
-            $('.table').DataTable();
-        });
-
-        
-    </script>
     
 </body>
 </html>

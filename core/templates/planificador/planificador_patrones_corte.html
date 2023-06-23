@@ -6,64 +6,61 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-patrones-corte.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
-    
-    <title>SPP - Patrones de corte</title>
-    
-
+    <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <title>SPP - Patrones de Corte</title>
 </head>
 <body>
     {% include "partials/header.html" %}
-   
     
-
-    <div class="table-container">
-        <div class="filter-section" style="display:flex">
-            <form class="filter-form show-filter" style="width:30%">
-                <br/>
-                <button type="button" class="filter-button">Mostrar filtro</button>
-                <br/>
-                <div class="filter-form-fields">
-                    <br/>
-                    <div class="filter-field">
-                        <label for="filter-codigo">Código del patrón:</label>
-                        <br/>
-                        <input type="text" name="filter-codigo" class="filter-input" placeholder="Ingrese el código">
-                        
-                    </div>
-                    <br/>
-                    <label for="advanced-search">Búsqueda avanzada:</label>
-                    <input type="checkbox" id="advanced-search" name="advanced-search"><br/>
-                    <div id="advanced-search-options" style="display: none;">
-                        <br/>
-                        <div class="filter-field">
-                            <label for="filter-nombre">Nombre del patrón:</label>
-                            <input type="text" name="filter-nombre" class="filter-input" placeholder="Ingrese el nombre">
-                        </div>
-                        <div class="filter-field">
-                            <label for="filter-producto">Producto asociado:</label>
-                            <input type="text" name="filter-producto" class="filter-input" placeholder="Ingrese el producto">
-                        </div>
-                        <div class="filter-field">
-                            <label for="filter-clase">Clase diamétrica rollizo:</label>
-                            <br/>
-                            <select name="filter-clase" class="filter-select">
-                                <option value="">Todas</option>
-                                <option value="1">Clase 1</option>
-                                <option value="2">Clase 2</option>
-                                <option value="3">Clase 3</option>
-                                <option value="4">Clase 4</option>
-                            </select>
-                        </div>
-                    </div>
-                    <br/>
-                    <button type="submit" class="filter-button">Buscar</button>
-                    <button type="button" class="clear-filter-button">Cancelar</button>
+    <div class="filter-section">
+        <form class="filter-form show-filter">
+            <button type="button" class="filter-button">Mostrar filtro</button>
+            <div class="filter-form-fields">
+                <div class="filter-field">
+                    <label for="filter-codigo">Código del patrón:</label>
+                    <input type="text" name="filter-codigo" class="filter-input" placeholder="Ingrese el código">
                 </div>
-            </form>
-            <div class="table-responsive" style="width:70%">
+                <label for="advanced-search">Búsqueda avanzada:</label>
+                <input type="checkbox" id="advanced-search" name="advanced-search">
+                <div id="advanced-search-options" style="display: none;">
+                    <div class="filter-field">
+                        <label for="filter-nombre">Nombre del patrón:</label>
+                        <input type="text" name="filter-nombre" class="filter-input" placeholder="Ingrese el nombre">
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-producto">Producto asociado:</label>
+                        <input type="text" name="filter-producto" class="filter-input" placeholder="Ingrese el producto">
+                    </div>
+                    <div class="filter-field">
+                        <label for="filter-clase">Clase diamétrica rollizo:</label>
+                        <select name="filter-clase" class="filter-select">
+                            <option value="">Todas</option>
+                            <option value="1">Clase 1</option>
+                            <option value="2">Clase 2</option>
+                            <option value="3">Clase 3</option>
+                            <option value="4">Clase 4</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="filter-button">Buscar</button>
+                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+
+    <div class="form-container-patron-corte">
+        <form method="post" action="{% url 'plan_patrones_corte' %}">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear">Crear</button>
+        </form>
+    </div>
+    <div class="table-container">
+        <div class="table-responsive">
             <table id="patrones-table" class="table w-100">
                 
                 <h1 class="encabezado-pedidos">Patrones de corte</h1>
@@ -74,164 +71,54 @@
                         <th>Nombre del patrón</th>
                         <th>Producto asociado</th>
                         <th>Clase diamétrica rollizo</th>
-                        {% comment %} <th>Mostrar detalles</th> {% endcomment %}
+                        <th>Mostrar detalles</th>
+                        <th>Eliminar</th> 
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>01</td>
-                        <td>corte1</td>
-                        <td>producto1</td>
-                        <td>1</td>
-                        {% comment %} <td><button class="details-button">Mostrar detalles</button></td> {% endcomment %}
-                    </tr>
-                    <tr>
-                        <td>02</td>
-                        <td>corte12</td>
-                        <td>producto2</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>03</td>
-                        <td>corte3</td>
-                        <td>producto3</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>04</td>
-                        <td>corte4</td>
-                        <td>producto4</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>05</td>
-                        <td>corte5</td>
-                        <td>producto5</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>06</td>
-                        <td>corte6</td>
-                        <td>producto6</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>07</td>
-                        <td>corte7</td>
-                        <td>producto7</td>
-                        <td>2</td>
-                    </tr>
-                    {% comment %} <tr>
-                        <td>08</td>
-                        <td>corte8</td>
-                        <td>producto8</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>09</td>
-                        <td>corte9</td>
-                        <td>producto9</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>10</td>
-                        <td>corte10</td>
-                        <td>producto10</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>11</td>
-                        <td>corte11</td>
-                        <td>producto11</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>12</td>
-                        <td>corte12</td>
-                        <td>producto12</td>
-                        <td>3</td>
-                    </tr><tr>
-                        <td>13</td>
-                        <td>corte13</td>
-                        <td>producto13</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>14</td>
-                        <td>corte14</td>
-                        <td>producto14</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>15</td>
-                        <td>corte15</td>
-                        <td>producto15</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>16</td>
-                        <td>corte16</td>
-                        <td>producto16</td>
-                        <td>3</td>
-                    </tr>
-                    <tr>
-                        <td>17</td>
-                        <td>corte17</td>
-                        <td>producto17</td>
-                        <td>4</td>
-                    </tr>
-                    <tr>
-                        <td>18</td>
-                        <td>corte18</td>
-                        <td>producto18</td>
-                        <td>1</td>
-                    </tr>
-                    <tr>
-                        <td>19</td>
-                        <td>corte19</td>
-                        <td>producto19</td>
-                        <td>2</td>
-                    </tr>
-                    <tr>
-                        <td>20</td>
-                        <td>corte20</td>
-                        <td>producto20</td>
-                        <td>3</td>
-                    </tr> {% endcomment %}
-                   
+                    {% for patron in patrones_corte %}
+                        <tr>
+                            <td>{{ patron.codigo_patron }}</td>
+                            <td>{{ patron.nombre_patron }}</td>
+                            <td>{{ patron.producto_asociado }}</td>
+                            <td>{{ patron.clase_diametrica_rollizo }}</td>
+                            <td>
+                                <button class="product-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">Mostrar detalles</button>
+                            </td>
+                      
+                            <td><a href="eliminarpatron/{{patron.id}}" class="btn btn-block">Eliminar</a></td>
+                        </tr>
+                    {% empty %}
+                        <tr>
+                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                        </tr>
+                    {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
         
     </div>
-
     <div class="popup-overlay" id="popupOverlay"></div>
-    <div id="popup" class="popup">
-        <div class="popup-content">
-            <h2>Detalles del patrón</h2>
-            <div class="popup-item">
-                <strong>Código del patrón:</strong> <span >01</span>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <h2>Detalles del patrón</h2>
+                <div class="popup-item">
+                    <strong>Código del patrón:</strong> <span >01</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Nombre del patrón:</strong> <span >corte1</span>
+                </div>
+                <div class="popup-item">
+                    <strong>producto asociado:</strong> <span>producto1</span>
+                </div>
+                <div class="popup-item">
+                    <strong>clase diametrica:</strong> <span>1</span>
+                </div>
             </div>
-            <div class="popup-item">
-                <strong>Nombre del patrón:</strong> <span >corte1</span>
-            </div>
-            <div class="popup-item">
-                <strong>producto asociado:</strong> <span>producto1</span>
-            </div>
-            <div class="popup-item">
-                <strong>clase diametrica:</strong> <span>1</span>
-            </div>
+            <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
-        <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
-        </div>
     </div>
-    
-    <script src="{% static 'js/filtro-patrones_corte.js'%}"></script> 
-    <script src="{% static 'js/popup.js'%}"></script>
-
-    
-    {% include "partials/footer.html" %}
 </body>
 </html>

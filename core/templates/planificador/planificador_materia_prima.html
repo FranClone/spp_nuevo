@@ -6,14 +6,21 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-materia-prima.css' %}">
+<<<<<<< HEAD
     <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
+=======
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+>>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Materia Prima</title>
+<<<<<<< HEAD
     
+=======
+>>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
 </head>
 <body>
     
@@ -88,7 +95,7 @@
                         <th>Longitud</th>
                         <th>Cantidad (m³)</th>
                         <th>Mostrar detalle</th> 
-                        <th>Editar</th> 
+                        <th>Eliminar</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -102,10 +109,9 @@
                         <td>
                             <button class="details-button popup-button" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')">Mostrar detalles</button>
                         </td>
-                        <td>
-                            <button type="button" class="editar-button">Editar</button>
-                            <button type="button" class="eliminar-button">Eliminar</button>
-                        </td>
+    
+                        <td><a href="eliminarmateria/{{materia_prima.id}}" class="btn btn-block">Eliminar</a></td>
+                   
                     </tr>
                     {% endfor %}
                 </tbody>

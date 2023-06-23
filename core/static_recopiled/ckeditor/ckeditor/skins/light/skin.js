@@ -5,7 +5,7 @@
 
 /*
  skin.js
- =========
+
 
  In this file we interact with the CKEditor JavaScript API to register the skin
  and enable additional skin related features.

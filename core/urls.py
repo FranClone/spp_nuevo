@@ -6,10 +6,10 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home, Inventario_pdto, Inventario_roll, Inventario_roll_nc, Lista_pedidos, Login, Logout, Mantenedor, Pedido, Register, DownloadExcel
-from .views import ProductosTerminados, Plan_Patrones_Corte, Dashboard 
-from .views import get_empresas, get_data
-from .views import productos_view, materia_prima
+from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
+from .views import ProductosTerminados, Dashboard 
+from .views import crear_producto, materia_prima, crear_patron_corte,eliminar_materia_prima
+from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
@@ -17,24 +17,25 @@ urlpatterns = [
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
     path('home/', Home.as_view(), name = "home"),
-    path('get_empresas/', get_empresas, name="get_empresas"),
     path('', Login.as_view(), name = "login"),
-    path('inventario_producto/', Inventario_pdto.as_view(), name = "inventario_producto"),
-    path('inventario_rollizo/', Inventario_roll.as_view(), name = "inventario_rollizo"),
-    path('inventario_rollizo_nc/', Inventario_roll_nc.as_view(), name = "inventario_rollizo_nc"),
+    path('pedidos/', Pedidos.as_view(), name = "pedidos"),
     path('lista_pedidos/', Lista_pedidos.as_view(), name = "lista_pedidos"),
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
-    path('pedido/', Pedido.as_view(), name = "pedido"),
+    path('pedido/', Pedidos.as_view(), name = "pedido"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
-    path('planificador_patrones_corte/', Plan_Patrones_Corte.as_view(), name = "plan_patrones_corte"),
-    path('planificador_productos/', productos_view, name = "plan_productos"),
+    path('planificador_patrones_corte/', crear_patron_corte, name = "plan_patrones_corte"),
+    path('planificador_productos/', crear_producto, name = "plan_productos"),
+    path('plan_materia_prima/eliminarmateria/<int:id>', eliminar_materia_prima,name='eliminar_materia' ),
+    path('planificador_patrones_corte/eliminarpatron/<int:id>', eliminar_patron,name='eliminar_patron' ),
+    path('planificador_productos/eliminarproducto/<int:id>', eliminar_producto,name='eliminar_producto' ),
+    path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     # url para desplegar el bar chart vertical
-    path('get-data/', get_data, name='get-data'),
+
     path('dashboard/', Dashboard.as_view(), name = "dashboard")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

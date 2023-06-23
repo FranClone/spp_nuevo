@@ -14,7 +14,8 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm, CrearPatronCorteForm
+from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedido import Pedido
 from .modelos.empresa import Empresa
@@ -33,40 +34,6 @@ try:
 
 except Exception as ex:
     print(ex)
-
-def superuser_required(view_func):
-    """Restrict a view to superusers only"""
-    decorated_view_func = user_passes_test(lambda u: u.is_superuser)(view_func)
-    return decorated_view_func
-
-def staff_required(view_func):
-    """Restrict a view to staff members only"""
-    decorated_view_func = user_passes_test(lambda u: u.is_staff)(view_func)
-    return decorated_view_func
-
-def aserradero_required(function=None):
-    """
-    Decorador que verifica si el usuario es del aserradero o es superusuario.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists()),
-        login_url='/login/'
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
-
-def cliente_required(function=None):
-    """
-    Decorador que verifica si el usuario es del aserradero, el cliente o es superusuario.
-    """
-    actual_decorator = user_passes_test(
-        lambda u: u.is_active and (u.groups.filter(name='aserradero').exists() or u.groups.filter(name='cliente').exists()),
-        login_url='/login/'
-    )
-    if function:
-        return actual_decorator(function)
-    return actual_decorator
 
 #Hay 2 tipos de vistas, clases y funciones esta es de clases
 class Administracion(View):
@@ -122,35 +89,14 @@ def get_empresas(request):
 
 class Home(View): 
     """Esta clase define la vista Home"""
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         #cálculo progress
         producto_terminado = 1000
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
-        rut_empresa = request.user.empresa.rut_empresa
-        #obtenemos datos
-        pedidos = sel_pedido_empresa(rut_empresa)
-        #datos para guardarlos en un diccionarios
-        # Convertir los objetos de pedido a un diccionario
-        pedidos_list = []
-        for pedido in pedidos:
-            pedido_dict = {}
-            for key, value in pedido.items():
-                if isinstance(value, (datetime.date, datetime.datetime)):
-                    pedido_dict[key] = value.isoformat()
-                else:
-                    pedido_dict[key] = value
-            pedidos_list.append(pedido_dict)
-        pedidos_json = json.dumps(pedidos_list)
-        productos = sel_pedido_productos_empresa(rut_empresa)
-        productos_dict = [pedido for pedido in productos]
-        # Convertir el diccionario a formato JSON
-        productos_json = json.dumps(productos_dict)
         
-        return render(request, 'home.html', {'progress': progress, 'pedidos': pedidos_json, 'productos': productos_json})
+        return render(request, 'home.html')
     
-    @method_decorator(login_required) 
     def post(self, request, *args, **kwargs):
         #Carga Archivo
         try:
@@ -221,14 +167,11 @@ class Inventario_roll(View):
         noclas = sel_rollizo_empresa(rut_empresa)
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
-class Inventario_roll_nc(View):
-    """Esta clase define la vista de Inventario"""
+class Pedidos(View):
+
     def get(self, request, *args, **kwargs):
-        context={
 
-        }
-
-        return render(request, 'inventario_rollizo_nc.html', context) 
+        return render(request, 'pedidos.html') 
 
 class Lista_pedidos(View): 
     """Esta clase define la vista de Lista de Pedidos"""
@@ -355,13 +298,11 @@ class Register(View):
         return render(request, 'register.html', {'form': form})
 
 class ProductosTerminados(View):
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         productos_terminados = ProductoTerminado.objects.all()
         form = ProductoTerminadoForm()
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
-
-    @method_decorator(login_required)
+    
     def post(self, request, *args, **kwargs):
         form = ProductoTerminadoForm(request.POST)
         if form.is_valid():
@@ -372,54 +313,15 @@ class ProductosTerminados(View):
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
 class Plan_Patrones_Corte(View):
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_linea_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_patrones_corte.html', {'rows':rows})
+        return render(request, 'planificador/planificador_patrones_corte.html')
 
 class Plan_Productos(View):
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_producto_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_productos.html', {'rows':rows})
-
-class Plan_Rollizo(View):
-    @method_decorator(login_required) 
-    def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        rows = sel_rollizo_clasificado_empresa(rut_empresa)
-        return render(request, 'planificador/planificador_rollizo.html', {'rows':rows})
-
-def get_data(request):
-    """Esta función asigna los valores a cada barra del bar chart"""
-    P1 = 100
-    P2 = 77
-    P3 = 89
-    P4 = 87
-    P5 = 100
-    data = {
-        'labels': ['P1', 'P2', 'P3', 'P4', 'P5'],
-        'datasets': [
-            {
-                'backgroundColor': 'rgba(255, 99, 132, 0.2)',
-                'borderColor': 'rgba(255, 99, 132, 1)',
-                'borderWidth': 1,
-                'data': [P1, P2, P3, P4, P5]
-            }
-        ]
-    }
-    return JsonResponse(data)
-
-def my_view(request):
-    # crea una variable de progreso y la envía a 'home.html'
-    progress = 0
-    return render(request, 'home.html', {'progress': progress})
+        return render(request, 'planificador/planificador_productos.html')
 
 class Dashboard(View): 
     """Esta clase define la vista Dashboard"""
-    @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
         rut_empresa = request.user.empresa.rut_empresa
         clientes = sel_cliente_admin(rut_empresa)
@@ -469,6 +371,7 @@ def materia_prima(request):
 
 def crear_producto(request):
     productos = Producto.objects.all()
+    form = CrearProductoForm()
 
     if request.method == 'POST':
         if 'editar' in request.POST:
@@ -478,16 +381,62 @@ def crear_producto(request):
         elif 'crear' in request.POST:
             form = CrearProductoForm(request.POST)
             if form.is_valid():
-                form.save()
+                print("Formulario válido")  # Mensaje de depuración
+                nuevo_producto = form.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_producto.id)  # Mensaje de depuración
                 return redirect('plan_productos')
-
-    else:
-        form = CrearProductoForm()
+            else:
+                print("Formulario inválido")  # Mensaje de depuración
+        else:
+            print("Acción no reconocida")  # Mensaje de depuración
 
     context = {
         'form': form,
         'productos': productos
     }
     return render(request, 'planificador/planificador_productos.html', context)
- 
-     
+
+def crear_patron_corte(request):
+    patrones_corte = PatronCorte.objects.all()
+    form = CrearPatronCorteForm()
+
+    if request.method == 'POST':
+        if 'editar' in request.POST:
+            pass
+        elif 'eliminar' in request.POST:
+            pass
+        elif 'crear' in request.POST:
+            form = CrearPatronCorteForm(request.POST)
+            if form.is_valid():
+                nuevo_patron_corte = form.save()
+                return redirect('plan_patrones_corte')
+    
+    context = {
+        'form': form,
+        'patrones_corte': patrones_corte
+    }
+    return render(request, 'planificador/planificador_patrones_corte.html', context)
+
+def eliminar_materia_prima(request,id):
+    materia_prima=MateriaPrima.objects.get(id=id)
+    materia_prima.delete()
+
+    return redirect('plan_materia_prima')
+
+def eliminar_patron(request,id):
+    patron=PatronCorte.objects.get(id=id)
+    patron.delete()
+
+    return redirect('plan_patrones_corte')
+
+def eliminar_producto(request,id):
+    producto=Producto.objects.get(id=id)
+    producto.delete()
+
+    return redirect('plan_productos')
+
+def eliminar_producto_terminado(request,id):
+    producto_terminado=ProductoTerminado.objects.get(id=id)
+    producto_terminado.delete()
+
+    return redirect('plan_productos_terminados')
