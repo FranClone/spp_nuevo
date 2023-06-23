@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
-from .views import producto, materia_prima, patron_corte, eliminar_materia_prima
+from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado
 
 urlpatterns = [
@@ -23,7 +23,7 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
-    path('pedidos/', Pedidos.as_view(), name = "pedidos"),
+    path('pedidos/', pedidos, name = "pedidos"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),

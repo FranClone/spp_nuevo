@@ -1,7 +1,5 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth.models import User, Group
-from django.db import IntegrityError
 from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
@@ -113,4 +111,4 @@ class ProductoTerminadoForm(forms.ModelForm):
 class ActualizarPedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['cliente', 'fecha_entrega', 'codigo', 'nombre', 'grosor', 'ancho', 'largo', 'productos_a_producir', 'cantidad']
+        fields = ['cliente', 'fecha_entrega', 'codigo', 'nombre', 'grosor', 'ancho', 'largo', 'productos_a_producir', 'cantidad', 'numero_pedido', 'estado_pedido', 'prioridad', 'destino_pedido']

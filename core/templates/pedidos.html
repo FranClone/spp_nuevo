@@ -6,7 +6,7 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-patrones-corte.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-pedidos.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
     <script src="{% static 'js/vista-pedidos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
@@ -39,23 +39,35 @@
             </div>
         </form>
     </div>
-    <div class="form-container-materia-prima">
+    <div class="form-container-pedido">
         <form method="POST" action="{% url 'pedidos' %}">
             {% csrf_token %}
-                           
-            <label for="id_numero_buzon">N° Buzón</label>
-            {{ form.numero_buzon }}
+                    
+            <label for="id_cliente">Cliente</label>
+            {{ form.cliente }}
                                 
-            <label for="id_tipo_madera">Madera</label>
-            {{ form.tipo_madera }}
-                                
-            <label for="id_clase_diametrica">Clase diamétrica</label>
-            {{ form.clase_diametrica }}
-
-            <label for="id_longitud">Longitud [m]</label>
-            {{ form.longitud }}
-                                
-            <label for="id_cantidad">Cantidad [m³]</label>
+            <label for="id_fecha_entrega">Fecha de entrega</label>
+            {{ form.fecha_entrega }}
+                        
+            <label for="id_codigo">Código</label>
+            {{ form.codigo }}
+                        
+            <label for="id_nombre">Nombre</label>
+            {{ form.nombre }}
+                        
+            <label for="id_grosor">Grosor</label>
+            {{ form.grosor }}
+                        
+            <label for="id_ancho">Ancho</label>
+            {{ form.ancho }}
+                        
+            <label for="id_largo">Largo</label>
+            {{ form.largo }}
+                        
+            <label for="id_productos_a_producir">Productos a producir</label>
+            {{ form.productos_a_producir }}
+                        
+            <label for="id_cantidad">Cantidad</label>
             {{ form.cantidad }}
 
             <button type="submit" name="crear">Crear</button>
@@ -69,26 +81,18 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Cliente</th>
-                        <th>Producto solicitado</th>
-                        <th>Cantidad solicitada</th>
                         <th>Fecha de entrega</th>
-                        <th>Mostrar detalles</th>
+                        <th>Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for materia_prima in materias_primas %}
+                    {% for pedido in pedidos %}
                     <tr>
-                        <td>{{ materia_prima.numero_buzon }}</td>
-                        <td>{{ materia_prima.tipo_madera }}</td>
-                        <td>{{ materia_prima.clase_diametrica }}</td>
-                        <td>{{ materia_prima.longitud }}</td>
-                        <td>{{ materia_prima.cantidad }}</td>
+                        <td>{{ pedido.cliente }}</td>
+                        <td>{{ pedido.fecha_entrega }}</td>
                         <td>
-                            <button class="details-button popup-button" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')">Mostrar detalles</button>
+                            <button class="details-button popup-button" onclick="openPopup('{{ pedido.cliente }}', '{{ pedido.fecha_entrega }}')">Mostrar detalles</button>
                         </td>
-    
-                        <td><a href="eliminarmateria/{{materia_prima.id}}" class="btn btn-block">Eliminar</a></td>
-                   
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -98,18 +102,12 @@
 
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
-        <h2>Detalles de la bodega</h2>
+        <h2>Detalles del pedido</h2>
         <div class="popup-item">
-            <strong>ID:</strong> <span id="popupId"></span>
+            <strong>Cliente:</strong> <span id="popupCliente"></span>
         </div>
         <div class="popup-item">
-            <strong>Nombre:</strong> <span id="popupNombreBodega"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Nombre de la empresa:</strong> <span id="popupNombreEmpresa"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Descripción:</strong> <span id="popupDescripcion"></span>
+            <strong>Fecha de entrega:</strong> <span id="popupFechaEntrega"></span>
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
