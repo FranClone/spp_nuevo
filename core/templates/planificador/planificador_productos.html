@@ -74,6 +74,7 @@
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
+                        <th>Eliminar</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -87,6 +88,7 @@
                             <td>
                                 <button class="product-button" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')">Mostrar detalles</button>
                             </td>
+                            <td><a href="eliminarproducto/{{producto.id}}" class="btn btn-block">Eliminar</a></td>
                         </tr>
                     {% empty %}
                     </tr>

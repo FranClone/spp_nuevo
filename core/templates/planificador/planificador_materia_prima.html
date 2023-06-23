@@ -87,7 +87,7 @@
                         <th>Longitud</th>
                         <th>Cantidad (m³)</th>
                         <th>Mostrar detalle</th> 
-                        <th colspan="2">Editar</th> 
+                        <th>Eliminar</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -101,7 +101,7 @@
                         <td>
                             <button class="details-button popup-button" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')">Mostrar detalles</button>
                         </td>
-                        <td><a href="editar_materia_prima/{{materia_prima.id}}" class="btn btn-block">Editar</a></td>
+    
                         <td><a href="eliminarmateria/{{materia_prima.id}}" class="btn btn-block">Eliminar</a></td>
                    
                     </tr>
