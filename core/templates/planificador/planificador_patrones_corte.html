@@ -6,11 +6,11 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-patrones-corte.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Patrones de Corte</title>
 </head>
 <body>
@@ -57,6 +57,8 @@
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
+            <button type="submit" name="crear">Carga masiva</button>
+            
         </form>
     </div>
     <div class="table-container">
@@ -70,7 +72,6 @@
                         <th>Producto asociado</th>
                         <th>Clase diamétrica rollizo</th>
                         <th>Mostrar detalles</th>
-                        <th>Eliminar</th> 
                     </tr>
                 </thead>
                 <tbody>
@@ -81,10 +82,11 @@
                             <td>{{ patron.producto_asociado }}</td>
                             <td>{{ patron.clase_diametrica_rollizo }}</td>
                             <td>
-                                <button class="product-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">Mostrar detalles</button>
+                                <button class="details-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">
+                                    <i class="fa-regular fa-clipboard fa-bounce fa-xl"></i>
+                                </button>
+                                <a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a>
                             </td>
-                      
-                            <td><a href="eliminarpatron/{{patron.id}}" class="btn btn-block">Eliminar</a></td>
                         </tr>
                     {% empty %}
                         <tr>
@@ -96,26 +98,25 @@
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
     </div>
+    
     <div class="popup-overlay" id="popupOverlay"></div>
-        <div id="popup" class="popup">
-            <div class="popup-content">
-                <h2>Detalles del patrón</h2>
-                <div class="popup-item">
-                    <strong>Código del patrón:</strong> <span >01</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Nombre del patrón:</strong> <span >corte1</span>
-                </div>
-                <div class="popup-item">
-                    <strong>producto asociado:</strong> <span>producto1</span>
-                </div>
-                <div class="popup-item">
-                    <strong>clase diametrica:</strong> <span>1</span>
-                </div>
+    <div id="popup" class="popup">
+        <div class="popup-content">
+            <h2>Detalles del patrón</h2>
+            <div class="popup-item">
+                <strong>Código del patrón:</strong> <span></span>
             </div>
-            <button class="close-button" onclick="closePopup()">Cerrar</button>
+            <div class="popup-item">
+                <strong>Nombre del patrón:</strong> <span></span>
+            </div>
+            <div class="popup-item">
+                <strong>Producto asociado:</strong> <span></span>
+            </div>
+            <div class="popup-item">
+                <strong>Clase diamétrica:</strong> <span></span>
+            </div>
         </div>
-    </div>
+        <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
 </body>
 </html>

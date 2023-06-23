@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -71,6 +72,7 @@
             {{ form.cantidad }}
 
             <button type="submit" name="crear">Crear</button>
+            <button type="submit" name="crear">Carga masiva</button>
         </form>
     </div>
 
@@ -86,7 +88,7 @@
                         <th>Longitud</th>
                         <th>Cantidad (m³)</th>
                         <th>Mostrar detalle</th> 
-                        <th>Eliminar</th> 
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -98,11 +100,17 @@
                         <td>{{ materia_prima.longitud }}</td>
                         <td>{{ materia_prima.cantidad }}</td>
                         <td>
-                            <button class="details-button popup-button" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')">Mostrar detalles</button>
-                        </td>
+                            <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                            
     
-                        <td><a href="eliminarmateria/{{materia_prima.id}}" class="btn btn-block">Eliminar</a></td>
-                   
+                        <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
+                            <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
+
+                        
+                        
+                        </td>
+
+                        
                     </tr>
                     {% endfor %}
                 </tbody>
