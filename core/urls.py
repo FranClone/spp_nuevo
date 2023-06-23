@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
-from .views import crear_producto, materia_prima, crear_patron_corte,eliminar_materia_prima
+from .views import crear_producto, materia_prima, crear_patron_corte, eliminar_materia_prima
 
 
 urlpatterns = [
@@ -17,7 +17,6 @@ urlpatterns = [
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
     path('home/', Home.as_view(), name = "home"),
-
     path('', Login.as_view(), name = "login"),
     path('pedidos/', Pedidos.as_view(), name = "pedidos"),
     path('lista_pedidos/', Lista_pedidos.as_view(), name = "lista_pedidos"),
