@@ -88,35 +88,14 @@ def get_empresas(request):
 
 class Home(View): 
     """Esta clase define la vista Home"""
-    @method_decorator(login_required) 
     def get(self, request, *args, **kwargs):
         #cálculo progress
         producto_terminado = 1000
         producto_pedido = 5000
         progress = (producto_terminado / producto_pedido)*100
-        rut_empresa = request.user.empresa.rut_empresa
-        #obtenemos datos
-        pedidos = sel_pedido_empresa(rut_empresa)
-        #datos para guardarlos en un diccionarios
-        # Convertir los objetos de pedido a un diccionario
-        pedidos_list = []
-        for pedido in pedidos:
-            pedido_dict = {}
-            for key, value in pedido.items():
-                if isinstance(value, (datetime.date, datetime.datetime)):
-                    pedido_dict[key] = value.isoformat()
-                else:
-                    pedido_dict[key] = value
-            pedidos_list.append(pedido_dict)
-        pedidos_json = json.dumps(pedidos_list)
-        productos = sel_pedido_productos_empresa(rut_empresa)
-        productos_dict = [pedido for pedido in productos]
-        # Convertir el diccionario a formato JSON
-        productos_json = json.dumps(productos_dict)
         
-        return render(request, 'home.html', {'progress': progress, 'pedidos': pedidos_json, 'productos': productos_json})
+        return render(request, 'home.html')
     
-    @method_decorator(login_required) 
     def post(self, request, *args, **kwargs):
         #Carga Archivo
         try:
@@ -187,14 +166,11 @@ class Inventario_roll(View):
         noclas = sel_rollizo_empresa(rut_empresa)
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
-class Inventario_roll_nc(View):
-    """Esta clase define la vista de Inventario"""
+class Pedidos(View):
+
     def get(self, request, *args, **kwargs):
-        context={
 
-        }
-
-        return render(request, 'inventario_rollizo_nc.html', context) 
+        return render(request, 'pedidos.html') 
 
 class Lista_pedidos(View): 
     """Esta clase define la vista de Lista de Pedidos"""
@@ -394,6 +370,7 @@ def materia_prima(request):
 
 def crear_producto(request):
     productos = Producto.objects.all()
+    form = CrearProductoForm()
 
     if request.method == 'POST':
         if 'editar' in request.POST:
@@ -403,17 +380,22 @@ def crear_producto(request):
         elif 'crear' in request.POST:
             form = CrearProductoForm(request.POST)
             if form.is_valid():
-                form.save()
+                print("Formulario válido")  # Mensaje de depuración
+                nuevo_producto = form.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_producto.id)  # Mensaje de depuración
                 return redirect('plan_productos')
-
-    else:
-        form = CrearProductoForm()
+            else:
+                print("Formulario inválido")  # Mensaje de depuración
+        else:
+            print("Acción no reconocida")  # Mensaje de depuración
 
     context = {
         'form': form,
         'productos': productos
     }
     return render(request, 'planificador/planificador_productos.html', context)
+
+
  
      
 def eliminar_materia_prima(request,id):
