@@ -417,10 +417,6 @@ def crear_patron_corte(request):
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
-
-
- 
-     
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)
     materia_prima.delete()

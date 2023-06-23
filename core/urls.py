@@ -17,7 +17,6 @@ urlpatterns = [
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
     path('home/', Home.as_view(), name = "home"),
-
     path('', Login.as_view(), name = "login"),
     path('pedidos/', Pedidos.as_view(), name = "pedidos"),
     path('lista_pedidos/', Lista_pedidos.as_view(), name = "lista_pedidos"),
