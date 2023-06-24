@@ -5,22 +5,17 @@
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-materia-prima.css' %}">
-<<<<<<< HEAD
+    <link rel="stylesheet" href="{% static 'styles/materia-prima.css' %}">
     <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
-=======
-    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
->>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Materia Prima</title>
-<<<<<<< HEAD
     
-=======
->>>>>>> aa6ad1c59061ea3594c327a3291a49ec13e8283b
+
+    
 </head>
 <body>
     
@@ -33,9 +28,13 @@
                 <label for="filter-buzon">N° Buzón:</label>
                 <input type="text" id="filter-buzon" class="filter-input" placeholder="Ingrese el N° Buzón">
             </div>
-            <input type="checkbox" id="advanced-filter-checkbox">
-            <label for="advanced-filter-checkbox">Búsqueda avanzada</label>
+            <div class="advanced-filter-container">
+                <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
+                <input type="checkbox" id="advanced-filter-checkbox">
+            </div>
+            
             <div id="advanced-filter" style="display: none;">
+                
                 <div class="filter-field">
                     <label for="filter-madera">Madera:</label>
                     <input type="text" id="filter-madera" class="filter-input" placeholder="Ingrese el tipo de madera">
@@ -134,75 +133,30 @@
     </div>
 </div>
 
-    <script>
-        const filterForm = document.getElementById('filter-form');
-        const toggleFilterButton = document.getElementById('toggle-filter-button');
-        const advancedFilterCheckbox = document.getElementById('advanced-filter-checkbox');
-        const advancedFilter = document.getElementById('advanced-filter');
-        const filterButton = document.getElementById('filter-button');
-        const cancelFilterButton = document.getElementById('cancel-filter-button');
-        const filterBuzonInput = document.getElementById('filter-buzon');
-        const filterMaderaInput = document.getElementById('filter-madera');
-        const filterDiametricaInput = document.getElementById('filter-diametrica');
-        const filterLongitudInput = document.getElementById('filter-longitud');
-        const filterCantidadInput = document.getElementById('filter-cantidad');
-        const table = $('#materia-prima-table').DataTable();
+<script src="{% static 'js/filtro-materia_prima.js'%}"></script>
 
-        toggleFilterButton.addEventListener('click', () => {
-            filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
-            advancedFilter.style.display = 'none';
-            clearAdvancedFilterInputs();
-        });
+<script>
+    var toggleFilterButton = document.getElementById('toggle-filter-button');
+    var filterForm = document.getElementById('filter-form');
+    var cancelFilterButton = document.getElementById('cancel-filter-button');
+    var closeFilterButton = document.getElementById('cancel-filter-button');
+ 
+    toggleFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'block';
+        toggleFilterButton.style.display = 'none';
+    });
 
-        advancedFilterCheckbox.addEventListener('change', () => {
-            advancedFilter.style.display = advancedFilterCheckbox.checked ? 'block' : 'none';
-        });
+    cancelFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+    });
 
-        filterButton.addEventListener('click', () => {
-            applyFilters();
-        });
+    closeFilterButton.addEventListener('click', function() {
+        if()
+    });
+</script>
 
-        cancelFilterButton.addEventListener('click', () => {
-            filterBuzonInput.value = '';
-            clearAdvancedFilterInputs();
-            applyFilters();
-        });
 
-        function applyFilters() {
-            const buzonFilter = filterBuzonInput.value.toLowerCase();
-            const maderaFilter = filterMaderaInput.value.toLowerCase();
-            const diametricaFilter = filterDiametricaInput.value.toLowerCase();
-            const longitudFilter = filterLongitudInput.value.toLowerCase();
-            const cantidadFilter = filterCantidadInput.value.toLowerCase();
-
-            table.columns(0).search(buzonFilter).draw();
-            table.columns(1).search(maderaFilter).draw();
-            table.columns(2).search(diametricaFilter).draw();
-            table.columns(3).search(longitudFilter).draw();
-            table.columns(4).search(cantidadFilter).draw();
-        }
-
-        function clearAdvancedFilterInputs() {
-            filterMaderaInput.value = '';
-            filterDiametricaInput.value = '';
-            filterLongitudInput.value = '';
-            filterCantidadInput.value = '';
-        }
-        function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
-        document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
-        document.getElementById('popupTipoMadera').textContent = tipoMadera;
-        document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
-        document.getElementById('popupLongitud').textContent = longitud;
-        document.getElementById('popupCantidad').textContent = cantidad;
-        document.getElementById('popupOverlay').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
-    }
-
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    }
-    </script>
 
 </body>
 </html>
