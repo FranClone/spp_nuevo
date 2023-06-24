@@ -53,6 +53,7 @@ form select {
     color: white;
 }
 
+<<<<<<< HEAD:core/static/styles/materia-prima.css
 .filter-section {
     position: relative;
 }
@@ -79,3 +80,10 @@ form select {
     margin-right: 50px;
     width:100%;
 }
+=======
+  /* Estilos personalizados para el enlace */
+  a {
+    text-decoration: none;
+    color: inherit; 
+  }
+>>>>>>> 42126c2796e735da37bfd68e92c8f02ab7054f23:core/static/styles/styles-materia-prima.css

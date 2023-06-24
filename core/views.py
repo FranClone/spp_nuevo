@@ -14,10 +14,10 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm, CrearPatronCorteForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm, CrearPatronCorteForm, ActualizarPedidoForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
-from .modelos.pedido import Pedido
+from .modelos.pedidos import Pedido
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
@@ -26,11 +26,10 @@ from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, se
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
 
-# se intenta conectar a la base de datos
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
-    print("conexión a base de datos exitosa")
+    print("Conexión a base de datos exitosa")
 
 except Exception as ex:
     print(ex)
@@ -168,9 +167,7 @@ class Inventario_roll(View):
         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Pedidos(View):
-
     def get(self, request, *args, **kwargs):
-
         return render(request, 'pedidos.html') 
 
 class Lista_pedidos(View): 
@@ -247,44 +244,6 @@ class Mantenedor(View):
 
         return render(request, 'mantenedor.html', context)
 
-class Pedido(CreateView):
-    model = Pedido
-    form_class = PedidoForm
-    template_name = 'pedido.html'
-    success_url = '/'
-
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        if self.request.POST:
-            data['formset'] = DetallePedidoFormSet(self.request.POST, user=self.request.user)  # Pasar user=self.request.user directamente al instanciar el formulario
-        else:
-            data['formset'] = DetallePedidoFormSet(user=self.request.user)  # Pasar user=self.request.user directamente al instanciar el formulario
-        return data
-    
-    def get_form_kwargs(self):
-        kwargs = super().get_form_kwargs()
-        kwargs['user'] = self.request.user  # Agregar request.user a los kwargs del formulario
-        return kwargs
-
-    def form_valid(self, form):
-        context = self.get_context_data()
-        formset = context['formset']
-        with transaction.atomic():
-            self.object = form.save()
-            if formset.is_valid():
-                with transaction.atomic():
-                    for form in formset:
-                        form.instance.pedido = self.object
-                        form.save()
-        return super().form_valid(form)
-
-DetallePedidoFormSet.formset_js_template_name = 'dynamic_formsets/formset_js.html'
-
-def productos_view(request):
-    productos = Producto.objects.all()
-    context = {'productos': productos}
-    return render(request, 'planificador/planificador_productos.html', context)
-
 class Register(View):
     def get(self, request):
         form = CustomUserCreationForm()
@@ -323,28 +282,8 @@ class Plan_Productos(View):
 class Dashboard(View): 
     """Esta clase define la vista Dashboard"""
     def get(self, request, *args, **kwargs):
-        rut_empresa = request.user.empresa.rut_empresa
-        clientes = sel_cliente_admin(rut_empresa)
-        pedidos_por_mes = cantidad_pedidos_por_mes(rut_empresa)
-        rows = []
-        for cliente in clientes:
-            cliente_dict = {
-                'id': cliente['id'],
-                'nombre_cliente': cliente['nombre_cliente'],
-                'correo_cliente': cliente['correo_cliente'],
-                'estado_cliente': cliente['estado_cliente'],
-                'cantidad_pedidos': cliente['cantidad_pedidos'],
-            }
-            rows.append(cliente_dict)
-        raw = []
-        for pedido in pedidos_por_mes:
-            pedidos_dict = {
-                'mes': pedido ['mes_texto'],
-                'cantidad': pedido ['cantidad']
-            }
-            raw.append(pedidos_dict)
-
-        return render(request, 'dashboard.html', {'pedidos' : json.dumps(rows), 'pedidosMes' : json.dumps(raw)})
+        
+        return render(request, 'dashboard.html')
 
 def materia_prima(request):
     materias_primas = MateriaPrima.objects.all()
@@ -369,7 +308,7 @@ def materia_prima(request):
     }
     return render(request, 'planificador/planificador_materia_prima.html', context)
 
-def crear_producto(request):
+def producto(request):
     productos = Producto.objects.all()
     form = CrearProductoForm()
 
@@ -396,7 +335,7 @@ def crear_producto(request):
     }
     return render(request, 'planificador/planificador_productos.html', context)
 
-def crear_patron_corte(request):
+def patron_corte(request):
     patrones_corte = PatronCorte.objects.all()
     form = CrearPatronCorteForm()
 
@@ -416,6 +355,30 @@ def crear_patron_corte(request):
         'patrones_corte': patrones_corte
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
+
+def pedidos(request):
+    pedidos = Pedidos.objects.all()
+
+    if request.method == 'POST':
+        if 'editar' in request.POST:
+            pass
+        elif 'eliminar' in request.POST:
+            pass
+        elif 'crear' in request.POST:
+            form = ActualizarPedidoForm(request.POST)
+            if form.is_valid():
+                form.save()
+                return redirect('pedidos')
+
+    else:
+        form = ActualizarPedidoForm()
+
+    context = {
+        'form': form,
+        'pedidos': pedidos
+    }
+    return render(request, 'pedidos.html', context)
+
 
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)

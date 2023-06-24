@@ -4,7 +4,7 @@ from django.forms.models import BaseInlineFormSet, BaseModelFormSet, inlineforms
 from django.forms.widgets import DateInput
 from django.core.validators import MinValueValidator
 from datetime import datetime
-from .modelos.pedido import Pedido
+from .modelos.pedidos import Pedido
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.cliente import Cliente
 from .modelos.producto import Producto

@@ -22,7 +22,7 @@ from .modelos.inv_inicial_rollizo import InvInicialRollizo
 from .modelos.linea import Linea
 from .modelos.linea_hh_disponible import LineaHhDisponible
 from .modelos.patron_corte import PatronCorte
-from .modelos.pedido import Pedido
+from .modelos.pedidos import Pedido
 from .modelos.periodo import Periodo
 from .modelos.producto import Producto
 from .modelos.producto_corte import ProductoCorte
@@ -630,21 +630,6 @@ class LineaHhDisponibleAdmin(admin.ModelAdmin):
             obj.empresa = request.user.empresa
         obj.save()
 
-class DetalleProductoInline(admin.TabularInline):
-    model = Pedido.productos.through
-    extra = 1
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        # Si el usuario es superusuario, no filtramos los productos
-        if request.user.is_superuser:
-            return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
-        # Filtramos los productos según la empresa del usuario actual
-        empresa = request.user.empresa
-        if db_field.name == 'producto':
-            kwargs['queryset'] = Producto.objects.filter(empresa=empresa)
-
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-
 
 class PedidoEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
@@ -659,30 +644,6 @@ class PedidoEmpresaFilter(admin.SimpleListFilter):
         empresas = Empresa.objects.all()
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
-class PedidoAdmin(admin.ModelAdmin):
-    #Modelo administrador para pedido
-    inlines = (DetalleProductoInline,)
-    list_display = ('numero_pedido', 'prioridad',)
-    ordering = ('id',)
-    readonly_fields = ('usuario_crea',)
-
-    def save_model(self, request, obj, form, change):
-        obj.usuario_crea = request.user.rut
-        obj.save()
-
-    def formfield_for_foreignkey(self, db_field, request, **kwargs):
-        if not request.user.is_superuser and db_field.name == "cliente":
-            # Filtra los clientes por la empresa correspondiente al usuario actual
-            kwargs["queryset"] = Cliente.objects.filter(empresa=request.user.empresa)
-        return super().formfield_for_foreignkey(db_field, request, **kwargs)
-    
-    def get_list_filter(self, request):
-        if request.user.is_superuser:
-            return (PedidoEmpresaFilter,)
-        else:
-            return []
-
-        
 class PeriodoEmpresaFilter(admin.SimpleListFilter):
     title = 'Empresa'
     parameter_name = 'empresa'
@@ -1245,7 +1206,6 @@ admin.site.register(Empresa, EmpresaAdmin)
 admin.site.register(InvInicialRollizo, InvInicialRollizoAdmin)
 admin.site.register(Linea, LineaAdmin)
 admin.site.register(LineaHhDisponible, LineaHhDisponibleAdmin)
-admin.site.register(Pedido, PedidoAdmin)
 admin.site.register(Periodo, PeriodoAdmin)
 admin.site.register(ProductoCorte, ProductoCorteAdmin)
 admin.site.register(Rollizo, RollizoAdmin)

@@ -6,9 +6,9 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home,Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
+from .views import Administracion, Bar_chart, Carga_sv, Home, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
-from .views import crear_producto, materia_prima, crear_patron_corte,eliminar_materia_prima
+from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado
 
 urlpatterns = [
@@ -23,19 +23,18 @@ urlpatterns = [
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
-    path('pedido/', Pedidos.as_view(), name = "pedido"),
+    path('pedidos/', pedidos, name = "pedidos"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
-    path('planificador_patrones_corte/', crear_patron_corte, name = "plan_patrones_corte"),
-    path('planificador_productos/', crear_producto, name = "plan_productos"),
+    path('planificador_patrones_corte/', patron_corte, name = "plan_patrones_corte"),
+    path('planificador_productos/', producto, name = "plan_productos"),
     path('plan_materia_prima/eliminarmateria/<int:id>', eliminar_materia_prima,name='eliminar_materia' ),
     path('planificador_patrones_corte/eliminarpatron/<int:id>', eliminar_patron,name='eliminar_patron' ),
     path('planificador_productos/eliminarproducto/<int:id>', eliminar_producto,name='eliminar_producto' ),
     path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     # url para desplegar el bar chart vertical
-
     path('dashboard/', Dashboard.as_view(), name = "dashboard")
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
