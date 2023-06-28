@@ -1,12 +1,10 @@
-
-
 .show-filter .filter-form {
     display: none;
     position: relative;
 }
 
 .filters-container {
-    display: ;
+    display: block;
     flex-wrap: wrap;
     gap: 10px;
     margin-bottom: 10px;
@@ -26,6 +24,7 @@
     margin-top: 5px;
     margin-left: 5px;
 }
+
 .filter-button:hover {
     background-color: rgb(165, 9, 9);
 }
@@ -83,11 +82,10 @@ form select {
 }
 
 .show-filter {
-    
     position: absolute;
     top: 13%;
     left: 5px;
-    width:50%;
+    width: 50%;
     background-color: #ffffffec;
     padding: 30px;
     z-index: 100;
@@ -167,5 +165,5 @@ form select {
 
 a {
     text-decoration: none;
-    color: inherit; 
-  }
+    color: inherit;
+}
