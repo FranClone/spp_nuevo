@@ -113,7 +113,7 @@
                         <td>{{productoterminado.cantidad_producida}}</td>
                         <td>{{productoterminado.fecha_produccion}}</td>
                         <td>
-                            <button class="btn block" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                        <button class="btn block" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarproducto_terminado/{{productoterminado.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                     </tr>
                     {% endfor %}
@@ -134,6 +134,7 @@
         $(document).ready(function() {
             $("#patrones-table").DataTable({
                 paging: true, // Habilitar paginación
+                searching: false,
             });
         });
 
