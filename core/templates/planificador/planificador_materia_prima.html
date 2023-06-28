@@ -21,6 +21,7 @@
 <body>
     
     {% include "partials/header.html" %}    
+    
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
         <form id="filter-form" class="filter-form" style="display: none;">
@@ -141,40 +142,6 @@
     </div>
 
 <script src="{% static 'js/filtro-materia_prima.js'%}"></script>
-
-<script>
-    var toggleFilterButton = document.getElementById('toggle-filter-button');
-    var filterForm = document.getElementById('filter-form');
-    var cancelFilterButton = document.getElementById('cancel-filter-button');
-    var closeFilterButton = document.getElementById('cancel-filter-button');
-    var isFilterVisible = false; // Variable de estado para el filtro
-
-    toggleFilterButton.addEventListener('click', function() {
-        if (isFilterVisible) {
-            filterForm.style.display = 'none';
-            toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
-            isFilterVisible = false;
-        } else {
-            filterForm.style.display = 'block';
-            toggleFilterButton.innerText = 'Ocultar filtro'; // Cambiar el texto del botón a "Ocultar filtro"
-            isFilterVisible = true;
-        }
-    });
-
-    cancelFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'none';
-        filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
-        isFilterVisible = false;
-    });
-
-    closeFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'none';
-        filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
-        isFilterVisible = false;
-    });
-</script>
 
 
 

@@ -53,29 +53,30 @@ form select {
     background-color: red;
     color: white;
     border-radius: 6px;
+    margin-top: 5px;
+    margin-left: 5px;
 }
 .filter-button:hover {
     background-color: rgb(165, 9, 9);
 }
-/* .filter-button::after {
-    content: "Ocultar filtro";
-} */
+
+
 
 .filter-section {
     position: relative;
+    
 }
 
 .filter-form {
     position: absolute;
-    top: 30px;
-    left: 0;
-    width:30%;
+    top: 40px;
+    left: 5px;
+    width:20%;
     background-color: #ffffffec;
     padding: 30px;
     z-index: 100;
     border: 2px solid #000;
     border-radius: 10px;
-
 }
 
 .advanced-filter-container {
@@ -95,4 +96,6 @@ form select {
 
   .table-container{
     margin:5%;
+    padding-top: 1%;
+    padding-bottom: 2%;
   }
