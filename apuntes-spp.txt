@@ -1,0 +1,37 @@
+Este proyecto aborda una problemática central de la industria forestal. Tiene por objetivo desarrollar un modelo
+para un sistema de Planificación Integral de la Producción en aserraderos que se basa en tres ejes principales:
+
+- Generación de patrones de corte eficientes que buscan obtener el máximo aprovechamiento de la materia prima
+- Diseño de un sistema de planificación integrado de la producción con un horizonte de corto plazo y que considera 
+tanto el rendimiento de la materia prima, la satisfacción de la demanda y el inventario de materias primas como 
+de productos terminados, buscando maximizar la utilidad del negocio
+- Retroalimentación de la producción efectiva para actualizar los niveles de inventario y con ello la re-planificación 
+de la producción diariamente 
+
+Se debe considerar la brecha entre lo planificado y lo realmente obtenido 
+
+La ejecución de la planificación es diaria con un horizonte de planificación semanal (7 días)
+El campo principal del rollizo o materia prima es la clase diamétrica y el largo, que da el volumen m3 
+
+El MVP cuenta con la implementación del sistema de generación de patrones. El proyecto busca generar un modelo matemático 
+del sistema de planificación de pedidos integrado que no solamente considere un patrón de corte sino que un mix de 
+patrones de corte potenciales 
+
+Se trata de un modelamiento matemático que busca optimizar el rendimiento de materia prima, producción del aserradero y 
+tiempos de entrega 
+
+En JCE se cuenta con 55.000 m3 aproximadamente de cancha de acopio en toda su extensión. Los diámetros de los rollizos 
+entrantes se miden de forma manual, esta información se ingresa al sistema para saber con qué se cuenta para producir,
+clasificándolos de forma semi automática, con el objetivo de pagar solo lo que entró a la planta y no sobre o 
+subestimar el precio de la carga
+Luego de esta clasificación, se procede a la etapa de descortezado en base a un programa de producción, donde se 
+vuelve a clasificar el rollizo descortezado según el diámetro. Para la optimización del rollizo utilizan MPM.
+Se ingresan los parámetros al software y evalúa el esquema con los datos ingresados, buscando el 57% de rendimiento
+del rollizo. La programación de producción se realiza con 1 mes de anticipación. El rendimiento del rollizo debe ser 
+sobre 56% y se debe detener la producción lo menos posible. La madera de la basa central es la que determina la forma 
+de cortar el rollizo y debe ser la prioridad.
+El diámetro promedio del rollizo es de 23 cm. Sin embargo, el Aserradero JCE posee dos líneas de aserrío. Línea delgado 
+que trabaja con diámetros de 18-32 cm. La línea grueso trabaja con diámetros de 32-110 cm. La línea grueso tiene un 
+proceso productivo más lento que la delgado y su producción representa el 20% de la producción total de la planta. 
+
+Considerar varias clases diametricas para cada línea (delgado - grueso), por ejemplo, de (18-20], (20-22], etc 
