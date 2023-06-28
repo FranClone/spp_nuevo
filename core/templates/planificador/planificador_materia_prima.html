@@ -20,9 +20,14 @@
 </head>
 <body>
     
-    {% include "partials/header.html" %}    
+    {% include "partials/header.html" %}  
+    
+
+    
+  
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
+        
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
                 <label for="filter-buzon">N° Buzón:</label>
@@ -57,10 +62,13 @@
                 <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
+       
+        
     </div>
-
+ <!-- formulario de creacion de datos> -->
     <div class="form-container-materia-prima">
-        <form method="POST" action="{% url 'plan_materia_prima' %}">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="POST" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
                            
             <label for="id_numero_buzon">N° Buzón</label>
@@ -79,9 +87,10 @@
             {{ form.cantidad }}
             
             <button type="submit" name="crear" style="border-radius:6px">Crear</button>
-            <button type="submit" name="crear" style="border-radius:6px">Carga masiva</button>
+        
         </form>
     </div>
+
 
     <div class="table-container">
         <div class="table-responsive">
@@ -173,7 +182,29 @@
         filterForm.reset();
         toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
         isFilterVisible = false;
-    });
+    });   
+</script>
+<script>
+// Obtener referencia al botón de carga manual
+const toggleButton = document.getElementById("toggle-carga-button");
+// Obtener referencia al formulario de carga manual
+const cargaForm = document.querySelector(".form-container-materia-prima form");
+
+let isFormVisible = false;
+
+// Agregar un evento de clic al botón
+toggleButton.addEventListener("click", function() {
+    // Alternar la visibilidad del formulario
+    if (!isFormVisible) {
+        const buttonRect = toggleButton.getBoundingClientRect();
+        const buttonBottom = buttonRect.bottom;
+        cargaForm.style.display = "block";
+        isFormVisible = true;
+    } else {
+        cargaForm.style.display = "none";
+        isFormVisible = false;
+    }
+});
 </script>
 
 
