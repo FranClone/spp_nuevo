@@ -5,7 +5,7 @@
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/materia-prima.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-materia-prima.css' %}">
     <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
@@ -77,9 +77,9 @@
                                 
             <label for="id_cantidad">Cantidad [m³]</label>
             {{ form.cantidad }}
-
-            <button type="submit" name="crear">Crear</button>
-            <button type="submit" name="crear">Carga masiva</button>
+            
+            <button type="submit" name="crear" style="border-radius:6px">Crear</button>
+            <button type="submit" name="crear" style="border-radius:6px">Carga masiva</button>
         </form>
     </div>
 
@@ -147,19 +147,32 @@
     var filterForm = document.getElementById('filter-form');
     var cancelFilterButton = document.getElementById('cancel-filter-button');
     var closeFilterButton = document.getElementById('cancel-filter-button');
- 
+    var isFilterVisible = false; // Variable de estado para el filtro
+
     toggleFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'block';
-        toggleFilterButton.style.display = 'none';
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro'; // Cambiar el texto del botón a "Ocultar filtro"
+            isFilterVisible = true;
+        }
     });
 
     cancelFilterButton.addEventListener('click', function() {
         filterForm.style.display = 'none';
         filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+        isFilterVisible = false;
     });
 
     closeFilterButton.addEventListener('click', function() {
-        if()
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+        isFilterVisible = false;
     });
 </script>
 

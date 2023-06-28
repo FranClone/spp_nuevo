@@ -22,6 +22,7 @@ form select {
     flex-direction: column;
     align-items: center;
     background: white;
+    border-radius: 6px;
 }
 
 .form-container-materia-prima form {
@@ -45,13 +46,20 @@ form select {
 }
 
 .filter-section {
-    background-color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
 }
 
 .filter-button {
     background-color: red;
     color: white;
+    border-radius: 6px;
 }
+.filter-button:hover {
+    background-color: rgb(165, 9, 9);
+}
+/* .filter-button::after {
+    content: "Ocultar filtro";
+} */
 
 .filter-section {
     position: relative;
@@ -59,10 +67,10 @@ form select {
 
 .filter-form {
     position: absolute;
-    top: 0;
+    top: 30px;
     left: 0;
     width:30%;
-    background-color: #fff;
+    background-color: #ffffffec;
     padding: 30px;
     z-index: 100;
     border: 2px solid #000;
@@ -83,4 +91,8 @@ form select {
   a {
     text-decoration: none;
     color: inherit; 
+  }
+
+  .table-container{
+    margin:5%;
   }
