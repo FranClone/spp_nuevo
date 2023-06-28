@@ -58,6 +58,7 @@
     </div>
     
     <div class="form-container-productos">
+        
         <form method="post" action="{% url 'plan_productos' %}">
             {% csrf_token %}
             {{ form.as_p }}
