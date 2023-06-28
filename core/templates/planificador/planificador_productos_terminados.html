@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    {% load static %}
+    {% load static %}   
+    {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos-terminados.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
-    {% include "partials/resources.html" %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos-terminados.js' %}"></script>
+    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Productos Terminados</title>
-    
 </head>
 <body>
     {% include "partials/header.html" %}
@@ -97,10 +100,9 @@
                         <th>Fecha produccion</th>
                         <th>Acciones</th>
                         
-
                     </tr>
                 </thead>
-                <tbody> <!-- Mueve los datos de la tabla dentro de <tbody> -->
+                <tbody> 
                     {% for productoterminado in productos_terminados %}
                     <tr>
                         <td>{{productoterminado.codigo}}</td>
@@ -122,108 +124,10 @@
         </div>
         <br><br>
     </div>
-    
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
-        <!-- Contenido del popup ... -->
     </div>
-
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
-    <script>
-        $(document).ready(function() {
-            $("#patrones-table").DataTable({
-                paging: true, // Habilitar paginación
-            });
-        });
-
-        function openPopup(id, nombreBodega, nombreEmpresa, descripcion) {
-            // Función openPopup ...
-        }
-
-        function closePopup() {
-            // Función closePopup ...
-        }
-
-        // Agregar el evento de submit al formulario de filtrado
-        document.querySelector('.filter-form').addEventListener('submit', function(event) {
-            event.preventDefault();
-            filtrar();
-        });
-
-        // Función de filtrado
-        function filtrar() {
-    // Obtener los valores de los campos de filtro
-    const codigo = document.querySelector('input[name="filter-codigo"]').value;
-    const nombre = document.querySelector('input[name="filter-nombre"]').value;
-    const claseDiametrica = document.querySelector('select[name="filter-clase"]').value;
-    const patronCorte = document.querySelector('input[name="filter-patron"]').value;
-    const cantidad = document.querySelector('input[name="filter-amount"]').value;
-
-    // Obtener todas las filas de la tabla
-    const table = document.getElementById('patrones-table');
-    const rows = table.getElementsByTagName('tr');
-
-    // Recorrer las filas y mostrar/ocultar según los filtros
-    for (let i = 1; i < rows.length; i++) { // Comenzamos desde 1 para omitir la fila de encabezado
-        const row = rows[i];
-        const codigoColumn = row.cells[0].innerText;
-        const nombreColumn = row.cells[1].innerText;
-        const claseDiametricaColumn = row.cells[5].innerText;
-        const patronCorteColumn = row.cells[6].innerText;
-        const cantidadColumn = row.cells[7].innerText;
-
-        // Verificar si alguna columna no coincide con los filtros
-        if (
-            (codigo !== '' && codigoColumn !== codigo) ||
-            (nombre !== '' && nombreColumn !== nombre) ||
-            (claseDiametrica !== '' && claseDiametricaColumn !== claseDiametrica) ||
-            (patronCorte !== '' && patronCorteColumn !== patronCorte) ||
-            (cantidad !== '' && cantidadColumn !== cantidad)
-        ) {
-            // Ocultar la fila
-            row.style.display = 'none';
-        } else {
-            // Mostrar la fila
-            row.style.display = '';
-        }
-    }
-}
-
-// Evento que se activa al enviar el formulario de filtro
-document.querySelector('.filter-form').addEventListener('submit', function(e) {
-    e.preventDefault(); // Evitar que se recargue la página al enviar el formulario
-    filtrar(); // Ejecutar la función de filtrado
-});
-        // Función para limpiar los campos de filtro
-       // Agregar el evento de click al botón de cancelar
-document.querySelector('.clear-filter-button').addEventListener('click', function(event) {
-    event.preventDefault();
-    limpiarFiltros();
-});
-
-// Función para limpiar los campos de filtro
-function limpiarFiltros() {
-    // Limpiar los valores de los campos de filtro
-    document.querySelector('input[name="filter-codigo"]').value = '';
-    document.querySelector('input[name="filter-nombre"]').value = '';
-    document.querySelector('select[name="filter-clase"]').value = '';
-    document.querySelector('input[name="filter-patron"]').value = '';
-    document.querySelector('input[name="filter-amount"]').value = '';
-
-    // Mostrar todas las filas de la tabla
-    const table = document.getElementById('patrones-table');
-    const rows = table.getElementsByTagName('tr');
-    for (let i = 1; i < rows.length; i++) {
-        rows[i].style.display = '';
-    }
-}
-
-        // Mostrar u ocultar opciones de búsqueda avanzada
-        document.getElementById('advanced-search').addEventListener('change', function() {
-            const advancedSearchOptions = document.getElementById('advanced-search-options');
-            advancedSearchOptions.style.display = this.checked ? 'block' : 'none';
-        });
-    </script>
 </body>
 </html>

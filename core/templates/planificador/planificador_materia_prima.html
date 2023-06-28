@@ -10,21 +10,15 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/vista-materia-prima.js' %}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Materia Prima</title>
-    
-
-    
 </head>
 <body>
     
     {% include "partials/header.html" %}  
-    
-
-    
-  
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
         
@@ -65,7 +59,7 @@
        
         
     </div>
- <!-- formulario de creacion de datos> -->
+
     <div class="form-container-materia-prima">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="POST" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
@@ -90,7 +84,6 @@
         
         </form>
     </div>
-
 
     <div class="table-container">
         <div class="table-responsive">
@@ -121,12 +114,7 @@
     
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                             <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
-
-                        
-                        
                         </td>
-
-                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -161,11 +149,11 @@
     toggleFilterButton.addEventListener('click', function() {
         if (isFilterVisible) {
             filterForm.style.display = 'none';
-            toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+            toggleFilterButton.innerText = 'Filtrar';
             isFilterVisible = false;
         } else {
             filterForm.style.display = 'block';
-            toggleFilterButton.innerText = 'Ocultar filtro'; // Cambiar el texto del botón a "Ocultar filtro"
+            toggleFilterButton.innerText = 'Ocultar filtro';
             isFilterVisible = true;
         }
     });
@@ -173,41 +161,34 @@
     cancelFilterButton.addEventListener('click', function() {
         filterForm.style.display = 'none';
         filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+        toggleFilterButton.innerText = 'Filtrar'; 
         isFilterVisible = false;
     });
 
     closeFilterButton.addEventListener('click', function() {
         filterForm.style.display = 'none';
         filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; // Restaurar el texto original del botón
+        toggleFilterButton.innerText = 'Filtrar'; 
         isFilterVisible = false;
     });   
 </script>
 <script>
-// Obtener referencia al botón de carga manual
-const toggleButton = document.getElementById("toggle-carga-button");
-// Obtener referencia al formulario de carga manual
-const cargaForm = document.querySelector(".form-container-materia-prima form");
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-materia-prima form");
 
-let isFormVisible = false;
+    let isFormVisible = false;
 
-// Agregar un evento de clic al botón
-toggleButton.addEventListener("click", function() {
-    // Alternar la visibilidad del formulario
-    if (!isFormVisible) {
-        const buttonRect = toggleButton.getBoundingClientRect();
-        const buttonBottom = buttonRect.bottom;
-        cargaForm.style.display = "block";
-        isFormVisible = true;
-    } else {
-        cargaForm.style.display = "none";
-        isFormVisible = false;
-    }
-});
+    toggleButton.addEventListener("click", function() {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
+        }
+    });
 </script>
-
-
-
 </body>
 </html>
