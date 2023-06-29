@@ -74,7 +74,7 @@
             <label for="id_clase_diametrica">Clase diamétrica</label>
             {{ form.clase_diametrica }}
 
-            <label for="id_longitud">Longitud [m]</label>
+            <label for="id_longitud">Largo [mm]</label>
             {{ form.longitud }}
                                 
             <label for="id_cantidad">Cantidad [m³]</label>
@@ -92,10 +92,10 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Número de buzón</th>
-                        <th>Tipo de madera</th>
+                        
                         <th>Clase diamétrica</th>
-                        <th>Longitud</th>
-                        <th>Cantidad (m³)</th>
+                        <th>Largo [mm]</th>
+                        <th>Cantidad [m³]</th>
                         <th>Mostrar detalle</th> 
                         
                     </tr>
@@ -104,7 +104,7 @@
                     {% for materia_prima in materias_primas %}
                     <tr>
                         <td>{{ materia_prima.numero_buzon }}</td>
-                        <td>{{ materia_prima.tipo_madera }}</td>
+                       
                         <td>{{ materia_prima.clase_diametrica }}</td>
                         <td>{{ materia_prima.longitud }}</td>
                         <td>{{ materia_prima.cantidad }}</td>

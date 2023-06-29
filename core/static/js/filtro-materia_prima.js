@@ -11,8 +11,8 @@
     const filterLongitudInput = document.getElementById('filter-longitud');
     const filterCantidadInput = document.getElementById('filter-cantidad');
     const table = $('#materia-prima-table').DataTable({
- 
-
+        pageLength: 5,
+       
       });
 
         toggleFilterButton.addEventListener('click', () => {
