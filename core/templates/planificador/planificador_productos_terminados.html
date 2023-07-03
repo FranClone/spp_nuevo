@@ -225,6 +225,56 @@ function limpiarFiltros() {
             advancedSearchOptions.style.display = this.checked ? 'block' : 'none';
         });
     </script>
-    
+    <script>
+    var toggleFilterButton = document.getElementById('toggle-filter-button');
+    var filterForm = document.getElementById('filter-form');
+    var cancelFilterButton = document.getElementById('cancel-filter-button');
+    var closeFilterButton = document.getElementById('cancel-filter-button');
+    var isFilterVisible = false; // Variable de estado para el filtro
+
+    toggleFilterButton.addEventListener('click', function() {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
+        }
+    });
+
+    cancelFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });
+
+    closeFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });   
+</script>
+<script>
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-materia-prima form");
+
+    let isFormVisible = false;
+
+    toggleButton.addEventListener("click", function() {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
+        }
+    });
+</script>
 </body>
 </html>
