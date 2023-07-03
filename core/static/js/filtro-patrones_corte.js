@@ -1,28 +1,71 @@
-function applyFilter() {
-        var filterCodigo = $(".filter-input[name='filter-codigo']").val().toLowerCase();
-        var filterNombre = $(".filter-input[name='filter-nombre']").val().toLowerCase();
-        var filterProducto = $(".filter-input[name='filter-producto']").val().toLowerCase();
-        var filterClase = $(".filter-select[name='filter-clase']").val().toLowerCase();
+const filterForm = document.getElementById('filter-form');
+const toggleFilterButton = document.getElementById('toggle-filter-button');
+const advancedFilterCheckbox = document.getElementById('advanced-filter-checkbox');
+const advancedFilter = document.getElementById('advanced-filter');
+const filterButton = document.getElementById('filter-button');
+const cancelFilterButton = document.getElementById('cancel-filter-button');
+const filterBuzonInput = document.getElementById('filter-buzon');
+const filterMaderaInput = document.getElementById('filter-madera');
+const filterDiametricaInput = document.getElementById('filter-diametrica');
+const filterLongitudInput = document.getElementById('filter-longitud');
+const filterCantidadInput = document.getElementById('filter-cantidad');
+const table = $('#materia-prima-table').DataTable({
 
-        $("#patrones-table tbody tr").hide().each(function () {
-            var rowDataCodigo = $(this).find("td:nth-child(1)").text().toLowerCase();
-            var rowDataNombre = $(this).find("td:nth-child(2)").text().toLowerCase();
-            var rowDataProducto = $(this).find("td:nth-child(3)").text().toLowerCase();
-            var rowDataClase = $(this).find("td:nth-child(4)").text().toLowerCase();
 
-            var matchesCodigo = filterCodigo === '' || rowDataCodigo === filterCodigo;
-            var matchesNombre = filterNombre === '' || rowDataNombre.includes(filterNombre);
-            var matchesProducto = filterProducto === '' || rowDataProducto.includes(filterProducto);
-            var matchesClase = filterClase === '' || rowDataClase === filterClase;
+});
 
-            if (matchesCodigo && matchesNombre && matchesProducto && matchesClase) {
-                $(this).show();
-            }
-        });
+toggleFilterButton.addEventListener('click', () => {
+    filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
+    advancedFilter.style.display = 'none';
+    clearAdvancedFilterInputs();
+});
 
-        if ($("#patrones-table tbody tr:visible").length === 0) {
-            $(".no-data-message").show();
-        } else {
-            $(".no-data-message").hide();
-        }
-    }
+advancedFilterCheckbox.addEventListener('change', () => {
+    advancedFilter.style.display = advancedFilterCheckbox.checked ? 'block' : 'none';
+});
+
+filterButton.addEventListener('click', () => {
+    applyFilters();
+});
+
+cancelFilterButton.addEventListener('click', () => {
+    filterBuzonInput.value = '';
+    clearAdvancedFilterInputs();
+    applyFilters();
+});
+
+function applyFilters() {
+    const buzonFilter = filterBuzonInput.value.toLowerCase();
+    const maderaFilter = filterMaderaInput.value.toLowerCase();
+    const diametricaFilter = filterDiametricaInput.value.toLowerCase();
+    const longitudFilter = filterLongitudInput.value.toLowerCase();
+    const cantidadFilter = filterCantidadInput.value.toLowerCase();
+
+    table.columns(0).search(buzonFilter).draw();
+    table.columns(1).search(maderaFilter).draw();
+    table.columns(2).search(diametricaFilter).draw();
+    table.columns(3).search(longitudFilter).draw();
+    table.columns(4).search(cantidadFilter).draw();
+}
+
+function clearAdvancedFilterInputs() {
+    filterMaderaInput.value = '';
+    filterDiametricaInput.value = '';
+    filterLongitudInput.value = '';
+    filterCantidadInput.value = '';
+}
+
+function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
+    document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
+    document.getElementById('popupTipoMadera').textContent = tipoMadera;
+    document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
+    document.getElementById('popupLongitud').textContent = longitud;
+    document.getElementById('popupCantidad').textContent = cantidad;
+    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+}
+
+function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+}

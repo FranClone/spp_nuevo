@@ -21,34 +21,31 @@
     {% include "partials/header.html" %}  
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
-        
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
                 <label for="filter-buzon">N° Buzón:</label>
-                <input type="text" id="filter-buzon" class="filter-input" placeholder="Ingrese el N° Buzón">
+                <input type="text" id="filter-buzon" class="filter-input">
             </div>
             <div class="advanced-filter-container">
                 <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
                 <input type="checkbox" id="advanced-filter-checkbox">
             </div>
-            
             <div id="advanced-filter" style="display: none;">
-                
                 <div class="filter-field">
                     <label for="filter-madera">Madera:</label>
-                    <input type="text" id="filter-madera" class="filter-input" placeholder="Ingrese el tipo de madera">
+                    <input type="text" id="filter-madera" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-diametrica">Clase diamétrica:</label>
-                    <input type="text" id="filter-diametrica" class="filter-input" placeholder="Ingrese la clase diamétrica">
+                    <input type="text" id="filter-diametrica" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-longitud">Longitud:</label>
-                    <input type="text" id="filter-longitud" class="filter-input" placeholder="Ingrese la longitud [m]">
+                    <input type="text" id="filter-longitud" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-cantidad">Cantidad:</label>
-                    <input type="text" id="filter-cantidad" class="filter-input" placeholder="Ingrese la cantidad [m³]">
+                    <input type="text" id="filter-cantidad" class="filter-input">
                 </div>
             </div>
             <div class="filter-button-container">
@@ -56,15 +53,15 @@
                 <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
-       
-        
     </div>
 
     <div class="form-container-materia-prima">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        
+    <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="POST" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-                           
+            <h5>Ingresar materia prima </h5>
+            <br>
             <label for="id_numero_buzon">N° Buzón</label>
             {{ form.numero_buzon }}
                                 
@@ -110,10 +107,8 @@
                         <td>{{ materia_prima.cantidad }}</td>
                         <td>
                             <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                            
-    
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
-                            <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
+                        <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                         </td>
                     </tr>
                     {% endfor %}

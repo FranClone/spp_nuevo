@@ -19,28 +19,50 @@
 <body>
     {% include "partials/header.html" %}
     <div class="filter-section">
-        <form class="filter-form show-filter">
-            <button type="button" class="filter-button">Mostrar filtro</button>
-            <div class="filter-form-fields">
+        
+        <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
+        
+        
+        <form id="filter-form" class="filter-form" style="display: none;">
+            <div class="filter-field">
+                <label for="filter-buzon">N° Buzón:</label>
+                <input type="text" id="filter-buzon" class="filter-input">
+            </div>
+            <div class="advanced-filter-container">
+                <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
+                <input type="checkbox" id="advanced-filter-checkbox">
+            </div>
+            
+            <div id="advanced-filter" style="display: none;">
+                
                 <div class="filter-field">
-                    <label for="filter-nombre">Nombre de cliente:</label>
-                    <input type="text" name="filter-nombre" class="filter-input" placeholder="Ingrese el nombre">
+                    <label for="filter-madera">Madera:</label>
+                    <input type="text" id="filter-madera" class="filter-input">
                 </div>
-                <label for="advanced-search">Búsqueda avanzada:</label>
-                <input type="checkbox" id="advanced-search" name="advanced-search">
-                <div id="advanced-search-options" style="display: none;">
-                    <div class="filter-field">
-                        <label for="filter-producto">Producto asociado:</label>
-                        <input type="text" name="filter-producto" class="filter-input" placeholder="Ingrese el producto">
-                    </div>
+                <div class="filter-field">
+                    <label for="filter-diametrica">Clase diamétrica:</label>
+                    <input type="text" id="filter-diametrica" class="filter-input">
                 </div>
-                <button type="submit" class="filter-button">Buscar</button>
-                <button type="button" class="clear-filter-button">Cancelar</button>
+                <div class="filter-field">
+                    <label for="filter-longitud">Longitud:</label>
+                    <input type="text" id="filter-longitud" class="filter-input">
+                </div>
+                <div class="filter-field">
+                    <label for="filter-cantidad">Cantidad:</label>
+                    <input type="text" id="filter-cantidad" class="filter-input">
+                </div>
+            </div>
+            <div class="filter-button-container">
+                <button type="button" id="filter-button" class="filter-button">Buscar</button>
+                <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
+       
+        
     </div>
     <div class="form-container-pedido">
-        <form method="POST" action="{% url 'pedidos' %}">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="POST" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
                     
             <label for="id_cliente">Cliente</label>
@@ -111,7 +133,39 @@
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
+<script>
+    var toggleFilterButton = document.getElementById('toggle-filter-button');
+    var filterForm = document.getElementById('filter-form');
+    var cancelFilterButton = document.getElementById('cancel-filter-button');
+    var closeFilterButton = document.getElementById('cancel-filter-button');
+    var isFilterVisible = false; // Variable de estado para el filtro
 
+    toggleFilterButton.addEventListener('click', function() {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
+        }
+    });
+
+    cancelFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });
+
+    closeFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });   
+</script>
     <script>
         $(document).ready(function() {
             const filterForm = document.querySelector('.filter-form');
@@ -137,8 +191,24 @@
         });
 
         </script>
-        
-        {% include "partials/footer.html" %}
+        <script>
+            const toggleButton = document.getElementById("toggle-carga-button");
+            const cargaForm = document.querySelector(".form-container-pedido form");
+
+            let isFormVisible = false;
+
+            toggleButton.addEventListener("click", function() {
+                if (!isFormVisible) {
+                    const buttonRect = toggleButton.getBoundingClientRect();
+                    const buttonBottom = buttonRect.bottom;
+                    cargaForm.style.display = "block";
+                    isFormVisible = true;
+                } else {
+                    cargaForm.style.display = "none";
+                    isFormVisible = false;
+                }
+            });
+        </script>
 </body>
 
 </html>
