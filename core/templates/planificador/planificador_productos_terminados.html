@@ -19,36 +19,32 @@
 <body>
     {% include "partials/header.html" %}
     <div class="filter-section">
-        
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
-        
-        
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
-                <label for="filter-buzon">N° Buzón:</label>
+                <label for="filter-buzon">Código:</label>
                 <input type="text" id="filter-buzon" class="filter-input">
             </div>
             <div class="advanced-filter-container">
                 <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
                 <input type="checkbox" id="advanced-filter-checkbox">
             </div>
-            
             <div id="advanced-filter" style="display: none;">
                 
                 <div class="filter-field">
-                    <label for="filter-madera">Madera:</label>
+                    <label for="filter-madera">Nombre:</label>
                     <input type="text" id="filter-madera" class="filter-input">
                 </div>
                 <div class="filter-field">
-                    <label for="filter-diametrica">Clase diamétrica:</label>
+                    <label for="filter-diametrica">Grosor:</label>
                     <input type="text" id="filter-diametrica" class="filter-input">
                 </div>
                 <div class="filter-field">
-                    <label for="filter-longitud">Longitud:</label>
+                    <label for="filter-longitud">Ancho:</label>
                     <input type="text" id="filter-longitud" class="filter-input">
                 </div>
                 <div class="filter-field">
-                    <label for="filter-cantidad">Cantidad:</label>
+                    <label for="filter-cantidad">Largo:</label>
                     <input type="text" id="filter-cantidad" class="filter-input">
                 </div>
             </div>
@@ -57,8 +53,6 @@
                 <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
-       
-        
     </div>
     <div class="form-container-productos-terminados">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
@@ -81,10 +75,7 @@
                         <th>Grosor</th>
                         <th>Ancho</th>
                         <th>Largo</th>
-                        <th>Clase diametrica</th>
-                        <th>Patron corte</th>
-                        <th>Cantidad producida</th>
-                        <th>Fecha produccion</th>
+                        <th>Cantidad</th>
                         <th>Acciones</th>
                         
                     </tr>
@@ -97,10 +88,7 @@
                         <td>{{productoterminado.grosor}}</td>
                         <td>{{productoterminado.ancho}}</td>
                         <td>{{productoterminado.largo}}</td>
-                        <td>{{productoterminado.clase_diametrica}}</td>
-                        <td>{{productoterminado.patron_corte}}</td>
                         <td>{{productoterminado.cantidad_producida}}</td>
-                        <td>{{productoterminado.fecha_produccion}}</td>
                         <td>
                         <button class="btn block" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarproducto_terminado/{{productoterminado.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
@@ -112,8 +100,26 @@
         <br><br>
     </div>
     <div class="popup-overlay" id="popupOverlay"></div>
-    <div class="popup" id="popup">
-    </div>
+        <div class="popup" id="popup">
+            <h2>Detalles de la Productos Terminados</h2>
+            <div class="popup-content">
+                <p><strong>Código: </strong> <span id="popupCodigo"></span></p>
+                <p><strong>Nombre: </strong> <span id="popupNombre"></span></p>
+                <p><strong>Grosor: </strong> <span id="popupGrosor"></span></p>
+                <p><strong>Ancho: </strong> <span id="popupAncho"></span></p>
+                <p><strong>Alto: </strong><span id="popupLargo"></span></p>
+                <p><strong>Clase Diamétrica: </strong> <span id="popupClase"></span></p>
+                <p><strong>Patrón corte: </strong> <span id="popupPatron"></span></p>
+                <p><strong>Cantidad producida: </strong> <span id="popupCantidad"></span></p>
+                <p><strong>Fecha producción: </strong> <span id="popupFecha"></span></p>
+                <div style="text-align: center;">
+                    <button class="close-button" onclick="closePopup()">Cerrar</button> 
+                </div>
+            </div>
+        </div>
+
+    <script src="{% static 'js/filtro-productos-terminados.js'%}"></script>
+
     <script>
         var toggleFilterButton = document.getElementById('toggle-filter-button');
         var filterForm = document.getElementById('filter-form');

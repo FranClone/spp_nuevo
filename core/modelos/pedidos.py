@@ -8,7 +8,7 @@ class Pedido(models.Model):
     grosor = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
     ancho = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
     largo = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
-    productos_a_producir = models.TextField(null=False, blank=False)
+    productos_a_producir = models.CharField(max_length=20, null=False, blank=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     numero_pedido = models.CharField(max_length=20, null=False, blank=False)
     estado_pedido = models.CharField(max_length=20, null=False, blank=False)

@@ -55,11 +55,14 @@ function clearAdvancedFilterInputs() {
     filterCantidadInput.value = '';
 }
 
-function openPopup(codigoPatron, nombrePatron, productoAsociado, claseDiametrica) {
-    document.getElementById('popupCodigoPatron').textContent = codigoPatron;
-    document.getElementById('popupNombrePatron').textContent = nombrePatron;
-    document.getElementById('popupProductoAsociado').textContent = productoAsociado;
+function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
+    document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
+    document.getElementById('popupTipoMadera').textContent = tipoMadera;
     document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
+    document.getElementById('popupLongitud').textContent = longitud;
+    document.getElementById('popupCantidad').textContent = cantidad;
+    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
 }
 
 function closePopup() {

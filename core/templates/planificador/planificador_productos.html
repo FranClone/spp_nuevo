@@ -18,11 +18,9 @@
     {% include "partials/header.html" %}
     <button class="filter-button" >Filtrar</button>
     <div class="show-filter">
-        
-        <form class="filter-form">
-            <div class="filters-container">
+        <form class="filter-form" style="display: none;">
+            <div class="filters-container" >
                 <label for="filter-by">Filtrar por:</label>
-                
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
