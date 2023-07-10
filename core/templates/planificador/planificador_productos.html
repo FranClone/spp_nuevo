@@ -6,7 +6,7 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-productos.js' %}"></script>
@@ -16,15 +16,18 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    <button class="filter-button" >Filtrar</button>
     <div class="show-filter">
-        <button class="filter-button" >Filtrar</button>
+        
         <form class="filter-form">
             <div class="filters-container">
                 <label for="filter-by">Filtrar por:</label>
+                
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
                 </select>
+                <br/>
                 <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
                 <select name="filter-option" class="filter-select">
                     <option value="partial">Parcial</option>

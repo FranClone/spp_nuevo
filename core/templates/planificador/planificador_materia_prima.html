@@ -6,10 +6,11 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-materia-prima.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/vista-materia-prima.js' %}"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -17,17 +18,22 @@
 </head>
 <body>
     
-    {% include "partials/header.html" %}    
+    {% include "partials/header.html" %}  
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
+        
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
                 <label for="filter-buzon">N° Buzón:</label>
                 <input type="text" id="filter-buzon" class="filter-input" placeholder="Ingrese el N° Buzón">
             </div>
-            <input type="checkbox" id="advanced-filter-checkbox">
-            <label for="advanced-filter-checkbox">Búsqueda avanzada</label>
+            <div class="advanced-filter-container">
+                <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
+                <input type="checkbox" id="advanced-filter-checkbox">
+            </div>
+            
             <div id="advanced-filter" style="display: none;">
+                
                 <div class="filter-field">
                     <label for="filter-madera">Madera:</label>
                     <input type="text" id="filter-madera" class="filter-input" placeholder="Ingrese el tipo de madera">
@@ -50,10 +56,13 @@
                 <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
+       
+        
     </div>
 
     <div class="form-container-materia-prima">
-        <form method="POST" action="{% url 'plan_materia_prima' %}">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="POST" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
                            
             <label for="id_numero_buzon">N° Buzón</label>
@@ -70,9 +79,9 @@
                                 
             <label for="id_cantidad">Cantidad [m³]</label>
             {{ form.cantidad }}
-
-            <button type="submit" name="crear">Crear</button>
-            <button type="submit" name="crear">Carga masiva</button>
+            
+            <button type="submit" name="crear" style="border-radius:6px">Crear</button>
+        
         </form>
     </div>
 
@@ -105,12 +114,7 @@
     
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                             <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
-
-                        
-                        
                         </td>
-
-                        
                     </tr>
                     {% endfor %}
                 </tbody>
@@ -133,75 +137,58 @@
         </div>
     </div>
 
-    <script>
-        const filterForm = document.getElementById('filter-form');
-        const toggleFilterButton = document.getElementById('toggle-filter-button');
-        const advancedFilterCheckbox = document.getElementById('advanced-filter-checkbox');
-        const advancedFilter = document.getElementById('advanced-filter');
-        const filterButton = document.getElementById('filter-button');
-        const cancelFilterButton = document.getElementById('cancel-filter-button');
-        const filterBuzonInput = document.getElementById('filter-buzon');
-        const filterMaderaInput = document.getElementById('filter-madera');
-        const filterDiametricaInput = document.getElementById('filter-diametrica');
-        const filterLongitudInput = document.getElementById('filter-longitud');
-        const filterCantidadInput = document.getElementById('filter-cantidad');
-        const table = $('#materia-prima-table').DataTable();
+<script src="{% static 'js/filtro-materia_prima.js'%}"></script>
 
-        toggleFilterButton.addEventListener('click', () => {
-            filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
-            advancedFilter.style.display = 'none';
-            clearAdvancedFilterInputs();
-        });
+<script>
+    var toggleFilterButton = document.getElementById('toggle-filter-button');
+    var filterForm = document.getElementById('filter-form');
+    var cancelFilterButton = document.getElementById('cancel-filter-button');
+    var closeFilterButton = document.getElementById('cancel-filter-button');
+    var isFilterVisible = false; // Variable de estado para el filtro
 
-        advancedFilterCheckbox.addEventListener('change', () => {
-            advancedFilter.style.display = advancedFilterCheckbox.checked ? 'block' : 'none';
-        });
-
-        filterButton.addEventListener('click', () => {
-            applyFilters();
-        });
-
-        cancelFilterButton.addEventListener('click', () => {
-            filterBuzonInput.value = '';
-            clearAdvancedFilterInputs();
-            applyFilters();
-        });
-
-        function applyFilters() {
-            const buzonFilter = filterBuzonInput.value.toLowerCase();
-            const maderaFilter = filterMaderaInput.value.toLowerCase();
-            const diametricaFilter = filterDiametricaInput.value.toLowerCase();
-            const longitudFilter = filterLongitudInput.value.toLowerCase();
-            const cantidadFilter = filterCantidadInput.value.toLowerCase();
-
-            table.columns(0).search(buzonFilter).draw();
-            table.columns(1).search(maderaFilter).draw();
-            table.columns(2).search(diametricaFilter).draw();
-            table.columns(3).search(longitudFilter).draw();
-            table.columns(4).search(cantidadFilter).draw();
+    toggleFilterButton.addEventListener('click', function() {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
         }
+    });
 
-        function clearAdvancedFilterInputs() {
-            filterMaderaInput.value = '';
-            filterDiametricaInput.value = '';
-            filterLongitudInput.value = '';
-            filterCantidadInput.value = '';
+    cancelFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });
+
+    closeFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });   
+</script>
+<script>
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-materia-prima form");
+
+    let isFormVisible = false;
+
+    toggleButton.addEventListener("click", function() {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
         }
-        function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
-        document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
-        document.getElementById('popupTipoMadera').textContent = tipoMadera;
-        document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
-        document.getElementById('popupLongitud').textContent = longitud;
-        document.getElementById('popupCantidad').textContent = cantidad;
-        document.getElementById('popupOverlay').style.display = 'block';
-        document.getElementById('popup').style.display = 'block';
-    }
-
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
-        document.getElementById('popup').style.display = 'none';
-    }
-    </script>
-
+    });
+</script>
 </body>
 </html>
