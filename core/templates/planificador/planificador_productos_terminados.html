@@ -116,7 +116,7 @@
                         <td>{{productoterminado.cantidad_producida}}</td>
                         <td>{{productoterminado.fecha_produccion}}</td>
                         <td>
-                            <button class="btn block" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                            <button class="details-button" onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarproducto_terminado/{{productoterminado.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                     </tr>
                     {% endfor %}
@@ -128,7 +128,6 @@
     
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
-        <!-- Contenido del popup ... -->
     </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -227,6 +226,32 @@ function limpiarFiltros() {
             const advancedSearchOptions = document.getElementById('advanced-search-options');
             advancedSearchOptions.style.display = this.checked ? 'block' : 'none';
         });
+        function openPopup(id, nombreBodega, nombreEmpresa, descripcion) {
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popup = document.getElementById('popup');
+
+    // Mostrar el overlay y el contenido del popup
+    popupOverlay.style.display = 'block';
+    popup.innerHTML = `
+        <h2>ID: ${id}</h2>
+        <p>Nombre de Bodega: ${nombreBodega}</p>
+        <p>Nombre de Empresa: ${nombreEmpresa}</p>
+        <p>Descripción: ${descripcion}</p>
+        <button onclick="closePopup()">Cerrar</button>
+    `;
+    popup.style.display = 'block';
+}
+
+function closePopup() {
+    const popupOverlay = document.getElementById('popupOverlay');
+    const popup = document.getElementById('popup');
+
+    // Ocultar el overlay y el contenido del popup
+    popupOverlay.style.display = 'none';
+    popup.innerHTML = '';
+    popup.style.display = 'none';
+}
+
     </script>
 </body>
 </html>
