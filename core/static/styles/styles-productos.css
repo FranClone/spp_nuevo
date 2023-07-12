@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 .show-filter {
     position: relative;
 }
@@ -51,6 +52,8 @@
     font-weight: bold;
 }
 
+=======
+>>>>>>> 885028aa503c3449e8d289f49daf8ada012bad78
 form {
     display: flex;
     flex-wrap: wrap;
@@ -68,16 +71,42 @@ form select {
     margin-bottom: 10px;
 }
 
-.form-container-productos {
-    width: 90%;
-    margin: 20px auto;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: white;
+.form-container-productos form {
+    display: none;
+    position: absolute;
+    top: 30px;
+    z-index: 1;
+    background-color: rgba(243, 240, 240, 0.95);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.toggle-carga-button {
+    background-color: white;
+    border: 1px solid black;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .form-container-productos {
+    width: 15%;
+    float: right;
+    position: relative;
+    margin: 20px auto;
+    display: flex;
+    flex-direction: column;
+    background: rgb(243, 240, 240);
+    border-radius: 6px;
+}
+
+.carga-button {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+}
+
+.form-container-productos form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -97,7 +126,66 @@ form select {
     margin-bottom: 10px;
 }
 
+<<<<<<< HEAD
 
+=======
+.filter-section {
+    background-color: rgba(255, 255, 255, 0);
+    width: 50%;
+}
+
+.filter-button {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+    margin-top: 5px;
+    margin-left: 5px;
+}
+
+.filter-button:hover {
+    background-color: rgb(165, 9, 9);
+}
+
+.filter-section {
+    position: relative;
+}
+
+.filter-form {
+    position: absolute;
+    top: 30px;
+    left: 0;
+    width: 30%;
+    background-color: #f5f2f2ec;
+    padding: 30px;
+    z-index: 100;
+    border: 2px solid #000;
+    border-radius: 10px;
+}
+>>>>>>> 885028aa503c3449e8d289f49daf8ada012bad78
+
+.advanced-filter-container {
+    display: absolute;
+    align-items: center;
+}
+
+.checkbox-label {
+    margin-right: 50px;
+    width: 100%;
+}
+
+
+/* Estilos personalizados para el enlace */
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.table-container {
+    margin: 5%;
+    padding-top: 1%;
+    padding-bottom: 2%;
+}
 
 
 /* Estilos para el popup */
@@ -171,5 +259,5 @@ form select {
 
 a {
     text-decoration: none;
-    color: inherit; 
-  }
+    color: inherit;
+}

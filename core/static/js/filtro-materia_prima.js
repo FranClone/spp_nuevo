@@ -1,42 +1,40 @@
+const filterForm = document.getElementById('filter-form');
+const toggleFilterButton = document.getElementById('toggle-filter-button');
+const advancedFilterCheckbox = document.getElementById('advanced-filter-checkbox');
+const advancedFilter = document.getElementById('advanced-filter');
+const filterButton = document.getElementById('filter-button');
+const cancelFilterButton = document.getElementById('cancel-filter-button');
+const filterBuzonInput = document.getElementById('filter-buzon');
+const filterMaderaInput = document.getElementById('filter-madera');
+const filterDiametricaInput = document.getElementById('filter-diametrica');
+const filterLongitudInput = document.getElementById('filter-longitud');
+const filterCantidadInput = document.getElementById('filter-cantidad');
+const table = $('#materia-prima-table').DataTable({
 
-    const filterForm = document.getElementById('filter-form');
-    const toggleFilterButton = document.getElementById('toggle-filter-button');
-    const advancedFilterCheckbox = document.getElementById('advanced-filter-checkbox');
-    const advancedFilter = document.getElementById('advanced-filter');
-    const filterButton = document.getElementById('filter-button');
-    const cancelFilterButton = document.getElementById('cancel-filter-button');
-    const filterBuzonInput = document.getElementById('filter-buzon');
-    const filterMaderaInput = document.getElementById('filter-madera');
-    const filterDiametricaInput = document.getElementById('filter-diametrica');
-    const filterLongitudInput = document.getElementById('filter-longitud');
-    const filterCantidadInput = document.getElementById('filter-cantidad');
-    const table = $('#materia-prima-table').DataTable({
- 
+});
 
-      });
-
-        toggleFilterButton.addEventListener('click', () => {
-        filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
+toggleFilterButton.addEventListener('click', () => {
+    filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
     advancedFilter.style.display = 'none';
     clearAdvancedFilterInputs();
-        });
+});
 
-        advancedFilterCheckbox.addEventListener('change', () => {
-        advancedFilter.style.display = advancedFilterCheckbox.checked ? 'block' : 'none';
-        });
+advancedFilterCheckbox.addEventListener('change', () => {
+    advancedFilter.style.display = advancedFilterCheckbox.checked ? 'block' : 'none';
+});
 
-        filterButton.addEventListener('click', () => {
-        applyFilters();
-        });
+filterButton.addEventListener('click', () => {
+    applyFilters();
+});
 
-        cancelFilterButton.addEventListener('click', () => {
-        filterBuzonInput.value = '';
+cancelFilterButton.addEventListener('click', () => {
+    filterBuzonInput.value = '';
     clearAdvancedFilterInputs();
     applyFilters();
-        });
+});
 
-    function applyFilters() {
-            const buzonFilter = filterBuzonInput.value.toLowerCase();
+function applyFilters() {
+    const buzonFilter = filterBuzonInput.value.toLowerCase();
     const maderaFilter = filterMaderaInput.value.toLowerCase();
     const diametricaFilter = filterDiametricaInput.value.toLowerCase();
     const longitudFilter = filterLongitudInput.value.toLowerCase();
@@ -47,25 +45,26 @@
     table.columns(2).search(diametricaFilter).draw();
     table.columns(3).search(longitudFilter).draw();
     table.columns(4).search(cantidadFilter).draw();
-        }
+}
 
-    function clearAdvancedFilterInputs() {
-        filterMaderaInput.value = '';
+function clearAdvancedFilterInputs() {
+    filterMaderaInput.value = '';
     filterDiametricaInput.value = '';
     filterLongitudInput.value = '';
     filterCantidadInput.value = '';
-        }
-    function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
-        document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
+}
+
+function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
+    document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
     document.getElementById('popupTipoMadera').textContent = tipoMadera;
     document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
     document.getElementById('popupLongitud').textContent = longitud;
     document.getElementById('popupCantidad').textContent = cantidad;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
-    }
+}
 
-    function closePopup() {
-        document.getElementById('popupOverlay').style.display = 'none';
+function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
     document.getElementById('popup').style.display = 'none';
-    }
+}
