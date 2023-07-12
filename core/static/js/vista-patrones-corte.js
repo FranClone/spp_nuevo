@@ -1,26 +1,27 @@
 $(document).ready(function() {
-    $(".filter-button").click(function() {
-        $(".filter-form-fields").toggle();
-        $(".filter-button").toggleClass("show-filter");
+    $("#toggle-filter-button").click(function() {
+        $("#filter-form").toggle();
+        $(this).toggleClass("show-filter");
     });
 
-    $("#advanced-search").change(function() {
+    $("#advanced-filter-checkbox").change(function() {
         if ($(this).is(":checked")) {
-            $("#advanced-search-options").show();
+            $("#advanced-filter").show();
         } else {
-            $("#advanced-search-options").hide();
+            $("#advanced-filter").hide();
         }
     });
 
-    $(".filter-form").submit(function(e) {
+    $("#filter-form").submit(function(e) {
         e.preventDefault();
         applyFilter();
     });
 
-    $(".clear-filter-button").click(function() {
-        $(".filter-form")[0].reset();
+    $("#cancel-filter-button").click(function() {
+        $("#filter-form")[0].reset();
         applyFilter();
     });
+
     $(".details-button").click(function() {
         var codigo = $(this).data("codigo");
         var nombre = $(this).data("nombre");
@@ -35,11 +36,10 @@ $(document).ready(function() {
     });
 
     function applyFilter() {
-        var filterCodigo = $(".filter-input[name='filter-codigo']").val().toLowerCase();
-        var filterNombre = $(".filter-input[name='filter-nombre']").val().toLowerCase();
-        var filterProducto = $(".filter-input[name='filter-producto']").val().toLowerCase();
-        var filterClase = $(".filter-select[name='filter-clase']").val().toLowerCase();
-
+        var filterCodigo = $("#filter-buzon").val().toLowerCase();
+        var filterNombre = $("#filter-madera").val().toLowerCase();
+        var filterProducto = $("#filter-diametrica").val().toLowerCase();
+        var filterClase = $("#filter-longitud").val().toLowerCase();
 
         $("#patrones-table tbody tr").hide().each(function() {
             var rowDataCodigo = $(this).find("td:nth-child(1)").text().toLowerCase();
@@ -63,6 +63,7 @@ $(document).ready(function() {
             $(".no-data-message").hide();
         }
     }
+
     function openPopup(codigo, nombre, producto, clase) {
         $("#popupOverlay").fadeIn();
         $("#popup").fadeIn();
@@ -76,10 +77,7 @@ $(document).ready(function() {
         $("#popupOverlay").fadeOut();
         $("#popup").fadeOut();
     }
+
     // Configuración de DataTables
-    $("#patrones-table").DataTable({
-
-
-    });
-
+    $("#patrones-table").DataTable();
 });

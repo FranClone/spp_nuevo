@@ -10,14 +10,13 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-productos.js' %}"></script>
-    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
 </head>
 <body>
     {% include "partials/header.html" %}
-    <button class="filter-button" >Filtrar</button>
-    <div class="show-filter">
+    <div class="filter-section">
+        <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
             <div class="filters-container" >
                 <label for="filter-by">Filtrar por:</label>
@@ -47,7 +46,6 @@
                     <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
                     <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
                     <br>
-                    
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
                 <button type="button" class="clear-filter-button">Cancelar</button>
@@ -63,6 +61,7 @@
             <button type="submit" name="crear">Crear</button>
         </form>
     </div>
+
     <div class="table-container">
         <div class="table-responsive">
             <h1 class="encabezado-pedidos">Productos</h1>
@@ -102,6 +101,7 @@
         </div>
         <br><br>
     </div>
+
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
         <h2>Detalles del producto</h2>
@@ -122,11 +122,10 @@
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
+    
     <script>
-        var toggleFilterButton = document.getElementById('toggle-filter-button');
-        var filterForm = document.getElementById('filter-form');
-        var cancelFilterButton = document.getElementById('cancel-filter-button');
-        var closeFilterButton = document.getElementById('cancel-filter-button');
+        var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+        var filterForm = document.querySelector('.filter-section .filter-form');
         var isFilterVisible = false; // Variable de estado para el filtro
 
         toggleFilterButton.addEventListener('click', function() {
@@ -140,38 +139,24 @@
                 isFilterVisible = true;
             }
         });
-
-        cancelFilterButton.addEventListener('click', function() {
-            filterForm.style.display = 'none';
-            filterForm.reset();
-            toggleFilterButton.innerText = 'Filtrar'; 
-            isFilterVisible = false;
-        });
-
-        closeFilterButton.addEventListener('click', function() {
-            filterForm.style.display = 'none';
-            filterForm.reset();
-            toggleFilterButton.innerText = 'Filtrar'; 
-            isFilterVisible = false;
-        });   
     </script>
     <script>
-    const toggleButton = document.getElementById("toggle-carga-button");
-    const cargaForm = document.querySelector(".form-container-productos form");
+        const toggleButton = document.getElementById("toggle-carga-button");
+        const cargaForm = document.querySelector(".form-container-productos form");
 
-    let isFormVisible = false;
+        let isFormVisible = false;
 
-    toggleButton.addEventListener("click", function() {
-        if (!isFormVisible) {
-            const buttonRect = toggleButton.getBoundingClientRect();
-            const buttonBottom = buttonRect.bottom;
-            cargaForm.style.display = "block";
-            isFormVisible = true;
-        } else {
-            cargaForm.style.display = "none";
-            isFormVisible = false;
-        }
-    });
-</script>
+        toggleButton.addEventListener("click", function() {
+            if (!isFormVisible) {
+                const buttonRect = toggleButton.getBoundingClientRect();
+                const buttonBottom = buttonRect.bottom;
+                cargaForm.style.display = "block";
+                isFormVisible = true;
+            } else {
+                cargaForm.style.display = "none";
+                isFormVisible = false;
+            }
+        });
+    </script>
 </body>
 </html>

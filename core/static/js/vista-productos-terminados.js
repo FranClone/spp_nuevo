@@ -12,15 +12,12 @@ function closePopup() {
 
 }
 
-
 document.querySelector('.filter-form').addEventListener('submit', function(event) {
     event.preventDefault();
     filtrar();
 });
 
-
 function filtrar() {
-
     const codigo = document.querySelector('input[name="filter-codigo"]').value;
     const nombre = document.querySelector('input[name="filter-nombre"]').value;
     const claseDiametrica = document.querySelector('select[name="filter-clase"]').value;
@@ -62,6 +59,7 @@ document.querySelector('.filter-form').addEventListener('submit', function(e) {
     e.preventDefault(); // Evitar que se recargue la página al enviar el formulario
     filtrar(); // Ejecutar la función de filtrado
 });
+
 // Función para limpiar los campos de filtro
 // Agregar el evento de click al botón de cancelar
 document.querySelector('.clear-filter-button').addEventListener('click', function(event) {
