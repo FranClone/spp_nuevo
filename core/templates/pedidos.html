@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-pedidos.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
-    <script src="{% static 'js/vista-pedidos.js' %}"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -19,61 +18,80 @@
 <body>
     {% include "partials/header.html" %}
     <div class="filter-section">
-        <form class="filter-form show-filter">
-            <button type="button" class="filter-button">Mostrar filtro</button>
-            <div class="filter-form-fields">
+        <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
+        <form id="filter-form" class="filter-form" style="display: none;">
+            <div class="filter-field">
+                <label for="filter-buzon">Cliente:</label>
+                <input type="text" id="filter-buzon" class="filter-input">
+            </div>
+            <div class="advanced-filter-container">
+                <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
+                <input type="checkbox" id="advanced-filter-checkbox">
+            </div>
+            
+            <div id="advanced-filter" style="display: none;">
+                
                 <div class="filter-field">
-                    <label for="filter-nombre">Nombre de cliente:</label>
-                    <input type="text" name="filter-nombre" class="filter-input" placeholder="Ingrese el nombre">
+                    <label for="filter-madera">Fecha:</label>
+                    <input type="text" id="filter-madera" class="filter-input">
                 </div>
-                <label for="advanced-search">Búsqueda avanzada:</label>
-                <input type="checkbox" id="advanced-search" name="advanced-search">
-                <div id="advanced-search-options" style="display: none;">
-                    <div class="filter-field">
-                        <label for="filter-producto">Producto asociado:</label>
-                        <input type="text" name="filter-producto" class="filter-input" placeholder="Ingrese el producto">
-                    </div>
-                </div>
-                <button type="submit" class="filter-button">Buscar</button>
-                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+            <div class="filter-button-container">
+                <button type="button" id="filter-button" class="filter-button">Buscar</button>
+                <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
     </div>
     <div class="form-container-pedido">
-        <form method="POST" action="{% url 'pedidos' %}">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="POST" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-                    
+
+            <!-- Campos del formulario ActualizarPedidoForm -->
             <label for="id_cliente">Cliente</label>
             {{ form.cliente }}
-                                
+
             <label for="id_fecha_entrega">Fecha de entrega</label>
             {{ form.fecha_entrega }}
-                        
+
             <label for="id_codigo">Código</label>
             {{ form.codigo }}
-                        
+
             <label for="id_nombre">Nombre</label>
             {{ form.nombre }}
-                        
+
             <label for="id_grosor">Grosor</label>
             {{ form.grosor }}
-                        
+
             <label for="id_ancho">Ancho</label>
             {{ form.ancho }}
-                        
+
             <label for="id_largo">Largo</label>
             {{ form.largo }}
-                        
+
             <label for="id_productos_a_producir">Productos a producir</label>
             {{ form.productos_a_producir }}
-                        
+
             <label for="id_cantidad">Cantidad</label>
             {{ form.cantidad }}
 
+            <label for="id_numero_pedido">Número de Pedido</label>
+            {{ form.numero_pedido }}
+
+            <label for="id_estado_pedido">Estado del Pedido</label>
+            {{ form.estado_pedido }}
+
+            <label for="id_prioridad">Prioridad</label>
+            {{ form.prioridad }}
+
+            <label for="id_destino_pedido">Destino del Pedido</label>
+            {{ form.destino_pedido }}
+
+            <!-- Botón para crear -->
             <button type="submit" name="crear">Crear</button>
         </form>
     </div>
-    <div class="table-container container">
+    <div class="table-container">
         <h1 class="encabezado-pedidos">Pedidos</h1>
         <div class="table-responsive">
             <table class="table w-100">
@@ -112,6 +130,41 @@
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
 
+<script src="{% static 'js/filtro-pedidos.js'%}"></script>
+
+<script>
+    var toggleFilterButton = document.getElementById('toggle-filter-button');
+    var filterForm = document.getElementById('filter-form');
+    var cancelFilterButton = document.getElementById('cancel-filter-button');
+    var closeFilterButton = document.getElementById('cancel-filter-button');
+    var isFilterVisible = false; // Variable de estado para el filtro
+
+    toggleFilterButton.addEventListener('click', function() {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
+        }
+    });
+
+    cancelFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });
+
+    closeFilterButton.addEventListener('click', function() {
+        filterForm.style.display = 'none';
+        filterForm.reset();
+        toggleFilterButton.innerText = 'Filtrar'; 
+        isFilterVisible = false;
+    });   
+</script>
     <script>
         $(document).ready(function() {
             const filterForm = document.querySelector('.filter-form');
@@ -137,8 +190,24 @@
         });
 
         </script>
-        
-        {% include "partials/footer.html" %}
+        <script>
+            const toggleButton = document.getElementById("toggle-carga-button");
+            const cargaForm = document.querySelector(".form-container-pedido form");
+
+            let isFormVisible = false;
+
+            toggleButton.addEventListener("click", function() {
+                if (!isFormVisible) {
+                    const buttonRect = toggleButton.getBoundingClientRect();
+                    const buttonBottom = buttonRect.bottom;
+                    cargaForm.style.display = "block";
+                    isFormVisible = true;
+                } else {
+                    cargaForm.style.display = "none";
+                    isFormVisible = false;
+                }
+            });
+        </script>
 </body>
 
 </html>

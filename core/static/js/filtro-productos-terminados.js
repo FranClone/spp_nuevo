@@ -11,7 +11,6 @@ const filterLongitudInput = document.getElementById('filter-longitud');
 const filterCantidadInput = document.getElementById('filter-cantidad');
 const table = $('#materia-prima-table').DataTable({
 
-
 });
 
 toggleFilterButton.addEventListener('click', () => {
@@ -55,11 +54,18 @@ function clearAdvancedFilterInputs() {
     filterCantidadInput.value = '';
 }
 
-function openPopup(codigoPatron, nombrePatron, productoAsociado, claseDiametrica) {
-    document.getElementById('popupCodigoPatron').textContent = codigoPatron;
-    document.getElementById('popupNombrePatron').textContent = nombrePatron;
-    document.getElementById('popupProductoAsociado').textContent = productoAsociado;
-    document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
+function openPopup(codigo, nombre, grosor, ancho, largo, clase, patron, cantidad, fecha) {
+    document.getElementById('popupCodigo').textContent = codigo;
+    document.getElementById('popupNombre').textContent = nombre;
+    document.getElementById('popupGrosor').textContent = grosor;
+    document.getElementById('popupAncho').textContent = ancho;
+    document.getElementById('popupLargo').textContent = largo;
+    document.getElementById('popupClase').textContent = clase;
+    document.getElementById('popupPatron').textContent = patron;
+    document.getElementById('popupCantidad').textContent = cantidad;
+    document.getElementById('popupFecha').textContent = fecha;
+    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
 }
 
 function closePopup() {

@@ -18,11 +18,9 @@
     {% include "partials/header.html" %}
     <button class="filter-button" >Filtrar</button>
     <div class="show-filter">
-        
-        <form class="filter-form">
-            <div class="filters-container">
+        <form class="filter-form" style="display: none;">
+            <div class="filters-container" >
                 <label for="filter-by">Filtrar por:</label>
-                
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
@@ -58,11 +56,11 @@
     </div>
     
     <div class="form-container-productos">
-        <form method="post" action="{% url 'plan_productos' %}">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="post" action="{% url 'plan_productos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
-            <button type="submit" name="crear">Carga masiva</button>
         </form>
     </div>
     <div class="table-container">
@@ -124,6 +122,56 @@
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
-    
+    <script>
+        var toggleFilterButton = document.getElementById('toggle-filter-button');
+        var filterForm = document.getElementById('filter-form');
+        var cancelFilterButton = document.getElementById('cancel-filter-button');
+        var closeFilterButton = document.getElementById('cancel-filter-button');
+        var isFilterVisible = false; // Variable de estado para el filtro
+
+        toggleFilterButton.addEventListener('click', function() {
+            if (isFilterVisible) {
+                filterForm.style.display = 'none';
+                toggleFilterButton.innerText = 'Filtrar';
+                isFilterVisible = false;
+            } else {
+                filterForm.style.display = 'block';
+                toggleFilterButton.innerText = 'Ocultar filtro';
+                isFilterVisible = true;
+            }
+        });
+
+        cancelFilterButton.addEventListener('click', function() {
+            filterForm.style.display = 'none';
+            filterForm.reset();
+            toggleFilterButton.innerText = 'Filtrar'; 
+            isFilterVisible = false;
+        });
+
+        closeFilterButton.addEventListener('click', function() {
+            filterForm.style.display = 'none';
+            filterForm.reset();
+            toggleFilterButton.innerText = 'Filtrar'; 
+            isFilterVisible = false;
+        });   
+    </script>
+    <script>
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-productos form");
+
+    let isFormVisible = false;
+
+    toggleButton.addEventListener("click", function() {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
+        }
+    });
+</script>
 </body>
 </html>
