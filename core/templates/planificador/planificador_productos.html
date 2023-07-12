@@ -13,24 +13,26 @@
     <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
-  
-    
 </head>
 <body>
     {% include "partials/header.html" %}
-    <button class="filter-button" >Filtrar</button>
+    <div>
+        <button class="filter-button" >Filtrar</button>
+    </div>
     <div class="show-filter">
         
         <form class="filter-form">
             <div class="filters-container">
+                <div>
                 <label for="filter-by">Filtrar por:</label>
-                
+                </div>
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
                 </select>
-                <br/>
+                <div>
                 <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                </div>
                 <select name="filter-option" class="filter-select">
                     <option value="partial">Parcial</option>
                     <option value="exact">Exacto</option>
