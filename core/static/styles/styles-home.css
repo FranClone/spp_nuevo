@@ -6,6 +6,33 @@
     margin-top:4%;
     padding: 0 10px;
 }
+.carga-button-top {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+	width: 100%;
+}
+
+.carga-button-bot {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+	
+}
+
+.buttons-top{
+	float: right;
+    position: relative;
+	
+}
+
+.buttons-bot{
+	margin-left: 40%;
+	margin-top: -4.5%;
+	
+	
+}
+
 
 #gantt{
 	font-family: "Roboto";
