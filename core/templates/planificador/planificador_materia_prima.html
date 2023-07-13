@@ -92,7 +92,7 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Número de buzón</th>
-                        
+                        <th>Tipo madera</th>
                         <th>Clase diamétrica</th>
                         <th>Largo [mm]</th>
                         <th>Cantidad [m³]</th>
@@ -104,7 +104,7 @@
                     {% for materia_prima in materias_primas %}
                     <tr>
                         <td>{{ materia_prima.numero_buzon }}</td>
-                       
+                        <td>{{ materia_prima.tipo_madera }}</td>
                         <td>{{ materia_prima.clase_diametrica }}</td>
                         <td>{{ materia_prima.longitud }}</td>
                         <td>{{ materia_prima.cantidad }}</td>
