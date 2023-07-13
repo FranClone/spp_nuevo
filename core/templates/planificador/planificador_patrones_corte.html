@@ -9,7 +9,7 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-patrones-corte.js' %}"></script>
-    <script src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/filtro-patrones_corte.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Patrones de Corte</title>
 </head>
@@ -30,7 +30,6 @@
             <div id="advanced-filter" style="display: none;">
                 <div class="filter-field">
                     <label for="filter-madera">Nombre:</label>
-                    <input type="text" id="filter-madera" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-diametrica">Producto asociado:</label>
@@ -82,7 +81,7 @@
                                 <button class="details-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">
                                     <i class="fa-regular fa-clipboard fa-bounce fa-xl"></i>
                                 </button>
-                                <a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a>
+                                <a href="eliminarpatron/{{ patron.id }}" class="fas fa-trash-alt fa-bounce fa-xl"></a>
                             </td>
                         </tr>
                     {% empty %}
@@ -111,57 +110,47 @@
         </div>
     </div>
 
-<script src="{% static 'js/filtro-patrones_corte.js'%}"></script>
-<script>
-    var toggleFilterButton = document.getElementById('toggle-filter-button');
-    var filterForm = document.getElementById('filter-form');
-    var cancelFilterButton = document.getElementById('cancel-filter-button');
-    var closeFilterButton = document.getElementById('cancel-filter-button');
-    var isFilterVisible = false; // Variable de estado para el filtro
+    <script>
+        var toggleFilterButton = document.getElementById('toggle-filter-button');
+        var filterForm = document.getElementById('filter-form');
+        var cancelFilterButton = document.getElementById('cancel-filter-button');
+        var isFilterVisible = false; // Variable de estado para el filtro
+
+        toggleFilterButton.addEventListener('click', function() {
+            if (isFilterVisible) {
+                filterForm.style.display = 'none';
+                toggleFilterButton.innerText = 'Filtrar';
+                isFilterVisible = false;
+            } else {
+                filterForm.style.display = 'block';
+                toggleFilterButton.innerText = 'Ocultar filtro';
+                isFilterVisible = true;
+            }
+        });
+
+        cancelFilterButton.addEventListener('click', function() {
+            filterForm.style.display = 'none';
+            filterForm.reset();
+            toggleFilterButton.innerText = 'Filtrar'; 
+            isFilterVisible = false;
+        });
+    </script>
+
+    <script>
+        const toggleFilterButton = document.getElementById('toggle-filter-button');
+        const filterForm = document.getElementById('filter-form');
+        let isFilterVisible = false;
 
     toggleFilterButton.addEventListener('click', function() {
         if (isFilterVisible) {
             filterForm.style.display = 'none';
-            toggleFilterButton.innerText = 'Filtrar';
             isFilterVisible = false;
         } else {
-            filterForm.style.display = 'block';
-            toggleFilterButton.innerText = 'Ocultar filtro';
-            isFilterVisible = true;
-        }
-    });
+    filterForm.style.display = 'block';
+    isFilterVisible = true;
+  }
+});
 
-    cancelFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'none';
-        filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; 
-        isFilterVisible = false;
-    });
-
-    closeFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'none';
-        filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; 
-        isFilterVisible = false;
-    });   
-</script>
-<script>
-    const toggleButton = document.getElementById("toggle-carga-button");
-    const cargaForm = document.querySelector(".form-container-patron-corte form");
-
-    let isFormVisible = false;
-
-    toggleButton.addEventListener("click", function() {
-        if (!isFormVisible) {
-            const buttonRect = toggleButton.getBoundingClientRect();
-            const buttonBottom = buttonRect.bottom;
-            cargaForm.style.display = "block";
-            isFormVisible = true;
-        } else {
-            cargaForm.style.display = "none";
-            isFormVisible = false;
-        }
-    });
-</script>
+    </script>
 </body>
 </html>

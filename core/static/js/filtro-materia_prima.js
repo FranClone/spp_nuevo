@@ -9,9 +9,7 @@ const filterMaderaInput = document.getElementById('filter-madera');
 const filterDiametricaInput = document.getElementById('filter-diametrica');
 const filterLongitudInput = document.getElementById('filter-longitud');
 const filterCantidadInput = document.getElementById('filter-cantidad');
-const table = $('#materia-prima-table').DataTable({
-
-});
+const table = $('#materia-prima-table').DataTable();
 
 toggleFilterButton.addEventListener('click', () => {
     filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
