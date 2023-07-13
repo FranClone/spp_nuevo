@@ -9,7 +9,9 @@ const filterMaderaInput = document.getElementById('filter-madera');
 const filterDiametricaInput = document.getElementById('filter-diametrica');
 const filterLongitudInput = document.getElementById('filter-longitud');
 const filterCantidadInput = document.getElementById('filter-cantidad');
-const table = $('#materia-prima-table').DataTable();
+const table = $('#materia-prima-table').DataTable({
+
+});
 
 toggleFilterButton.addEventListener('click', () => {
     filterForm.style.display = filterForm.style.display === 'none' ? 'block' : 'none';
@@ -52,12 +54,16 @@ function clearAdvancedFilterInputs() {
     filterCantidadInput.value = '';
 }
 
-function openPopup(numeroBuzon, tipoMadera, claseDiametrica, longitud, cantidad) {
-    document.getElementById('popupNumeroBuzon').textContent = numeroBuzon;
-    document.getElementById('popupTipoMadera').textContent = tipoMadera;
-    document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
-    document.getElementById('popupLongitud').textContent = longitud;
+function openPopup(codigo, nombre, grosor, ancho, largo, clase, patron, cantidad, fecha) {
+    document.getElementById('popupCodigo').textContent = codigo;
+    document.getElementById('popupNombre').textContent = nombre;
+    document.getElementById('popupGrosor').textContent = grosor;
+    document.getElementById('popupAncho').textContent = ancho;
+    document.getElementById('popupLargo').textContent = largo;
+    document.getElementById('popupClase').textContent = clase;
+    document.getElementById('popupPatron').textContent = patron;
     document.getElementById('popupCantidad').textContent = cantidad;
+    document.getElementById('popupFecha').textContent = fecha;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }

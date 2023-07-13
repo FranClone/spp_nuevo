@@ -1,5 +1,66 @@
-.radio-buttons{
-    background: white;
-    margin-left: 94%;
-    opacity: 0.8;
+/* Basic styles  */
+.table-container{
+    background-color: rgba(255, 255, 255, 0.952);
+    height:auto;
+    margin: 5%;
+    margin-top:4%;
+    padding: 0 10px;
+}
+
+#gantt{
+	font-family: "Roboto";
+}
+
+#gantt table{
+	border-collapse: collapse;
+	border-spacing: 0px 20px;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.801);
+    width: calc(100% - 20px); /* Resta 20px para tener un margen de 10px a cada lado */
+}
+
+table tr{
+	border-bottom: 2px solid rgba(255, 255, 255, 0.801);
+}
+
+#gantt table tr th{
+	border:  1.5px solid rgba(255, 255, 255, 0.801);
+	border-collapse: collapse;
+	padding: 9px;
+	font-size: 12px;
+	background-color: lightgray;
+	line-height: 35px;
+    
+}
+
+
+#gantt table tr td{
+	padding: 5px;
+	line-height: 35px;
+	border-left:  1.5px solid rgba(255, 255, 255, 0.801);
+	width: 250px;
+}
+
+#gantt table tr td:last-child{
+	border-right:  1.5px solid rgba(255, 255, 255, 0.801);
+}
+
+#gantt table tr td.event-cell{
+	color: white;
+	font-size: 12px;
+	text-align: left;
+	padding-left: 10px;
+	border-radius: 26px;
+	border-left: none;
+}
+
+#gantt table tr td.event-cell:last-child{
+	border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+}
+
+#gantt table tr td.event-cell span{
+	background-color: #f6a400;
+	padding: 5px 10px;
+	border-radius: 15px;
+	margin-right: 10px;
+	color: #685c43;
 }

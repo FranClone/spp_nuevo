@@ -1,6 +1,6 @@
 $(document).ready(function() {
     var $filterButton = $(".filter-button");
-    var $showFilterForm = $(".show-filter .filter-form");
+    var $showFilterForm = $(".filter-form");
     var $advancedSearch = $("#advanced-search");
     var $advancedSearchOptions = $("#advanced-search-options");
     var $filterForm = $(".filter-form");

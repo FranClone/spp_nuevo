@@ -17,38 +17,37 @@
     <title>SPP - Materia Prima</title>
 </head>
 <body>
-    
     {% include "partials/header.html" %}  
+
+    <!--Sección de filtrado-->
+
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
-        
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
                 <label for="filter-buzon">N° Buzón:</label>
-                <input type="text" id="filter-buzon" class="filter-input" placeholder="Ingrese el N° Buzón">
+                <input type="text" id="filter-buzon" class="filter-input">
             </div>
             <div class="advanced-filter-container">
                 <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
                 <input type="checkbox" id="advanced-filter-checkbox">
             </div>
-            
             <div id="advanced-filter" style="display: none;">
-                
                 <div class="filter-field">
                     <label for="filter-madera">Madera:</label>
-                    <input type="text" id="filter-madera" class="filter-input" placeholder="Ingrese el tipo de madera">
+                    <input type="text" id="filter-madera" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-diametrica">Clase diamétrica:</label>
-                    <input type="text" id="filter-diametrica" class="filter-input" placeholder="Ingrese la clase diamétrica">
+                    <input type="text" id="filter-diametrica" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-longitud">Longitud:</label>
-                    <input type="text" id="filter-longitud" class="filter-input" placeholder="Ingrese la longitud [m]">
+                    <input type="text" id="filter-longitud" class="filter-input">
                 </div>
                 <div class="filter-field">
                     <label for="filter-cantidad">Cantidad:</label>
-                    <input type="text" id="filter-cantidad" class="filter-input" placeholder="Ingrese la cantidad [m³]">
+                    <input type="text" id="filter-cantidad" class="filter-input">
                 </div>
             </div>
             <div class="filter-button-container">
@@ -56,34 +55,31 @@
                 <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
             </div>
         </form>
-       
-        
     </div>
+
+    <!--Carga Manual de Materia Prima-->
 
     <div class="form-container-materia-prima">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="POST" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-                           
+            <h5>Ingresar materia prima </h5>
+            <br>
             <label for="id_numero_buzon">N° Buzón</label>
-            {{ form.numero_buzon }}
-                                
+            {{ form.numero_buzon }}                                
             <label for="id_tipo_madera">Madera</label>
-            {{ form.tipo_madera }}
-                                
+            {{ form.tipo_madera }}              
             <label for="id_clase_diametrica">Clase diamétrica</label>
             {{ form.clase_diametrica }}
-
-            <label for="id_longitud">Largo [mm]</label>
-            {{ form.longitud }}
-                                
+            <label for="id_longitud">Longitud [m]</label>
+            {{ form.longitud }}                
             <label for="id_cantidad">Cantidad [m³]</label>
             {{ form.cantidad }}
-            
             <button type="submit" name="crear" style="border-radius:6px">Crear</button>
-        
         </form>
     </div>
+
+    <!--Tabla con la materia prima-->
 
     <div class="table-container">
         <div class="table-responsive">
@@ -97,7 +93,6 @@
                         <th>Largo [mm]</th>
                         <th>Cantidad [m³]</th>
                         <th>Mostrar detalle</th> 
-                        
                     </tr>
                 </thead>
                 <tbody>
@@ -109,11 +104,9 @@
                         <td>{{ materia_prima.longitud }}</td>
                         <td>{{ materia_prima.cantidad }}</td>
                         <td>
-                            <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                            
-    
+                        <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
-                            <a href="eliminarmateria/{{materia_prima.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
+                        <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                         </td>
                     </tr>
                     {% endfor %}
@@ -137,13 +130,10 @@
         </div>
     </div>
 
-<script src="{% static 'js/filtro-materia_prima.js'%}"></script>
-
 <script>
     var toggleFilterButton = document.getElementById('toggle-filter-button');
     var filterForm = document.getElementById('filter-form');
     var cancelFilterButton = document.getElementById('cancel-filter-button');
-    var closeFilterButton = document.getElementById('cancel-filter-button');
     var isFilterVisible = false; // Variable de estado para el filtro
 
     toggleFilterButton.addEventListener('click', function() {
@@ -158,19 +148,49 @@
         }
     });
 
+    filterForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        filtrar();
+    });
+
     cancelFilterButton.addEventListener('click', function() {
         filterForm.style.display = 'none';
         filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; 
+        toggleFilterButton.innerText = 'Filtrar';
         isFilterVisible = false;
     });
 
-    closeFilterButton.addEventListener('click', function() {
-        filterForm.style.display = 'none';
-        filterForm.reset();
-        toggleFilterButton.innerText = 'Filtrar'; 
-        isFilterVisible = false;
-    });   
+    function filtrar() {
+        const numeroBuzon = document.getElementById('filter-buzon').value;
+        const tipoMadera = document.getElementById('filter-madera').value;
+        const claseDiametrica = document.getElementById('filter-diametrica').value;
+        const longitud = document.getElementById('filter-longitud').value;
+        const cantidad = document.getElementById('filter-cantidad').value;
+
+        const table = document.getElementById('materia-prima-table');
+        const rows = table.getElementsByTagName('tr');
+
+        for (let i = 1; i < rows.length; i++) {
+            const row = rows[i];
+            const numeroBuzonColumn = row.cells[0].innerText;
+            const tipoMaderaColumn = row.cells[1].innerText;
+            const claseDiametricaColumn = row.cells[2].innerText;
+            const longitudColumn = row.cells[3].innerText;
+            const cantidadColumn = row.cells[4].innerText;
+
+            if (
+                (numeroBuzon !== '' && numeroBuzonColumn !== numeroBuzon) ||
+                (tipoMadera !== '' && tipoMaderaColumn !== tipoMadera) ||
+                (claseDiametrica !== '' && claseDiametricaColumn !== claseDiametrica) ||
+                (longitud !== '' && longitudColumn !== longitud) ||
+                (cantidad !== '' && cantidadColumn !== cantidad)
+            ) {
+                row.style.display = 'none';
+            } else {
+                row.style.display = '';
+            }
+        }
+    }
 </script>
 <script>
     const toggleButton = document.getElementById("toggle-carga-button");

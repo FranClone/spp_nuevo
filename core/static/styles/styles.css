@@ -145,9 +145,6 @@ li {
     width: 100%;
 }
 
-    
-    
-
 .form-carga-individual {
     background: white;
     width: 50%;
@@ -448,17 +445,19 @@ li {
     color: #fff;
 }
 
+
 /* ------ LOGO BETECH ANIMATION ------*/
+
 #logo-navbar {
-  display: block;
-  text-align: center;
-  text-decoration: none;
-  height: 40px;
-  border-radius: 560%;
-  box-shadow: 0px 0px 7px rgba(0, 0, 0, 30);
-  position: relative;
-  z-index: 1;
-  transition: background-color 0.5s ease;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    height: 40px;
+    border-radius: 560%;
+    box-shadow: 0px 0px 7px rgba(0, 0, 0, 30);
+    position: relative;
+    z-index: 1;
+    transition: background-color 0.5s ease;
 }
 
 #logo-navbar:hover {
@@ -466,31 +465,34 @@ li {
 }
 
 #logo-navbar img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .logo:before {
-  content: "";
-  display: block;
-  position: absolute;
-  top: 33%;
-  left: -200%;
-  width: 6%;
-  height: 40%;
-  background-image: url('../img/Betech.png'); /* Cambia 'ruta-de-la-imagen' por la URL de la imagen */
-  background-size: cover;
-  background-position: center;
-  transform: translateX(15%);
-  transition: transform 0.3s ease-in, left 0.1s ease-out;
-  z-index: -1;
+    content: "";
+    display: block;
+    position: absolute;
+    top: 33%;
+    left: -200%;
+    width: 6%;
+    height: 40%;
+    background-image: url('../img/Betech.png');
+    /* Cambia 'ruta-de-la-imagen' por la URL de la imagen */
+    background-size: cover;
+    background-position: center;
+    transform: translateX(15%);
+    transition: transform 0.3s ease-in, left 0.1s ease-out;
+    z-index: -1;
 }
 
 .logo:hover::before {
-  transform: translateX(68%);
-  left: 0;
+    transform: translateX(68%);
+    left: 0;
 }
+
+
 /*------------------------------------*/
 
 .menu-vertical {
@@ -663,7 +665,8 @@ li {
     transition: 1s all;
 }
 
-/* -----  Dashboard/Charts ----- */ 
+
+/* -----  Dashboard/Charts ----- */
 
 h2 {
     color: #000;
@@ -675,7 +678,7 @@ h2 {
     text-decoration: none;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
@@ -684,40 +687,41 @@ hr {
     margin: 10px 0;
 }
 
-.cols-1{
+.cols-1 {
     flex: 0 0 26%;
     margin: 10px;
     /* max-height: 100%; Eliminar esta propiedad */
 }
 
-.cols-2{
+.cols-2 {
     flex: 0 0 70%;
     margin: 10px;
     margin-right: 0;
     /* max-height: 100%; Eliminar esta propiedad */
 }
 
-@media (max-width: 768px) {
-  
-  }
+@media (max-width: 768px) {}
+
 
 /*Figure es el recuadro en el que ira el grafico a desplegar*/
-figure{
-    background-color:#ffffffe3;
+
+figure {
+    background-color: #ffffffe3;
     background-size: cover;
     padding: 10px 10px 30px;
     border-radius: 10px;
     width: 97%;
     height: 35.000em;
-    display:flex;
+    display: flex;
     justify-content: center;
     align-items: center;
 }
+
 figure canvas {
     max-width: 100%;
     max-height: 100%;
     overflow: auto;
-  }
+}
 
 canvas {
     max-width: 100%;
@@ -725,29 +729,33 @@ canvas {
     height: 35.000em;
 }
 
+
 /*    estiloDash *****************************/
-.dashboard{
+
+.dashboard {
     padding: 0;
     margin: 0;
-    box-sizing: border-box; /* Agregar esta propiedad */
-}  
+    box-sizing: border-box;
+    /* Agregar esta propiedad */
+}
 
 .cont {
     margin-top: 2%;
     margin-left: 10px;
     display: flex;
     justify-content: space-between;
-    align-items: stretch; 
-    flex-wrap: wrap; /* Agregar esta propiedad */
+    align-items: stretch;
+    flex-wrap: wrap;
+    /* Agregar esta propiedad */
 }
 
-.contenedor{
+.contenedor {
     width: 100%;
     max-width: 100%;
     margin: 0;
 }
 
-.selectbox{
+.selectbox {
     width: 100%;
     /* height: 20px; Modificar esta propiedad */
     height: auto;
@@ -755,7 +763,7 @@ canvas {
     position: relative;
 }
 
-.select{
+.select {
     background: #ffffffe3;
     box-shadow: 0px 0px 0px rgba(0, 0, 0, .16);
     border-radius: 10px;
@@ -775,32 +783,32 @@ canvas {
 .select.active,
 .select:hover {
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
-    border: 2px solid red; 
+    border: 2px solid red;
     align-items: center;
 }
 
 .select.active:before {
-    content: "" ;
+    content: "";
     display: block;
     height: 0;
     width: 0;
-    border-top: 15px solid red; 
+    border-top: 15px solid red;
     border-right: 15px solid transparent;
     border-bottom: 15px solid transparent;
     border-left: 15px solid transparent;
-    position: absolute; 
+    position: absolute;
     bottom: -30px;
     left: calc(50% - 15px);
     align-self: center;
 }
 
-.select i{
+.select i {
     font-size: 30px;
     margin-left: 30px;
-    color: red; 
+    color: red;
 }
 
-.titulo{
+.titulo {
     margin: 10px;
     background-color: transparent;
     color: #000;
@@ -810,18 +818,18 @@ canvas {
     text-decoration: none;
 }
 
-.textos{
+.textos {
     text-decoration: none;
-} 
+}
 
-.descripcion{
+.descripcion {
     font-size: 18px;
     color: #000;
     text-decoration-line: none;
     text-decoration-color: none;
 }
 
-.opciones{
+.opciones {
     background: #ffffffd7;
     border-radius: 10px;
     box-shadow: 0px 5px 10px rgba(0, 0, 0, .16);
@@ -833,53 +841,56 @@ canvas {
     position: absolute;
 }
 
-.opciones.active{
+.opciones.active {
     display: block;
     animation: fadeIn .3s forwards;
 }
 
+
 /* Animacion list*/
-@keyframes fadeIn{
-    from{
+
+@keyframes fadeIn {
+    from {
         transform: translateY(-180px)scale(.5);
     }
-    to{
+    to {
         transform: translateY(0)scale(1);
     }
 }
 
+
 /**/
-.contenido-opcion{
+
+.contenido-opcion {
     width: 100%;
     display: flex;
-    align-items: center; 
+    align-items: center;
     transition: .2 ease all;
-    /* padding: 20px; /*****************************/   
+    /* padding: 20px; /*****************************/
 }
 
-.opciones .contenido-opcion{
+.opciones .contenido-opcion {
     padding: 30px;
 }
 
-.contenido-opcion img{
+.contenido-opcion img {
     width: 60px;
     height: 60px;
     margin-right: 50px;
 }
 
-.opciones .contenido-opcion:hover{
+.opciones .contenido-opcion:hover {
     background: #fd0202;
 }
 
 .opciones .contenido-opcion:hover .titulo,
-.opciones .contenido-opcion:hover .descripcion{
+.opciones .contenido-opcion:hover .descripcion {
     background: #fd0202;
     text-decoration: none;
 }
 
-#imgChart{
+#imgChart {
     padding-left: 9%;
     width: fit-content;
     filter: grayscale(1);
 }
-

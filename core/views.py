@@ -357,7 +357,7 @@ def patron_corte(request):
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
 def pedidos(request):
-    pedidos = Pedidos.objects.all()
+    pedidos = Pedido.objects.all()
 
     if request.method == 'POST':
         if 'editar' in request.POST:
