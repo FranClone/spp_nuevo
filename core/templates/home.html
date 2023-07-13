@@ -4,184 +4,150 @@
     {% load static %}
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
-    <script src="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.js"></script>
-    <link href="https://cdn.dhtmlx.com/gantt/edge/dhtmlxgantt.css" rel="stylesheet">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
+    <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Roboto">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
-    <script>
-        $(document).ready(function() {
-            var input = $('input[type="file"]');
-            
-
-            input.change(function() {
-                var file = input[0].files[0];
-            
-                if (file && file.type === 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet') {
-                    $('.cargar-btn').addClass('verde');
-                } else {
-                    $('.cargar-btn').removeClass('verde');
-                }
-            });
-        });
-    </script>
+   
 </head>
 <body>
     {% include "partials/header.html" %}
-    <div class="radio-buttons">
-        
-        <input type="radio" id="radio1" name="radio" value="option1" checked>
-        <label for="radio1">Dia</label>
-    <br>
-        <input type="radio" id="radio2" name="radio" value="option2">
-        <label for="radio2">Semana</label>
-    <br>
-        <input type="radio" id="radio3" name="radio" value="option3">
-        <label for="radio3">Mes</label>
-    </div>
-
-
-<!--
-    <div class="carga">
-        <label class="label-carga-masiva" for="carga-multiple">Carga Excel
-            <script>
-                $('.label-carga-masiva').click(function() {
-                    window.location.href = "/pedido_multiple/";
-                });
-            </script>
-        </label>
-        <div class="carga-mini">
-            <form method="post" enctype="multipart/form-data" class="carga-masiva">
-                {% csrf_token %}
-                <div class="carga-micro">
-                    <input class ="label-carga-mini cargar-btn" type="submit" value="Carga datos Excel">
-                    <form action="{% url 'download_file' %}" method="get">
-                        <input class="label-carga-mini" type="submit" value="Descargar Formato" name="download">
-                    </form>
-                    <img id="icono_excel" src= "{% static 'img/icono_excel.png' %}" width="40" alt="">
-                </div>
-            </form>
-        </div>
-        <label class="label-carga-individual" for="carga-individual">Carga Individual
-            <script>
-                $('.label-carga-individual').click(function() {
-                    window.location.href = "/pedido/";
-                });
-            </script>
-        </label>        
-    </div>
-
-    <div class="progress">
-            <div class="progress-bar" role="progressbar" style="width: {{ progress }}%;" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100">{{ progress }}%</div>
-    </div>
-
--->
-
-
-    <div class="gantt-container">
-        <div class="gantt-here" id="gantt_here"></div>
-        <script>
-            var datos = {{ pedidos|safe }};
-            var datos2 = {{ productos|safe }}
-            // pedidos no se pueden mover
-            gantt.config.drag_move = false;
-            // pedido por default está bien
-            // no se pueden mover flechas
-            gantt.config.drag_links = false;
-            // no se puede mover el progreso
-            gantt.config.drag_progress = false;
-            // no se puede agrandar o achicar
-            gantt.config.drag_resize = false;
-            // no se pueden agregar más task
-            gantt.config.readonly = true;
-            gantt.init("gantt_here");
-            var data = [];
-            var colors = ['red', 'orange', 'brown', 'green', 'blue', 'purple', 'pink'];
-            for (var i = 0; i < datos.length; i++) {
-                var fechaRecepcion = new Date(datos[i].fecha_recepcion);
-                var fechaEntrega = new Date(datos[i].fecha_entrega);
-                var duration = Math.round((fechaEntrega - fechaRecepcion)/86400000)
-                fecha_recepcion = fechaRecepcion.toLocaleDateString();
-                fecha_entrega = fechaEntrega.toLocaleDateString();
-                var color = colors[i % colors.length];
-                var item = {
-                    id: i+1,
-                    custom_id: datos[i].id,
-                    text: "Pedido N° " + datos[i].numero_pedido,
-                    start_date: fecha_recepcion,
-                    duration: duration,
-                    color: color
-                };
-            data.push(item);
-            }
-            gantt.parse({data: data});
-            gantt.attachEvent("onTaskClick", function(id){
-                // Código predefinido de onTaskClick
-                // Esconde la tarea por default
-                // Obtiene la tarea
-                var task = gantt.getTask(id);
-                // Tu lógica personalizada aquí
-                if (!task.modalboxOpened) {
-                    // Crear la tabla
-                    var table = document.createElement('table');
-                    table.classList.add('gantt_modal_table');
-                    // Crear la fila de encabezado
-                    var headerRow = document.createElement('tr');
-                    var productHeader = document.createElement('th');
-                    var quantityHeader = document.createElement('th');
-                    productHeader.innerText = 'Producto';
-                    quantityHeader.innerText = 'Cantidad';
-                    headerRow.appendChild(productHeader);
-                    headerRow.appendChild(quantityHeader);
-                    table.appendChild(headerRow);
-
-                    // Crear una fila por cada producto
-                    for (var i = 0; i < datos2.length; i++) {
-                        if(datos[id-1].id === datos2[i].id){
-                            var row = document.createElement('tr');
-                            var productCell = document.createElement('td');
-                            var quantityCell = document.createElement('td');
-                            productCell.innerText = datos2[i].nombre_producto;
-                            quantityCell.innerText = datos2[i].volumen_producto;
-                            row.appendChild(productCell);
-                            row.appendChild(quantityCell);
-                            table.appendChild(row);
-                        }
+    <div class="table-container" style="overflow: auto; height: 75%;">
+        <br/>
+        <h1 class="text-center"> Organizador de Pedidos </h1>
+        <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
+            
+            
+            <script type="text/javascript">
+                class Gantt {
+                    /**
+                    * Inicializa la representación en HTML 
+                    * @param {array} lista de tareas
+                    */
+                    constructor(tasks) { 
+                    this.tasks = tasks;
+                    this.dateWidth = 178;
+                    this.setMinAndMaxDate(); 
+                    document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
                     }
-                    var dias = task.duration === 1 ? " día" : " días";
-                    var html =
-                    "<p><strong>Número de Pedido:</strong> " + datos[id-1].numero_pedido +
-                    "   <strong>Destino de pedido:</strong> " + datos[id-1].destino_pedido + "</p>" +
-                    "<p><strong>Fecha de Recepción:</strong> " + datos[id-1].fecha_recepcion +
-                    "   <strong>Fecha de Entrega:</strong> " + datos[id-1].fecha_entrega + "</p>" +
-                    "<p><strong>Duración:</strong> " + task.duration + dias +
-                    "<p><strong>Productos:</strong></p>" + table.outerHTML;
-                    // Abrir la ventana modal con la información de la tarea
-                    var box = gantt.modalbox({
-                        text: html,
-                        title:"Detalles del Pedido",
-                        width: "80%",
-                        height: "80%",
-                        buttons:[{ label:"Cerrar", value:"button", css:"btn-default" }]
-                    });
-                    task.modalboxOpened = true;
-                    var modalContent = document.querySelector('.gantt_modal_box');
-                    modalContent.style.overflowY = 'scroll';
-                    modalContent.style.maxHeight = 'calc(100% - 50px)'; // La altura máxima es el 
-                    //Agrega un botón para cerrar la tarea
-                    var cancelButton = document.querySelector(".gantt_popup_button");
-                    cancelButton.addEventListener("click", function() {
-                        gantt.modalbox.hide();
-                        task.modalboxOpened = false;
-                    });
+                
+                    /**
+                    * Obtiene las fechas mínima y máxima de todas las tareas
+                    */
+                    setMinAndMaxDate(){
+                    var maxDates = [];
+                    var minDates = [];
+                
+                    for(let i = 0; i < this.tasks.length; i++){
+                        minDates.push(new Date(this.tasks[i][1]));
+                        maxDates.push(new Date(this.tasks[i][2]));     
+                    }
+                    this.minDate = new Date(Math.min.apply(null,minDates));
+                    this.maxDate = new Date(Math.max.apply(null,maxDates)); 
+                
+                    }   
+                
+                    /**
+                    * Genera el HTML para el encabezado de la tabla
+                    * @returns {String} Código HTML
+                    */
+                    buildTableHeader(){
+                    var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;"><tr>';
+                    var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
+                    const actual = new Date(this.minDate);  
+                
+                    for(let i = 0; i < diffDays; i++){
+                        actual.setDate(actual.getDate() + 1);
+                        html += '<th>'+ this.formatDate(actual) +"</th>";     
+                    }
+                    html += '</tr></thead><tbody>';
+                
+                    return html;
+                    }
+                
+                    /**
+                    * Genera el HTML para el cuerpo de la tabla
+                    * @returns {String} Código HTML
+                    */
+                    buildTableBody(){
+                    var html = '';
+                
+                    for(let i = 0; i < this.tasks.length; i++){
+                        var task = this.tasks[i]; 
+                
+                        var dMin = new Date(task[1]);
+                        var dMax = new Date(task[2]);     
+                
+                        var days = this.diffInDays(dMax, dMin) + 1;
+                        var daysBefore = this.diffInDays(this.minDate, dMin);
+                        var daysAfter = this.diffInDays(dMax, this.maxDate);
+                
+                        if(this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
+                        if(this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
+                
+                        html += '<tr>';
+                        if(daysBefore > 0) for(let j = 0; j < daysBefore; j++) html += '<td></td>';
+                        html += '<td class="event-cell" colspan="'+days+'" style="background-color: '+task[3]+';"><span>'+task[4]+'% </span>'+task[0]+'</td>';
+                        if(daysAfter > 0) for(let j = 0; j < daysAfter; j++) html += '<td></td>';
+                        html += '</tr>';
+                    }
+                
+                    html += '</tbody></table>';
+                
+                    return html;
+                
+                    }
+                
+                    /**
+                    * Calcula la diferencia en días entre dos fechas
+                    * @param {Date} fecha máxima
+                    * @param {Date} fecha mínima
+                    * @returns {integer} número de días
+                    */
+                    diffInDays(max, min){
+                    var diffTime = Math.abs(max - min);
+                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                    }
+    
+                    /**
+                    * Formatea la fecha en formato 'DD/MM/YYYY'
+                    * @param {Date} fecha
+                    * @returns {String} fecha formateada
+                    */
+                    formatDate(date) {
+                    const day = date.getDate();
+                    const month = date.getMonth() + 1;
+                    const year = date.getFullYear();
+                    return `${day}/${month}/${year}`;
+                    }
+                
                 }
-                return false;
-            });
-        </script>
+    
+                const obj = new Gantt([
+                    /*Pedido     Fecha inicio   Fecha fin     color   % progreso */
+                    ['Pedido 1', '2023/05/12', '2023/05/13', '#4287f5', 80],
+                    ['Pedido 2', '2023/05/12', '2023/05/14', '#c1409b', 10],
+                    ['Pedido 3', '2023/05/14', '2023/05/17', '#0b9971', 20],
+                    ['Pedido 4', '2023/05/18', '2023/05/22', '#d26a52', 55],
+                    ['Pedido 5', '2023/05/19', '2023/05/22', '#4287f5', 100],
+                    ['Pedido 6', '2023/05/12', '2023/05/20', '#0b9851', 32],
+                    ['Pedido 7', '2023/05/17', '2023/05/25', '#c4632b', 32],
+                    ['Pedido 8', '2023/05/23', '2023/05/30', '#0b4282', 32],
+                    ['Pedido 9', '2023/05/18', '2023/05/22', '#d26a52', 55],
+                    ['Pedido 10', '2023/05/19', '2023/05/22', '#4287f5', 100],
+                    ['Pedido 11', '2023/05/12', '2023/05/20', '#0b9851', 32],
+                    ['Pedido 12', '2023/05/17', '2023/05/25', '#c4632b', 32],
+                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 32],
+                ]);
+            </script>
+            <br/>
+        </div>
+        
     </div>
+    
 </body>
-{% include "partials/footer.html" %}
+
 </html>
