@@ -1,6 +1,8 @@
 from django.db import models
 
+# CONSIDERAR LA FECHA DE INICIO DEL PEDIDO?!?!?!?!?!?!?!?!
 class Pedido(models.Model):
+    """Este modelo define la entidad Pedido"""
     cliente = models.CharField(max_length=50, null=False, blank=False)
     fecha_entrega = models.DateField(null=False, blank=False)
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)

@@ -14,45 +14,7 @@
    
 </head>
 <body>
-
-   
     {% include "partials/header.html" %}
-
-    <div class="buttons-top">
-        
-
-        <div>
-        <select name="lineas" id="toggle-lineas-button"class="carga-button-top" >
-            <option value="lineas">Lineas Produccion</option>
-            <option value="linea-delgada">Linea delgada</option>
-            <option value="linea-gruesa">Linea gruesa</option>
-            
-        </select>
-        </div>
-        <div>
-        <select name="funciones" id="toggle-lineas-button"class="carga-button-top" >
-            <option value="funcion">Funcion Objetivo</option>
-            <option value="minimizar-costos">Minimizar costos</option>
-            <option value="aumentar-rendimiento">aumentar rendimiento</option>
-            
-            
-        </select>
-        </div>
-        <div>
-        <select name="funciones" id="toggle-lineas-button"class="carga-button-top" >
-            <option value="periodos">Periodos</option>
-            <option value="mensual">Mensual</option>
-            <option value="semanal">Semanal</option>
-            <option value="diario">Diario</option>
-            
-            
-        </select>
-        </div>
-      
-
-    </div>
-
-    <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
         <br/>
         <h1 class="text-center"> Organizador de Pedidos </h1>
@@ -178,23 +140,12 @@
                     ['Pedido 10', '2023/05/19', '2023/05/22', '#4287f5', 100],
                     ['Pedido 11', '2023/05/12', '2023/05/20', '#0b9851', 32],
                     ['Pedido 12', '2023/05/17', '2023/05/25', '#c4632b', 32],
-                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 322],
+                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 32],
                 ]);
             </script>
             <br/>
         </div>
         
-    </div>
-    <div class="buttons-bot">
-    
-        
-            <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>
-       
-            <button type="button" id="toggle-funcion-button" class="carga-button-bot">Planificar</button>
-       
-            <button type="button" id="toggle-periodo-button" class="carga-button-bot">Actualizar</button>
-
-     
     </div>
     
 </body>
