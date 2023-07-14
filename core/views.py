@@ -403,3 +403,18 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
+def carta_gantt_view(request):
+    pedidos = Pedido.objects.all()
+    tasks = []
+    for pedido in pedidos:
+        task = [
+            pedido.numero_pedido,
+            pedido.fecha_entrega.strftime('%Y/%m/%d'),
+            pedido.fecha_entrega.strftime('%Y/%m/%d'),
+            '#4287f5',
+            pedido.prioridad
+        ]
+        tasks.append(task)
+    context = {'tasks': tasks}
+    return render(request, 'home.html', context)
