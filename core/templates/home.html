@@ -11,121 +11,148 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
-   
+
 </head>
 <body>
     {% include "partials/header.html" %}
+
+    <div class="buttons-top">
+        <div>
+            <select name="lineas" id="toggle-lineas-button" class="carga-button-top" >
+                <option value="lineas">Lineas Produccion</option>
+                <option value="linea-delgada">Linea delgada</option>
+                <option value="linea-gruesa">Linea gruesa</option>
+            </select>
+        </div>
+        <div>
+            <select name="funciones" id="toggle-lineas-button" class="carga-button-top" >
+                <option value="funcion">Funcion Objetivo</option>
+                <option value="minimizar-costos">Minimizar costos</option>
+                <option value="aumentar-rendimiento">aumentar rendimiento</option>
+            </select>
+        </div>
+        <div>
+            <select name="funciones" id="toggle-lineas-button" class="carga-button-top" >
+                <option value="periodos">Periodos</option>
+                <option value="mensual">Mensual</option>
+                <option value="semanal">Semanal</option>
+                <option value="diario">Diario</option>
+            </select>
+        </div>
+    </div>
+
+    <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
-        <br/>
+      
         <h1 class="text-center"> Organizador de Pedidos </h1>
         <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
-            
-            
             <script type="text/javascript">
                 class Gantt {
-                    /**
-                    * Inicializa la representación en HTML 
-                    * @param {array} lista de tareas
-                    */
-                    constructor(tasks) { 
-                    this.tasks = tasks;
-                    this.dateWidth = 178;
-                    this.setMinAndMaxDate(); 
-                    document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+                    constructor(tasks) {
+                        this.tasks = tasks;
+                        this.dateWidth = 178;
+                        this.setMinAndMaxDate();
+                        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
                     }
-                
-                    /**
-                    * Obtiene las fechas mínima y máxima de todas las tareas
-                    */
+
                     setMinAndMaxDate(){
-                    var maxDates = [];
-                    var minDates = [];
-                
-                    for(let i = 0; i < this.tasks.length; i++){
-                        minDates.push(new Date(this.tasks[i][1]));
-                        maxDates.push(new Date(this.tasks[i][2]));     
+                        var maxDates = [];
+                        var minDates = [];
+
+                        for(let i = 0; i < this.tasks.length; i++){
+                            minDates.push(new Date(this.tasks[i][1]));
+                            maxDates.push(new Date(this.tasks[i][2]));
+                        }
+                        this.minDate = new Date(Math.min.apply(null,minDates));
+                        this.maxDate = new Date(Math.max.apply(null,maxDates));
                     }
-                    this.minDate = new Date(Math.min.apply(null,minDates));
-                    this.maxDate = new Date(Math.max.apply(null,maxDates)); 
-                
-                    }   
-                
-                    /**
-                    * Genera el HTML para el encabezado de la tabla
-                    * @returns {String} Código HTML
-                    */
+
                     buildTableHeader(){
-                    var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;"><tr>';
-                    var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
-                    const actual = new Date(this.minDate);  
-                
-                    for(let i = 0; i < diffDays; i++){
-                        actual.setDate(actual.getDate() + 1);
-                        html += '<th>'+ this.formatDate(actual) +"</th>";     
+                        var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;"><tr>';
+                        var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
+                        const actual = new Date(this.minDate);
+
+                        for(let i = 0; i < diffDays; i++){
+                            actual.setDate(actual.getDate() + 1);
+                            html += '<th>'+ this.formatDate(actual) +"</th>";
+                        }
+                        html += '</tr></thead><tbody>';
+
+                        return html;
                     }
-                    html += '</tr></thead><tbody>';
-                
-                    return html;
-                    }
-                
-                    /**
-                    * Genera el HTML para el cuerpo de la tabla
-                    * @returns {String} Código HTML
-                    */
+
                     buildTableBody(){
-                    var html = '';
-                
-                    for(let i = 0; i < this.tasks.length; i++){
-                        var task = this.tasks[i]; 
-                
-                        var dMin = new Date(task[1]);
-                        var dMax = new Date(task[2]);     
-                
-                        var days = this.diffInDays(dMax, dMin) + 1;
-                        var daysBefore = this.diffInDays(this.minDate, dMin);
-                        var daysAfter = this.diffInDays(dMax, this.maxDate);
-                
-                        if(this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
-                        if(this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
-                
-                        html += '<tr>';
-                        if(daysBefore > 0) for(let j = 0; j < daysBefore; j++) html += '<td></td>';
-                        html += '<td class="event-cell" colspan="'+days+'" style="background-color: '+task[3]+';"><span>'+task[4]+'% </span>'+task[0]+'</td>';
-                        if(daysAfter > 0) for(let j = 0; j < daysAfter; j++) html += '<td></td>';
-                        html += '</tr>';
+                        var html = '';
+
+                        for(let i = 0; i < this.tasks.length; i++){
+                            var task = this.tasks[i];
+
+                            var dMin = new Date(task[1]);
+                            var dMax = new Date(task[2]);
+
+                            var days = this.diffInDays(dMax, dMin) + 1;
+                            var daysBefore = this.diffInDays(this.minDate, dMin);
+                            var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+                            if(this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
+                            if(this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
+
+                            html += '<tr>';
+                            if(daysBefore > 0) for(let j = 0; j < daysBefore; j++) html += '<td></td>';
+                            html += '<td class="event-cell" colspan="'+days+'" style="background-color: '+task[3]+';"><span>'+task[4]+'% </span><a class="popup-link">'+task[0]+'</a><div class="popup">Próximamente</div></td>';
+                            if(daysAfter > 0) for(let j = 0; j < daysAfter; j++) html += '<td></td>';
+                            html += '</tr>';
+                        }
+
+                        html += '</tbody></table>';
+
+                        return html;
                     }
-                
-                    html += '</tbody></table>';
-                
-                    return html;
-                
-                    }
-                
-                    /**
-                    * Calcula la diferencia en días entre dos fechas
-                    * @param {Date} fecha máxima
-                    * @param {Date} fecha mínima
-                    * @returns {integer} número de días
-                    */
+
                     diffInDays(max, min){
-                    var diffTime = Math.abs(max - min);
-                    return Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+                        var diffTime = Math.abs(max - min);
+                        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
                     }
-    
-                    /**
-                    * Formatea la fecha en formato 'DD/MM/YYYY'
-                    * @param {Date} fecha
-                    * @returns {String} fecha formateada
-                    */
+
                     formatDate(date) {
-                    const day = date.getDate();
-                    const month = date.getMonth() + 1;
-                    const year = date.getFullYear();
-                    return `${day}/${month}/${year}`;
+                        const day = date.getDate();
+                        const month = date.getMonth() + 1;
+                        const year = date.getFullYear();
+                        return `${day}/${month}/${year}`;
                     }
-                
                 }
-    
+
+                let activePopup = null;
+
+                function togglePopup(link) {
+                    const popup = link.nextElementSibling;
+                    if (activePopup !== popup) {
+                        hideActivePopup();
+                        popup.style.display = 'block';
+                        activePopup = popup;
+                    } else {
+                        hideActivePopup();
+                    }
+                }
+
+                function hideActivePopup() {
+                    if (activePopup !== null) {
+                        activePopup.style.display = 'none';
+                        activePopup = null;
+                    }
+                }
+
+                // Oculta el popup al hacer clic fuera de él
+                window.addEventListener('click', function(event) {
+                    const allPopups = document.querySelectorAll('.popup');
+                    allPopups.forEach(function(popup) {
+                        if (!popup.contains(event.target)) {
+                            popup.style.display = 'none';
+                        }
+                    });
+                    hideActivePopup();
+                });
+
                 const obj = new Gantt([
                     /*Pedido     Fecha inicio   Fecha fin     color   % progreso */
                     ['Pedido 1', '2023/05/12', '2023/05/13', '#4287f5', 80],
@@ -140,14 +167,38 @@
                     ['Pedido 10', '2023/05/19', '2023/05/22', '#4287f5', 100],
                     ['Pedido 11', '2023/05/12', '2023/05/20', '#0b9851', 32],
                     ['Pedido 12', '2023/05/17', '2023/05/25', '#c4632b', 32],
-                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 32],
+                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 322],
                 ]);
             </script>
             <br/>
         </div>
-        
     </div>
-    
-</body>
+    <div class="buttons-bot">
+        <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>
+        <button type="button" id="toggle-funcion-button" class="carga-button-bot">Planificar</button>
+        <button type="button" id="toggle-periodo-button" class="carga-button-bot">Actualizar</button>
+    </div>
 
+    <script>
+        // Agrega el evento de clic para mostrar/ocultar el popup
+        const popupLinks = document.querySelectorAll('.popup-link');
+        popupLinks.forEach(function(link) {
+            link.addEventListener('click', function(event) {
+                event.stopPropagation(); // Evita que el evento se propague al contenedor principal
+                togglePopup(this);
+            });
+        });
+
+        // Oculta el popup al hacer clic fuera de él
+        window.addEventListener('click', function(event) {
+            const allPopups = document.querySelectorAll('.popup');
+            allPopups.forEach(function(popup) {
+                if (!popup.contains(event.target)) {
+                    popup.style.display = 'none';
+                }
+            });
+            hideActivePopup();
+        });
+    </script>
+</body>
 </html>
