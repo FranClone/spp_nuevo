@@ -41,6 +41,10 @@
         </div>
     </div>
 
+    <div class="popup" id="pedido-popup">
+        <!-- Los datos del pedido obtenidos a través de la solicitud AJAX se mostrarán aquí -->
+    </div>
+
     <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
       
@@ -81,10 +85,10 @@
                         return html;
                     }
 
-                    buildTableBody(){
+                    buildTableBody() {
                         var html = '';
 
-                        for(let i = 0; i < this.tasks.length; i++){
+                        for (let i = 0; i < this.tasks.length; i++) {
                             var task = this.tasks[i];
 
                             var dMin = new Date(task[1]);
@@ -94,20 +98,22 @@
                             var daysBefore = this.diffInDays(this.minDate, dMin);
                             var daysAfter = this.diffInDays(dMax, this.maxDate);
 
-                            if(this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
-                            if(this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
+                            if (this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
+                            if (this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
 
                             html += '<tr>';
-                            if(daysBefore > 0) for(let j = 0; j < daysBefore; j++) html += '<td></td>';
-                            html += '<td class="event-cell" colspan="'+days+'" style="background-color: '+task[3]+';"><span>'+task[4]+'% </span><a class="popup-link">'+task[0]+'</a><div class="popup">Próximamente</div></td>';
-                            if(daysAfter > 0) for(let j = 0; j < daysAfter; j++) html += '<td></td>';
+                            if (daysBefore > 0) for (let j = 0; j < daysBefore; j++) html += '<td></td>';
+                            html += `<td class="event-cell" colspan="${days}" style="background-color: ${task[3]};">
+                                <span>${task[4]}%</span>
+                                <a class="popup-link" data-pedido-id="${i}">${task[0]}</a>
+                            </td>`;
+                            if (daysAfter > 0) for (let j = 0; j < daysAfter; j++) html += '<td></td>';
                             html += '</tr>';
                         }
 
-                        html += '</tbody></table>';
-
                         return html;
                     }
+
 
                     diffInDays(max, min){
                         var diffTime = Math.abs(max - min);
@@ -125,16 +131,26 @@
                 let activePopup = null;
 
                 function togglePopup(link) {
-                    const popup = link.nextElementSibling;
-                    if (activePopup !== popup) {
-                        hideActivePopup();
-                        popup.style.display = 'block';
-                        activePopup = popup;
-                    } else {
-                        hideActivePopup();
-                    }
-                }
+                    const pedidoId = link.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
+                    const popup = document.getElementById('pedido-popup');
 
+                    // Realiza una consulta AJAX para obtener los datos del pedido desde el backend
+                    fetch(`/obtener_pedido/${pedidoId}/`)
+                        .then(response => response.json())
+                        .then(data => {
+                            // Actualiza el contenido del popup con los datos del pedido
+                            popup.innerHTML = `
+                                <h2>Pedido ${data.codigo}</h2>
+                                <p>Cliente: ${data.cliente}</p>
+                                <p>Fecha de entrega: ${data.fecha_entrega}</p>
+                                <!-- Agrega aquí los demás campos del pedido que quieras mostrar -->
+                            `;
+                            // Muestra el popup
+                            popup.style.display = 'block';
+                            activePopup = popup;
+                        })
+                        .catch(error => console.error('Error al obtener los datos del pedido:', error));
+                }
                 function hideActivePopup() {
                     if (activePopup !== null) {
                         activePopup.style.display = 'none';
@@ -172,6 +188,13 @@
             </script>
             <br/>
         </div>
+    </div>
+    <div class="popup">
+        <!-- Mostrar los datos de los pedidos en el popup -->
+        <h2>{{ pedido.nombre }}</h2>
+        <p>Fecha inicio: {{ pedido.fecha_inicio }}</p>
+        <p>Fecha fin: {{ pedido.fecha_fin }}</p>
+        <!-- Y cualquier otro dato que quieras mostrar -->
     </div>
     <div class="buttons-bot">
         <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>

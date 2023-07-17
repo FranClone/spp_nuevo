@@ -404,17 +404,15 @@ def eliminar_producto_terminado(request,id):
 
     return redirect('plan_productos_terminados')
 
-def carta_gantt_view(request):
-    pedidos = Pedido.objects.all()
-    tasks = []
-    for pedido in pedidos:
-        task = [
-            pedido.numero_pedido,
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),
-            '#4287f5',
-            pedido.prioridad
-        ]
-        tasks.append(task)
-    context = {'tasks': tasks}
-    return render(request, 'home.html', context)
+def obtener_pedido(request, pedido_id):
+    try:
+        pedido = Pedido.objects.get(pk=pedido_id)
+        data = {
+            'codigo': pedido.codigo,
+            'cliente': pedido.cliente,
+            'fecha_entrega': pedido.fecha_entrega.strftime('%Y-%m-%d'),  # Convertimos la fecha a formato string
+            # Agrega los demás campos del pedido que quieras mostrar en el popup
+        }
+        return JsonResponse(data)
+    except Pedido.DoesNotExist:
+        return JsonResponse({'error': 'Pedido no encontrado'}, status=404)

@@ -8,7 +8,7 @@ from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Home, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
-from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima
+from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima, obtener_pedido
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado
 
 urlpatterns = [
@@ -34,6 +34,7 @@ urlpatterns = [
     path('planificador_productos/eliminarproducto/<int:id>', eliminar_producto,name='eliminar_producto' ),
     path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     # url para desplegar el bar chart vertical
-    path('dashboard/', Dashboard.as_view(), name = "dashboard")
+    path('dashboard/', Dashboard.as_view(), name = "dashboard"),
+    path('obtener_pedido/<int:pedido_id>/', obtener_pedido, name='obtener_pedido'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

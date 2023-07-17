@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles-pedidos.css' %}">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -57,26 +58,11 @@
             <label for="id_codigo">Código</label>
             {{ form.codigo }}
 
-            <label for="id_nombre">Nombre</label>
-            {{ form.nombre }}
-
-            <label for="id_grosor">Grosor</label>
-            {{ form.grosor }}
-
-            <label for="id_ancho">Ancho</label>
-            {{ form.ancho }}
-
-            <label for="id_largo">Largo</label>
-            {{ form.largo }}
-
-            <label for="id_productos_a_producir">Productos a producir</label>
+            <label for="id_productos_a_producir">Productos</label>
             {{ form.productos_a_producir }}
 
             <label for="id_cantidad">Cantidad</label>
             {{ form.cantidad }}
-
-            <label for="id_numero_pedido">Número de Pedido</label>
-            {{ form.numero_pedido }}
 
             <label for="id_estado_pedido">Estado del Pedido</label>
             {{ form.estado_pedido }}
@@ -98,18 +84,24 @@
                 <caption></caption>
                 <thead class="thead-pedidos">
                     <tr>
+                        <th>Código</th>
                         <th>Cliente</th>
                         <th>Fecha de entrega</th>
+                        <th>Estado del Pedido</th>
                         <th>Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
                     <tr>
+                        <td>{{ pedido.codigo }}</td>
                         <td>{{ pedido.cliente }}</td>
                         <td>{{ pedido.fecha_entrega }}</td>
+                        <td>{{ pedido.estado_pedido }}</td>
                         <td>
-                            <button class="details-button popup-button" onclick="openPopup('{{ pedido.cliente }}', '{{ pedido.fecha_entrega }}')">Mostrar detalles</button>
+                        <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                        <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
+                        <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                         </td>
                     </tr>
                     {% endfor %}
