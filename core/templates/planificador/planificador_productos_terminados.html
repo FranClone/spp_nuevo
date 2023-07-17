@@ -2,17 +2,15 @@
 <html lang="en">
 <head>
     {% load static %}
+    {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos-terminados.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos-terminados.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
-    {% include "partials/resources.html" %}
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Productos Terminados</title>
 
 </head>
@@ -21,44 +19,47 @@
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
-            <div class="filter-field">
-                <label for="filter-buzon">Código:</label>
-                <input type="text" id="filter-buzon" class="filter-input">
-            </div>
-            <div class="advanced-filter-container">
-                <label for="advanced-filter-checkbox" class="checkbox-label">Búsqueda avanzada</label>
-                <input type="checkbox" id="advanced-filter-checkbox">
-            </div>
-            <div id="advanced-filter" style="display: none;">
-                <div class="filter-field">
-                    <label for="filter-madera">Nombre:</label>
-                    <input type="text" id="filter-madera" class="filter-input">
+            <div class="filters-container" >
+                <label for="filter-by">Filtrar por:</label>
+                <select id="filter-by" name="filter-by" class="filter-select">
+                    <option value="nombre">Nombre del producto</option>
+                    <option value="codigo">Código del producto</option>
+                </select>
+                <div>
+                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
                 </div>
-                <div class="filter-field">
-                    <label for="filter-diametrica">Grosor:</label>
-                    <input type="text" id="filter-diametrica" class="filter-input">
+                <select name="filter-option" class="filter-select">
+                    <option value="partial">Parcial</option>
+                    <option value="exact">Exacto</option>
+                </select>
+                <br>
+                <label for="advanced-search">Búsqueda avanzada:</label>
+                <input type="checkbox" id="advanced-search" name="advanced-search">
+                <div id="advanced-search-options" style="display: none;">
+                    <label for="filter-length">Largo:</label>
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-width">Ancho:</label>
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-thickness">Grosor:</label>
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                    <br>
                 </div>
-                <div class="filter-field">
-                    <label for="filter-longitud">Ancho:</label>
-                    <input type="text" id="filter-longitud" class="filter-input">
-                </div>
-                <div class="filter-field">
-                    <label for="filter-cantidad">Largo:</label>
-                    <input type="text" id="filter-cantidad" class="filter-input">
-                </div>
-            </div>
-            <div class="filter-button-container">
-                <button type="button" id="filter-button" class="filter-button">Buscar</button>
-                <button type="button" id="cancel-filter-button" class="filter-button">Cancelar</button>
+                <button type="submit" class="filter-button">Buscar</button>
+                <button type="button" class="clear-filter-button">Cancelar</button>
             </div>
         </form>
     </div>
-    <div class="form-container-productos-terminados">
+    <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="post" action="{% url 'plan_productos_terminados' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             {{ form.as_p }}
-            <button type="submit">Crear</button>
+            <button type="submit" name="crear">Crear</button>
         </form>
     </div>
 
@@ -119,7 +120,40 @@
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.min.js"></script>
+    <script>
+        var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+        var filterForm = document.querySelector('.filter-section .filter-form');
+        var isFilterVisible = false; // Variable de estado para el filtro
+
+        toggleFilterButton.addEventListener('click', function() {
+            if (isFilterVisible) {
+                filterForm.style.display = 'none';
+                toggleFilterButton.innerText = 'Filtrar';
+                isFilterVisible = false;
+            } else {
+                filterForm.style.display = 'block';
+                toggleFilterButton.innerText = 'Ocultar filtro';
+                isFilterVisible = true;
+            }
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementById("toggle-carga-button");
+        const cargaForm = document.querySelector(".form-container-productos form");
+
+        let isFormVisible = false;
+
+        toggleButton.addEventListener("click", function() {
+            if (!isFormVisible) {
+                const buttonRect = toggleButton.getBoundingClientRect();
+                const buttonBottom = buttonRect.bottom;
+                cargaForm.style.display = "block";
+                isFormVisible = true;
+            } else {
+                cargaForm.style.display = "none";
+                isFormVisible = false;
+            }
+        });
+    </script>
 </body>
 </html>
