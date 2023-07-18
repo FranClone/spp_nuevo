@@ -117,3 +117,35 @@ table tr{
 	text-decoration: underline;
 	cursor: pointer;
 }
+
+
+        /* Estilos personalizados para el scrollbar */
+    .table-container {
+            overflow: auto;
+            height: 75%;
+            scrollbar-width: thin;
+            scrollbar-color: rgb(118, 117, 117) #f1f1f1;
+            border-radius: 6px;
+    }
+
+    .table-container::-webkit-scrollbar {
+            width: 8px;
+            background-color: #f1f1f1;
+    }
+
+    .table-container::-webkit-scrollbar-thumb {
+            background-color: rgb(95, 93, 93);
+            border-radius: 6px;
+    }
+
+    .table-container::-webkit-scrollbar-thumb:hover {
+            background-color: rgb(255, 0, 0);
+    }
+
+    .table-container::-webkit-scrollbar-track {
+            background-color: #f1f1f1;
+    }
+
+    .table-container::-webkit-scrollbar-track:hover {
+            background-color: #ccc;
+    }
