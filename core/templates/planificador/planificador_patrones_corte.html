@@ -47,14 +47,14 @@
         </form>
     </div>
 
-    <div class="form-container-patron-corte">
+    <!--Carga Manual de Patrones de Corte-->
+
+    <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="post" action="{% url 'plan_patrones_corte' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             {{ form.as_p }}
             <button type="submit" name="crear">Crear</button>
-            <button type="submit" name="crear">Carga masiva</button>
-            
         </form>
     </div>
     <div class="table-container">
@@ -100,16 +100,58 @@
     
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
-        <h2>Detalles de Patrones de Corte</h2>
-        <div class="popup-content">
-            <p><strong>Código patrón: </strong> <span id="popupCodigoPatron"></span></p>
-            <p><strong>Nombre patrón: </strong> <span id="popupNombrePatron"></span></p>
-            <p><strong>Productos asociados: </strong> <span id="popupProductoAsociado"></span></p>
-            <p><strong>Clase diamétrica: </strong> <span id="popupClaseDiametrica"></span></p>
-            <div style="text-align: center;">
-                <button class="close-button" onclick="closePopup()">Cerrar</button> 
-            </div>
+        <h2>Detalles del producto</h2>
+        <div class="popup-item">
+            <strong>Código:</strong> <span id="popupCodigo"></span>
         </div>
+        <div class="popup-item">
+            <strong>Nombre:</strong> <span id="popupNombre"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Grosor:</strong> <span id="popupGrosor"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Ancho:</strong> <span id="popupAncho"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Largsssssso:</strong> <span id="popupLargo"></span>
+        </div>
+        <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
+<script>
+        var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+        var filterForm = document.querySelector('.filter-section .filter-form');
+        var isFilterVisible = false; // Variable de estado para el filtro
+
+        toggleFilterButton.addEventListener('click', function() {
+            if (isFilterVisible) {
+                filterForm.style.display = 'none';
+                toggleFilterButton.innerText = 'Filtrar';
+                isFilterVisible = false;
+            } else {
+                filterForm.style.display = 'block';
+                toggleFilterButton.innerText = 'Ocultar filtro';
+                isFilterVisible = true;
+            }
+        });
+    </script>
+    <script>
+        const toggleButton = document.getElementById("toggle-carga-button");
+        const cargaForm = document.querySelector(".form-container-productos form");
+
+        let isFormVisible = false;
+
+        toggleButton.addEventListener("click", function() {
+            if (!isFormVisible) {
+                const buttonRect = toggleButton.getBoundingClientRect();
+                const buttonBottom = buttonRect.bottom;
+                cargaForm.style.display = "block";
+                isFormVisible = true;
+            } else {
+                cargaForm.style.display = "none";
+                isFormVisible = false;
+            }
+        });
+    </script>
 </body>
 </html>

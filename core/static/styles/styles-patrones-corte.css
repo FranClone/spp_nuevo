@@ -15,7 +15,7 @@ form select {
     margin-bottom: 10px;
 }
 
-.form-container-patron-corte form {
+.form-container-productos form {
     display: none;
     position: absolute;
     top: 30px;
@@ -33,7 +33,7 @@ form select {
     cursor: pointer;
 }
 
-.form-container-patron-corte {
+.form-container-productos {
     width: 15%;
     float: right;
     position: relative;
@@ -50,21 +50,21 @@ form select {
     border-radius: 6px;
 }
 
-.form-container-patron-corte form {
+.form-container-productos form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
 }
 
-.form-container-patron-corte label {
+.form-container-productos label {
     flex: 0 0 120px;
     margin-right: 10px;
     text-align: right;
 }
 
-.form-container-patron-corte input,
-.form-container-patron-corte select {
+.form-container-productos input,
+.form-container-productos select {
     flex: 1;
     width: 100%;
     margin-bottom: 10px;

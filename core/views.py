@@ -403,3 +403,16 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
+def obtener_pedido(request, pedido_id):
+    try:
+        pedido = Pedido.objects.get(pk=pedido_id)
+        data = {
+            'codigo': pedido.codigo,
+            'cliente': pedido.cliente,
+            'fecha_entrega': pedido.fecha_entrega.strftime('%Y-%m-%d'),  # Convertimos la fecha a formato string
+            # Agrega los demás campos del pedido que quieras mostrar en el popup
+        }
+        return JsonResponse(data)
+    except Pedido.DoesNotExist:
+        return JsonResponse({'error': 'Pedido no encontrado'}, status=404)
