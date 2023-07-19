@@ -169,32 +169,17 @@
                     hideActivePopup();
                 });
 
-                const obj = new Gantt([
-                    /*Pedido     Fecha inicio   Fecha fin     color   % progreso */
-                    ['Pedido 1', '2023/05/12', '2023/05/13', '#4287f5', 80],
-                    ['Pedido 2', '2023/05/12', '2023/05/14', '#c1409b', 10],
-                    ['Pedido 3', '2023/05/14', '2023/05/17', '#0b9971', 20],
-                    ['Pedido 4', '2023/05/18', '2023/05/22', '#d26a52', 55],
-                    ['Pedido 5', '2023/05/19', '2023/05/22', '#4287f5', 100],
-                    ['Pedido 6', '2023/05/12', '2023/05/20', '#0b9851', 32],
-                    ['Pedido 7', '2023/05/17', '2023/05/25', '#c4632b', 32],
-                    ['Pedido 8', '2023/05/23', '2023/05/30', '#0b4282', 32],
-                    ['Pedido 9', '2023/05/18', '2023/05/22', '#d26a52', 55],
-                    ['Pedido 10', '2023/05/19', '2023/05/22', '#4287f5', 100],
-                    ['Pedido 11', '2023/05/12', '2023/05/20', '#0b9851', 32],
-                    ['Pedido 12', '2023/05/17', '2023/05/25', '#c4632b', 32],
-                    ['Pedido 13', '2023/05/23', '2023/05/30', '#0b4282', 322],
-                ]);
+                const obj = new Gantt({{ tasks|safe }});
             </script>
             <br/>
         </div>
     </div>
     <div class="popup">
-        <!-- Mostrar los datos de los pedidos en el popup -->
+        
         <h2>{{ pedido.nombre }}</h2>
         <p>Fecha inicio: {{ pedido.fecha_inicio }}</p>
         <p>Fecha fin: {{ pedido.fecha_fin }}</p>
-        <!-- Y cualquier otro dato que quieras mostrar -->
+        
     </div>
     <div class="buttons-bot">
         <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>
