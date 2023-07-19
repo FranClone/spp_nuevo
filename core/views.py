@@ -330,23 +330,24 @@ def pedidos(request):
     return render(request, 'pedidos.html', context)
 
 def gantt_view(request):
+    
     pedidos = Pedido.objects.all()
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
     
-
     tasks = []
     for pedido in pedidos:
         color = random.choice(colores)
-        porcentaje_progreso = random.randint(1, 100)
+        porcentaje_progreso = random.randint(10, 100)
         task_data = [
             pedido.codigo,                       
             fecha_actual,                     
             pedido.fecha_entrega.strftime('%Y/%m/%d'),
             color,                           
-            porcentaje_progreso            
+            porcentaje_progreso,
+            pedido.nombre          
         ]
         tasks.append(task_data)
 

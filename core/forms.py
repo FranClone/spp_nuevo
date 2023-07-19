@@ -151,6 +151,7 @@ class ActualizarPedidoForm(forms.ModelForm):
             'producto',
             'cantidad',
             'prioridad',
+            'linea_produccion',
             'estado',
         ]
 
