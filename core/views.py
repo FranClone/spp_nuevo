@@ -348,7 +348,8 @@ def gantt_view(request):
             pedido.fecha_entrega.strftime('%Y/%m/%d'),
             color,                           
             porcentaje_progreso,
-            (pedido.nombre + " " + pedido.linea_produccion)          
+            pedido.nombre,   
+            pedido.linea_produccion       
         ]
         tasks.append(task_data)
 

@@ -16,6 +16,7 @@ class Pedido(models.Model):
     #porcentaje_avance = models.FloatField(max_length=5)
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
     
+    
     # Salidas
     estado = models.CharField(max_length=20, null=False, blank=False)
 
