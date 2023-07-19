@@ -32,7 +32,7 @@
             </select>
         </div>
         <div>
-            <select name="funciones" id="toggle-lineas-button" class="carga-button-top" >
+            <select name="periodos" id="toggle-lineas-button" class="carga-button-top" >
                 <option value="periodos">Periodos</option>
                 <option value="mensual">Mensual</option>
                 <option value="semanal">Semanal</option>
@@ -71,18 +71,46 @@
                         this.maxDate = new Date(Math.max.apply(null,maxDates));
                     }
 
-                    buildTableHeader(){
+                    buildTableHeader() {
                         var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;"><tr>';
-                        var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
-                        const actual = new Date(this.minDate);
-
-                        for(let i = 0; i < diffDays; i++){
-                            actual.setDate(actual.getDate() + 1);
-                            html += '<th>'+ this.formatDate(actual) +"</th>";
+            
+                        // Verificar si se seleccionó "Mensual" en el cuadro de selección "Periodos"
+                        const selectedPeriod = document.querySelector('select[name="periodos"]').value;
+                        const isMensualSelected = selectedPeriod === "mensual";
+            
+                        // Utilizar el formato de fecha apropiado
+                        if (isMensualSelected) {
+                            var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
+                            const actual = new Date(this.minDate);
+            
+                            for (let i = 0; i < diffMonths; i++) {
+                                actual.setMonth(actual.getMonth() + 1);
+                                html += '<th>' + this.formatMonth(actual) + '</th>';
+                            }
+                        } else {
+                            var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
+                            const actual = new Date(this.minDate);
+            
+                            for (let i = 0; i < diffDays; i++) {
+                                actual.setDate(actual.getDate() + 1);
+                                html += '<th>' + this.formatDate(actual) + '</th>';
+                            }
                         }
+            
                         html += '</tr></thead><tbody>';
-
                         return html;
+                    }
+            
+                    // Agregar un nuevo método para calcular la diferencia en meses
+                    diffInMonths(max, min) {
+                        return (max.getFullYear() - min.getFullYear()) * 12 + max.getMonth() - min.getMonth();
+                    }
+            
+                    // Agregar un nuevo método para formatear el mes
+                    formatMonth(date) {
+                        const month = date.toLocaleString('default', { month: 'long' });
+                        const year = date.getFullYear();
+                        return `${month} ${year}`;
                     }
 
                     buildTableBody() {
