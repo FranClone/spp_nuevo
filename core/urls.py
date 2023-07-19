@@ -6,23 +6,24 @@ solicitudes HTTP y determinar que hacer con esas request (solicitudes).
 from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
-from .views import Administracion, Bar_chart, Carga_sv, Home, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
+from .views import Administracion, Bar_chart, Carga_sv, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
 from .views import ProductosTerminados, Dashboard 
-from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima, obtener_pedido
-from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado
+from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima, gantt_view
+from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido
 
 urlpatterns = [
     path('administracion/', Administracion.as_view(), name = "administracion"),
     path('bar_chart/', Bar_chart.as_view(), name="bar_chart"),
     path('carga_servidor/', Carga_sv.as_view(), name = "carga_servidor"),
     path('download/', DownloadExcel.as_view(), name = "download_file"),
-    path('home/', Home.as_view(), name = "home"),
+    path('home/', gantt_view, name = "home"),
     path('', Login.as_view(), name = "login"),
     path('lista_pedidos/', Lista_pedidos.as_view(), name = "lista_pedidos"),
     path('login/', Login.as_view(), name = "login"),
     path('logout/',Logout.as_view(), name = "logout"),
     path('mantenedor/', Mantenedor.as_view(), name = "mantenedor"),
     path('pedidos/', pedidos, name = "pedidos"),
+    path('pedidos/eliminarpedido/<int:id>', eliminar_pedido, name = "eliminar_pedido"),
     path('register/',Register.as_view(), name="register"),
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
@@ -35,6 +36,5 @@ urlpatterns = [
     path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     # url para desplegar el bar chart vertical
     path('dashboard/', Dashboard.as_view(), name = "dashboard"),
-    path('obtener_pedido/<int:pedido_id>/', obtener_pedido, name='obtener_pedido'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

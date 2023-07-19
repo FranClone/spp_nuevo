@@ -75,10 +75,10 @@
                 <tbody>
                     {% for patron in patrones_corte %}
                         <tr>
-                            <td>{{ patron.codigo_patron }}</td>
+                            <td>{{ patron.codigo }}</td>
                             <td>{{ patron.producto_asociado }}</td>
-                            <td>{{ patron.clase_diametrica_rollizo }}</td>
-                            <td>{{ patron.codigo_patron }}</td>
+                            <td>{{ patron.rollizo }}</td>
+                            <td>{{ patron.rendimiento }}</td>
                             <td>
                                 <button class="details-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">
                                     <i class="fa-regular fa-clipboard fa-bounce fa-xl"></i>

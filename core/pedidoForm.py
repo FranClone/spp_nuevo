@@ -17,7 +17,7 @@ class PedidoForm(forms.ModelForm):
 
     class Meta:
         model = Pedido
-        fields = ['numero_pedido', 'destino_pedido', 'fecha_recepcion', 'fecha_entrega', 'cliente', 'prioridad', 'estado_pedido']
+        fields = ['codigo', 'nombre', 'fecha_recepcion', 'fecha_entrega', 'cliente', 'prioridad', 'estado']
 
     def __init__(self, *args, **kwargs):
         user = kwargs.pop('user', None)
