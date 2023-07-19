@@ -349,7 +349,12 @@ def gantt_view(request):
             color,                           
             porcentaje_progreso,
             pedido.nombre,   
-            pedido.linea_produccion       
+            pedido.linea_produccion,       
+            pedido.cantidad,
+            pedido.cliente,
+            pedido.comentario,
+            pedido.producto,
+            pedido.prioridad,
         ]
         tasks.append(task_data)
 

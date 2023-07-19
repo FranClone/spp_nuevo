@@ -240,3 +240,125 @@ table tr {
     color: white;
     width: 50px;
 }
+
+.popup {
+    display: none;
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    border-radius: 6%;
+    border: 1px solid rgba(7, 7, 7, 0.801);
+    font-size: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 15px;
+    z-index: 9999;
+    color: rgb(5, 5, 5);
+    text-align: center;
+}
+
+.popup-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.event-cell a.popup-link {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
+
+.event-cell a.popup-link:hover {
+    text-decoration: underline;
+}
+
+.date-header {
+    background-color: lightblue;
+    color: red;
+    font-weight: bold;
+    padding: 9px;
+    font-size: 12px;
+}
+
+.text-center {
+    color: black;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
+
+.horizontal-container {
+    display: flex;
+}
+
+.horizontal-container div {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.form-container-productos form {
+    display: none;
+    position: absolute;
+    top: 30px;
+    z-index: 1;
+    background-color: rgba(243, 240, 240, 0.95);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.form-container-productos form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container-productos label {
+    flex: 0 0 120px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.form-container-productos input,
+.form-container-productos select {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.carga-button {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(10, 9, 9, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid black;
+}
+
+.popup-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}

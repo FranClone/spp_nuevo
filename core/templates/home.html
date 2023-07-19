@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Roboto">
+   
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -41,37 +42,21 @@
             </select>
         </div>
     </div>
-    
-    <!--Contenedor: Agregar Pedido, Actualizar Materia Prima y Actualizar Productos Terminados-->
-    <div class="update-container">
-        <div class="form-container-pedidos">
-            <button type="button" id="toggle-carga-button" class="btn-agregar-pedido">Agregar Pedido</button>
-            <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" name="crear">Crear</button>
-            </form>
-        </div>
-        <div class="form-container-pedidos">
-            <button type="button" id="toggle-carga-button" class="btn-materia-prima">Materia Prima</button>
-            <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" name="crear">Crear</button>
-            </form>
-        </div>
-        <div class="form-container-pedidos">
-            <button type="button" id="toggle-carga-button" class="btn-productos-terminados">Productos Terminados</button>
-            <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <button type="submit" name="crear">Crear</button>
-            </form>
-        </div>
+
+    <div class="form-container-productos">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear">Crear</button>
+        </form>
     </div>
-    <div class="table-container">
-        <h1 class="text-center">Planificador de Pedidos</h1>
-        <div id="gantt">
+
+    <br>
+    <div class="table-container" style="overflow: auto; height: 75%;">
+
+        <h1 class="text-center"> Organizador de Pedidos </h1>
+        <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
             <script type="text/javascript">
                 class Gantt {
                     constructor(tasks) {
@@ -172,68 +157,32 @@
                     handlePopupClick(event) {
                         event.stopPropagation(); // Evita que el evento se propague al contenedor principal
                         const pedidoId = event.target.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
-                        const popup = document.getElementById('pedido-popup');
+                        const popup = document.createElement('div');
+                        popup.className = 'popup-overlay';
+                        const pedidoData = this.tasks[pedidoId];
+                        popup.innerHTML = `
+                            <div class="popup-content">
+                                <h1> Detalle Pedido </h2>
+                                <p>Codigo: ${pedidoData[0]}</p>
+                                <p>Cliente: ${pedidoData[8]} </p>
+                                <p>Nombre: ${pedidoData[5]}</p>
+                                <p>Fecha de entrega: ${pedidoData[2]}</p>
+                                <p>Producto: ${pedidoData[10]}</p>
+                                <p>Cantidad: ${pedidoData[7]}</p>
+                                <p>Prioridad: ${pedidoData[11]}</p>
+                                <p>Linea produccion: ${pedidoData[6]}</p>
+                                <p>Progreso: ${pedidoData[4]} %</p>
+                                <p>Comentario: ${pedidoData[9]}</p>
+                                
+                                
 
-                        // Realiza una consulta AJAX para obtener los datos del pedido desde el backend
-                        fetch(`/obtener_pedido/${pedidoId}/`)
-                            .then(response => response.json())
-                            .then(data => {
-                                // Actualiza el contenido del popup con los datos del pedido
-                                popup.innerHTML = `
-                                    <h2>Pedido ${data.codigo}</h2>
-                                    <p>Cliente: ${data.cliente}</p>
-                                    <p>Fecha de entrega: ${data.fecha_entrega}</p>
-                                    <!-- Agrega aquí los demás campos del pedido que quieras mostrar -->
-                                `;
-                                // Muestra el popup
-                                popup.style.display = 'block';
-                                activePopup = popup;
-                            })
-                            .catch(error => console.error('Error al obtener los datos del pedido:', error));
-                    }
-                }
-
-                let activePopup = null;
-
-                function togglePopup(link) {
-                    const pedidoId = link.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
-                    const popup = document.getElementById('pedido-popup');
-
-                    // Realiza una consulta AJAX para obtener los datos del pedido desde el backend
-                    fetch(`/obtener_pedido/${pedidoId}/`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Actualiza el contenido del popup con los datos del pedido
-                            popup.innerHTML = `
-                                <h2>Pedido ${data.codigo}</h2>
-                                <p>Cliente: ${data.cliente}</p>
-                                <p>Fecha de entrega: ${data.fecha_entrega}</p>
                                 <!-- Agrega aquí los demás campos del pedido que quieras mostrar -->
-                            `;
-                            // Muestra el popup
-                            popup.style.display = 'block';
-                            activePopup = popup;
-                        })
-                        .catch(error => console.error('Error al obtener los datos del pedido:', error));
-                }
-
-                function hideActivePopup() {
-                    if (activePopup !== null) {
-                        activePopup.style.display = 'none';
-                        activePopup = null;
+                                <button class="popup-close" onclick="this.parentElement.parentElement.remove()">X</button>
+                            </div>
+                        `;
+                        document.body.appendChild(popup);
                     }
                 }
-
-                // Oculta el popup al hacer clic fuera de él
-                window.addEventListener('click', function(event) {
-                    const allPopups = document.querySelectorAll('.popup');
-                    allPopups.forEach(function(popup) {
-                        if (!popup.contains(event.target)) {
-                            popup.style.display = 'none';
-                        }
-                    });
-                    hideActivePopup();
-                });
 
                 const tasks = {{ tasks|safe }};
                 const obj = new Gantt(tasks);
@@ -247,39 +196,11 @@
             </script>
         </div>
     </div>
-    <div class="popup">
 
-        <h2>{{ pedido.nombre }}</h2>
-        <p>Fecha inicio: {{ pedido.fecha_inicio }}</p>
-        <p>Fecha fin: {{ pedido.fecha_fin }}</p>
-
-    </div>
     <div class="buttons-bot">
         <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>
         <button type="button" id="toggle-funcion-button" class="carga-button-bot">Planificar</button>
         <button type="button" id="toggle-periodo-button" class="carga-button-bot">Actualizar</button>
     </div>
-
-    <script>
-        // Agrega el evento de clic para mostrar/ocultar el popup
-        const popupLinks = document.querySelectorAll('.popup-link');
-        popupLinks.forEach(function(link) {
-            link.addEventListener('click', function(event) {
-                event.stopPropagation(); // Evita que el evento se propague al contenedor principal
-                togglePopup(this);
-            });
-        });
-
-        // Oculta el popup al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            const allPopups = document.querySelectorAll('.popup');
-            allPopups.forEach(function(popup) {
-                if (!popup.contains(event.target)) {
-                    popup.style.display = 'none';
-                }
-            });
-            hideActivePopup();
-        });
-    </script>
 </body>
 </html>
