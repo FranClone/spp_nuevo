@@ -25,6 +25,8 @@ from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
+from datetime import datetime
+import random
 
 try:
     #se conecta
@@ -85,58 +87,6 @@ def get_empresas(request):
     if parte_rut:
         empresas = list(sel_empresa_like(parte_rut))
     return JsonResponse({'empresas': empresas})
-
-class Home(View): 
-    """Esta clase define la vista Home"""
-    def get(self, request, *args, **kwargs):
-        #cálculo progress
-        producto_terminado = 1000
-        producto_pedido = 5000
-        progress = (producto_terminado / producto_pedido)*100
-        
-        return render(request, 'home.html')
-    
-    def post(self, request, *args, **kwargs):
-        #Carga Archivo
-        try:
-            archivo = request.FILES['carga-masiva']
-        except:
-            return redirect('home')
-
-        # Verifica el tamaño del archivo
-        if archivo.size > 100000000:  # 100 MB
-            #falta mensaje de error
-            return redirect('home')
-
-        # Carga el archivo utilizando openpyxl
-        libro = openpyxl.load_workbook(archivo)
-        hoja = libro.active
-        # Itera sobre las filas de la hoja (a partir de la fila donde se encuentra "N°ORDEN")
-        inicio_lectura = False
-        datos_limpio = []
-
-        for fila in hoja.iter_rows():
-            # Ignora todas las filas hasta que se encuentra "N° ORDEN"
-            if not inicio_lectura:
-                if fila[0].value == "N° ORDEN":
-                    inicio_lectura = True
-                continue
-            
-            # Finaliza la lectura si la primera columna está vacía
-            if not fila[0].value:
-                break
-
-            # Procesa los datos relevantes y aplica la limpieza con bleach
-            fila_limpia = [bleach.clean(str(celda.value)) for celda in fila]
-            datos_limpio.append(fila_limpia)
-
-        # DE MOMENTO ESTE CÓDIGO TE DA LOS DATOS DE LA FILA LIMPIOS
-        # FALTA AGREGAR LOS DATOS A LA BASE DE DATOS
-        # VER COMO AGREGAR PRODUCTOS Y CLIENTE
-        # ANALIZAR SI ES NECESARIO QUE PRODUCTOS Y CLIENTE ESTÉN PREVIAMENTE AGREGADOS
-        # O SI SE AGREGA DIRECTAMENTE, CREAR EN DJANGO ORM CONSULTAS
-
-        return redirect('home')
 
 class Index(View): 
     """Esta clase define la vista Index"""
@@ -379,12 +329,40 @@ def pedidos(request):
     }
     return render(request, 'pedidos.html', context)
 
+def gantt_view(request):
+    pedidos = Pedido.objects.all()
+
+    fecha_actual = datetime.today().strftime('%Y/%m/%d')
+    
+    colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
+    
+
+    tasks = []
+    for pedido in pedidos:
+        color = random.choice(colores)
+        porcentaje_progreso = random.randint(1, 100)
+        task_data = [
+            pedido.codigo,                       
+            fecha_actual,                     
+            pedido.fecha_entrega.strftime('%Y/%m/%d'),
+            color,                           
+            porcentaje_progreso            
+        ]
+        tasks.append(task_data)
+
+    return render(request, 'home.html', {'tasks': tasks})
 
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)
     materia_prima.delete()
 
     return redirect('plan_materia_prima')
+
+def eliminar_pedido(request,id):
+    pedido=Pedido.objects.get(id=id)
+    pedido.delete()
+
+    return redirect('pedidos')
 
 def eliminar_patron(request,id):
     patron=PatronCorte.objects.get(id=id)
@@ -403,16 +381,3 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
-
-def obtener_pedido(request, pedido_id):
-    try:
-        pedido = Pedido.objects.get(pk=pedido_id)
-        data = {
-            'codigo': pedido.codigo,
-            'cliente': pedido.cliente,
-            'fecha_entrega': pedido.fecha_entrega.strftime('%Y-%m-%d'),  # Convertimos la fecha a formato string
-            # Agrega los demás campos del pedido que quieras mostrar en el popup
-        }
-        return JsonResponse(data)
-    except Pedido.DoesNotExist:
-        return JsonResponse({'error': 'Pedido no encontrado'}, status=404)

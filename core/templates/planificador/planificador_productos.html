@@ -72,7 +72,7 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Grosor</th>
+                        <th>Alto</th>
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
@@ -84,11 +84,11 @@
                         <tr>
                             <td>{{ producto.codigo }}</td>
                             <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.grosor }}</td>
+                            <td>{{ producto.alto }}</td>
                             <td>{{ producto.ancho }}</td>
                             <td>{{ producto.largo }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.grosor }}', '{{ producto.ancho }}', '{{ producto.largo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.alto }}', '{{ producto.ancho }}', '{{ producto.largo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                             <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
                         </tr>
                     {% empty %}
@@ -113,7 +113,7 @@
             <strong>Nombre:</strong> <span id="popupNombre"></span>
         </div>
         <div class="popup-item">
-            <strong>Grosor:</strong> <span id="popupGrosor"></span>
+            <strong>Alto:</strong> <span id="popupGrosor"></span>
         </div>
         <div class="popup-item">
             <strong>Ancho:</strong> <span id="popupAncho"></span>

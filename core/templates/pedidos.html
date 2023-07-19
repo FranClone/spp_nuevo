@@ -85,10 +85,10 @@
                         <td>{{ pedido.codigo }}</td>
                         <td>{{ pedido.cliente }}</td>
                         <td>{{ pedido.fecha_entrega }}</td>
-                        <td>{{ pedido.estado_pedido }}</td>
+                        <td>{{ pedido.estado }}</td>
                         <td>
-                        <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                        <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
+                        <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{pedido.fecha_entrega }}', '{{ pedido.estado }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                        <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                         <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                         </td>
                     </tr>

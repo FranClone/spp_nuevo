@@ -87,21 +87,72 @@ class ActualizarMateriaPrimaForm(forms.ModelForm):
 
     class Meta:
         model = MateriaPrima
-        fields = ['numero_buzon', 'tipo_madera', 'clase_diametrica', 'longitud', 'cantidad']
-        
-class CrearProductoForm(forms.ModelForm):
-    """Esta clase permite crear un nuevo producto"""
-
-    class Meta:
-        model = Producto
-        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo']
+        fields = [
+            'numero_buzon',
+            'tipo_madera',
+            'clase_diametrica',
+            'largo',
+            'cantidad',
+            'conicidad',
+            'linea_produccion',
+            'costo_almacenamiento',
+            'inventario_inicial',
+            'volumen_procesado',
+            'inventario_final',
+        ]
 
 class CrearPatronCorteForm(forms.ModelForm):
     """Esta clase permite crear un nuevo patrón de corte"""
 
     class Meta:
         model = PatronCorte
-        fields = ['codigo_patron', 'nombre_patron', 'producto_asociado', 'clase_diametrica_rollizo']
+        fields = [
+            'codigo',
+            'nombre',
+            'descripcion',
+            'rollizo',
+            'rendimiento',
+            'velocidad_linea',
+            'setup_time',
+            'lead_time',
+            'utilizado',
+            'producto_asociado',
+        ]
+ 
+class CrearProductoForm(forms.ModelForm):
+    """Esta clase permite crear un nuevo producto"""
+
+    class Meta:
+        model = Producto
+        fields = [
+            'codigo',
+            'nombre',
+            'descripcion',
+            'largo',
+            'ancho',
+            'alto',
+            'demanda',
+            'inventario_inicial',
+            'valor_inventario',
+            'costo_almacenamiento',
+            'volumen_obtenido',
+            'inventario_final',
+        ]
+
+class ActualizarPedidoForm(forms.ModelForm):
+    class Meta:
+        model = Pedido
+        fields = [
+            'cliente',
+            'fecha_entrega',
+            'codigo',
+            'comentario',
+            'nombre',
+            'producto',
+            'cantidad',
+            'prioridad',
+            'estado',
+        ]
 
 class ProductoTerminadoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto terminado"""
@@ -109,7 +160,3 @@ class ProductoTerminadoForm(forms.ModelForm):
         model = ProductoTerminado
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
         
-class ActualizarPedidoForm(forms.ModelForm):
-    class Meta:
-        model = Pedido
-        fields = ['cliente', 'fecha_entrega', 'codigo', 'nombre', 'grosor', 'ancho', 'largo', 'productos_a_producir', 'cantidad', 'numero_pedido', 'estado_pedido', 'prioridad', 'destino_pedido']
