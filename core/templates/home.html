@@ -73,6 +73,7 @@
 
                     buildTableHeader() {
                         var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;"><tr>';
+<<<<<<< HEAD
             
                         // Verificar si se seleccionó "Mensual" en el cuadro de selección "Periodos"
                         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
@@ -95,6 +96,14 @@
                                 actual.setDate(actual.getDate() + 1);
                                 html += '<th>' + this.formatDate(actual) + '</th>';
                             }
+=======
+                        var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
+                        const actual = new Date(this.minDate);
+
+                        for (let i = 0; i < diffDays; i++) {
+                            actual.setDate(actual.getDate() + 1);
+                            html += '<th class="date-header">' + this.formatDate(actual) + "</th>";
+>>>>>>> a65bfdfb4d883d955b491d3a4fa2b826b8dad414
                         }
             
                         html += '</tr></thead><tbody>';
@@ -133,7 +142,7 @@
                             if (daysBefore > 0) for (let j = 0; j < daysBefore; j++) html += '<td></td>';
                             html += `<td class="event-cell" colspan="${days}" style="background-color: ${task[3]};">
                                 <span>${task[4]}%</span>
-                                <a class="popup-link" data-pedido-id="${i}">${task[0]}</a>
+                                <a class="popup-link" data-pedido-id="${i}">${task[5]}</a>
                             </td>`;
                             if (daysAfter > 0) for (let j = 0; j < daysAfter; j++) html += '<td></td>';
                             html += '</tr>';
