@@ -82,7 +82,8 @@
                         <th>Tipo madera</th>
                         <th>Clase diamétrica</th>
                         <th>Largo [mm]</th>
-                        <th>Cantidad [m³]</th>
+                        <th>Cantidad [m³]</th>  
+                        <th>Linea Produccion</th>
                         <th>Mostrar detalle</th> 
                     </tr>
                 </thead>
@@ -94,6 +95,7 @@
                         <td>{{ materia_prima.clase_diametrica }}</td>
                         <td>{{ materia_prima.largo }}</td>
                         <td>{{ materia_prima.cantidad }}</td>
+                        <td>{{ materia_prima.linea_produccion }}</td>
                         <td>
                         <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>

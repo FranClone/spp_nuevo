@@ -12,6 +12,7 @@ class Pedido(models.Model):
     producto = models.CharField(max_length=20, null=False, blank=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.IntegerField(null=False, blank=False)
+    linea_produccion = models.CharField(max_length=20, null=False, blank=False)
     
     
     # Salidas

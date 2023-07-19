@@ -1,151 +1,141 @@
-/* Basic styles  */
-.table-container{
+.table-container {
     background-color: rgba(255, 255, 255, 0.952);
-    height:auto;
+    height: auto;
     margin: 5%;
-    margin-top:4%;
+    margin-top: 4%;
     padding: 0 10px;
 }
+
 .carga-button-top {
     background-color: red;
     color: white;
     border-radius: 6px;
-	width: 100%;
+    width: 100%;
 }
 
 .carga-button-bot {
     background-color: red;
     color: white;
     border-radius: 6px;
-	
 }
 
-.buttons-top{
-	float: right;
+.buttons-top {
+    float: right;
     position: relative;
-	
 }
 
-.buttons-bot{
-	margin-left: 45%;
-	margin-top: -4.5%;
-	
-	
+.buttons-bot {
+    margin-left: 45%;
+    margin-top: -4.5%;
 }
 
-
-#gantt{
-	font-family: "Roboto";
+#gantt {
+    font-family: "Roboto";
 }
 
-#gantt table{
-	border-collapse: collapse;
-	border-spacing: 0px 20px;
+#gantt table {
+    border-collapse: collapse;
+    border-spacing: 0px 20px;
     border-bottom: 2px solid rgba(255, 255, 255, 0.801);
-    width: calc(100% - 20px); /* Resta 20px para tener un margen de 10px a cada lado */
+    width: calc(100% - 20px);
 }
 
-table tr{
-	border-bottom: 2px solid rgba(255, 255, 255, 0.801);
+table tr {
+    border-bottom: 2px solid rgba(255, 255, 255, 0.801);
 }
 
-#gantt table tr th{
-	border:  1.5px solid rgba(255, 255, 255, 0.801);
-	border-collapse: collapse;
-	padding: 9px;
-	font-size: 12px;
-	background-color: lightgray;
-	line-height: 35px;
-    
+#gantt table tr th {
+    border: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-collapse: collapse;
+    padding: 9px;
+    font-size: 12px;
+    background-color: lightgray;
+    line-height: 35px;
+}
+
+#gantt table tr td {
+    padding: 5px;
+    line-height: 35px;
+    border-left: 1.5px solid rgba(255, 255, 255, 0.801);
+    width: 250px;
+}
+
+#gantt table tr td:last-child {
+    border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+}
+
+#gantt table tr td.event-cell {
+    color: white;
+    font-size: 12px;
+    text-align: left;
+    padding-left: 10px;
+    border-radius: 26px;
+    border-left: none;
+}
+
+#gantt table tr td.event-cell:last-child {
+    border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+}
+
+#gantt table tr td.event-cell span {
+    background-color: #f6a400;
+    padding: 5px 10px;
+    border-radius: 15px;
+    margin-right: 10px;
+    color: white;
+    width: 50px;
 }
 
 
-#gantt table tr td{
-	padding: 5px;
-	line-height: 35px;
-	border-left:  1.5px solid rgba(255, 255, 255, 0.801);
-	width: 250px;
-}
+/* Agrega estilos CSS para el popup */
 
-#gantt table tr td:last-child{
-	border-right:  1.5px solid rgba(255, 255, 255, 0.801);
-}
-
-#gantt table tr td.event-cell{
-	color: white;
-	font-size: 12px;
-	text-align: left;
-	padding-left: 10px;
-	border-radius: 26px;
-	border-left: none;
-}
-
-#gantt table tr td.event-cell:last-child{
-	border-right: 1.5px solid rgba(255, 255, 255, 0.801);
-}
-
-#gantt table tr td.event-cell span{
-	background-color: #f6a400;
-	padding: 5px 10px;
-	border-radius: 15px;
-	margin-right: 10px;
-	color: #685c43;
-}
-
- /* Agrega estilos CSS para el popup */
 .popup {
-	display: none;
-	position: fixed;
-	width: 50%;
-	height: 50%;
-	border-radius: 6%;
-	border:  1px solid rgba(7, 7, 7, 0.801);
-	font-size: 20px;
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
-	background-color: #f9f9f9;
-	padding: 15px;
-	z-index: 9999;
-	color: rgb(5, 5, 5); 
-	text-align: center; 
+    display: none;
+    position: fixed;
+    width: 50%;
+    height: 50%;
+    border-radius: 6%;
+    border: 1px solid rgba(7, 7, 7, 0.801);
+    font-size: 20px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #f9f9f9;
+    padding: 15px;
+    z-index: 9999;
+    color: rgb(5, 5, 5);
+    text-align: center;
 }
+
 
 /* Agrega estilos CSS para el enlace del popup */
+
 .popup-link {
-	color: blue;
-	text-decoration: underline;
-	cursor: pointer;
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
 }
 
+.event-cell a.popup-link {
+    color: white;
+    font-size: 20px;
+    text-decoration: none;
+}
 
-        /* Estilos personalizados para el scrollbar */
-    .table-container {
-            overflow: auto;
-            height: 75%;
-            scrollbar-width: thin;
-            scrollbar-color: rgb(118, 117, 117) #f1f1f1;
-            border-radius: 6px;
-    }
+.event-cell a.popup-link:hover {
+    text-decoration: underline;
+}
 
-    .table-container::-webkit-scrollbar {
-            width: 8px;
-            background-color: #f1f1f1;
-    }
+.date-header {
+    background-color: blue;
+    color: red;
+    font-weight: bold;
+    padding: 9px;
+    font-size: 20px;
+}
 
-    .table-container::-webkit-scrollbar-thumb {
-            background-color: rgb(95, 93, 93);
-            border-radius: 6px;
-    }
-
-    .table-container::-webkit-scrollbar-thumb:hover {
-            background-color: rgb(255, 0, 0);
-    }
-
-    .table-container::-webkit-scrollbar-track {
-            background-color: #f1f1f1;
-    }
-
-    .table-container::-webkit-scrollbar-track:hover {
-            background-color: #ccc;
-    }
+.text-center {
+    color: red;
+    padding-top: 20px;
+    padding-bottom: 10px;
+}
