@@ -16,7 +16,7 @@
 <body>
     {% include "partials/header.html" %}
 
-    <div class="buttons-top">
+    <div class="buttons-top horizontal-container">
         <div>
             <select name="lineas" id="toggle-lineas-button" class="carga-button-top" >
                 <option value="lineas">Lineas Produccion</option>
@@ -39,6 +39,15 @@
                 <option value="diario">Diario</option>
             </select>
         </div>
+    </div>
+
+    <div class="form-container-productos">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear">Crear</button>
+        </form>
     </div>
 
     <div class="popup" id="pedido-popup">
@@ -171,6 +180,7 @@
 
                 const obj = new Gantt({{ tasks|safe }});
             </script>
+            
             <br/>
         </div>
     </div>
@@ -208,5 +218,23 @@
             hideActivePopup();
         });
     </script>
+    <script>
+                const toggleButton = document.getElementById("toggle-carga-button");
+                const cargaForm = document.querySelector(".form-container-productos form");
+
+                let isFormVisible = false;
+
+                toggleButton.addEventListener("click", function() {
+                    if (!isFormVisible) {
+                        const buttonRect = toggleButton.getBoundingClientRect();
+                        const buttonBottom = buttonRect.bottom;
+                        cargaForm.style.display = "block";
+                        isFormVisible = true;
+                    } else {
+                        cargaForm.style.display = "none";
+                        isFormVisible = false;
+                    }
+                });
+            </script>
 </body>
 </html>

@@ -331,6 +331,7 @@ def pedidos(request):
 
 def gantt_view(request):
     
+    form = PedidoForm() 
     pedidos = Pedido.objects.all()
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
@@ -347,11 +348,11 @@ def gantt_view(request):
             pedido.fecha_entrega.strftime('%Y/%m/%d'),
             color,                           
             porcentaje_progreso,
-            pedido.nombre          
+            (pedido.nombre + " " + pedido.linea_produccion)          
         ]
         tasks.append(task_data)
 
-    return render(request, 'home.html', {'tasks': tasks})
+    return render(request, 'home.html', {'tasks': tasks, 'form': form})
 
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)

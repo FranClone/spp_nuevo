@@ -1,8 +1,25 @@
+form {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+form label {
+    flex: 0 0 120px;
+    margin-right: 10px;
+}
+
+form input,
+form select {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
 .table-container {
     background-color: rgba(255, 255, 255, 0.952);
     height: auto;
-    margin: 5%;
-    margin-top: 4%;
+    margin-left: 5%;
+    margin-right: 5%;
     padding: 0 10px;
 }
 
@@ -16,7 +33,17 @@
 .carga-button-bot {
     background-color: red;
     color: white;
+    border: none;
     border-radius: 6px;
+    padding: 8px 16px;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.carga-button-bot:hover {
+    background-color: white;
+    color: red;
 }
 
 .buttons-top {
@@ -25,8 +52,8 @@
 }
 
 .buttons-bot {
-    margin-left: 45%;
-    margin-top: -4.5%;
+    margin-top: 10px;
+    text-align: center;
 }
 
 #gantt {
@@ -48,7 +75,7 @@ table tr {
     border: 1.5px solid rgba(255, 255, 255, 0.801);
     border-collapse: collapse;
     padding: 9px;
-    font-size: 12px;
+    font-size: 14px;
     background-color: lightgray;
     line-height: 35px;
 }
@@ -58,6 +85,7 @@ table tr {
     line-height: 35px;
     border-left: 1.5px solid rgba(255, 255, 255, 0.801);
     width: 250px;
+    font-size: 14px;
 }
 
 #gantt table tr td:last-child {
@@ -86,9 +114,6 @@ table tr {
     width: 50px;
 }
 
-
-/* Agrega estilos CSS para el popup */
-
 .popup {
     display: none;
     position: fixed;
@@ -107,9 +132,6 @@ table tr {
     text-align: center;
 }
 
-
-/* Agrega estilos CSS para el enlace del popup */
-
 .popup-link {
     color: blue;
     text-decoration: underline;
@@ -127,15 +149,61 @@ table tr {
 }
 
 .date-header {
-    background-color: blue;
+    background-color: lightblue;
     color: red;
     font-weight: bold;
     padding: 9px;
-    font-size: 20px;
+    font-size: 12px;
 }
 
 .text-center {
-    color: red;
+    color: black;
     padding-top: 20px;
     padding-bottom: 10px;
+}
+
+.horizontal-container {
+    display: flex;
+}
+
+.horizontal-container div {
+    display: inline-block;
+    margin-right: 10px;
+}
+
+.form-container-productos form {
+    display: none;
+    position: absolute;
+    top: 30px;
+    z-index: 1;
+    background-color: rgba(243, 240, 240, 0.95);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.form-container-productos form {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container-productos label {
+    flex: 0 0 120px;
+    margin-right: 10px;
+    text-align: right;
+}
+
+.form-container-productos input,
+.form-container-productos select {
+    flex: 1;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+.carga-button {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
 }
