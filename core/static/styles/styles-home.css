@@ -236,4 +236,25 @@ table tr {
     right: 10px;
     font-size: 20px;
     cursor: pointer;
+    background-color: red;
 }
+
+::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        /* Color del fondo del scrollbar cuando no está en hover */
+        ::-webkit-scrollbar-track {
+            background-color: black;
+        }
+
+        /* Color del thumb del scrollbar (el deslizador) cuando no está en hover */
+        ::-webkit-scrollbar-thumb {
+            background-color: rgb(65, 64, 64);
+            border-radius: 6px;
+        }
+
+        /* Color del thumb del scrollbar cuando está en hover */
+        ::-webkit-scrollbar-thumb:hover {
+            background-color: red;
+        }
