@@ -13,6 +13,9 @@ class Pedido(models.Model):
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.IntegerField(null=False, blank=False)
     linea_produccion = models.CharField(max_length=20, null=False, blank=False)
+    #porcentaje_avance = models.FloatField(max_length=5)
+    #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
+    
     
     # Salidas
     estado = models.CharField(max_length=20, null=False, blank=False)

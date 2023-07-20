@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Roboto">
+   
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,17 +17,18 @@
 <body>
     {% include "partials/header.html" %}
 
-    <div class="buttons-top">
+    <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
+    <div class="buttons-top horizontal-container">
         <div>
-            <select name="lineas" id="toggle-lineas-button" class="carga-button-top" >
-                <option value="lineas" disabled>Lineas Produccion</option>
-                <option value="linea-delgada">Linea delgada</option>
-                <option value="linea-gruesa">Linea gruesa</option>
+            <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
+                <option value="lineas">Lineas Producción</option>
+                <option value="Delgada">Linea Delgada</option>
+                <option value="Gruesa">Linea Gruesa</option>
             </select>
         </div>
         <div>
-            <select name="funciones" id="toggle-lineas-button" class="carga-button-top" >
-                <option value="funcion" >Funcion Objetivo</option>
+            <select name="funciones" id="toggle-lineas-button" class="carga-button-top">
+                <option value="funcion">Función Objetivo</option>
                 <option value="minimizar-costos">Minimizar costos</option>
                 <option value="aumentar-rendimiento">Aumentar rendimiento</option>
             </select>
@@ -41,13 +43,18 @@
         </div>
     </div>
 
-    <div class="popup" id="pedido-popup">
-        <!-- Los datos del pedido obtenidos a través de la solicitud AJAX se mostrarán aquí -->
+    <div class="form-container-productos">
+        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" name="crear">Crear</button>
+        </form>
     </div>
 
     <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
-      
+
         <h1 class="text-center"> Organizador de Pedidos </h1>
         <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
             <script type="text/javascript">
@@ -55,8 +62,10 @@
                     constructor(tasks) {
                         this.tasks = tasks;
                         this.dateWidth = 178;
+                        this.filteredTasks = tasks;
                         this.setMinAndMaxDate();
                         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+                        this.attachEventListeners();
                     }
 
                     setMinAndMaxDate(){
@@ -128,8 +137,8 @@
                     buildTableBody() {
                         var html = '';
 
-                        for (let i = 0; i < this.tasks.length; i++) {
-                            var task = this.tasks[i];
+                        for (let i = 0; i < this.filteredTasks.length; i++) {
+                            var task = this.filteredTasks[i];
 
                             var dMin = new Date(task[1]);
                             var dMax = new Date(task[2]);
@@ -153,7 +162,6 @@
 
                         return html;
                     }
-
 
                     diffInDays(max, min){
                         var diffTime = Math.abs(max - min);
@@ -209,48 +217,59 @@
                     }
 
 
-                }
+                
 
-                let activePopup = null;
+                    filterTasksByLine(lineValue) {
+                        if (lineValue === "lineas") {
+                            this.filteredTasks = this.tasks;
+                        } else {
+                            this.filteredTasks = this.tasks.filter(task => task[6] === lineValue);
+                        }
 
-                function togglePopup(link) {
-                    const pedidoId = link.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
-                    const popup = document.getElementById('pedido-popup');
+                        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+                        this.attachEventListeners();
+                    }
 
-                    // Realiza una consulta AJAX para obtener los datos del pedido desde el backend
-                    fetch(`/obtener_pedido/${pedidoId}/`)
-                        .then(response => response.json())
-                        .then(data => {
-                            // Actualiza el contenido del popup con los datos del pedido
-                            popup.innerHTML = `
-                                <h2>Pedido ${data.codigo}</h2>
-                                <p>Cliente: ${data.cliente}</p>
-                                <p>Fecha de entrega: ${data.fecha_entrega}</p>
-                                <!-- Agrega aquí los demás campos del pedido que quieras mostrar -->
-                            `;
-                            // Muestra el popup
-                            popup.style.display = 'block';
-                            activePopup = popup;
-                        })
-                        .catch(error => console.error('Error al obtener los datos del pedido:', error));
-                }
-                function hideActivePopup() {
-                    if (activePopup !== null) {
-                        activePopup.style.display = 'none';
-                        activePopup = null;
+                    attachEventListeners() {
+                        const popupLinks = document.querySelectorAll('.popup-link');
+                        popupLinks.forEach(link => {
+                            link.removeEventListener('click', this.handlePopupClick); // Remove existing event listeners
+                            link.addEventListener('click', this.handlePopupClick.bind(this));
+                        });
+                    }
+
+                    handlePopupClick(event) {
+                        event.stopPropagation(); // Evita que el evento se propague al contenedor principal
+                        const pedidoId = event.target.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
+                        const popup = document.createElement('div');
+                        popup.className = 'popup-overlay';
+                        const pedidoData = this.tasks[pedidoId];
+                        popup.innerHTML = `
+                            <div class="popup-content">
+                                <h1> Detalle Pedido </h2>
+                                <p>Codigo: ${pedidoData[0]}</p>
+                                <p>Cliente: ${pedidoData[8]} </p>
+                                <p>Nombre: ${pedidoData[5]}</p>
+                                <p>Fecha de entrega: ${pedidoData[2]}</p>
+                                <p>Producto: ${pedidoData[10]}</p>
+                                <p>Cantidad: ${pedidoData[7]}</p>
+                                <p>Prioridad: ${pedidoData[11]}</p>
+                                <p>Linea produccion: ${pedidoData[6]}</p>
+                                <p>Progreso: ${pedidoData[4]} %</p>
+                                <p>Comentario: ${pedidoData[9]}</p>
+                                
+                                
+
+        
+                                <button class="popup-close" onclick="this.parentElement.parentElement.remove()">X</button>
+                            </div>
+                        `;
+                        document.body.appendChild(popup);
                     }
                 }
 
-                // Oculta el popup al hacer clic fuera de él
-                window.addEventListener('click', function(event) {
-                    const allPopups = document.querySelectorAll('.popup');
-                    allPopups.forEach(function(popup) {
-                        if (!popup.contains(event.target)) {
-                            popup.style.display = 'none';
-                        }
-                    });
-                    hideActivePopup();
-                });
+                const tasks = {{ tasks|safe }};
+                const obj = new Gantt(tasks);
 
                 const periodosSelect = document.querySelector('select[name="periodos"]');
                 periodosSelect.value = "mensual";
@@ -263,43 +282,20 @@
 
                 const obj = new Gantt({{ tasks|safe }});
 
+                // Agrega el evento de cambio para el botón de líneas de producción
+                const toggleLineasButton = document.getElementById('toggle-lineas-button');
+                toggleLineasButton.addEventListener('change', function() {
+                    const selectedLine = this.value;
+                    obj.filterTasksByLine(selectedLine);
+                });
             </script>
-            <br/>
         </div>
     </div>
-    <div class="popup">
-        
-        <h2>{{ pedido.nombre }}</h2>
-        <p>Fecha inicio: {{ pedido.fecha_inicio }}</p>
-        <p>Fecha fin: {{ pedido.fecha_fin }}</p>
-        
-    </div>
+
     <div class="buttons-bot">
         <button type="button" id="toggle-lineas-button" class="carga-button-bot">PDF</button>
         <button type="button" id="toggle-funcion-button" class="carga-button-bot">Planificar</button>
         <button type="button" id="toggle-periodo-button" class="carga-button-bot">Actualizar</button>
     </div>
-
-    <script>
-        // Agrega el evento de clic para mostrar/ocultar el popup
-        const popupLinks = document.querySelectorAll('.popup-link');
-        popupLinks.forEach(function(link) {
-            link.addEventListener('click', function(event) {
-                event.stopPropagation(); // Evita que el evento se propague al contenedor principal
-                togglePopup(this);
-            });
-        });
-
-        // Oculta el popup al hacer clic fuera de él
-        window.addEventListener('click', function(event) {
-            const allPopups = document.querySelectorAll('.popup');
-            allPopups.forEach(function(popup) {
-                if (!popup.contains(event.target)) {
-                    popup.style.display = 'none';
-                }
-            });
-            hideActivePopup();
-        });
-    </script>
 </body>
 </html>
