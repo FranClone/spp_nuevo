@@ -56,11 +56,64 @@
     
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+       
+
         <form method="post" action="{% url 'plan_productos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" name="crear">Crear</button>
+            <table class="form-table">
+        <tr>
+            <td>{{ form.codigo.label_tag }}</td>
+            <td>{{ form.nombre.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.codigo }}</td>
+            <td>{{ form.nombre }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.descripcion.label_tag }}</td>
+            <td>{{ form.largo.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.descripcion }}</td>
+            <td>{{ form.largo }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.ancho.label_tag }}</td>
+            <td>{{ form.alto.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.ancho }}</td>
+            <td>{{ form.alto }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.demanda.label_tag }}</td>
+            <td>{{ form.inventario_inicial.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.demanda }}</td>
+            <td>{{ form.inventario_inicial }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.valor_inventario.label_tag }}</td>
+            <td>{{ form.costo_almacenamiento.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.valor_inventario }}</td>
+            <td>{{ form.costo_almacenamiento }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.volumen_obtenido.label_tag }}</td>
+            <td>{{ form.inventario_final.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.volumen_obtenido }}</td>
+            <td>{{ form.inventario_final }}</td>
+        </tr>
+       
+    </table>
+    <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
+
     </div>
 
     <div class="table-container">

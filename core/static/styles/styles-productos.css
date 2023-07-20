@@ -17,14 +17,17 @@ form select {
 
 .form-container-productos form {
     display: none;
-    position: absolute;
-    top: 30px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
     background-color: rgba(243, 240, 240, 0.95);
     border: 1px solid black;
     border-radius: 6px;
     padding: 10px;
 }
+
 
 .toggle-carga-button {
     background-color: white;
@@ -53,6 +56,7 @@ form select {
 .form-container-productos form {
     display: flex;
     flex-wrap: wrap;
+    width: 40%;
     justify-content: center;
     align-items: center;
 }
@@ -66,7 +70,7 @@ form select {
 .form-container-productos input,
 .form-container-productos select {
     flex: 1;
-    width: 100%;
+    width: 50%;
     margin-bottom: 10px;
 }
 
@@ -200,4 +204,34 @@ a {
 a {
     text-decoration: none;
     color: inherit;
+}
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse; /* Combina los bordes de la tabla */
+    
+}
+
+.form-table td {
+    padding: 5px;
+    vertical-align: top; /* Alinea los campos verticalmente */
+}
+
+.form-table label {
+    display: block; /* Hace que las etiquetas ocupen todo el ancho de la celda */
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.form-table input {
+    width: 100%;
+    box-sizing: border-box; /* Incluye el ancho del borde y el relleno en el ancho total */
+}
+
+.red-button {
+    display: block;
+    margin: 0 auto;
+    background-color: red;
+    color: white;
+    
 }

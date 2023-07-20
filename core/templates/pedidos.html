@@ -59,11 +59,67 @@
     </div>
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+       
+       
+       
+       
+       
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" name="crear">Crear</button>
+
+
+            <table class="form-table">
+                <tr>
+                    <td>{{ form.cliente.label_tag }}</td>
+                    <td>{{ form.fecha_entrega.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cliente }}</td>
+                    <td>{{ form.fecha_entrega }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo.label_tag }}</td>
+                    <td>{{ form.comentario.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo }}</td>
+                    <td>{{ form.comentario }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.nombre.label_tag }}</td>
+                    <td>{{ form.producto.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.nombre }}</td>
+                    <td>{{ form.producto }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cantidad.label_tag }}</td>
+                    <td>{{ form.prioridad.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cantidad }}</td>
+                    <td>{{ form.prioridad }}</td>
+                </tr>
+
+                <tr>
+                    <td>{{ form.linea_produccion.label_tag }}</td>
+                    <td>{{ form.estado.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.linea_produccion }}</td>
+                    <td>{{ form.estado }}</td>
+                </tr>
+
+            </table>
+            <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
+
+
+
+
+
+        
     </div>
     <div class="table-container">
         <h1 class="encabezado-pedidos">Pedidos</h1>

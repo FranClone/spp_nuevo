@@ -306,6 +306,7 @@ def patron_corte(request):
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
+
 def pedidos(request):
     pedidos = Pedido.objects.all()
 
