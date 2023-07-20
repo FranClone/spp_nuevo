@@ -269,24 +269,22 @@
                 }
 
                 const tasks = {{ tasks|safe }};
-                const obj = new Gantt(tasks);
+                const gantt = new Gantt(tasks);
 
+                // Set the default value for the "Periodos" select box to "mensual"
                 const periodosSelect = document.querySelector('select[name="periodos"]');
                 periodosSelect.value = "mensual";
                 periodosSelect.addEventListener('change', function() {
                     // Rebuild the Gantt chart when the select box value changes
-                    obj.setMinAndMaxDate();
-                    document.getElementById('gantt').innerHTML = obj.buildTableHeader() + obj.buildTableBody();
+                    gantt.setMinAndMaxDate();
+                    document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
                 });
-                
-
-                const obj = new Gantt({{ tasks|safe }});
 
                 // Agrega el evento de cambio para el botón de líneas de producción
                 const toggleLineasButton = document.getElementById('toggle-lineas-button');
                 toggleLineasButton.addEventListener('change', function() {
                     const selectedLine = this.value;
-                    obj.filterTasksByLine(selectedLine);
+                    gantt.filterTasksByLine(selectedLine);
                 });
             </script>
         </div>
