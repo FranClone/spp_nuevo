@@ -140,7 +140,7 @@
                             <td>{{ pedido.fecha_entrega }}</td>
                             <td>{{ pedido.estado }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{{ pedido.producto }}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.progreso }}', '{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{{ pedido.productos }}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.progreso }}', '{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                                 <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                                 <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                             </td>
