@@ -45,7 +45,7 @@
     <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button" onclick="toggleCargaForm()">Carga Manual</button>
-        <form method="post" action="{% url 'home' %}" style="display: none;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
 
             <table class="form-table">

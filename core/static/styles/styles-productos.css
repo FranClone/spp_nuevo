@@ -28,7 +28,6 @@ form select {
     padding: 10px;
 }
 
-
 .toggle-carga-button {
     background-color: white;
     border: 1px solid black;
@@ -182,7 +181,7 @@ a {
     margin: 0 auto;
     text-align: center;
     width: 100px;
-    background-color: #fb5807db;
+    background-color: red;
     color: white;
     border-radius: 5px;
 }
@@ -208,24 +207,27 @@ a {
 
 .form-table {
     width: 100%;
-    border-collapse: collapse; /* Combina los bordes de la tabla */
-    
+    border-collapse: collapse;
+    /* Combina los bordes de la tabla */
 }
 
 .form-table td {
     padding: 5px;
-    vertical-align: top; /* Alinea los campos verticalmente */
+    vertical-align: top;
+    /* Alinea los campos verticalmente */
 }
 
 .form-table label {
-    display: block; /* Hace que las etiquetas ocupen todo el ancho de la celda */
+    display: block;
+    /* Hace que las etiquetas ocupen todo el ancho de la celda */
     margin-bottom: 5px;
     text-align: left;
 }
 
 .form-table input {
     width: 100%;
-    box-sizing: border-box; /* Incluye el ancho del borde y el relleno en el ancho total */
+    box-sizing: border-box;
+    /* Incluye el ancho del borde y el relleno en el ancho total */
 }
 
 .red-button {
@@ -233,5 +235,4 @@ a {
     margin: 0 auto;
     background-color: red;
     color: white;
-    
 }

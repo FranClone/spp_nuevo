@@ -1,5 +1,6 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from django.forms.widgets import DateInput
 from asignaciones.models import UserProfile
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
@@ -145,7 +146,9 @@ class ActualizarPedidoForm(forms.ModelForm):
         widget = forms.CheckboxSelectMultiple(),
         required = False,
     )
-
+    
+    fecha_entrega = forms.DateField(widget = DateInput(attrs={'type': 'date'}))
+    
     class Meta:
         model = Pedido
         fields = [
