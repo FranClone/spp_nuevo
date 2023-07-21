@@ -92,7 +92,7 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, cliente, nombre, fecha_entrega, productos, cantidad, prioridad, linea_produccion, progreso, comentario) {
+function openPopup(codigo, cliente, nombre, fecha_entrega, productos, cantidad, prioridad, linea_produccion, comentario) {
     document.getElementById('popupCodigo').innerText = codigo;
     document.getElementById('popupCliente').innerText = cliente;
     document.getElementById('popupNombre').innerText = nombre;
@@ -101,7 +101,6 @@ function openPopup(codigo, cliente, nombre, fecha_entrega, productos, cantidad, 
     document.getElementById('popupCantidad').innerText = cantidad;
     document.getElementById('popupPrioridad').innerText = prioridad;
     document.getElementById('popupLinea').innerText = linea_produccion;
-    document.getElementById('popupProgreso').innerText = progreso;
     document.getElementById('popupComentario').innerText = comentario;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
