@@ -289,8 +289,6 @@ table tr {
     padding-bottom: 10px;
 }
 
-<<<<<<< HEAD
-=======
 .horizontal-container {
     display: flex;
 }
@@ -302,14 +300,17 @@ table tr {
 
 .form-container-productos form {
     display: none;
-    position: absolute;
-    top: 30px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     z-index: 1;
     background-color: rgba(243, 240, 240, 0.95);
     border: 1px solid black;
     border-radius: 6px;
     padding: 10px;
 }
+
 
 .form-container-productos form {
     display: flex;
@@ -383,4 +384,3 @@ table tr {
         ::-webkit-scrollbar-thumb:hover {
             background-color: red;
         }
->>>>>>> 035d64431fda057a2f52d7cbceb3963bf410d591
