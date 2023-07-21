@@ -140,7 +140,7 @@
                             <td>{{ pedido.fecha_entrega }}</td>
                             <td>{{ pedido.estado }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{pedido.fecha_entrega }}', '{{ pedido.estado }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{{ pedido.producto }}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.progreso }}', '{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                                 <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                                 <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                             </td>
@@ -158,17 +158,32 @@
             <div class="popup-item">
                 <strong>Código:</strong> <span id="popupCodigo"></span>
             </div>
+        <div class="popup-item">
+            <strong>Cliente:</strong> <span id="popupCliente"></span>
+        </div>
             <div class="popup-item">
                 <strong>Nombre:</strong> <span id="popupNombre"></span>
             </div>
             <div class="popup-item">
-                <strong>Grosor:</strong> <span id="popupGrosor"></span>
+                <strong>Fecha de entrega:</strong> <span id="popupFecha"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Producto:</strong> <span id="popupProducto"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Cantidad:</strong> <span id="popupCantidad"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Prioridad:</strong> <span id="popupPrioridad"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Linea produccion:</strong> <span id="popupLinea"></span>
             </div>
             <div class="popup-item">
-                <strong>Ancho:</strong> <span id="popupAncho"></span>
+                <strong>Progreso:</strong> <span id="popupProgreso"></span>
             </div>
             <div class="popup-item">
-                <strong>Largo:</strong> <span id="popupLargo"></span>
+                <strong>Comentario:</strong> <span id="popupComentario"></span>
             </div>
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>

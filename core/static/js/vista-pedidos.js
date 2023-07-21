@@ -92,12 +92,17 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, nombre, grosor, ancho, largo) {
+function openPopup(codigo, cliente, nombre, fecha_entrega, producto,cantidad,prioridad,linea_produccion,progreso,comentario) {
     document.getElementById('popupCodigo').innerText = codigo;
+    document.getElementById('popupCliente').innerText = cliente;
     document.getElementById('popupNombre').innerText = nombre;
-    document.getElementById('popupGrosor').innerText = grosor;
-    document.getElementById('popupAncho').innerText = ancho;
-    document.getElementById('popupLargo').innerText = largo;
+    document.getElementById('popupFecha').innerText = fecha_entrega;
+    document.getElementById('popupProducto').innerText = producto;
+    document.getElementById('popupCantidad').innerText = cantidad;
+    document.getElementById('popupPrioridad').innerText = prioridad;
+    document.getElementById('popupLinea').innerText = linea_produccion;
+    document.getElementById('popupProgreso').innerText = progreso;
+    document.getElementById('popupComentario').innerText = comentario;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }
