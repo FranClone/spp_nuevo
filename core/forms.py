@@ -151,6 +151,7 @@ class ActualizarPedidoForm(forms.ModelForm):
         fields = [
             'cliente',
             'fecha_entrega',
+            'producto',
             'codigo',
             'comentario',
             'nombre',
