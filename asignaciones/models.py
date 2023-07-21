@@ -6,7 +6,7 @@ from core.modelos.empresa import Empresa
 
 class UserProfile(AbstractUser):
     rut = models.CharField(unique=True, max_length=20)
-    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column = 'rut_empresa')
+    empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, db_column='rut_empresa', null=True)
     def __str__(self):
         return self.username
 
