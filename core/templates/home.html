@@ -333,13 +333,83 @@
             }
         }
             </script>
+            <script type="text/javascript">
+                function showPopup() {
+                    // Obtener la capa de superposición de la ventana emergente y mostrarla
+                    const popupOverlay = document.getElementById('popup-ejecutar');
+                    popupOverlay.style.display = 'block';
+                }
+            
+                function hidePopup() {
+                    // Obtener la capa de superposición de la ventana emergente y ocultarla
+                    const popupOverlay = document.getElementById('popup-ejecutar');
+                    popupOverlay.style.display = 'none';
+                }
+            </script>
+        </div>
+    </div>
+    <div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
+        <div class="popup-ejecutar">
+            <div class="main"> 
+                <h1>Planificacion Diaria</h1>
+                <div class="info">
+                    <table class="info-table">
+                        <tr>
+                            <th id="info-date-th">Fecha de Actualización</th>
+                            <td id="info-date-td">[Fecha de actualización]</td>
+                            <th id="info-user-th">Usuario</th>
+                            <td id="info-user-td">[Nombre de usuario]</td>
+                        </tr>
+                        <tr>
+                            <th id="info-time-th">Hora de Actualización</th>
+                            <td id="info-time-td">[Hora de actualización]</td>
+                            <th id="info-shift-th">Turno</th>
+                            <td id="info-shift-td">[Turno]</td>
+                        </tr>
+                    </table>
+                </div>
+        
+                <div class="data">
+                    <table class="data-table">
+                        <tr>
+                            <th >Clase Diamétrica</th>
+                            <th >Cantidad (m³)</th>
+                            <th >Patrón de Corte</th>
+                            <th >Productos</th>
+                            <th >Cantidad de Productos</th>
+                            <th >Rendimiento Teórico</th>
+                        </tr>
+                        <tr>
+                            <td >[Valor 1]</td>
+                            <td >[Valor 2]</td>
+                            <td >[Valor 3]</td>
+                            <td >[Valor 4]</td>
+                            <td >[Valor 5]</td>
+                            <td >[Valor 6]</td>
+                        </tr>
+                        <tr>
+                            <td >[Valor 1]</td>
+                            <td >[Valor 2]</td>
+                            <td >[Valor 3]</td>
+                            <td >[Valor 4]</td>
+                            <td >[Valor 5]</td>
+                            <td >[Valor 6]</td>
+                        </tr>
+                    
+                    </table>
+                </div>
+                <br><br>
+                <button  class="red-button" >Exportar</button>
+                <button  class="red-button" >Editar</button>
+                <button  class="red-button" onclick="hidePopup()">Aceptar</button>
+            </div>
         </div>
     </div>
 
     <div class="buttons-bot">
-        <button type="button" id="toggle-lineas-button" class="carga-button-bot">Exportar</button>
-        <button type="button" id="toggle-funcion-button" class="carga-button-bot">Ejecutar</button>
-        <button type="button" id="toggle-periodo-button" class="carga-button-bot">Plan actual</button>
+        <button type="button" id="toggle-exportar-button" class="carga-button-bot">Exportar</button>
+        <button type="button" id="toggle-ejecutar-button" class="carga-button-bot" onclick="showPopup()">Ejecutar</button>
+        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
 
 </body>

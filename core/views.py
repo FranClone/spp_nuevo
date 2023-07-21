@@ -28,6 +28,11 @@ from django.http import JsonResponse
 from datetime import datetime
 import random
 
+
+from django.http import HttpResponse
+from reportlab.lib.pagesizes import letter
+from reportlab.pdfgen import canvas
+
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -332,7 +337,7 @@ def pedidos(request):
 
 def gantt_view(request):
     
-    form = PedidoForm() 
+    form = ActualizarPedidoForm() 
     pedidos = Pedido.objects.all()
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
@@ -390,3 +395,10 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
+
+
+
+
+
+

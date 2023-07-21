@@ -365,6 +365,31 @@ table tr {
     font-size: 20px;
     cursor: pointer;
 }
+
+
+.popup-ejecutar {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80%;
+    height: 80%;
+    background-color: rgba(5, 5, 5, 0.5);
+    display: flex;
+    transform: translate(-50%, -50%);
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.popup-ejecutar {
+    background-color: #f7efef;
+    padding: 20px;
+    height: 90%;
+    width: 90%;
+    border: 2px solid black;
+    border-radius: 5px;
+    
+}
 ::-webkit-scrollbar {
             width: 12px;
         }
@@ -383,4 +408,70 @@ table tr {
         /* Color del thumb del scrollbar cuando está en hover */
         ::-webkit-scrollbar-thumb:hover {
             background-color: red;
+        }
+
+
+        .red-button {
+          
+            margin: 0 auto;
+            background-color: red;
+            color: white;
+            width: 15%;
+        }
+
+        .main {
+            text-align: center;
+        }
+
+        .info {
+            border: 2px solid black;
+            padding: 10px;
+            margin-top: 20px;
+            display: inline-block; /* Para que el div se ajuste al contenido */
+            width: 98%;
+        }
+
+        .info-table {
+            width: 100%; /* Para que la tabla ocupe todo el ancho del div */
+            border-collapse: collapse;
+        }
+
+        .info-table th, .info-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .info-table th {
+            background-color: #f2f2f2;
+        }
+
+        .data {
+            margin-top: 20px;
+            width: 90%;
+            display: inline-block; /* Para centrar el div */
+            border: 2px solid black; /* Agregar borde a la tabla */
+            padding: 10px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .data-table th, .data-table td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: left;
+        }
+
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        
+
+        .red-button:hover {
+            background-color: white;
+            color: red;
+            transition: 0.5s ease-in-out;
         }
