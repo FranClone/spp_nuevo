@@ -7,7 +7,6 @@
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <link rel="stylesheet"  href="https://fonts.googleapis.com/css?family=Roboto">
-   
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -43,11 +42,11 @@
         </div>
     </div>
 
+    <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button" onclick="toggleCargaForm()">Carga Manual</button>
         <form method="post" action="{% url 'home' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-
 
             <table class="form-table">
                 <tr>
@@ -82,7 +81,6 @@
                     <td>{{ form.cantidad }}</td>
                     <td>{{ form.prioridad }}</td>
                 </tr>
-
                 <tr>
                     <td>{{ form.linea_produccion.label_tag }}</td>
                     <td>{{ form.estado.label_tag }}</td>
@@ -91,7 +89,6 @@
                     <td>{{ form.linea_produccion }}</td>
                     <td>{{ form.estado }}</td>
                 </tr>
-
             </table>
             <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
@@ -99,7 +96,6 @@
 
     <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
-
         <h1 class="text-center"> Organizador de Pedidos </h1>
         <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
             <script type="text/javascript">
@@ -302,10 +298,6 @@
                                 <p>Linea produccion: ${pedidoData[6]}</p>
                                 <p>Progreso: ${pedidoData[4]} %</p>
                                 <p>Comentario: ${pedidoData[9]}</p>
-                                
-                                
-
-        
                                 <button class="popup-close" onclick="this.parentElement.parentElement.remove()">X</button>
                             </div>
                         `;

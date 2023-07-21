@@ -19,157 +19,159 @@
 
 <body>
     {% include "partials/header.html" %}
-    <div class="filter-section">
-        <button class="filter-button">Filtrar</button>
-        <form class="filter-form" style="display: none;">
-            <div class="filters-container" >
-                <label for="filter-by">Filtrar por:</label>
-                <select id="filter-by" name="filter-by" class="filter-select">
-                    <option value="nombre">Nombre del producto</option>
-                    <option value="codigo">Código del producto</option>
-                </select>
-                <div>
-                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+
+        <!--Sección de filtrado-->
+        <div class="filter-section">
+            <button class="filter-button">Filtrar</button>
+            <form class="filter-form" style="display: none;">
+                <div class="filters-container" >
+                    <label for="filter-by">Filtrar por:</label>
+                    <select id="filter-by" name="filter-by" class="filter-select">
+                        <option value="nombre">Nombre del producto</option>
+                        <option value="codigo">Código del producto</option>
+                    </select>
+                    <div>
+                    <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                    </div>
+                    <select name="filter-option" class="filter-select">
+                        <option value="partial">Parcial</option>
+                        <option value="exact">Exacto</option>
+                    </select>
+                    <br>
+                    <label for="advanced-search">Búsqueda avanzada:</label>
+                    <input type="checkbox" id="advanced-search" name="advanced-search">
+                    <div id="advanced-search-options" style="display: none;">
+                        <label for="filter-length">Largo:</label>
+                        <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
+                        <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                        <br>
+                        <label for="filter-width">Ancho:</label>
+                        <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
+                        <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                        <br>
+                        <label for="filter-thickness">Grosor:</label>
+                        <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
+                        <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                        <br>
+                    </div>
+                    <button type="submit" class="filter-button">Buscar</button>
+                    <button type="button" class="clear-filter-button">Cancelar</button>
                 </div>
-                <select name="filter-option" class="filter-select">
-                    <option value="partial">Parcial</option>
-                    <option value="exact">Exacto</option>
-                </select>
-                <br>
-                <label for="advanced-search">Búsqueda avanzada:</label>
-                <input type="checkbox" id="advanced-search" name="advanced-search">
-                <div id="advanced-search-options" style="display: none;">
-                    <label for="filter-length">Largo:</label>
-                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
-                    <br>
-                    <label for="filter-width">Ancho:</label>
-                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
-                    <br>
-                    <label for="filter-thickness">Grosor:</label>
-                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
-                    <br>
-                </div>
-                <button type="submit" class="filter-button">Buscar</button>
-                <button type="button" class="clear-filter-button">Cancelar</button>
+            </form>
+        </div>
+
+        <!--Sección formulario desplegable mediante botón "Carga Manual"-->
+        <div class="form-container-productos">
+            <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+
+            <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+                {% csrf_token %}
+
+                <table class="form-table">
+                    <tr>
+                        <td>{{ form.cliente.label_tag }}</td>
+                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.cliente }}</td>
+                        <td>{{ form.fecha_entrega }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.codigo.label_tag }}</td>
+                        <td>{{ form.comentario.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.codigo }}</td>
+                        <td>{{ form.comentario }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.nombre.label_tag }}</td>
+                        <td>{{ form.prioridad.label_tag }}</td>                    
+                    </tr>
+                    <tr>
+                        <td>{{ form.nombre }}</td>
+                        <td>{{ form.prioridad }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto.label_tag }}</td>
+                        <td>{{ form.cantidad.label_tag }}</td>
+                        
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto }}</td>
+                        <td>{{ form.cantidad }}</td>                        
+                    </tr>
+
+                    <tr>
+                        <td>{{ form.linea_produccion.label_tag }}</td>
+                        <td>{{ form.estado.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.linea_produccion }}</td>
+                        <td>{{ form.estado }}</td>
+                    </tr>
+
+                </table>
+                <button type="submit" name="crear" class="red-button">Crear</button>
+            </form>
+
+        </div>
+
+        <!--Tabla de pedidos-->
+        <div class="table-container">
+            <h1 class="encabezado-pedidos">Pedidos</h1>
+            <div class="table-responsive">
+                <table class="table w-100">
+                    <caption></caption>
+                    <thead class="thead-pedidos">
+                        <tr>
+                            <th>Código</th>
+                            <th>Cliente</th>
+                            <th>Fecha de entrega</th>
+                            <th>Estado del Pedido</th>
+                            <th>Detalles</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for pedido in pedidos %}
+                        <tr>
+                            <td>{{ pedido.codigo }}</td>
+                            <td>{{ pedido.cliente }}</td>
+                            <td>{{ pedido.fecha_entrega }}</td>
+                            <td>{{ pedido.estado }}</td>
+                            <td>
+                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{pedido.fecha_entrega }}', '{{ pedido.estado }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                                <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
+                                <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
             </div>
-        </form>
-    </div>
-    <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
-
-        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
-            {% csrf_token %}
-
-
-            <table class="form-table">
-                <tr>
-                    <td>{{ form.cliente.label_tag }}</td>
-                    <td>{{ form.fecha_entrega.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cliente }}</td>
-                    <td>{{ form.fecha_entrega }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.codigo.label_tag }}</td>
-                    <td>{{ form.comentario.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.codigo }}</td>
-                    <td>{{ form.comentario }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre.label_tag }}</td>
-                    <td>{{ form.producto.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre }}</td>
-                    <td>{{ form.producto }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cantidad.label_tag }}</td>
-                    <td>{{ form.prioridad.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cantidad }}</td>
-                    <td>{{ form.prioridad }}</td>
-                </tr>
-
-                <tr>
-                    <td>{{ form.linea_produccion.label_tag }}</td>
-                    <td>{{ form.estado.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.linea_produccion }}</td>
-                    <td>{{ form.estado }}</td>
-                </tr>
-
-            </table>
-            <button type="submit" name="crear" class="red-button">Crear</button>
-        </form>
-
-
-
-
-
+        </div>
         
-    </div>
-    <div class="table-container">
-        <h1 class="encabezado-pedidos">Pedidos</h1>
-        <div class="table-responsive">
-            <table class="table w-100">
-                <caption></caption>
-                <thead class="thead-pedidos">
-                    <tr>
-                        <th>Código</th>
-                        <th>Cliente</th>
-                        <th>Fecha de entrega</th>
-                        <th>Estado del Pedido</th>
-                        <th>Detalles</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for pedido in pedidos %}
-                    <tr>
-                        <td>{{ pedido.codigo }}</td>
-                        <td>{{ pedido.cliente }}</td>
-                        <td>{{ pedido.fecha_entrega }}</td>
-                        <td>{{ pedido.estado }}</td>
-                        <td>
-                        <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{pedido.fecha_entrega }}', '{{ pedido.estado }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                        <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
-                        <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+        <!--Popup Pedido-->
+        <div class="popup-overlay" id="popupOverlay"></div>
+        <div class="popup" id="popup">
+            <h2>Detalles del producto</h2>
+            <div class="popup-item">
+                <strong>Código:</strong> <span id="popupCodigo"></span>
+            </div>
+            <div class="popup-item">
+                <strong>Nombre:</strong> <span id="popupNombre"></span>
+            </div>
+            <div class="popup-item">
+                <strong>Grosor:</strong> <span id="popupGrosor"></span>
+            </div>
+            <div class="popup-item">
+                <strong>Ancho:</strong> <span id="popupAncho"></span>
+            </div>
+            <div class="popup-item">
+                <strong>Largo:</strong> <span id="popupLargo"></span>
+            </div>
+            <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
-    </div>
-
-    <div class="popup-overlay" id="popupOverlay"></div>
-    <div class="popup" id="popup">
-        <h2>Detalles del producto</h2>
-        <div class="popup-item">
-            <strong>Código:</strong> <span id="popupCodigo"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Nombre:</strong> <span id="popupNombre"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Grosor:</strong> <span id="popupGrosor"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Ancho:</strong> <span id="popupAncho"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Largo:</strong> <span id="popupLargo"></span>
-        </div>
-        <button class="close-button" onclick="closePopup()">Cerrar</button>
-    </div>
     
 
 

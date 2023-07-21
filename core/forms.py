@@ -141,9 +141,9 @@ class CrearProductoForm(forms.ModelForm):
 
 class ActualizarPedidoForm(forms.ModelForm):
     productos = forms.ModelMultipleChoiceField(
-        queryset=Producto.objects.all(),
-        widget=forms.CheckboxSelectMultiple(),
-        required=False,
+        queryset = Producto.objects.all(),
+        widget = forms.CheckboxSelectMultiple(),
+        required = False,
     )
 
     class Meta:
