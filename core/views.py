@@ -29,9 +29,11 @@ from datetime import datetime
 import random
 
 
+
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+
 
 try:
     #se conecta
@@ -402,3 +404,21 @@ def eliminar_producto_terminado(request,id):
 
 
 
+def generar_pdf_view(request):
+    informacion = "Aquí va la información desde la ventana emergente."
+
+    # Crear el objeto PDF
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="informacion.pdf"'
+
+    # Crear el PDF con reportlab
+    buffer = canvas.Canvas(response, pagesize=letter)
+
+    # Agregar texto al PDF
+    buffer.drawString(100, 800, "Información desde la ventana emergente:")
+    buffer.drawString(100, 780, informacion)
+
+    # Guardar el PDF
+    buffer.save()
+
+    return response

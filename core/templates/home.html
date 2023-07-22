@@ -399,7 +399,7 @@
                     </table>
                 </div>
                 <br><br>
-                <button  class="red-button" >Exportar</button>
+                <button class="red-button"><a href="{% url 'generar_pdf' %}" class="btn-exportar-pdf">Exportar</a></button>
                 <button  class="red-button" >Editar</button>
                 <button  class="red-button" onclick="hidePopup()">Aceptar</button>
             </div>
@@ -407,7 +407,7 @@
     </div>
 
     <div class="buttons-bot">
-        <button type="button" id="toggle-exportar-button" class="carga-button-bot">Exportar</button>
+        <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"><a href="{% url 'generar_pdf' %}" >Exportar</a></button>
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot" onclick="showPopup()">Ejecutar</button>
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
