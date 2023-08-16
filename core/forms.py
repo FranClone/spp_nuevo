@@ -140,21 +140,15 @@ class CrearProductoForm(forms.ModelForm):
         ]
 
 class ActualizarPedidoForm(forms.ModelForm):
-    productos = forms.ModelMultipleChoiceField(
-        queryset = Producto.objects.all(),
-        widget = forms.CheckboxSelectMultiple(),
-        required = False,
-    )
-
     class Meta:
         model = Pedido
         fields = [
             'cliente',
             'fecha_entrega',
-            'producto',
             'codigo',
             'comentario',
             'nombre',
+            'producto',
             'cantidad',
             'prioridad',
             'linea_produccion',
@@ -162,6 +156,7 @@ class ActualizarPedidoForm(forms.ModelForm):
         ]
         
     producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None)
+
 
 
 class ProductoTerminadoForm(forms.ModelForm):

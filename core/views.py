@@ -398,12 +398,6 @@ def eliminar_producto_terminado(request,id):
 
     return redirect('plan_productos_terminados')
 
-
-
-
-
-
-
 def generar_pdf_view(request):
     informacion = "Aquí va la información desde la ventana emergente."
 
