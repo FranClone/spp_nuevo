@@ -137,54 +137,11 @@ class Lista_pedidos(View):
         return render(request, 'lista_pedidos.html', context)
 
 class Login(View):
-    form_class = LoginForm
-    success_url = '/home/'
     def get(self, request):
-        #Obtiene formulario de forms.py
-        form = LoginForm()
-        return render(request, 'login.html', {'form':form})
-
-    def post(self, request):
-        #Obtiene rut desde el login
-        rut_body = request.POST['rut_body']
-        rut_dv = request.POST['rut_dv']
-        rut = f'{rut_body}-{rut_dv}'
-        password = request.POST['password']
-        #Obtenemos el nombre de usuario desde el RUT
-        def get_object_or_none(model, **kwargs):
-            try:
-                return model.objects.get(**kwargs)
-            except model.DoesNotExist:
-                return None
-        #Buscamos nombre de usuario con el RUT ¿Por qué? Por que necesitamos
-        #llamar a authenticate usando nombre de usuario y contraseña
-        #Se aprovecha de la característica de que RUT, al igual que
-        #Nombre de usuario, es único
-        user_profile = get_object_or_none(UserProfile, rut=rut)
-        #SIEMPRE llamar a authenticate, aunque no haya username que corresponda
-        #Con el RUT, ya que AXES se activa al llamar a authenticate
-        if user_profile is not None:
-            username = user_profile.username
-            user = authenticate(request, username=username, password=password)
-        else:
-            form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
-            user = authenticate(request, username=rut, password=password)
-            return render(request, 'login.html', {'form': form, 'error_message': 'RUT no registrado'})
-        
-        #hay user que corresponda con la contraseña
-        if user is not None:
-            login(request, user)
-            return redirect('home')
-        else:
-            #no corresponde la contraseña al usuario
-            form = self.form_class(initial={'rut_body': rut_body, 'rut_dv': rut_dv})
-            return render(request, 'login.html', {'form': form, 'error_message': 'Contraseña Equivocada'})
+        return render(request, 'login.html')
     
-    #Este método kickea al usuario del login si está logueado    
-    def dispatch(self, request, *args, **kwargs):
-        if request.user.is_authenticated:
-            return redirect('home')
-        return super().dispatch(request, *args, **kwargs)
+    def post(self, request):
+        return redirect('pantalla-carga')
 
 class Logout(View):
     @method_decorator(login_required)
@@ -313,6 +270,8 @@ def patron_corte(request):
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
+def pantalla_carga(request):
+    return render(request, 'pantalla-carga.html')
 
 def pedidos(request):
     pedidos = Pedido.objects.all()

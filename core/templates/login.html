@@ -1,3 +1,4 @@
+<!--Template para el login-->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,16 +20,13 @@
             <form method="post">
                 {% csrf_token %}
                 <div class='rut-input'> 
-                    <div class='input-login rut-body' placeholder='RUT Cliente'>{{form.rut_body}}</div>
-                    <span>-</span>
-                    <div class='input-login rut-dv'>{{form.rut_dv}}</div>
-                </div>
-                <div> {{form.password}} </div>
-                {% if error_message %}
-                    <div class="error-message">{{ error_message }}</div>
-                {% endif %}
-                <input type="submit" value="Ingresar">
-                {% include "partials/footer.html" %}
+                <input type='text' class='input-login rut-body' placeholder='RUT Cliente'>
+                <span>-</span>
+                <input type='text' class='input-login rut-dv'>
+            </div>
+            <input type='password' name='password' placeholder="Contraseña">
+            <input type='submit' value='Ingresar'>
+            {% include "partials/footer.html" %}
             </form>
         {% endblock %}
     </div>

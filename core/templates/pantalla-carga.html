@@ -1,0 +1,75 @@
+<!--Template para la pantalla de carga-->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-pantalla-carga.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Pantalla de carga</title>
+    <script>
+        function updateProgressBar() {
+        const progressBar = document.getElementById('progress-bar');
+        let value = 1;
+
+        function incrementValue() {
+            progressBar.style.width = value + '%';
+            value++;
+
+            if (value <= 100) {
+                setTimeout(incrementValue, 50);
+            }
+        }
+
+        incrementValue();
+    }
+
+    function updateLoadingText() {
+        const loadingText = document.getElementById('loading-text');
+        let messages = [
+            "Cargando materias primas...",
+            "Cargando patrones de corte...",
+            "Cargando pedidos..."
+        ];
+        let currentIndex = 0;
+
+        setInterval(function() {
+            loadingText.innerText = messages[currentIndex];
+            currentIndex = (currentIndex + 1) % messages.length;
+        }, 1500);
+
+        updateProgressBar();
+    }
+
+    window.onload = function() {
+        updateLoadingText();
+    };
+
+    setTimeout(function() {
+            window.location.href = "{% url 'home' %}";
+        }, 5000);
+
+    </script>
+</head>
+
+<body>
+    {% include "partials/header.html" %}
+    <div id="progress-wrapper">
+    <h4 class="h1-progress">Espere un momento por favor...</h4>
+    <div id="progress-container">
+        <div id="progress-bar"></div>
+    </div>
+    <div id="loading-text">Cargando información del usuario...</div>
+    
+</div>
+
+</body>
+
+</html>

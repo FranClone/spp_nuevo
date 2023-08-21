@@ -552,14 +552,6 @@ li {
     height: 100vh;
 }
 
-.progress {
-    width: 10%;
-    height: 30px;
-    border: 2px solid white;
-    border-radius: 2px;
-    margin: 10px auto;
-}
-
 .rut-input {
     display: flex;
     vertical-align: middle;
@@ -581,14 +573,6 @@ li {
 .rut-input .rut-dv {
     width: 20px;
     /* ancho del dígito verificador */
-}
-
-.progress-bar {
-    color: white;
-    height: 100%;
-    background-color: green;
-    padding-top: 10px;
-    padding-bottom: 10px;
 }
 
 .register-box {

@@ -1,10 +1,5 @@
 """
-WSGI config for SPP_Django project.
-
-It exposes the WSGI callable as a module-level variable named ``application``.
-
-For more information on this file, see
-https://docs.djangoproject.com/en/4.1/howto/deployment/wsgi/
+Web Server Gateway Interface: describe como un servidor web debe comunicarse con aplicaciones web escritas en python
 """
 
 import os

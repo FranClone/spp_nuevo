@@ -1,2 +1,2 @@
-# Auto detect text files and perform LF normalization
+# este archivo controla como debe comportarse Git al realizar fusiones (merges) y comparaciones (diffs)
 * text=auto

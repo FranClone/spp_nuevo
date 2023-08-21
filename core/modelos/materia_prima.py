@@ -11,7 +11,7 @@ class MateriaPrima(models.Model):
     cantidad = models.FloatField(max_length=10)
     conicidad = models.FloatField(max_length=10)
     linea_produccion = models.CharField(max_length=10)
-    costo_almacenamiento = models.FloatField(max_length=10)
+    costo_almacenamiento = models.FloatField(max_length=10) # obviar por el momento
     inventario_inicial = models.FloatField(max_length=10)
     
     # Salidas

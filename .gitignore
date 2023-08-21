@@ -1,3 +1,5 @@
+# este archivo especifica los archivos y directorios que deben ser excluidos del control de versiones
+
 .vscode
 venv
 __pycache__

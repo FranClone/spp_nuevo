@@ -11,18 +11,89 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
+    <script type="text/javascript">
+        const pedidosnuevos = true; // O false, dependiendo de la condición que tengas
+
+        function showWelcomePopup() {
+            const popupOverlay = document.getElementById('welcome-popup');
+            const popupContent = document.querySelector('.popup-content-pedidos');
+
+            if (pedidosnuevos) {
+                popupContent.innerHTML = `
+                    <h3>¡Bienvenido!</h3>
+                    <h4>¡Hay nuevos pedidos!</h4>
+                    <button class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
+                    <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
+                `;
+            } else {
+                popupContent.innerHTML = `
+                    <h3>Existe una planificación anterior</h3>
+                    <h4>No hay pedidos nuevos</h4>
+                    <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
+                `;
+            }
+            
+            popupOverlay.style.display = 'block';
+        }
+
+        function hideWelcomePopup() {
+            const popupOverlay = document.getElementById('welcome-popup');
+            popupOverlay.style.display = 'none';
+        }
+
+        window.onload = function() {
+            showWelcomePopup();
+        };
+        
+        function actualizarPedidos() {
+            const wb = XLSX.utils.book_new();
+            const wsData = [
+                ['Pedido', 'Cliente', 'Producto', 'Cantidad'], // Cabecera de las columnas
+                ['001', 'Cliente A', 'Producto X', 10],         // Ejemplo de datos
+                ['002', 'Cliente B', 'Producto Y', 5]
+                // Agrega aquí los datos de los pedidos
+            ];
+            const ws = XLSX.utils.aoa_to_sheet(wsData);
+            XLSX.utils.book_append_sheet(wb, ws, 'Pedidos');
+
+            // Genera un Blob con el archivo Excel
+            const blob = new Blob([XLSX.write(wb, { bookType: 'xlsx', type: 'blob' })], {
+                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+            });
+
+            // Crea una URL para el Blob y crea un enlace de descarga
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pedidos.xlsx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+
+            // Cierra el popup
+            hideWelcomePopup();
+        }
+
+    </script>
 </head>
 <body>
     {% include "partials/header.html" %}
-
+    <div id="welcome-popup" class="popup-overlay-pedidos">
+        <div class="popup-content-pedidos">
+            <h3>Existe una planificación anterior</h3>
+            <h4>No hay pedidos nuevos</h4>
+            <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
+        </div>
+    </div>
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
     <div class="buttons-top horizontal-container">
         <div>
             <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
                 <option value="lineas">Lineas Producción</option>
-                <option value="Delgada">Linea Delgada</option>
-                <option value="Gruesa">Linea Gruesa</option>
+                <option value="Delgado">Delgado</option>
+                <option value="Grueso">Grueso</option>
             </select>
         </div>
         <div>
@@ -96,9 +167,11 @@
 
     <br>
     <div class="table-container" style="overflow: auto; height: 75%;">
-        <h1 class="text-center"> Organizador de Pedidos </h1>
+        
+    <h4 class="text-center">Carta Gantt JCE</h4>
         <div id="gantt" style="width: 90%; margin-left:15px; margin-right:15px">
             <script type="text/javascript">
+                
                 class Gantt {
                     constructor(tasks) {
                         this.tasks = tasks;
@@ -184,7 +257,7 @@
                             var dMin = new Date(task[1]);
                             var dMax = new Date(task[2]);
 
-                            var days = this.diffInDays(dMax, dMin) + 1;
+                            var days = this.diffInDays(dMax, dMin);
                             var daysBefore = this.diffInDays(this.minDate, dMin);
                             var daysAfter = this.diffInDays(dMax, this.maxDate);
 
@@ -257,9 +330,6 @@
                         return new Date(2020, month - 1, 1).toLocaleString('default', { month: 'long' });
                     }
 
-
-                
-
                     filterTasksByLine(lineValue) {
                         if (lineValue === "lineas") {
                             this.filteredTasks = this.tasks;
@@ -308,16 +378,13 @@
                 const tasks = {{ tasks|safe }};
                 const gantt = new Gantt(tasks);
 
-                // Set the default value for the "Periodos" select box to "mensual"
                 const periodosSelect = document.querySelector('select[name="periodos"]');
-                periodosSelect.value = "mensual";
+                periodosSelect.value = "diario";
                 periodosSelect.addEventListener('change', function() {
-                    // Rebuild the Gantt chart when the select box value changes
                     gantt.setMinAndMaxDate();
                     document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
                 });
 
-                // Agrega el evento de cambio para el botón de líneas de producción
                 const toggleLineasButton = document.getElementById('toggle-lineas-button');
                 toggleLineasButton.addEventListener('change', function() {
                     const selectedLine = this.value;
@@ -325,15 +392,16 @@
                 });
 
                 function toggleCargaForm() {
-            const cargaForm = document.getElementById('carga-form');
-            if (cargaForm.style.display === 'none') {
-                cargaForm.style.display = 'block';
-            } else {
-                cargaForm.style.display = 'none';
-            }
-        }
+                    const cargaForm = document.getElementById('carga-form');
+                    if (cargaForm.style.display === 'none') {
+                        cargaForm.style.display = 'block';
+                    } else {
+                        cargaForm.style.display = 'none';
+                    }
+                }
             </script>
             <script type="text/javascript">
+               
                 function showPopup() {
                     // Obtener la capa de superposición de la ventana emergente y mostrarla
                     const popupOverlay = document.getElementById('popup-ejecutar');
@@ -413,4 +481,5 @@
     </div>
 
 </body>
+
 </html>
