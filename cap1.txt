@@ -1,0 +1,8 @@
+servidor: computador físico dedicado está configurado para desplegar servicios (file server, web server, databases, etc)
+puerto: punto de comunicación que permite la transferencia de datos
+
+127.0.0.1:8000 (IP server:puerto) -> se despliega la aplicación en 'localhost', en el puerto 8000 
+sensorizacion.servehttp.com -> dominio 
+
+- Integrar sistema de autenticación y validación de usuarios
+- Los usuarios deben estar previamente registrados en la base de datos 
