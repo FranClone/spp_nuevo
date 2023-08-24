@@ -47,35 +47,6 @@
             showWelcomePopup();
         };
         
-        function actualizarPedidos() {
-            const wb = XLSX.utils.book_new();
-            const wsData = [
-                ['Pedido', 'Cliente', 'Producto', 'Cantidad'], // Cabecera de las columnas
-                ['001', 'Cliente A', 'Producto X', 10],         // Ejemplo de datos
-                ['002', 'Cliente B', 'Producto Y', 5]
-                // Agrega aquí los datos de los pedidos
-            ];
-            const ws = XLSX.utils.aoa_to_sheet(wsData);
-            XLSX.utils.book_append_sheet(wb, ws, 'Pedidos');
-
-            // Genera un Blob con el archivo Excel
-            const blob = new Blob([XLSX.write(wb, { bookType: 'xlsx', type: 'blob' })], {
-                type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-            });
-
-            // Crea una URL para el Blob y crea un enlace de descarga
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'pedidos.xlsx';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
-
-            // Cierra el popup
-            hideWelcomePopup();
-        }
-
     </script>
 </head>
 <body>
@@ -105,9 +76,9 @@
         </div>
         <div>
             <select name="periodos" id="toggle-lineas-button" class="carga-button-top">
+                <option value="diario">Diario</option>
                 <option value="mensual">Mensual</option>
                 <option value="semanal">Semanal</option>
-                <option value="diario">Diario</option>
             </select>
             
         </div>
@@ -205,22 +176,22 @@
                     }
 
                     buildTableHeader() {
-                        var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 500px;"><tr>';
+                        var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
             
                         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
                         const isDiarioSelected = selectedPeriod === "diario";
                         const isSemanalSelected = selectedPeriod === "semanal";
                         const isMensualSelected = selectedPeriod === "mensual";
             
-                        // Use the format of date headers based on the selected period
                         if (isDiarioSelected) {
                             var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
                             const actual = new Date(this.minDate);
             
                             for (let i = 0; i < diffDays; i++) {
-                                actual.setDate(actual.getDate() + 1);
-                                html += '<th class="date-header">' + this.formatDate(actual, "diario") + '</th>';
+                                html += '<th class="date-header" style="color: black; padding: 0px;">' + this.formatDate(actual, "diario") + '</th>';
+                                actual.setDate(actual.getDate() + 1); // Avanza un día
                             }
+
                         } else if (isSemanalSelected) {
                             var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
                             const actual = new Date(this.minDate);
@@ -283,48 +254,41 @@
                     }
 
                     formatDate(date, period, endDate) {
+                        const day = date.getDate();
+                        const month = date.getMonth() + 1;
+                        const year = date.getFullYear();
+                        
+                        // Agrega ceros iniciales si es necesario
+                        const formattedDay = day < 10 ? '0' + day : day;
+                        const formattedMonth = month < 10 ? '0' + month : month;
+                        
                         if (period === "diario") {
-                            const day = date.getDate();
-                            const month = date.getMonth() + 1;
-                            const year = date.getFullYear();
-                            return `${day}/${this.getMonthName(month)}/${year}`;
+                            return `${formattedDay}-${formattedMonth}-${year}`;
                         } else if (period === "semanal") {
                             const weekStart = new Date(date);
-                            weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1); // Get the Monday of the week
+                            weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
                             const weekEnd = new Date(weekStart);
-                            weekEnd.setDate(weekEnd.getDate() + 6); // Get the Sunday of the week
-            
+                            weekEnd.setDate(weekEnd.getDate() + 6); 
+                            
                             const startDay = weekStart.getDate();
                             const endDay = weekEnd.getDate();
-                            const startMonth = weekStart.getMonth() + 1;
-                            const endMonth = weekEnd.getMonth() + 1;
-                            const startYear = weekStart.getFullYear();
-            
-                            if (startMonth === endMonth) {
-                                return `${startDay} - ${endDay} ${this.getMonthName(startMonth)} ${startYear}`;
-                            } else {
-                                return `${startDay} ${this.getMonthName(startMonth)} - ${endDay} ${this.getMonthName(endMonth)} ${startYear}`;
-                            }
+                            
+                            return `${formattedDay}-${formattedMonth}-${year} al ${endDay}-${formattedMonth}-${year}`;
                         } else if (period === "mensual") {
                             const monthStart = new Date(date);
-                            monthStart.setDate(1); // Get the first day of the month
+                            monthStart.setDate(1); 
                             const monthEnd = new Date(date);
-                            monthEnd.setMonth(monthEnd.getMonth() + 1, 0); // Get the last day of the month
-            
-                            const startDay = monthStart.getDate();
+                            monthEnd.setMonth(monthEnd.getMonth() + 1, 0);
+                            
                             const endDay = monthEnd.getDate();
-                            const startMonth = monthStart.getMonth() + 1;
-                            const endMonth = monthEnd.getMonth() + 1;
-                            const startYear = monthStart.getFullYear();
-            
-                            if (startMonth === endMonth) {
-                                return `${this.getMonthName(startMonth)} ${startYear}`;
+                            
+                            if (formattedMonth === monthEnd.getMonth() + 1) {
+                                return `${formattedDay}-${formattedMonth}-${year}`;
                             } else {
-                                return `${this.getMonthName(startMonth)} al ${endDay} ${this.getMonthName(endMonth)} ${startYear}`;
+                                return `${formattedDay}-${formattedMonth}-${year} al ${endDay}-${monthEnd.getMonth() + 1}-${year}`;
                             }
                         }
                     }
-            
 
                     getMonthName(month) {
                         return new Date(2020, month - 1, 1).toLocaleString('default', { month: 'long' });

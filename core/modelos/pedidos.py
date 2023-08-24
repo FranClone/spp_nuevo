@@ -20,5 +20,6 @@ class Pedido(models.Model):
     # Salidas
     estado = models.CharField(max_length=20, null=False, blank=False)
 
+
     def __str__(self):
         return f"Pedido {self.codigo}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
