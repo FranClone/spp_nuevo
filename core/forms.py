@@ -121,7 +121,13 @@ class CrearPatronCorteForm(forms.ModelForm):
  
 class CrearProductoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto"""
-
+    alto = forms.FloatField(min_value=0)
+    ancho = forms.FloatField(min_value=0)
+    largo = forms.FloatField(min_value=0)
+    inventario_inicial = forms.FloatField(min_value=0)
+    volumen_obtenido = forms.FloatField(min_value=0)
+    inventario_final = forms.FloatField(min_value=0)
+    
     class Meta:
         model = Producto
         fields = [

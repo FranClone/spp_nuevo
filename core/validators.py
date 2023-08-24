@@ -1,5 +1,6 @@
 from django.core.exceptions import ValidationError
 
+
 def validate_rut(rut):
     #el guión no necesita validación
     if rut:
@@ -27,3 +28,5 @@ def validate_rut(rut):
             dv_calculado = str(11 - resto)
         if dv_calculado != rut[-1].upper():
             raise ValidationError('El dígito verificador es incorrecto')
+        
+        

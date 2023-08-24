@@ -24,9 +24,9 @@
                 popupContent.innerHTML = `
                     <h3>¡Bienvenido!</h3>
                     <h4>¡Hay nuevos pedidos!</h4>
-                    <button class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
+                    <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
-                `;
+                ;`
             } else {
                 popupContent.innerHTML = `
                     <h3>Existe una planificación anterior</h3>
