@@ -22,14 +22,14 @@ $(document).ready(function() {
         applyFilter();
     });
 
-    $(".details-button").click(function() {
-        var codigo = $(this).data("codigo");
-        var nombre = $(this).data("nombre");
-        var producto = $(this).data("producto");
-        var clase = $(this).data("clase");
+    // $(".details-button").click(function() {
+    //     var codigo = $(this).data("codigo");
+    //     var nombre = $(this).data("nombre");
+    //     var producto_asociado = $(this).data("producto");
+    //     var rollizo = $(this).data("clase");
 
-        openPopup(codigo, nombre, producto, clase);
-    });
+    //     openPopup(codigo, nombre, producto, clase);
+    // });
 
     $(".close-button").click(function() {
         closePopup();
@@ -63,21 +63,23 @@ $(document).ready(function() {
             $(".no-data-message").hide();
         }
     }
-
-    function openPopup(codigo, nombre, producto, clase) {
-        $("#popupOverlay").fadeIn();
-        $("#popup").fadeIn();
-        $("#popup .popup-item:nth-child(1) span").text(codigo);
-        $("#popup .popup-item:nth-child(2) span").text(nombre);
-        $("#popup .popup-item:nth-child(3) span").text(producto);
-        $("#popup .popup-item:nth-child(4) span").text(clase);
-    }
-
-    function closePopup() {
-        $("#popupOverlay").fadeOut();
-        $("#popup").fadeOut();
-    }
-
-    // Configuración de DataTables
-    $("#patrones-table").DataTable();
+});
+function openPopup(codigo, nombre, producto_asociado, rollizo) {
+    document.getElementById('popupCodigo').innerText = codigo;
+    document.getElementById('popupNombre').innerText = nombre;
+    document.getElementById('popupProductoAsociado').innerText = producto_asociado;
+    document.getElementById('popupClaseDiametricoRollizo').innerText = rollizo;
+    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popup').style.display = 'block';
+}
+    
+function closePopup() {
+    document.getElementById('popupOverlay').style.display = 'none';
+    document.getElementById('popup').style.display = 'none';
+}
+$(document).ready(function() {
+    $('.table').DataTable({
+        paging: true,
+    
+    });
 });

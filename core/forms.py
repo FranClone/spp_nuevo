@@ -7,7 +7,8 @@ from .modelos.patron_corte import PatronCorte
 from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
 from .modelos.productos_terminados import ProductoTerminado
-
+##
+from django.core.exceptions import ValidationError
 #probar esto
 
 class CustomUserCreationForm(UserCreationForm):
@@ -100,10 +101,15 @@ class ActualizarMateriaPrimaForm(forms.ModelForm):
             'volumen_procesado',
             'inventario_final',
         ]
+####3
 
 class CrearPatronCorteForm(forms.ModelForm):
     """Esta clase permite crear un nuevo patrón de corte"""
-
+    ##Validaciones 
+    rendimiento = forms.FloatField(min_value=0)
+    velocidad_linea = forms.FloatField(min_value=0)
+    setup_time = forms.FloatField(min_value=0)
+    lead_time = forms.FloatField(min_value=0)
     class Meta:
         model = PatronCorte
         fields = [
@@ -118,6 +124,7 @@ class CrearPatronCorteForm(forms.ModelForm):
             'utilizado',
             'producto_asociado',
         ]
+
  
 class CrearProductoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto"""

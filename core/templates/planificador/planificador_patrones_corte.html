@@ -78,12 +78,12 @@
                             <td>{{ patron.codigo }}</td>
                             <td>{{ patron.producto_asociado }}</td>
                             <td>{{ patron.rollizo }}</td>
-                            <td>{{ patron.rendimiento }}</td>
-                            <td>
-                                <button class="details-button" onclick="openPopup('{{ patron.codigo_patron }}', '{{ patron.nombre_patron }}', '{{ patron.producto_asociado }}', '{{ patron.clase_diametrica_rollizo }}')">
+                            <td>{{ patron.rendimiento}}</td>
+                            <td>  
+                                <button class="details-button" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', '{{ patron.producto_asociado }}','{{patron.rollizo}}')">
                                     <i class="fa-regular fa-clipboard fa-bounce fa-xl"></i>
                                 </button>
-                                <a href="eliminarpatron/{{ patron.id }}" class="fas fa-trash-alt fa-bounce fa-xl"></a>
+                                <a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a>
                             </td>
                         </tr>
                     {% empty %}
@@ -95,26 +95,22 @@
             </table>
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
-        
     </div>
     
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
         <h2>Detalles del producto</h2>
         <div class="popup-item">
-            <strong>Código:</strong> <span id="popupCodigo"></span>
+            <strong>Código patron:</strong> <span id="popupCodigo"></span>
         </div>
         <div class="popup-item">
-            <strong>Nombre:</strong> <span id="popupNombre"></span>
+            <strong>Nombre Patrón:</strong> <span id="popupNombre"></span>
         </div>
         <div class="popup-item">
-            <strong>Grosor:</strong> <span id="popupGrosor"></span>
+            <strong>Producto Asociado:</strong> <span id="popupProductoAsociado"></span>
         </div>
         <div class="popup-item">
-            <strong>Ancho:</strong> <span id="popupAncho"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Largsssssso:</strong> <span id="popupLargo"></span>
+            <strong>Clase Diamétrica (Rollizo):</strong> <span id="popupClaseDiametricoRollizo"></span>
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
