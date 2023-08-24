@@ -92,12 +92,13 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, nombre, grosor, ancho, largo) {
-    document.getElementById('popupCodigo').innerText = codigo;
-    document.getElementById('popupNombre').innerText = nombre;
-    document.getElementById('popupGrosor').innerText = grosor;
-    document.getElementById('popupAncho').innerText = ancho;
-    document.getElementById('popupLargo').innerText = largo;
+function openPopup(codigo, nombre, grosor, ancho, largo, linea) {
+    document.getElementById('popupCodigo').textContent = codigo;
+    document.getElementById('popupNombre').textContent = nombre;
+    document.getElementById('popupGrosor').textContent = grosor;
+    document.getElementById('popupAncho').textContent = ancho;
+    document.getElementById('popupLargo').textContent = largo;
+    document.getElementById('popupLinea').textContent = linea;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }

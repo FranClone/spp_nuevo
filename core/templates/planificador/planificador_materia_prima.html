@@ -10,9 +10,9 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
-    <script src="{% static 'js/vista-materia-prima.js' %}"></script>
     <script src="{% static 'js/filtro-materia_prima.js' %}"></script>
-    
+    <script src="{% static 'js/vista-materia-prima.js' %}"></script>
+
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -97,7 +97,7 @@
                         <td>{{ materia_prima.cantidad }}</td>
                         <td>{{ materia_prima.linea_produccion }}</td>
                         <td>
-                        <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.longitud }}', '{{ materia_prima.cantidad }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
+                            <button class="btn block" onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.largo }}', '{{ materia_prima.cantidad }}', '{{ materia_prima.linea_produccion }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-bounce fa-xl" ></a>
                         <a class="fa-sharp fa-solid fa-pen-to-square fa-bounce fa-xl" ></a>
                         </td>
@@ -125,6 +125,9 @@
         </div>
         <div class="popup-item">
             <strong>Largo:</strong> <span id="popupLargo"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Linea:</strong> <span id="popupLinea"></span>
         </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
