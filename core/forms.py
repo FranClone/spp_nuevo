@@ -84,7 +84,14 @@ correo = forms.CharField(
 
 class ActualizarMateriaPrimaForm(forms.ModelForm):
     """Esta clase permite actualizar la materia prima de la vista de 'Materia Prima'"""
-
+    numero_buzon =forms.FloatField(min_value=0)
+    largo =forms.FloatField(min_value=0)
+    cantidad =forms.FloatField(min_value=0)
+    numero_buzon =forms.FloatField(min_value=0)
+    costo_almacenamiento =forms.FloatField(min_value=0)
+    inventario_inicial =forms.FloatField(min_value=0)
+    volumen_procesado =forms.FloatField(min_value=0)
+    inventario_final =forms.FloatField(min_value=0)
     class Meta:
         model = MateriaPrima
         fields = [
