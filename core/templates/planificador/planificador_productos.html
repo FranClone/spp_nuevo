@@ -8,17 +8,16 @@
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/popup.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <script src="{% static 'js/vista-productos.js' %}"></script>
-
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
     
 </head>
 <body>
     {% include "partials/header.html" %}
+    <!--Esta es la seccion de filtro-->
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
@@ -57,7 +56,7 @@
             </div>
         </form>
     </div>
-    
+    <!--Este es el contenedor del formulario productos-->
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
        
@@ -115,14 +114,13 @@
         </tr>
        
     </table>
-    <div id="errorMessage" style="display: none; color: red;">Número invalido</div>
     <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
-
+        
     </div>
-
+    <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
-        <div class="table-responsive">
+        <div class="table-responsive">            
             <h1 class="encabezado-pedidos">Productos</h1>
             
             <table class="table w-100">
@@ -144,11 +142,13 @@
                             <td>{{ producto.nombre }}</td>
                             <td>{{ producto.alto }}</td>
                             <td>{{ producto.ancho }}</td>
-                            <td>{{ producto.largo }}</td>
+                            <td>{{ producto.largo }}</td>                        
                             <td>
                                 
-                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}', '{{ producto.alto }}', '{{ producto.ancho }}', '{{ producto.largo }}')"><i class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                            <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-bounce fa-xl"></a></td>
+                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', '{{ producto.largo }}','{{ producto.demanda }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento}}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                            <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
+                            <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>      
+                        </td>
                         </tr>
 
                     {% empty %}
@@ -162,8 +162,7 @@
         </div>
         <br><br>
     </div>
-    
-
+    <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
     <div class="popup-overlay" id="popupOverlay"></div>
     <div class="popup" id="popup">
         <h2>Detalles del producto</h2>
@@ -174,7 +173,10 @@
             <strong>Nombre:</strong> <span id="popupNombre"></span>
         </div>
         <div class="popup-item">
-            <strong>Alto:</strong> <span id="popupGrosor"></span>
+            <strong>Descripcion:</strong> <span id="popupDescripcion"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Alto:</strong> <span id="popupAlto"></span>
         </div>
         <div class="popup-item">
             <strong>Ancho:</strong> <span id="popupAncho"></span>
@@ -182,14 +184,21 @@
         <div class="popup-item">
             <strong>Largo:</strong> <span id="popupLargo"></span>
         </div>
+        <div class="popup-item">
+            <strong>Demanda:</strong> <span id="popupDemanda"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Inventario inicial:</strong> <span id="popupInventario_inicial"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Valor inventario:</strong> <span id="popupValor_inventario"></span>
+        </div>
+        <div class="popup-item">
+            <strong>Costo almacenamiento:</strong> <span id="popupCosto_almacenamiento"></span>
+        </div>
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div>
 
-
-
-
-
-    
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');

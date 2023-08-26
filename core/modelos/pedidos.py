@@ -11,7 +11,7 @@ class Pedido(models.Model):
     nombre = models.CharField(max_length=20, null=False, blank=False)
     producto = models.CharField(max_length=20, null=False, blank=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
-    prioridad = models.IntegerField(null=False, blank=False)
+    prioridad = models.IntegerField(null=False, blank=False) #Se debe escoger entre alta,media y baja
     linea_produccion = models.CharField(max_length=20, null=False, blank=False)
     
     #porcentaje_avance = models.FloatField(max_length=5)

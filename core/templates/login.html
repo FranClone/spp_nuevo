@@ -18,13 +18,9 @@
         <h1>Ingresar</h1>
         {% block content %}
             <form method="post">
-                {% csrf_token %}
-                <div class='rut-input'> 
-                <input type='text' class='input-login rut-body' placeholder='RUT Cliente'>
-                <span>-</span>
-                <input type='text' class='input-login rut-dv'>
-            </div>
-            <input type='password' name='password' placeholder="Contraseña">
+            {% csrf_token %}
+            <input name="Rut" type="text" placeholder="RUT Cliente">
+            <input type='password' name='contraseña' placeholder="Contraseña">
             <input type='submit' value='Ingresar'>
             {% include "partials/footer.html" %}
             </form>

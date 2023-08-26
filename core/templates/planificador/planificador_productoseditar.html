@@ -1,0 +1,84 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <title>SPP - Productos</title>
+    
+</head>
+<body>
+    {% include "partials/header.html" %}
+    <!--Este es el contenedor del formulario productos-->
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'producto_editar' id  %}"  id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+        <tr>
+            <td>{{ form.codigo.label_tag }}</td>
+            <td>{{ form.nombre.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.codigo }}</td>
+            <td>{{ form.nombre }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.descripcion.label_tag }}</td>
+            <td>{{ form.largo.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.descripcion }}</td>
+            <td>{{ form.largo }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.ancho.label_tag }}</td>
+            <td>{{ form.alto.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.ancho }}</td>
+            <td>{{ form.alto }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.demanda.label_tag }}</td>
+            <td>{{ form.inventario_inicial.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.demanda }}</td>
+            <td>{{ form.inventario_inicial }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.valor_inventario.label_tag }}</td>
+            <td>{{ form.costo_almacenamiento.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.valor_inventario }}</td>
+            <td>{{ form.costo_almacenamiento }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.volumen_obtenido.label_tag }}</td>
+            <td>{{ form.inventario_final.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.volumen_obtenido }}</td>
+            <td>{{ form.inventario_final }}</td>
+        </tr>
+       
+    </table>
+    <button type="submit" name="guardar" class="red-button">Guardar</button>
+        </form>
+        
+
+    </div>
+
+</body>
+</html>
+
+   
