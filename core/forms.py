@@ -101,15 +101,14 @@ class ActualizarMateriaPrimaForm(forms.ModelForm):
             'volumen_procesado',
             'inventario_final',
         ]
-####3
 
 class CrearPatronCorteForm(forms.ModelForm):
     """Esta clase permite crear un nuevo patrón de corte"""
     ##Validaciones 
-    rendimiento = forms.FloatField(min_value=0)
-    velocidad_linea = forms.FloatField(min_value=0)
-    setup_time = forms.FloatField(min_value=0)
-    lead_time = forms.FloatField(min_value=0)
+    rendimiento = forms.FloatField(min_value=0,max_value=2000)
+    velocidad_linea = forms.FloatField(min_value=0,max_value=2000)
+    setup_time = forms.FloatField(min_value=0,max_value=2000)
+    lead_time = forms.FloatField(min_value=0,max_value=2000)
     class Meta:
         model = PatronCorte
         fields = [
@@ -145,6 +144,7 @@ class CrearProductoForm(forms.ModelForm):
             'volumen_obtenido',
             'inventario_final',
         ]
+#Lista valores prioridad
 
 class ActualizarPedidoForm(forms.ModelForm):
     class Meta:

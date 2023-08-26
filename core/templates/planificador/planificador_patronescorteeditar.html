@@ -1,0 +1,77 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-productos.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <title>SPP - Productos</title>
+    
+</head>
+<body>
+    {% include "partials/header.html" %}
+    <!--Este es el contenedor del formulario productos-->
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'patron_editar' id  %}"  id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+                <tr>
+                    <td>{{ form.codigo.label_tag }}</td>
+                    <td>{{ form.nombre.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo }}</td>
+                    <td>{{ form.nombre }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.descripcion.label_tag}}</td>
+                    <td>{{ form.rollizo.label_tag}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.descripcion}}</td>
+                    <td>{{ form.rollizo}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.rendimiento.label_tag}}</td>
+                    <td>{{ form.velocidad_linea.label_tag}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.rendimiento}}</td>
+                    <td>{{ form.velocidad_linea}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.setup_time.label_tag}}</td>
+                    <td>{{ form.lead_time.label_tag}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.setup_time}}</td>
+                    <td>{{ form.lead_time}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.producto_asociado.label_tag}}</td>
+                    <td>{{ form.utilizado.label_tag}}</td>   
+                </tr>
+                <tr>
+                    <td>{{ form.producto_asociado}}</td>
+                    <td class="form-check text-left">{{ form.utilizado}}</td>
+                    
+                </tr>
+       
+    </table>
+    <button type="submit" name="guardar" class="red-button">Guardar</button>
+    <button type="button" class="red-button">
+        <a href="{% url 'plan_patrones_corte' %}">Cancelar</a>
+    </button>
+        </form>
+        
+
+    </div>
+
+</body>
+</html>
