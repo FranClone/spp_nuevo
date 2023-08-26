@@ -13,8 +13,8 @@ from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
-from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm, CrearPatronCorteForm, ActualizarPedidoForm
+#from asignaciones.models import UserProfile
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm 
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
@@ -29,7 +29,8 @@ from datetime import datetime
 import random
 
 
-
+from django.shortcuts import render, get_object_or_404
+from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
@@ -249,16 +250,13 @@ def producto(request):
     }
     return render(request, 'planificador/planificador_productos.html', context)
 
+
 def patron_corte(request):
     patrones_corte = PatronCorte.objects.all()
     form = CrearPatronCorteForm()
 
     if request.method == 'POST':
-        if 'editar' in request.POST:
-            pass
-        elif 'eliminar' in request.POST:
-            pass
-        elif 'crear' in request.POST:
+        if 'crear' in request.POST:
             form = CrearPatronCorteForm(request.POST)
             if form.is_valid():
                 nuevo_patron_corte = form.save()
@@ -269,6 +267,20 @@ def patron_corte(request):
         'patrones_corte': patrones_corte
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
+
+
+def patron_editar(request,id):
+    patron= PatronCorte.objects.get(id=id)
+    data = {'form': CrearPatronCorteForm(instance=patron),'id':id}
+    if request.method == 'POST':
+        formulario = CrearPatronCorteForm(data = request.POST, instance=patron)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_patrones_corte')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_patronescorteeditar.html', data)
+
 
 def pantalla_carga(request):
     return render(request, 'pantalla-carga.html')
@@ -356,6 +368,7 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
 
 def generar_pdf_view(request):
     informacion = "Aquí va la información desde la ventana emergente."

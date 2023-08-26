@@ -27,3 +27,5 @@ def validate_rut(rut):
             dv_calculado = str(11 - resto)
         if dv_calculado != rut[-1].upper():
             raise ValidationError('El dígito verificador es incorrecto')
+    
+###

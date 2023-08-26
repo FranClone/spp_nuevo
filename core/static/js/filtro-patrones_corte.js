@@ -55,14 +55,21 @@ function clearAdvancedFilterInputs() {
     filterCantidadInput.value = '';
 }
 
-function openPopup(codigoPatron, nombrePatron, productoAsociado, claseDiametrica) {
-    document.getElementById('popupCodigoPatron').textContent = codigoPatron;
-    document.getElementById('popupNombrePatron').textContent = nombrePatron;
-    document.getElementById('popupProductoAsociado').textContent = productoAsociado;
-    document.getElementById('popupClaseDiametrica').textContent = claseDiametrica;
-}
 
-function closePopup() {
-    document.getElementById('popupOverlay').style.display = 'none';
-    document.getElementById('popup').style.display = 'none';
-}
+//var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+//var filterForm = document.querySelector('.filter-section .filter-form');
+
+   
+//function openPopup(codigo, nombre, producto_asociado, rollizo) {
+  //  document.getElementById('popupCodigoPatron').textContent = codigo;
+ //  document.getElementById('popupNombrePatron').textContent = nombre;
+ //    document.getElementById('popupProductoAsociado').textContent = producto_asociado;
+   //  document.getElementById('popupClaseDiametricoRollizo').textContent = rollizo;
+  //  document.getElementById('popupOverlay').style.display = 'block';
+ //    document.getElementById('popup').style.display = 'block';
+ //}
+//
+ //function closePopup() {
+ //    document.getElementById('popupOverlay').style.display = 'none';
+ //    document.getElementById('popup').style.display = 'none';
+ //}
