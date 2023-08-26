@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-mantenedor.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="{% static 'js/filtro-materia_prima.js' %}"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Materia Prima</title>
+    
+</head>
+<body>
+    {% include "partials/header.html" %}
+    <!--Este es el contenedor del formulario -->
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'materia_editar' id  %}"  id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+        <tr>
+            <td>{{ form.numero_buzon.label_tag }}</td>
+            <td>{{ form.tipo_madera.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.numero_buzon }}</td>
+            <td>{{ form.tipo_madera }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.clase_diametrica.label_tag }}</td>
+            <td>{{ form.largo.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.clase_diametrica }}</td>
+            <td>{{ form.largo }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.cantidad.label_tag }}</td>
+            <td>{{ form.linea_produccion.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.cantidad }}</td>
+            <td>{{ form.linea_produccion }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.conicidad.label_tag }}</td>
+            <td>{{ form.costo_almacenamiento.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.conicidad }}</td>
+            <td>{{ form.costo_almacenamiento }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.inventario_inicial.label_tag }}</td>
+            <td>{{ form.volumen_procesado.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.inventario_inicial }}</td>
+            <td>{{ form.volumen_procesado }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.inventario_final.label_tag }}</td>
+        </tr>
+        <tr>
+            <td>{{ form.inventario_final }}</td>
+
+        </tr>
+
+
+    </table>
+    <button type="submit" name="guardar" class="red-button">Guardar</button>
+    <button type="button" class="red-button"><a href="{% url 'plan_patrones_corte' %}">Cancelar</a></button>
+        </form>
+        
+
+    </div>
+
+</body>
+</html>

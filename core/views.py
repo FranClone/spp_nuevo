@@ -8,7 +8,7 @@ from django.core import serializers
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
 from django.db import transaction
-from django.shortcuts import render, redirect
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
@@ -375,3 +375,15 @@ def generar_pdf_view(request):
     buffer.save()
 
     return response
+def materia_editar(request,id):
+    prod= MateriaPrima.objects.get(id=id)
+    data = {'form': ActualizarMateriaPrimaForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = ActualizarMateriaPrimaForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_materia_prima')
+        else:
+            print("error")
+    return render(request, 'planificador/editar_materia_prima.html', data)
+    
