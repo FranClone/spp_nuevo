@@ -19,7 +19,7 @@
     {% include "partials/header.html" %}
     <!--Este es el contenedor del formulario productos-->
     <div class="form-container-productos">
-        <form method="post" action="{% url 'producto_editar' id  %}"  id="carga-form">
+        <form method="post" action="{% url 'producto_editar' id %}"  id="carga-form">
             {% csrf_token %}
             <table class="form-table">
         <tr>
@@ -74,8 +74,6 @@
     </table>
     <button type="submit" name="guardar" class="red-button">Guardar</button>
         </form>
-        
-
     </div>
 
 </body>

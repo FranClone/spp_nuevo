@@ -433,14 +433,35 @@
                 <br><br>
                 <button class="red-button"><a href="{% url 'generar_pdf' %}" class="btn-exportar-pdf">Exportar</a></button>
                 <button  class="red-button" >Editar</button>
-                <button  class="red-button" onclick="hidePopup()">Aceptar</button>
+                <button  class="red-button" id="shuffleButton" onclick="hidePopup()">Aceptar</button>
             </div>
         </div>
     </div>
+    
+    <script>
+        // Add your Gantt class and tasks array here
+    
+        // Fisher-Yates shuffle function
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    
+        const shuffleButton = document.getElementById('shuffleButton');
+        shuffleButton.addEventListener('click', () => {
+            shuffle(gantt.tasks); // Shuffle the tasks array
+            gantt.setMinAndMaxDate(); // Update min and max dates
+            document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
+            gantt.attachEventListeners(); // Reattach event listeners
+        });
+    </script>
+    
 
     <div class="buttons-bot">
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"><a href="{% url 'generar_pdf' %}" >Exportar</a></button>
-        <button type="button" id="toggle-ejecutar-button" class="carga-button-bot" onclick="showPopup()">Ejecutar</button>
+        <button type="button" id="shuffleButton" class="carga-button-bot" onclick="showPopup()">Ejecutar</button>
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
 

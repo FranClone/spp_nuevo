@@ -391,6 +391,17 @@ def producto_editar(request,id):
             print("error")
     return render(request, 'planificador/planificador_productoseditar.html', data)
     
+def pedido_editar(request,id):
+    prod= Pedido.objects.get(id=id)
+    data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('pedidos')
+        else:
+            print("error")
+    return render(request, 'pedidoseditar.html', data)
 
 
 def generar_pdf_view(request):
