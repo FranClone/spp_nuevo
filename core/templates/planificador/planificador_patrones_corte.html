@@ -15,7 +15,7 @@
 </head>
 <body>
     {% include "partials/header.html" %}
-    
+    <!--Filtro desplegable desde el botón-->
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
         <form id="filter-form" class="filter-form" style="display: none;">
@@ -49,12 +49,10 @@
     <!--Carga Manual de Patrones de Corte-->
 
     <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+        <button type="button" id="toggle-carga-button" onclick="toggleFormVisibility()" class="carga-button">Carga Manual</button>
         <form method="post" action="{% url 'plan_patrones_corte' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
                 <table class="form-table">
-                {% comment %} Para mantener el formato de carga manual se llamará el formulario manualmente{{ form.as_p }} {% endcomment %}
- 
                 <tr>
                         <td>{{ form.codigo.label_tag }}</td>
                         <td>{{ form.nombre.label_tag }}</td>
@@ -101,6 +99,7 @@
         </form>
 
     </div>
+    <!--Este es el contenedor de la tabla que muestra los patrones de corte ingresados-->
     <div class="table-container">
         <div class="table-responsive">
             <table id="patrones-table" class="table w-100">
@@ -123,6 +122,7 @@
                             <td>{{ patron.rollizo }}</td>
                             <td>{{ patron.rendimiento}}</td>
                             <td>  
+                                <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
                                 <button class="details-button" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
                                 '{{ patron.producto_asociado }}','{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}',
                                 '{{patron.velocidad_linea}}','{{patron.setup_time}}','{{patron.lead_time}}','{{patron.utilizado}}')">
@@ -145,7 +145,7 @@
             <p class="no-data-message">No se encontraron datos.</p>
         </div>
     </div>
-    
+    <!--Este es el contenedor del popup que muestra los detalles de patron de corte seleccionado-->
     <div class="popup-overlay" id="popupOverlay"></div>
    <div class="popup" id="popup">
         <h2>Detalles del producto</h2>
@@ -182,7 +182,7 @@
         <button class="close-button" onclick="closePopup()">Cerrar</button>
     </div> 
 
-    <script>
+    {% comment %} <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
         var isFilterVisible = false; // Variable de estado para el filtro
@@ -198,8 +198,9 @@
                 isFilterVisible = true;
             }
         });
-    </script>
-    <script>
+    </script> {% endcomment %}
+        <!--Este script crea la función para desplegar el menú de carga manual-->
+    {% comment %} <script>
         const toggleButton = document.getElementById("toggle-carga-button");
         const cargaForm = document.querySelector(".form-container-productos form");
 
@@ -216,7 +217,7 @@
                 isFormVisible = false;
             }
         });
-    </script>
+    </script> {% endcomment %}
 
 
 </body>

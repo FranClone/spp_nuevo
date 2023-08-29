@@ -14,6 +14,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
     <script type="text/javascript">
+        //Mostrar el popup de bienvenida si es que hay o no nuevos pedidos.
         const pedidosnuevos = true; // O false, dependiendo de la condición que tengas
 
         function showWelcomePopup() {
@@ -53,6 +54,7 @@
     {% include "partials/header.html" %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
         <div class="popup-content-pedidos">
+            {% comment %} Revisar si estos comentarios son necesarios {% endcomment %}
             <h3>Existe una planificación anterior</h3>
             <h4>No hay pedidos nuevos</h4>
             <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
@@ -61,6 +63,7 @@
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
     <div class="buttons-top horizontal-container">
         <div>
+            {% comment %} Sistema de filtro por atributo {% endcomment %}
             <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
                 <option value="lineas">Lineas Producción</option>
                 <option value="Delgado">Delgado</option>
@@ -137,6 +140,7 @@
     </div>
 
     <br>
+    {% comment %} Mover estilo {% endcomment %}
     <div class="table-container" style="overflow: auto; height: 75%;">
         
     <h4 class="text-center">Carta Gantt JCE</h4>
@@ -164,7 +168,7 @@
                         this.minDate = new Date(Math.min.apply(null,minDates));
                         this.maxDate = new Date(Math.max.apply(null,maxDates));
                     }
-
+//Revisar Filtros semana, meses
                     diffInMonths(max, min) {
                         return (max.getFullYear() - min.getFullYear()) * 12 + max.getMonth() - min.getMonth();
                     }
@@ -174,7 +178,7 @@
                         const diffTime = Math.abs(max - min);
                         return Math.ceil(diffTime / oneWeek);
                     }
-
+//Tabla carta gantt
                     buildTableHeader() {
                         var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
             
@@ -182,7 +186,7 @@
                         const isDiarioSelected = selectedPeriod === "diario";
                         const isSemanalSelected = selectedPeriod === "semanal";
                         const isMensualSelected = selectedPeriod === "mensual";
-            
+            //Encabezado
                         if (isDiarioSelected) {
                             var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
                             const actual = new Date(this.minDate);

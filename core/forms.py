@@ -127,7 +127,6 @@ class CrearPatronCorteForm(forms.ModelForm):
  
 class CrearProductoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto"""
-
     class Meta:
         model = Producto
         fields = [
@@ -146,7 +145,24 @@ class CrearProductoForm(forms.ModelForm):
         ]
 #Lista valores prioridad
 
+
 class ActualizarPedidoForm(forms.ModelForm):
+    
+    # def clean_codigo(self):
+    #     codigo = self.cleaned_data["codigo"]
+    #     if Pedido.objects.filter(codigo=codigo).exists():
+    #         raise ValidationError("El codigo ya existe")
+    #     return codigo
+    # Datepicker
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
+            attrs={
+                'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
+                'class': 'form-control'
+            }
+        )
+
     class Meta:
         model = Pedido
         fields = [
@@ -161,9 +177,8 @@ class ActualizarPedidoForm(forms.ModelForm):
             'linea_produccion',
             'estado',
         ]
-        
-    producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None)
 
+    producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None)
 
 
 class ProductoTerminadoForm(forms.ModelForm):

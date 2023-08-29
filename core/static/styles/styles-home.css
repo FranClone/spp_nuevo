@@ -530,3 +530,9 @@ table tr {
     top: 5px;
     right: 5px;
 }
+/* Style datepicker */
+#id_fecha_entrega {
+    border: 0.1px solid #595959;
+    box-sizing: border-box;
+    height: 30px;
+}

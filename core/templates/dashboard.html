@@ -14,7 +14,7 @@
 <body>
     {% include "partials/header.html" %}
     <div class="cont">
-        <section class="cols-1">
+        {% comment %} <section class="cols-1">
                 <div>
                     <form action="">
                         <div class="selectbox">
@@ -57,20 +57,20 @@
                     </form>
                 </div>
             </main>
-        </section>
-        <section class="cols-2" style="width: 100%; overflow: hidden;">
+        </section> {% endcomment %}
+        <section class="cols" style="width: 100%; overflow: hidden;">
             <figure style="position: relative; width: 100%;">
                 <iframe src="https://us1.ca.analytics.ibm.com/bi/?perspective=dashboard&amp;pathRef=.my_folders%2FNuevo%2Bpanel%2Bde%2Bcontrol&amp;closeWindowOnLastView=true&amp;ui_appbar=false&amp;ui_navbar=false&amp;shareMode=embedded&amp;action=view&amp;mode=dashboard&amp;subView=model0000018a1ff096d5_00000001" 
                         style="position: absolute; width: 100%; height: 100%; top: 0; left: 0;"
                         frameborder="0" gesture="media" allow="encrypted-media" allowfullscreen="">
                 </iframe>
             </figure>
-            <!-- 
-            <figure>
+         
+            {% comment %} <figure>
                 <img id="imgChart" src="{% static 'img/charts.png' %}" alt="">
                 <canvas id="myChart" class="chart-canvas"></canvas>
-            </figure>
-            -->
+            </figure> {% endcomment %}
+           
         </section>
         
     </div>

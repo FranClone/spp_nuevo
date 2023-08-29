@@ -235,3 +235,9 @@ a {
     background-color: red;
     color: white;
 }
+/* Style datepicker */
+#id_fecha_entrega {
+    border: 0.1px solid #595959;
+    box-sizing: border-box;
+    height: 30px;
+}

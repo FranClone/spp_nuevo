@@ -74,6 +74,8 @@ $(document).ready(function() {
     }
 });
 
+//Esta función permite abrir el popup que muestra los detalles, obteniendo los valores traspasados por el botón de detalle. 
+//Para ser mostrados en los elementos del popup determinados por su id
 function openPopup(codigo, nombre, producto_asociado, rollizo,descripcion,rendimiento,velocidad_linea,setup_time,lead_time,utilizado) {
     document.getElementById('popupCodigo').innerText = codigo;
     document.getElementById('popupNombre').innerText = nombre;
@@ -93,43 +95,38 @@ function closePopup() {
     document.getElementById('popupOverlay').style.display = 'none';
     document.getElementById('popup').style.display = 'none';
 }
-// function openPopup2(codigo, nombre, producto_asociado, rollizo,descripcion,rendimiento,velocidad_linea,setup_time,lead_time,utilizado) {
-//     document.getElementById('popupCodigo').innerText = codigo;
-//     document.getElementById('popupNombre').innerText = nombre;
-//     document.getElementById('popupProductoAsociado').innerText = producto_asociado;
-//     document.getElementById('popupClaseDiametricoRollizo').innerText = rollizo;
-//     document.getElementById('popupPCorteDescripcion').innerText = descripcion;
-//     document.getElementById('popupPCorteRendimiento').innerText = rendimiento;
-//     document.getElementById('popupPCorteVelocidadLinea').innerText = velocidad_linea;
-//     document.getElementById('popupPCorteSetupTime').innerText = setup_time;
-//     document.getElementById('popupPCorteLeadTime').innerText = lead_time;
-//     document.getElementById('popupPCorteUtilizado').innerText = utilizado;
-//     document.getElementById('popupOverlay2').style.display = 'block';
-//     document.getElementById('popup2').style.display = 'block';
-// }
 
-// function openPopup2(id,codigo, nombre, producto_asociado, rollizo,descripcion,rendimiento,velocidad_linea,setup_time,lead_time,utilizado) {
- 
-//     document.getElementById('editcodigo').value = codigo;
-//     document.getElementById('editnombre').value = nombre;
-//     document.getElementById('editdescripcion').value = producto_asociado;
-//     document.getElementById('editrollizo').value = rollizo;
-//     document.getElementById('editrendimiento').value = descripcion;
-//     document.getElementById('editvelocidad_linea').value = rendimiento;
-//     document.getElementById('editsetup_time').value = velocidad_linea;
-//     document.getElementById('editlead_time').value = setup_time;
-//     document.getElementById('editproducto_asociado').value = lead_time;
-//     document.getElementById('editutilizado').value = utilizado;
-//     document.getElementById('popupOverlay2').style.display = 'block';
-//     document.getElementById('popup2').style.display = 'block';
-// }
-// function closePopup2() {
-//     document.getElementById('popupOverlay2').style.display = 'none';
-//     document.getElementById('popup2').style.display = 'none';
-// }
 $(document).ready(function() {
     $('.table').DataTable({
         paging: true,
     
     });
 });
+//Esta función permite abrir y cerrar el popup de carga manual al presionar el botón "Carga manual"
+function toggleFormVisibility() {
+    const cargaForm = document.querySelector(".form-container-productos form");
+    
+    if (cargaForm.style.display === "none") {
+        cargaForm.style.display = "block";
+    } else {
+        cargaForm.style.display = "none";
+    }
+}
+// function toggleFormVisibility() {
+//     const toggleButton = document.getElementById("toggle-carga-button");
+//     const cargaForm = document.querySelector(".form-container-productos form");
+
+//     let isFormVisible = false;
+
+//     toggleButton.addEventListener("click", function() {
+//         if (!isFormVisible) {
+//             const buttonRect = toggleButton.getBoundingClientRect();
+//             const buttonBottom = buttonRect.bottom;
+//             cargaForm.style.display = "block";
+//             isFormVisible = true;
+//         } else {
+//             cargaForm.style.display = "none";
+//             isFormVisible = false;
+//         }
+//     });
+// }
