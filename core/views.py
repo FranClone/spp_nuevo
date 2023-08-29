@@ -387,3 +387,8 @@ def materia_editar(request,id):
             print("error")
     return render(request, 'planificador/editar_materia_prima.html', data)
     
+#Verificacion de nuevos pedidos para el aviso de inicio
+
+def obtener_ids_pedidos(request):
+    ids_pedidos = Pedido.objects.values_list('id', flat=True)
+    return JsonResponse({'ids_pedidos': list(ids_pedidos)})
