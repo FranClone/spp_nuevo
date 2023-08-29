@@ -2,11 +2,7 @@ from django.db import models
 
 class Pedido(models.Model):
     """Este modelo define la entidad Pedido"""
-    OPCION_PRIORIDAD= [
-    ('bajo', 'Bajo'),
-    ('mediano', 'Mediano'),
-    ('alto', 'Alto'),
-    ]
+
     # Entradas
     cliente = models.CharField(max_length=50, null=False, blank=False)
     fecha_entrega = models.DateField(null=False, blank=False)
@@ -15,7 +11,7 @@ class Pedido(models.Model):
     nombre = models.CharField(max_length=20, null=False, blank=False)
     producto = models.CharField(max_length=20, null=False, blank=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
-    prioridad = models.CharField(max_length=20,null=False, blank=False,choices=OPCION_PRIORIDAD)
+    prioridad = models.CharField(max_length=20,null=False, blank=False)
     linea_produccion = models.CharField(max_length=20, null=False, blank=False)
     
     #porcentaje_avance = models.FloatField(max_length=5)
@@ -23,7 +19,6 @@ class Pedido(models.Model):
     
     # Salidas
     estado = models.CharField(max_length=20, null=False, blank=False)
-
 
     def __str__(self):
         return f"Pedido {self.codigo}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
