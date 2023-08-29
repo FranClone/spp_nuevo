@@ -92,12 +92,18 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, nombre, grosor, ancho, largo) {
-    document.getElementById('popupCodigo').innerText = codigo;
-    document.getElementById('popupNombre').innerText = nombre;
-    document.getElementById('popupGrosor').innerText = grosor;
-    document.getElementById('popupAncho').innerText = ancho;
-    document.getElementById('popupLargo').innerText = largo;
+function openPopup(numero_buzon, nombre, alto, ancho, largo, linea, conicidad, almacenamiento, inventario_inicial, volumen_procesado, inventario_final) {
+    document.getElementById('popupCodigo').textContent = numero_buzon;
+    document.getElementById('popupNombre').textContent = nombre;
+    document.getElementById('popupAlto').textContent = alto;
+    document.getElementById('popupAncho').textContent = ancho;
+    document.getElementById('popupLargo').textContent = largo;
+    document.getElementById('popupLinea').textContent = linea;
+    document.getElementById('popupConicidad').textContent = conicidad;
+    document.getElementById('popupAlmacenamiento').textContent = almacenamiento;
+    document.getElementById('popupInventario_inicial').textContent = inventario_inicial;
+    document.getElementById('popupVolumen_procesado').textContent = volumen_procesado;
+    document.getElementById('popupInventario_final').textContent = inventario_final;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }
@@ -112,3 +118,47 @@ $(document).ready(function() {
 
     });
 });
+toggleFilter();
+
+function toggleFilter() {
+var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+var filterForm = document.querySelector('.filter-section .filter-form');
+var isFilterVisible = false; // Variable de estado para el filtro
+
+    toggleFilterButton.addEventListener('click', function() {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
+        }
+    });
+}
+
+toggleCargaForm();
+
+function toggleCargaForm() {
+    
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-productos form");
+
+    let isFormVisible = false;
+
+    toggleButton.addEventListener("click", function() {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
+        }
+    });
+}
+
+
+

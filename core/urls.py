@@ -10,7 +10,8 @@ from .views import Administracion, Bar_chart, Carga_sv, Lista_pedidos, Login, Lo
 from .views import ProductosTerminados, Dashboard 
 from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima, gantt_view, pantalla_carga
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
-
+from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
+from . import views
 
 from django.urls import path
 from .views import generar_pdf_view
@@ -40,7 +41,7 @@ urlpatterns = [
     path('planificador_productos/eliminarproducto/<int:id>', eliminar_producto,name='eliminar_producto' ),
     path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     path('planificador_patrones_corte/editarpatroncorte/<int:id>', patron_editar, name = "patron_editar"),
-
+    path('plan_materia_prima/editarmateria/<int:id>', materia_editar, name = "materia_editar"),
 
     # url para desplegar el bar chart vertical
     path('dashboard/', Dashboard.as_view(), name = "dashboard"),

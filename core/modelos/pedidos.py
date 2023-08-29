@@ -11,7 +11,7 @@ class Pedido(models.Model):
     cliente = models.CharField(max_length=50, null=False, blank=False)
     fecha_entrega = models.DateField(null=False, blank=False)
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)
-    comentario = models.CharField(max_length=200, unique=True, null=False, blank=False, default='Sin comentario')
+    comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     nombre = models.CharField(max_length=20, null=False, blank=False)
     producto = models.CharField(max_length=20, null=False, blank=False)
     cantidad = models.PositiveIntegerField(null=False, blank=False)

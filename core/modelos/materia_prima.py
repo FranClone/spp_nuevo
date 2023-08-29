@@ -4,6 +4,7 @@ class MateriaPrima(models.Model):
     """Este modelo define la entidad Materia Prima"""
     
     # Entradas
+    #el atributo mas importante en este modelo es la clase_diametrica, la materia prima se clasifica por el numero de buzon, conicidad es la forma del tronco
     numero_buzon = models.IntegerField()
     tipo_madera = models.CharField(max_length=10)
     clase_diametrica = models.CharField(max_length=10)
