@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-pedidos.css' %}">
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="{% static 'js/vista-pedidos.js' %}"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Pedidos</title>
+</head>
+
+<body>
+    {% include "partials/header.html" %}
+
+        <!--Sección formulario desplegable mediante botón "Carga Manual"-->
+        <div class="form-container-productos">
+
+            <form method="post" action="{% url 'pedido_editar' id %}" id="carga-form">
+                {% csrf_token %}
+
+                <table class="form-table">
+                    <tr>
+                        <td>{{ form.cliente.label_tag }}</td>
+                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.cliente }}</td>
+                        <td>{{ form.fecha_entrega }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.codigo.label_tag }}</td>
+                        <td>{{ form.comentario.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.codigo }}</td>
+                        <td>{{ form.comentario }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.nombre.label_tag }}</td>
+                        <td>{{ form.producto.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.nombre }}</td>
+                        <td>{{ form.producto }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.cantidad.label_tag }}</td>
+                        <td>{{ form.prioridad.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.cantidad }}</td>
+                        <td>{{ form.prioridad }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>{{ form.linea_produccion.label_tag }}</td>
+                        <td>{{ form.estado.label_tag }} </td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.linea_produccion }}</td>
+                        <td>{{ form.estado}}</td>
+                    </tr>
+
+                </table>
+                <button type="submit" name="Editar" class="red-button">Editar</button>
+            </form>
+
+        </div>
+</body>
+
+</html>

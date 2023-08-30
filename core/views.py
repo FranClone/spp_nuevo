@@ -136,13 +136,35 @@ class Lista_pedidos(View):
         }
 
         return render(request, 'lista_pedidos.html', context)
-
+    
 class Login(View):
     def get(self, request):
         return render(request, 'login.html')
-    
+
+
+    #verifica si la solicitud HTTP es de tipo POST
     def post(self, request):
+        
+        """if request.method == 'POST':
+            print(request.POST)
+            #Se obtienen los valores del campo "Rut" y "contraseña" del formulario
+            Rut = request.POST.get('Rut')
+            contraseña = request.POST.get('contraseña')
+            #autenticar al usuario utilizando el valor del campo "Rut" como nombre de usuario y el valor del campo "contraseña"
+            user = authenticate(request, username=Rut, password=contraseña)
+            if user:
+                #Si el usuario se autentica correctamente, se inicia sesión
+                print("pasop")
+                login(request, user)
+                # se redirige al usuario a una página
+                return redirect('pantalla-carga')
+            else:
+                #Si la autenticación no tiene éxito, se renderiza la plantilla 'login.html' nuevamente
+                print("paso aqui")
+                return render(request, 'login.html', {"error": "Usuario no valido"})
+        return render(request, 'login.html')"""
         return redirect('pantalla-carga')
+    
 
 class Logout(View):
     @method_decorator(login_required)
@@ -368,6 +390,30 @@ def eliminar_producto_terminado(request,id):
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
+def producto_editar(request,id):
+    prod= Producto.objects.get(id=id)
+    data = {'form': CrearProductoForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = CrearProductoForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_productos')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_productoseditar.html', data)
+    
+def pedido_editar(request,id):
+    prod= Pedido.objects.get(id=id)
+    data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('pedidos')
+        else:
+            print("error")
+    return render(request, 'pedidoseditar.html', data)
 
 
 def generar_pdf_view(request):

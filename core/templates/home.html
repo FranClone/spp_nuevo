@@ -14,7 +14,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 
     <script type="text/javascript">
-<<<<<<< HEAD
 function setCookie(name, value, days) {
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
@@ -70,10 +69,6 @@ function getCookie(name) {
             }
 
             console.log(`¿Hay nuevos pedidos? ${hayNuevosPedidos}`);
-=======
-        //Mostrar el popup de bienvenida si es que hay o no nuevos pedidos.
-        const pedidosnuevos = true; // O false, dependiendo de la condición que tengas
->>>>>>> francis
 
             const popupOverlay = document.getElementById('welcome-popup');
             const popupContent = document.querySelector('.popup-content-pedidos');
@@ -82,9 +77,9 @@ function getCookie(name) {
                 popupContent.innerHTML = `
                     <h3>¡Bienvenido!</h3>
                     <h4>¡Hay nuevos pedidos!</h4>
-                    <button class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
+                    <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
-                `;
+                ;`
             } else {
                 popupContent.innerHTML = `
                     <h3>Existe una planificación anterior</h3>
@@ -502,6 +497,27 @@ function getCookie(name) {
             </div>
         </div>
     </div>
+    
+    <script>
+        // Add your Gantt class and tasks array here
+    
+        // Fisher-Yates shuffle function
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+    
+        const shuffleButton = document.getElementById('shuffleButton');
+        shuffleButton.addEventListener('click', () => {
+            shuffle(gantt.tasks); // Shuffle the tasks array
+            gantt.setMinAndMaxDate(); // Update min and max dates
+            document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
+            gantt.attachEventListeners(); // Reattach event listeners
+        });
+    </script>
+    
 
     <div class="buttons-bot">
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"><a
