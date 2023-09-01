@@ -8,6 +8,7 @@ from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
 from .modelos.productos_terminados import ProductoTerminado
 ##
+from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.exceptions import ValidationError
 #probar esto
 
@@ -162,12 +163,6 @@ class CrearProductoForm(forms.ModelForm):
 
 class ActualizarPedidoForm(forms.ModelForm):
     
-    # def clean_codigo(self):
-    #     codigo = self.cleaned_data["codigo"]
-    #     if Pedido.objects.filter(codigo=codigo).exists():
-    #         raise ValidationError("El codigo ya existe")
-    #     return codigo
-    # Datepicker
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
@@ -191,9 +186,10 @@ class ActualizarPedidoForm(forms.ModelForm):
             'linea_produccion',
             'estado',
         ]
-
-    producto = forms.ModelChoiceField(queryset=Producto.objects.all(), empty_label=None)
-
+        widgets = {
+            'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
+}
+        
 
 class ProductoTerminadoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto terminado"""

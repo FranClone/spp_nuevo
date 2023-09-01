@@ -1,20 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+
     {% load static %}
     {% include "partials/resources.html" %}
     <link rel="icon" href="{% static 'img/logo_betech.png' %}">
     <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
     <link rel="stylesheet" href="{% static 'styles/styles-pedidos.css' %}">
-    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="{% static 'styles/styles-popup.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
-    <script src="{% static 'js/vista-pedidos.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Pedidos</title>
+    
 </head>
 
 <body>
@@ -49,7 +52,7 @@
                     </tr>
                     <tr>
                         <td>{{ form.nombre }}</td>
-                        <td>{{ form.producto }}</td>
+                        <td id="td-prod">{{ form.producto }}</td>
                     </tr>
                     <tr>
                         <td>{{ form.cantidad.label_tag }}</td>
@@ -74,6 +77,22 @@
             </form>
 
         </div>
+        
 </body>
-
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            multiple: true,
+            closeOnSelect: false,          
+            placeholder: 'Select an option'
+            
+           
+        });
+                // Handle padding when Select2 dropdown is opened
+        $('.select2').on('select2:open', function() {
+            $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
+        });
+    });
+    
+</script>
 </html>
