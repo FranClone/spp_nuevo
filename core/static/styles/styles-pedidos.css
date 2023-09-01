@@ -241,3 +241,16 @@ a {
     box-sizing: border-box;
     height: 30px;
 }
+/* Style contenedor MultiSelect */
+.select2.select2-container {
+    width: 100% !important;
+  }
+#td-prod span .select2-selection.select2-selection--multiple {
+
+    border: 1px solid #000;
+    border-radius: 1px;
+    cursor: text;
+  
+ 
+}
+
