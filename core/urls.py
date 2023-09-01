@@ -44,7 +44,7 @@ urlpatterns = [
     path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', eliminar_producto_terminado,name='eliminar_patron' ),
     path('planificador_patrones_corte/editarpatroncorte/<int:id>', patron_editar, name = "patron_editar"),
     path('plan_materia_prima/editarmateria/<int:id>', materia_editar, name = "materia_editar"),
-
+    path('obtener-ids-pedidos/', views.obtener_ids_pedidos, name='obtener_ids_pedidos'),
     path('planificador_productos/editarproducto/<int:id>', producto_editar, name = "producto_editar"),
     path('pedidos/editarpedido/<int:id>', pedido_editar, name = "pedido_editar"),
     # url para desplegar el bar chart vertical
