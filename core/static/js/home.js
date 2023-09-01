@@ -66,9 +66,11 @@ function showWelcomePopup() {
                 `;
             } else {
                 popupContent.innerHTML = `
+                    <h3>¡Bienvenido!</h3>
                     <h3>Existe una planificación anterior</h3>
                     <h4>No hay pedidos nuevos</h4>
                     <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
+                    <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
                 `;
             }
 

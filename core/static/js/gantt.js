@@ -170,28 +170,64 @@
         }
 
         handlePopupClick(event) {
-            event.stopPropagation(); // Evita que el evento se propague al contenedor principal
-            const pedidoId = event.target.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
+            console.log('Popup link clicked');
+            event.stopPropagation();// Evita que el evento se propague al contenedor principal
+            const pedidoId = event.target.dataset.pedidoId;// Obtenemos el ID del pedido desde el atributo data-pedido-id
             const popup = document.createElement('div');
             popup.className = 'popup-overlay';
+            console.log('Pedido ID:', pedidoId);
             const pedidoData = this.tasks[pedidoId];
+            const self = this; // Store a reference to the current instance
             popup.innerHTML = `
-            <div class="popup-content">
-                <h1> Detalle Pedido </h2>
-                <p>Codigo: ${pedidoData[0]}</p>
-                <p>Cliente: ${pedidoData[8]} </p>
-                <p>Nombre: ${pedidoData[5]}</p>
-                <p>Fecha de entrega: ${pedidoData[2]}</p>
-                <p>Producto: ${pedidoData[10]}</p>
-                <p>Cantidad: ${pedidoData[7]}</p>
-                <p>Prioridad: ${pedidoData[11]}</p>
-                <p>Linea produccion: ${pedidoData[6]}</p>
-                <p>Progreso: ${pedidoData[4]} %</p>
-                <p>Comentario: ${pedidoData[9]}</p>
-                <button class="popup-close" onclick="this.parentElement.parentElement.remove()">X</button>
-            </div>
-        `;
+      
+                <div class="popup-content" id="popup">
+                    <h2>Detalles del producto</h2>
+                    <div class="popup-item">
+                        <strong>Código:</strong> <span>${pedidoData[0]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Cliente:</strong> <span>${pedidoData[8]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Nombre:</strong> <span>${pedidoData[5]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Producto:</strong> <span>${pedidoData[10]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Cantidad:</strong> <span>${pedidoData[7]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Prioridad:</strong> <span>${pedidoData[11]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Linea produccion:</strong> <span>${pedidoData[6]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Progreso:</strong> <span>${pedidoData[4]}</span>
+                    </div>
+                    <div class="popup-item">
+                        <strong>Comentario:</strong> <span>${pedidoData[9]}</span>
+                    </div>
+                    <button class="close-button" >Cerrar</button>
+                </div>
+
+            `;
+        
             document.body.appendChild(popup);
+
+            // Add a click event listener to the close button
+            const closeButton = popup.querySelector('.close-button');
+            closeButton.addEventListener('click', () => {
+                self.closePopup(popup);
+            });
+        }
+        
+        closePopup(popup) {
+            popup.style.display = 'none';
         }
     }
 

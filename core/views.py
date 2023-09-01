@@ -341,6 +341,7 @@ def gantt_view(request):
     
     tasks = []
     for pedido in pedidos:
+        productos = [producto.nombre for producto in pedido.producto.all()]
         color = random.choice(colores)
         porcentaje_progreso = random.randint(10, 100)
         task_data = [
@@ -354,7 +355,7 @@ def gantt_view(request):
             pedido.cantidad,
             pedido.cliente,
             pedido.comentario,
-            pedido.producto,
+            productos,
             pedido.prioridad,
         ]
         tasks.append(task_data)
