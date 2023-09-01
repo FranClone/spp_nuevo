@@ -11,6 +11,8 @@
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="{% static 'js/vista-pedidos.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -139,7 +141,7 @@
                             <td>{{ pedido.fecha_entrega }}</td>
                             <td>{{ pedido.estado }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{{ pedido.producto }}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                                 <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl" ></a>
                                 <a href="editarpedido/{{pedido.id}}"class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
                             </td>

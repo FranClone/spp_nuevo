@@ -228,12 +228,6 @@ a {
     box-sizing: border-box;
     /* Incluye el ancho del borde y el relleno en el ancho total */
 }
-<<<<<<< HEAD
-.text-left {
-    text-align: left!important;
-}
-=======
->>>>>>> fabian
 
 .red-button {
     display: block;
