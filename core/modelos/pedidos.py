@@ -1,4 +1,5 @@
 from django.db import models
+from .producto import Producto
 
 class Pedido(models.Model):
     """Este modelo define la entidad Pedido"""
@@ -28,7 +29,7 @@ class Pedido(models.Model):
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     nombre = models.CharField(max_length=20, null=False, blank=False, )
-    producto = models.CharField(max_length=20, null=False, blank=False)
+    producto = models.ManyToManyField(Producto)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.CharField(max_length=20,null=False, blank=False,choices=OPCION_PRIORIDAD, default='')
     linea_produccion = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_PRODUCCION, default='')

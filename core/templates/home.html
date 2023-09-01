@@ -79,7 +79,7 @@ function getCookie(name) {
                     <h4>¡Hay nuevos pedidos!</h4>
                     <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
-                ;`
+                `;
             } else {
                 popupContent.innerHTML = `
                     <h3>Existe una planificación anterior</h3>
@@ -493,7 +493,7 @@ function getCookie(name) {
                 <button class="red-button"><a href="{% url 'generar_pdf' %}"
                         class="btn-exportar-pdf">Exportar</a></button>
                 <button class="red-button">Editar</button>
-                <button class="red-button" onclick="hidePopup()">Aceptar</button>
+                <button class="red-button" id="shuffleButton" onclick="hidePopup()">Aceptar</button>
             </div>
         </div>
     </div>

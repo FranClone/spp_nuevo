@@ -20,5 +20,5 @@ class Producto(models.Model):
     inventario_final = models.FloatField(max_length=10)
     
     def __str__(self):
-        return f'Producto {self.codigo}'
+        return f' {self.nombre}'
 
