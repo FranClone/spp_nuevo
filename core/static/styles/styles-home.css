@@ -89,6 +89,7 @@ table tr {
     font-weight: bold;
     padding: 9px;
     font-size: 12px;
+    width:100%;
 }
 
 .event-cell a.popup-link {
@@ -535,4 +536,13 @@ table tr {
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;
+}
+.popup-overlay {
+    /* other styles */
+    z-index: 1000; /* Adjust this value as needed */
+}
+
+.popup-content {
+    /* other styles */
+    z-index: 1001; /* Adjust this value to be higher than the .popup-overlay */
 }

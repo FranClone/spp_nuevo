@@ -123,14 +123,13 @@
                             <td>{{ patron.rendimiento}}</td>
                             <td>  
                                 <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
-                                <button class="details-button" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
+                                <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
                                 '{{ patron.producto_asociado }}','{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}',
                                 '{{patron.velocidad_linea}}','{{patron.setup_time}}','{{patron.lead_time}}','{{patron.utilizado}}')">
                                     <i class="fa-regular fa-clipboard fa-xl"></i>
                                 </button>
 
                                 <a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-xl"></a>
-
                                 <a href="editarpatroncorte/{{patron.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
 
                             </td>
