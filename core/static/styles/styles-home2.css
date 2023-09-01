@@ -390,3 +390,13 @@ f
     box-sizing: border-box;
     height: 30px;
 }
+
+.popup-overlay {
+    /* other styles */
+    z-index: 1000; /* Adjust this value as needed */
+}
+
+.popup-content {
+    /* other styles */
+    z-index: 1001; /* Adjust this value to be higher than the .popup-overlay */
+}
