@@ -235,3 +235,26 @@ a {
     background-color: red;
     color: white;
 }
+
+/* Style contenedor MultiSelect */
+.select2.select2-container {
+    width: 100% !important;
+  }
+
+.select2-container--default .select2-selection--multiple {
+    width: 100% !important;
+    border: 0.1px solid #595959;
+    box-sizing: border-box;
+    height: 30px;
+    border-radius:0.1px !important;
+}
+
+
+.form-control, #id_prioridad, #id_estado, #id_linea_produccion {
+    border: 0.1px solid #595959;
+    box-sizing: border-box;
+    height: 30px;
+    border-radius: 0px;
+}
+
+

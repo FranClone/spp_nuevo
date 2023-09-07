@@ -386,6 +386,7 @@ def gantt_view(request):
             pedido.codigo,                       
             fecha_actual,                     
             pedido.fecha_entrega.strftime('%Y/%m/%d'),
+            pedido.fecha_emision.strftime('%Y/%m/%d'),
             color,                           
             porcentaje_progreso,
             pedido.nombre,   

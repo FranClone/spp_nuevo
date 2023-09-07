@@ -77,32 +77,50 @@
 
         buildTableBody() {
             var html = '';
-
+        
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
-
-                var dMin = new Date(task[1]);
+        
+                var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
-
-                var days = this.diffInDays(dMax, dMin);
+        
+                // Calcular la diferencia en días entre dMin y dMax
+                var dateDiff = this.diffInDays(dMax, dMin);
+        
                 var daysBefore = this.diffInDays(this.minDate, dMin);
                 var daysAfter = this.diffInDays(dMax, this.maxDate);
-
-                if (this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
-                if (this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
-
+        
+                // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                daysBefore = Math.max(daysBefore, 0);
+        
+                // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                daysAfter = Math.max(daysAfter, 0);
+        
+                console.log('Fecha de inicio (dMin):', dMin);
+                console.log('Fecha de finalización (dMax):', dMax);
+        
                 html += '<tr>';
-                if (daysBefore > 0) for (let j = 0; j < daysBefore; j++) html += '<td></td>';
-                html += `<td class="event-cell" colspan="${days}" style="background-color: ${task[3]}; border: 1px solid #000;">
-                <span>${task[4]}%</span>
-                <a class="popup-link" data-pedido-id="${i}">${task[5]}</a>
-            </td>`;
-                if (daysAfter > 0) for (let j = 0; j < daysAfter; j++) html += '<td></td>';
+        
+                for (let j = 0; j < daysBefore; j++) {
+                    html += '<td></td>';
+                }
+        
+                html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
+                    <span>${task[5]}%</span>
+                    <a class="popup-link" data-pedido-id="${i}">${task[6]}</a>
+                </td>`;
+        
+                for (let j = 0; j < daysAfter; j++) {
+                    html += '<td></td>';
+                }
+        
                 html += '</tr>';
             }
-
+        
             return html;
         }
+        
+        
 
         diffInDays(max, min) {
             var diffTime = Math.abs(max - min);
