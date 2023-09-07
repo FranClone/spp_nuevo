@@ -92,11 +92,12 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, cliente, nombre, fecha_entrega, productos, cantidad, prioridad, linea_produccion, comentario) {
+function openPopup(codigo, cliente, nombre, fecha_emision,fecha_entrega, productos, cantidad, prioridad, linea_produccion, comentario) {
     document.getElementById('popupCodigo').innerText = codigo;
     document.getElementById('popupCliente').innerText = cliente;
     document.getElementById('popupNombre').innerText = nombre;
     document.getElementById('popupFecha').innerText = fecha_entrega;
+    document.getElementById('popupFechainicio').innerText = fecha_emision;
     document.getElementById('popupProducto').innerText = productos;
     document.getElementById('popupCantidad').innerText = cantidad;
     document.getElementById('popupPrioridad').innerText = prioridad;

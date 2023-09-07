@@ -1,5 +1,6 @@
 from django.db import models
 from .producto import Producto
+from datetime import datetime
 
 class Pedido(models.Model):
     """Este modelo define la entidad Pedido"""
@@ -25,11 +26,13 @@ class Pedido(models.Model):
     
     # Entradas
     cliente = models.CharField(max_length=50, null=False, blank=False)
+    fecha_emision = models.DateField(null=False, blank=False, default=datetime.now)
     fecha_entrega = models.DateField(null=False, blank=False)
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
-    nombre = models.CharField(max_length=20, null=False, blank=False, )
-    producto = models.ManyToManyField(Producto, through='Pedido_Producto')
+    nombre = models.CharField(max_length=20, null=False, blank=False )
+    #producto = models.CharField(max_length=20, null=False, blank=False , default='Sin comentario')
+    producto = models.ManyToManyField(Producto)
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.CharField(max_length=20,null=False, blank=False,choices=OPCION_PRIORIDAD, default='')
     linea_produccion = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_PRODUCCION, default='')
@@ -43,9 +46,9 @@ class Pedido(models.Model):
     def __str__(self):
         return f"Pedido {self.codigo}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
     
-    
-class Pedido_Producto(models.Model):
-    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='bcs')
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='bcs')
 
-    def __str__(self): return str(self.pedido)
+# class Pedido_Producto(models.Model):
+#     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='bcs')
+#     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='bcs')
+
+#     def __str__(self): return str(self.pedido)

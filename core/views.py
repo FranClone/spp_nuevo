@@ -61,8 +61,8 @@ def importar(request):
                 # Log error message to the console
                 print("Data import failed. Please check the file format.")
         
-    return redirect(reverse('home'))
-
+    #return render(request, 'home.html')
+    return redirect(reverse('home')) 
 def process_uploaded_file(xlsfile):
     if xlsfile:
         file_content = xlsfile.read()
@@ -492,26 +492,5 @@ def obtener_ids_pedidos(request):
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
 
 
-
-
-from .modelos.resources import ProductoResource
-from tablib import Dataset 
- 
-def importar(request):
-    if request.method == 'POST':
-        print('paso aqui')
-        producto_resource = ProductoResource()
-        dataset = Dataset()
-        nuevo_producto = request.FILES['xlsfile']
-        imported_data = dataset.load(nuevo_producto.read())
-            # Realiza la importación con dry_run=False directamente si no hay errores
-        result = producto_resource.import_data(dataset, dry_run=False)
-                 
-            
-    else:
-        print("fsita")
-        pass
-    
-    return render(request, 'importar.html')
 
 
