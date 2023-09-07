@@ -169,13 +169,13 @@
         //         link.addEventListener('click', this.handlePopupClick.bind(this));
         //     });
         // }
+
         attachEventListeners() {
             console.log('Attaching event listeners');
             const popupLinks = document.querySelectorAll('.popup-link');
             console.log('Popup links found:', popupLinks.length);
-                    
-            const self = this; // Store a reference to the current instance
-                    
+            const self = this; 
+
             document.getElementById('gantt').addEventListener('click', function(event) {
                 const target = event.target;
                 if (target.classList.contains('popup-link')) {

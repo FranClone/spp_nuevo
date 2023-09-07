@@ -454,25 +454,6 @@ def pedido_editar(request,id):
             print("error")
     return render(request, 'pedidoseditar.html', data)
 
-
-def generar_pdf_view(request):
-    informacion = "Aquí va la información desde la ventana emergente."
-
-    # Crear el objeto PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="informacion.pdf"'
-
-    # Crear el PDF con reportlab
-    buffer = canvas.Canvas(response, pagesize=letter)
-
-    # Agregar texto al PDF
-    buffer.drawString(100, 800, "Información desde la ventana emergente:")
-    buffer.drawString(100, 780, informacion)
-
-    # Guardar el PDF
-    buffer.save()
-
-    return response
 def materia_editar(request,id):
     prod= MateriaPrima.objects.get(id=id)
     data = {'form': ActualizarMateriaPrimaForm(instance=prod),'id':id}
