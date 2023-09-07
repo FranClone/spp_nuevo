@@ -254,6 +254,7 @@ function toggleCargaForm() {
         cargaForm.style.display = 'none';
     }
 }
+
 function showPopup() {
     const popupOverlay = document.getElementById('popup-ejecutar');
     popupOverlay.style.display = 'block';
@@ -280,3 +281,13 @@ shuffleButton.addEventListener('click', () => {
     document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
     gantt.attachEventListeners();
 });
+//Popup para importar
+function showPopupimport() {
+    const popupOverlay = document.getElementById('popupContainer');
+    popupOverlay.style.display = 'block';
+}
+
+function closePopupimport() {
+    const popupOverlay = document.getElementById('popupContainer');
+    popupOverlay.style.display = 'none';
+}

@@ -10,7 +10,6 @@ from .modelos.productos_terminados import ProductoTerminado
 ##
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.exceptions import ValidationError
-#probar esto
 
 class CustomUserCreationForm(UserCreationForm):
     #campo rut_body
@@ -189,7 +188,35 @@ class ActualizarPedidoForm(forms.ModelForm):
         widgets = {
             'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
 }
-        
+class TestPedidoForm(forms.ModelForm):
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
+            attrs={
+                'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
+                'class': 'form-control'
+            }
+        )
+
+    class Meta:
+        model = Pedido
+        fields = [
+            'cliente',
+            'fecha_entrega',
+            'codigo',
+            'comentario',
+            'nombre',
+            'producto',
+            'cantidad',
+            'prioridad',
+            'linea_produccion',
+            'estado',
+        ]
+        widgets = {
+            'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
+}
+          
 
 class ProductoTerminadoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto terminado"""

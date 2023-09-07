@@ -53,6 +53,22 @@
     <div class="form-container-productos">
         <button type="button" id="toggle-carga-button" class="carga-button" onclick="toggleCargaForm()">Carga
             Manual</button>
+            {% comment %}  {% endcomment %}
+                <!-- Trigger button to open the modal -->
+                <button type="button" class="carga-button" onclick="showPopupimport()">Subir Archivo</button>
+                <!-- Popup Container -->
+                <div id="popupContainer" class="popup-container" style="display: none;">
+                        <form class="formimport" method="POST" enctype="multipart/form-data" action="{% url 'importar' %}">
+                            {% csrf_token %}
+                        <div class="button-row">
+                            <input type="file" name="xlsfile">
+                            <button type="submit" class="carga-button" name="subir">Subir</button>
+                            <button class="carga-button" onclick="closePopupimport()">Cerrar</button>
+                            </div>
+                        </form>
+                </div>
+    
+              {% comment %}  {% endcomment %}
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
 
