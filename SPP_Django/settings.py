@@ -27,8 +27,8 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
 
-ALLOWED_HOSTS = ['localhost','127.0.0.1']
-
+ALLOWED_HOSTS = ['localhost','127.0.0.1',"7b72-190-5-37-99.ngrok-free.app"]
+CSRF_TRUSTED_ORIGINS = ["https://7b72-190-5-37-99.ngrok-free.app"]
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 
 AUTHENTICATION_BACKENDS = [
