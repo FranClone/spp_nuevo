@@ -29,7 +29,7 @@ class Pedido(models.Model):
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     nombre = models.CharField(max_length=20, null=False, blank=False, )
-    producto = models.ManyToManyField(Producto)
+    producto = models.ManyToManyField(Producto, through='Pedido_Producto')
     cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.CharField(max_length=20,null=False, blank=False,choices=OPCION_PRIORIDAD, default='')
     linea_produccion = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_PRODUCCION, default='')
@@ -42,3 +42,10 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"Pedido {self.codigo}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
+    
+    
+class Pedido_Producto(models.Model):
+    producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='bcs')
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='bcs')
+
+    def __str__(self): return str(self.pedido)

@@ -97,3 +97,4 @@ function actualizarPedidos() {
     // Redirecciona al usuario a 'pantalla-carga'
     window.location.href = '/pantalla-carga/';
 }
+
