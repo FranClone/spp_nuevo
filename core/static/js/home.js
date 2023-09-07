@@ -61,15 +61,12 @@ function showWelcomePopup() {
                 popupContent.innerHTML = `
                     <h3>¡Bienvenido!</h3>
                     <h4>¡Hay nuevos pedidos!</h4>
-                    <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
                 `;
             } else {
                 popupContent.innerHTML = `
                     <h3>¡Bienvenido!</h3>
-                    <h3>Existe una planificación anterior</h3>
-                    <h4>No hay pedidos nuevos</h4>
-                    <button id="btnActualizar" class="popup-update-button" onclick="actualizarPedidos()">Actualizar</button>
+                    <h4>Existe una planificación anterior</h4>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
                 `;
             }
@@ -89,11 +86,3 @@ function hideWelcomePopup() {
 window.onload = function () {
     showWelcomePopup();
 };
-
-
-function actualizarPedidos() {
-    // Realiza cualquier lógica de actualización que necesites aquí
-
-    // Redirecciona al usuario a 'pantalla-carga'
-    window.location.href = '/pantalla-carga/';
-}

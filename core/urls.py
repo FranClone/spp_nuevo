@@ -12,7 +12,7 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
 from . import views
-from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos
+from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos, descargar_excel
 
 
 from django.urls import path
@@ -49,7 +49,7 @@ urlpatterns = [
     path('pedidos/editarpedido/<int:id>', pedido_editar, name = "pedido_editar"),
     # url para desplegar el bar chart vertical
     path('dashboard/', Dashboard.as_view(), name = "dashboard"),
-
     path('generar-pdf/', generar_pdf_view, name='generar_pdf'),
+    path('descargar-excel/<str:nombre_archivo>/', views.descargar_excel, name='descargar_excel'),
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
