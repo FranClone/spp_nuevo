@@ -45,15 +45,21 @@
 
     <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
-        {% comment %} {% endcomment %}
-        <!-- Popup Container -->
-        <div id="popupContainer" class="popup-container" style="display: none;">
-            <form class="formimport" method="POST" enctype="multipart/form-data" action="{% url 'importar' %}">
-                {% csrf_token %}
-                <div class="button-row">
-                    <input type="file" name="xlsfile">
-                    <button type="submit" class="carga-button" name="subir">Subir</button>
-                    <button class="carga-button" onclick="closePopupimport()">Cerrar</button>
+
+            {% comment %}  {% endcomment %}
+                <!-- Trigger button to open the modal -->
+                <button type="button" class="carga-button" onclick="showPopupimport()">Subir Archivo</button>
+                <!-- Popup Container -->
+                <div id="popupContainer" class="popup-container" style="display: none;">
+                    <form class="formimport" method="POST" enctype="multipart/form-data" action="{% url 'importar' %}">
+                        {% csrf_token %}
+                        <div class="button-row">
+                            <input type="file" name="xlsfile">
+                            <button type="submit" class="carga-button" name="subir">Subir</button>
+                            <!-- Close button without submitting the form -->
+                            <button type="button" class="carga-button" onclick="closePopupimport()">Cerrar</button>
+                        </div>
+                    </form>
                 </div>
             </form>
         </div>

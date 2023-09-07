@@ -32,7 +32,7 @@
         }
         //Tabla carta gantt
         buildTableHeader() {
-            var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
+            var html = '<table style="width: 100%; table-layout: fixed;"><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
 
             const selectedPeriod = document.querySelector('select[name="periodos"]').value;
             const isDiarioSelected = selectedPeriod === "diario";
@@ -71,6 +71,7 @@
             }
 
             html += '</tr></thead><tbody">';
+           // this.attachEventListeners();
             return html;
         }
 
@@ -87,7 +88,7 @@
                 var days = this.diffInDays(dMax, dMin);
                 var daysBefore = this.diffInDays(this.minDate, dMin);
                 var daysAfter = this.diffInDays(dMax, this.maxDate);
-
+                console.log("Tasks",task)
                 if (this.minDate.getTime() === dMin.getTime()) daysBefore = 0;
                 if (this.maxDate.getTime() === dMax.getTime()) daysAfter = 0;
 
@@ -161,18 +162,20 @@
             this.attachEventListeners();
         }
 
-        attachEventListeners() {
-            const popupLinks = document.querySelectorAll('.popup-link');
-            popupLinks.forEach(link => {
-                link.removeEventListener('click', this.handlePopupClick); // Remove existing event listeners
-                link.addEventListener('click', this.handlePopupClick.bind(this));
-            });
-        }
+        // attachEventListeners() {
+        //     const popupLinks = document.querySelectorAll('.popup-link');
+        //     popupLinks.forEach(link => {
+        //         link.removeEventListener('click', this.handlePopupClick); // Remove existing event listeners
+        //         link.addEventListener('click', this.handlePopupClick.bind(this));
+        //     });
+        // }
+
         attachEventListeners() {
             console.log('Attaching event listeners');
             const popupLinks = document.querySelectorAll('.popup-link');
             console.log('Popup links found:', popupLinks.length);
             const self = this; 
+
             document.getElementById('gantt').addEventListener('click', function(event) {
                 const target = event.target;
                 if (target.classList.contains('popup-link')) {
@@ -189,6 +192,7 @@
             console.log('Pedido ID:', pedidoId);
             const pedidoData = this.tasks[pedidoId];
             const self = this; // Store a reference to the current instance
+            console.log('Popup links found:', pedidoData);
             popup.innerHTML = `
       
                 <div class="popup-content" id="popup">
@@ -201,6 +205,9 @@
                     </div>
                     <div class="popup-item">
                         <strong>Nombre:</strong> <span>${pedidoData[5]}</span>
+                    </div>
+                    <div class="popup-item">
+                    <strong>Fecha de emision:</strong> <span>${pedidoData[1]}</span>
                     </div>
                     <div class="popup-item">
                         <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
@@ -301,4 +308,5 @@ function showPopupimport() {
 function closePopupimport() {
     const popupOverlay = document.getElementById('popupContainer');
     popupOverlay.style.display = 'none';
+  
 }
