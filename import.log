@@ -1,0 +1,40 @@
+DEBUG:import_export.resources:'int' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\venv\Lib\site-packages\import_export\resources.py", line 749, in import_row
+    self.save_m2m(instance, row, using_transactions, dry_run)
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\core\modelos\resources.py", line 198, in save_m2m
+    producto_names = row.get('producto', '').split('|')  # Assuming '|' is the separator
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'split'
+DEBUG:import_export.resources:'int' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\venv\Lib\site-packages\import_export\resources.py", line 749, in import_row
+    self.save_m2m(instance, row, using_transactions, dry_run)
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\core\modelos\resources.py", line 198, in save_m2m
+    producto_names = row.get('producto', '').split('|')  # Assuming '|' is the separator
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'split'
+DEBUG:import_export.resources:'int' object has no attribute 'split'
+Traceback (most recent call last):
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\venv\Lib\site-packages\import_export\resources.py", line 749, in import_row
+    self.save_m2m(instance, row, using_transactions, dry_run)
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\core\modelos\resources.py", line 198, in save_m2m
+    producto_names = row.get('producto', '').split('|')  # Assuming '|' is the separator
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'int' object has no attribute 'split'
+ERROR:django.request:Internal Server Error: /importar/
+Traceback (most recent call last):
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\venv\Lib\site-packages\django\core\handlers\exception.py", line 55, in inner
+    response = get_response(request)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\venv\Lib\site-packages\django\core\handlers\base.py", line 197, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\core\views.py", line 56, in importar
+    result = process_uploaded_file(request.FILES.get('xlsfile'))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Roark\OneDrive\Documentos\SPP2\spp-django\core\views.py", line 95, in process_uploaded_file
+    for field, errors in row_errors.items():
+                         ^^^^^^^^^^^^^^^^
+AttributeError: 'tuple' object has no attribute 'items'
+INFO:django.utils.autoreload:C:\Users\Roark\OneDrive\Documentos\SPP2\SPP-Django\core\views.py changed, reloading.
