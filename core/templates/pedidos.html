@@ -141,7 +141,7 @@
                             <td>{{ pedido.fecha_entrega }}</td>
                             <td>{{ pedido.estado }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ pedido.codigo}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_emision}}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                                 <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl" ></a>
                                 <a href="editarpedido/{{pedido.id}}"class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
                             </td>
@@ -164,6 +164,9 @@
             <div class="popup-item">
                 <strong>Nombre:</strong> <span id="popupNombre"></span>
             </div>
+            <div class="popup-item">
+                <strong>Fecha de emision:</strong> <span id="popupFechainicio"></span>
+        </div>
             <div class="popup-item">
                 <strong>Fecha de entrega:</strong> <span id="popupFecha"></span>
         </div>
