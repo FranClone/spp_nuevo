@@ -71,7 +71,8 @@ INSTALLED_APPS = [
     'core',
     'dynamic_formsets',
     'django_bleach',
-    'axes'
+    'axes',
+    'import_export'
 ]
 
 MIDDLEWARE = [
@@ -94,7 +95,7 @@ CSRF_COOKIE_SECURE = False
 SESSION_COOKIE_SECURE = False
 #segundos para avisarte de que tienes que usar HTTPS
 SECURE_HSTS_SECONDS = 0
-
+IMPORT_EXPORT_USE_TRANSACTIONS = True  
 """Este comando sirve para cuando esto sea subido a una URL, 
 para que Chrome y otros navegadores lo detecten, antes de activar
 esto, subir el sitio aquí https://hstspreload.org/"""
@@ -188,3 +189,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'core/static_recopiled')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
+

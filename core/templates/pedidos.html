@@ -65,7 +65,7 @@
         <!--Sección formulario desplegable mediante botón "Carga Manual"-->
         <div class="form-container-productos">
             <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
-
+   
             <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
                 {% csrf_token %}
 

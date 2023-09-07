@@ -14,20 +14,21 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm 
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
+from .modelos.resources import PedidoResource
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
 from datetime import datetime
 import random
-
+from django.urls import reverse
 
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
@@ -35,7 +36,7 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 
-
+from tablib import Dataset 
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -44,7 +45,44 @@ try:
 except Exception as ex:
     print(ex)
 
-#Hay 2 tipos de vistas, clases y funciones esta es de clases
+from django.contrib import messages
+
+import logging  # Import the logging module
+
+def importar(request):
+    if request.method == 'POST':
+        print("post")
+        if 'subir' in request.POST:
+            result = process_uploaded_file(request.FILES.get('xlsfile'))
+            if result.get('success'):
+                # Log success message to the console
+                print("File uploaded and processed successfully.")
+            else:
+                # Log error message to the console
+                print("Data import failed. Please check the file format.")
+        
+    return redirect(reverse('home'))
+
+def process_uploaded_file(xlsfile):
+    if xlsfile:
+        file_content = xlsfile.read()
+        pedido_resource = PedidoResource()
+        dataset = Dataset()
+        imported_data = dataset.load(file_content)
+        result = pedido_resource.import_data(dataset, dry_run=True)
+        if result.has_errors():
+            errors = result.invalid_rows  # Get the list of rows with errors
+            for error in errors:
+                print(f"Error in row {error.row}: {error.error_messages}")
+        else:
+            print("No errors found during the dry run.")
+        if not result.has_errors():
+            pedido_resource.import_data(dataset, dry_run=False)
+            return {'success': True}
+    
+    return {'success': False}
+
+
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):
@@ -465,3 +503,23 @@ def descargar_excel(request, nombre_archivo):
             return response
     else:
         raise Http404("El archivo no existe")
+
+from .modelos.resources import ProductoResource
+from tablib import Dataset 
+ 
+def importar(request):
+    if request.method == 'POST':
+        print('paso aqui')
+        producto_resource = ProductoResource()
+        dataset = Dataset()
+        nuevo_producto = request.FILES['xlsfile']
+        imported_data = dataset.load(nuevo_producto.read())
+            # Realiza la importación con dry_run=False directamente si no hay errores
+        result = producto_resource.import_data(dataset, dry_run=False)
+                 
+            
+    else:
+        print("fsita")
+        pass
+    
+    return render(request, 'importar.html')
