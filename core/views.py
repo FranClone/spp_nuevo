@@ -61,8 +61,8 @@ def importar(request):
                 # Log error message to the console
                 print("Data import failed. Please check the file format.")
         
-    return redirect(reverse('home'))
-
+    #return render(request, 'home.html')
+    return redirect(reverse('home')) 
 def process_uploaded_file(xlsfile):
     if xlsfile:
         file_content = xlsfile.read()
@@ -455,25 +455,6 @@ def pedido_editar(request,id):
             print("error")
     return render(request, 'pedidoseditar.html', data)
 
-
-def generar_pdf_view(request):
-    informacion = "Aquí va la información desde la ventana emergente."
-
-    # Crear el objeto PDF
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="informacion.pdf"'
-
-    # Crear el PDF con reportlab
-    buffer = canvas.Canvas(response, pagesize=letter)
-
-    # Agregar texto al PDF
-    buffer.drawString(100, 800, "Información desde la ventana emergente:")
-    buffer.drawString(100, 780, informacion)
-
-    # Guardar el PDF
-    buffer.save()
-
-    return response
 def materia_editar(request,id):
     prod= MateriaPrima.objects.get(id=id)
     data = {'form': ActualizarMateriaPrimaForm(instance=prod),'id':id}
@@ -505,22 +486,3 @@ def descargar_excel(request, nombre_archivo):
     else:
         raise Http404("El archivo no existe")
 
-from .modelos.resources import ProductoResource
-from tablib import Dataset 
- 
-def importar(request):
-    if request.method == 'POST':
-        print('paso aqui')
-        producto_resource = ProductoResource()
-        dataset = Dataset()
-        nuevo_producto = request.FILES['xlsfile']
-        imported_data = dataset.load(nuevo_producto.read())
-            # Realiza la importación con dry_run=False directamente si no hay errores
-        result = producto_resource.import_data(dataset, dry_run=False)
-                 
-            
-    else:
-        print("fsita")
-        pass
-    
-    return render(request, 'importar.html')

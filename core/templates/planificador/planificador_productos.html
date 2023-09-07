@@ -17,6 +17,7 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
     <!--Esta es la seccion de filtro-->
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
@@ -56,11 +57,9 @@
             </div>
         </form>
     </div>
+
     <!--Este es el contenedor del formulario productos-->
     <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
-       
-
         <form method="post" action="{% url 'plan_productos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">

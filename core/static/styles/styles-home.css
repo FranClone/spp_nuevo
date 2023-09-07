@@ -63,8 +63,12 @@ table tr {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 3px;
-    padding: 4px 6px;
+    padding: 10px;
     border: 1px solid white;
+    float: right;
+    margin-top: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .carga-button-bot {
@@ -76,16 +80,7 @@ table tr {
     border: 2px solid white;
     text-decoration: none !important;
 }
-.carga-button-bot a {
-    color: white; /* Cambia el color del texto del enlace a blanco */
-    text-decoration: none; 
-}
-.carga-button-bot a:hover {
-    background-color: white;
-    color: red;
-    transition: 0.5s ease-in-out;
-    text-decoration: none; 
-}
+
 .carga-button-bot:hover {
     background-color: white;
     color: red;
@@ -144,17 +139,6 @@ table tr {
     margin-bottom: 10px;
 }
 
-.horizontal-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.horizontal-container div {
-    display: inline-block;
-
-    width: 20%;
-}
 
 .popup {
     position: fixed;
@@ -310,10 +294,10 @@ table tr {
 
 .horizontal-container {
     display: flex;
+    float: right;    
 }
 
 .horizontal-container div {
-    display: inline-block;
     margin-right: 10px;
 }
 
@@ -354,8 +338,11 @@ table tr {
     border-radius: 6px;
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
-    padding: 4px 6px;
+    padding: 10px;
     border: 1px solid white;
+    margin-top: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
 }
 
 .popup-overlay {
