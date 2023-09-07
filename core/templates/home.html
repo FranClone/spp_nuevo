@@ -26,44 +26,42 @@
     </div>
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
     <button type="button" class="carga-button" onclick="showPopupimport()">Subir Archivo</button>
-<div class="buttons-top horizontal-container">
+    <div class="buttons-top horizontal-container">
 
-            {% comment %} Sistema de filtro por atributo {% endcomment %}
-            <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
-                <option value="lineas">Lineas Producción</option>
-                <option value="Delgado">Delgado</option>
-                <option value="Grueso">Grueso</option>
-            </select>
+        {% comment %} Sistema de filtro por atributo {% endcomment %}
+        <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
+            <option value="lineas">Lineas Producción</option>
+            <option value="Delgado">Delgado</option>
+            <option value="Grueso">Grueso</option>
+        </select>
 
-            <select name="periodos" id="toggle-lineas-button" class="carga-button-top">
-                <option value="diario">Diario</option>
-                <option value="mensual">Mensual</option>
-                <option value="semanal">Semanal</option>
-            </select>
+        <select name="periodos" id="toggle-lineas-button" class="carga-button-top">
+            <option value="diario">Diario</option>
+            <option value="mensual">Mensual</option>
+            <option value="semanal">Semanal</option>
+        </select>
 
     </div>
 
     <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
 
-            {% comment %}  {% endcomment %}
-                <!-- Trigger button to open the modal -->
-                <button type="button" class="carga-button" onclick="showPopupimport()">Subir Archivo</button>
-                <!-- Popup Container -->
-                <div id="popupContainer" class="popup-container" style="display: none;">
-                    <form class="formimport" method="POST" enctype="multipart/form-data" action="{% url 'importar' %}">
-                        {% csrf_token %}
-                        <div class="button-row">
-                            <input type="file" name="xlsfile">
-                            <button type="submit" class="carga-button" name="subir">Subir</button>
-                            <!-- Close button without submitting the form -->
-                            <button type="button" class="carga-button" onclick="closePopupimport()">Cerrar</button>
-                        </div>
-                    </form>
+        {% comment %} {% endcomment %}
+        <!-- Popup Container -->
+        <div id="popupContainer" class="popup-container" style="display: none;">
+            <form class="formimport" method="POST" enctype="multipart/form-data" action="{% url 'importar' %}">
+                {% csrf_token %}
+                <div class="button-row">
+                    <input type="file" name="xlsfile">
+                    <button type="submit" class="carga-button" name="subir">Subir</button>
+                    <!-- Close button without submitting the form -->
+                    <button type="button" class="carga-button" onclick="closePopupimport()">Cerrar</button>
                 </div>
             </form>
         </div>
-
+        </form>
+    </div>
+    <div class="form-container-productos">
         {% comment %} {% endcomment %}
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
@@ -112,6 +110,7 @@
             </table>
             <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
+    </div>
     </div>
 
     <br>
@@ -175,8 +174,10 @@
         </div>
     </div>
     <div class="buttons-bot">
-        <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Carga Manual</button>
-        <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}"><button type="button" class="carga-button-bot">Descargar Plantilla</button></a>
+        <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Carga
+            Manual</button>
+        <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}"><button type="button"
+                class="carga-button-bot">Descargar Plantilla</button></a>
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="showPopup()">Ejecutar</button>
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan
