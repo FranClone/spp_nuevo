@@ -491,8 +491,18 @@ def obtener_ids_pedidos(request):
     ids_pedidos = Pedido.objects.values_list('id', flat=True)
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
 
-
-
+def descargar_excel(request, nombre_archivo):
+    # Obtén la ruta completa del archivo Excel en la carpeta 'media'
+    ruta_archivo = os.path.join(settings.MEDIA_ROOT, nombre_archivo)
+    
+    if os.path.exists(ruta_archivo):
+        # Abre el archivo y crea una respuesta de descarga
+        with open(ruta_archivo, 'rb') as excel_file:
+            response = HttpResponse(excel_file.read(), content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+            response['Content-Disposition'] = f'attachment; filename="{nombre_archivo}"'
+            return response
+    else:
+        raise Http404("El archivo no existe")
 
 from .modelos.resources import ProductoResource
 from tablib import Dataset 
@@ -513,5 +523,3 @@ def importar(request):
         pass
     
     return render(request, 'importar.html')
-
-

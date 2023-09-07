@@ -44,9 +44,8 @@ table tr {
 }
 
 .buttons-top {
-    float: center;
-    position: relative;
     padding: 10px;
+    text-align: center;
 }
 
 .buttons-top:hover {
@@ -75,8 +74,18 @@ table tr {
     padding: 10px;
     margin: 5px;
     border: 2px solid white;
+    text-decoration: none !important;
 }
-
+.carga-button-bot a {
+    color: white; /* Cambia el color del texto del enlace a blanco */
+    text-decoration: none; 
+}
+.carga-button-bot a:hover {
+    background-color: white;
+    color: red;
+    transition: 0.5s ease-in-out;
+    text-decoration: none; 
+}
 .carga-button-bot:hover {
     background-color: white;
     color: red;
@@ -143,7 +152,7 @@ table tr {
 
 .horizontal-container div {
     display: inline-block;
-    margin: 0 auto;
+
     width: 20%;
 }
 
@@ -342,9 +351,11 @@ table tr {
 }
 
 .carga-button {
-    background-color: red;
-    color: white;
     border-radius: 6px;
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    padding: 4px 6px;
+    border: 1px solid white;
 }
 
 .popup-overlay {

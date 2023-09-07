@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -14,6 +15,7 @@
     <title>SPP - Home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
+
 <body>
     {% include "partials/header.html" %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
@@ -28,15 +30,8 @@
             {% comment %} Sistema de filtro por atributo {% endcomment %}
             <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
                 <option value="lineas">Lineas Producción</option>
-                <option value="Delgado">Delgado</option>
-                <option value="Grueso">Grueso</option>
-            </select>
-        </div>
-        <div>
-            <select name="funciones" id="toggle-lineas-button" class="carga-button-top">
-                <option value="funcion">Función Objetivo</option>
-                <option value="minimizar-costos">Minimizar costos</option>
-                <option value="aumentar-rendimiento">Aumentar rendimiento</option>
+                <option value="delgado">Delgado</option>
+                <option value="grueso">Grueso</option>
             </select>
         </div>
         <div>
@@ -72,64 +67,21 @@
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
 
-            <table class="form-table">
-                <tr>
-                    <td>{{ form.cliente.label_tag }}</td>
-                    <td>{{ form.fecha_entrega.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cliente }}</td>
-                    <td>{{ form.fecha_entrega }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.codigo.label_tag }}</td>
-                    <td>{{ form.comentario.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.codigo }}</td>
-                    <td>{{ form.comentario }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre.label_tag }}</td>
-                    <td>{{ form.producto.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre }}</td>
-                    <td>{{ form.producto }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cantidad.label_tag }}</td>
-                    <td>{{ form.prioridad.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cantidad }}</td>
-                    <td>{{ form.prioridad }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.linea_produccion.label_tag }}</td>
-                    <td>{{ form.estado.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.linea_produccion }}</td>
-                    <td>{{ form.estado }}</td>
-                </tr>
-            </table>
-            <button type="submit" name="crear" class="red-button">Crear</button>
-        </form>
-    </div>
+
 
     <br>
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
         <h4 class="text-center">Pedidos JCE</h4>
+
         <div id="gantt">
             <script>
-                const tasksData = {{ tasks|safe }};
+                const tasksData = {{ tasks| safe }};
             </script>
         </div>
     </div>
     <div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
-        <div class="popup-ejecutar" >
+        <div class="popup-ejecutar">
             <div class="main">
                 <h1>Planificacion Diaria</h1>
                 <div class="info">
@@ -187,13 +139,68 @@
         </div>
     </div>
     <div class="buttons-bot">
-        <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"><a
-                href="{% url 'generar_pdf' %}">Exportar</a></button>
+        <!--Formulario para crear pedidos en la vista principal-->
+
+
+        <button type="button" class="carga-button-bot" onclick="toggleCargaForm()">Carga
+            Manual</button>
+        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+            {% csrf_token %}
+
+            <table class="form-table">
+                <tr>
+                    <td>{{ form.cliente.label_tag }}</td>
+                    <td>{{ form.fecha_entrega.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cliente }}</td>
+                    <td>{{ form.fecha_entrega }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo.label_tag }}</td>
+                    <td>{{ form.comentario.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo }}</td>
+                    <td>{{ form.comentario }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.nombre.label_tag }}</td>
+                    <td>{{ form.producto.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.nombre }}</td>
+                    <td>{{ form.producto }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cantidad.label_tag }}</td>
+                    <td>{{ form.prioridad.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.cantidad }}</td>
+                    <td>{{ form.prioridad }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.linea_produccion.label_tag }}</td>
+                    <td>{{ form.estado.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.linea_produccion }}</td>
+                    <td>{{ form.estado }}</td>
+                </tr>
+            </table>
+            <button type="submit" name="crear" class="red-button">Crear</button>
+        </form>
+
+
+        <button type="button" class="carga-button-bot" href="{% url 'generar_pdf' %}">Exportar</button>
+        <button type="button" class="carga-button-bot"  href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}">Descargar Plantilla</button>
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="showPopup()">Ejecutar</button>
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan
             actual</button>
     </div>
+
     <script src="{% static 'js/gantt.js' %}"></script>
 </body>
 
