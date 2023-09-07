@@ -168,7 +168,18 @@
                 link.addEventListener('click', this.handlePopupClick.bind(this));
             });
         }
-
+        attachEventListeners() {
+            console.log('Attaching event listeners');
+            const popupLinks = document.querySelectorAll('.popup-link');
+            console.log('Popup links found:', popupLinks.length);
+            const self = this; 
+            document.getElementById('gantt').addEventListener('click', function(event) {
+                const target = event.target;
+                if (target.classList.contains('popup-link')) {
+                        self.handlePopupClick(event);
+                            }
+                        });
+                    }
         handlePopupClick(event) {
             console.log('Popup link clicked');
             event.stopPropagation();// Evita que el evento se propague al contenedor principal

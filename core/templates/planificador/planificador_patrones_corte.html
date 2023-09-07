@@ -15,6 +15,7 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    <button type="button" id="toggle-carga-button" onclick="toggleFormVisibility()" class="carga-button">Carga Manual</button>
     <!--Filtro desplegable desde el botón-->
     <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
@@ -49,7 +50,6 @@
     <!--Carga Manual de Patrones de Corte-->
 
     <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" onclick="toggleFormVisibility()" class="carga-button">Carga Manual</button>
         <form method="post" action="{% url 'plan_patrones_corte' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
                 <table class="form-table">

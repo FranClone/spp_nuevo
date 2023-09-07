@@ -19,6 +19,7 @@
 
 <body>
     {% include "partials/header.html" %}
+    <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
     <!-- Contenedor del filtro-->
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
@@ -68,7 +69,6 @@
     <!--Carga Manual de Materia Prima-->
 
     <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
         <form method="post" action="{% url 'plan_materia_prima' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
