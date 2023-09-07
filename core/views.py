@@ -452,3 +452,28 @@ def materia_editar(request,id):
 def obtener_ids_pedidos(request):
     ids_pedidos = Pedido.objects.values_list('id', flat=True)
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
+
+
+
+
+from .modelos.resources import ProductoResource
+from tablib import Dataset 
+ 
+def importar(request):
+    if request.method == 'POST':
+        print('paso aqui')
+        producto_resource = ProductoResource()
+        dataset = Dataset()
+        nuevo_producto = request.FILES['xlsfile']
+        imported_data = dataset.load(nuevo_producto.read())
+            # Realiza la importación con dry_run=False directamente si no hay errores
+        result = producto_resource.import_data(dataset, dry_run=False)
+                 
+            
+    else:
+        print("fsita")
+        pass
+    
+    return render(request, 'importar.html')
+
+

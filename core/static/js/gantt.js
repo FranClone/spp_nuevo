@@ -32,7 +32,7 @@
         }
         //Tabla carta gantt
         buildTableHeader() {
-            var html = '<table><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
+            var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
 
             const selectedPeriod = document.querySelector('select[name="periodos"]').value;
             const isDiarioSelected = selectedPeriod === "diario";
@@ -44,7 +44,7 @@
                 const actual = new Date(this.minDate);
 
                 for (let i = 0; i < diffDays; i++) {
-                    html += '<th class="date-header" style="color: black; padding: 0px;">' + this.formatDate(actual, "diario") + '</th>';
+                    html += '<th style="color: white; width: 80vh; ">' + this.formatDate(actual, "diario") + '</th>';
                     actual.setDate(actual.getDate() + 1); // Avanza un día
                 }
 
@@ -70,7 +70,7 @@
                 }
             }
 
-            html += '</tr></thead><tbody>';
+            html += '</tr></thead><tbody">';
             return html;
         }
 
@@ -93,7 +93,7 @@
 
                 html += '<tr>';
                 if (daysBefore > 0) for (let j = 0; j < daysBefore; j++) html += '<td></td>';
-                html += `<td class="event-cell" colspan="${days}" style="background-color: ${task[3]};">
+                html += `<td class="event-cell" colspan="${days}" style="background-color: ${task[3]}; border: 1px solid #000;">
                 <span>${task[4]}%</span>
                 <a class="popup-link" data-pedido-id="${i}">${task[5]}</a>
             </td>`;
@@ -181,7 +181,7 @@
             popup.innerHTML = `
       
                 <div class="popup-content" id="popup">
-                    <h2>Detalles del producto</h2>
+                    <h2>Detalles del pedido</h2>
                     <div class="popup-item">
                         <strong>Código:</strong> <span>${pedidoData[0]}</span>
                     </div>
