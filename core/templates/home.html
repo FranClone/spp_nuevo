@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -9,13 +8,17 @@
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <script src="{% static 'js/home.js' %}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
-
 <body>
     {% include "partials/header.html" %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
@@ -27,6 +30,7 @@
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
     <button type="button" class="carga-button" onclick="showPopupimport()">Subir Archivo</button>
     <div class="buttons-top horizontal-container">
+
 
         {% comment %} Sistema de filtro por atributo {% endcomment %}
         <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
@@ -69,27 +73,27 @@
             <table class="form-table">
                 <tr>
                     <td>{{ form.cliente.label_tag }}</td>
-                    <td>{{ form.fecha_entrega.label_tag }}</td>
+                    <td>{{ form.codigo.label_tag}}</td>
                 </tr>
                 <tr>
                     <td>{{ form.cliente }}</td>
+                    <td>{{ form.codigo}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.fecha_emision.label_tag }}</td>
+                    <td>{{ form.fecha_entrega.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.fecha_emision }}</td>
                     <td>{{ form.fecha_entrega }}</td>
                 </tr>
                 <tr>
-                    <td>{{ form.codigo.label_tag }}</td>
+                    <td>{{ form.nombre.label_tag }}</td>
                     <td>{{ form.comentario.label_tag }}</td>
                 </tr>
                 <tr>
-                    <td>{{ form.codigo }}</td>
-                    <td>{{ form.comentario }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre.label_tag }}</td>
-                    <td>{{ form.producto.label_tag }}</td>
-                </tr>
-                <tr>
                     <td>{{ form.nombre }}</td>
-                    <td>{{ form.producto }}</td>
+                    <td>{{ form.comentario }}</td>
                 </tr>
                 <tr>
                     <td>{{ form.cantidad.label_tag }}</td>
@@ -99,6 +103,7 @@
                     <td>{{ form.cantidad }}</td>
                     <td>{{ form.prioridad }}</td>
                 </tr>
+
                 <tr>
                     <td>{{ form.linea_produccion.label_tag }}</td>
                     <td>{{ form.estado.label_tag }}</td>
@@ -107,6 +112,13 @@
                     <td>{{ form.linea_produccion }}</td>
                     <td>{{ form.estado }}</td>
                 </tr>
+                <tr>
+                    <td>{{ form.producto.label_tag }}</td>  
+                </tr>
+                <tr>
+                    <td>{{ form.producto }}</td>
+                </tr>
+
             </table>
             <button type="submit" name="crear" class="red-button">Crear</button>
         </form>
@@ -119,12 +131,12 @@
         <h4 class="text-center">Pedidos JCE</h4>
         <div id="gantt">
             <script>
-                const tasksData = {{ tasks| safe }};
+                const tasksData = {{ tasks|safe }};
             </script>
         </div>
     </div>
     <div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
-        <div class="popup-ejecutar">
+        <div class="popup-ejecutar" >
             <div class="main">
                 <h1>Planificacion Diaria</h1>
                 <div class="info">
@@ -174,16 +186,28 @@
         </div>
     </div>
     <div class="buttons-bot">
+
         <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Carga
             Manual</button>
         <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}"><button type="button"
                 class="carga-button-bot">Descargar Plantilla</button></a>
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="showPopup()">Ejecutar</button>
-        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan
-            actual</button>
+        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
     <script src="{% static 'js/gantt.js' %}"></script>
 </body>
-
+<script>
+    $(document).ready(function() {
+        $('.select2').select2({
+            multiple: true,
+            closeOnSelect: false,          
+            placeholder: 'Seleccione una opción'
+        });
+                // Handle padding when Select2 dropdown is opened
+        $('.select2').on('select2:open', function() {
+            $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
+        });
+    });
+</script>
 </html>

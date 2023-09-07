@@ -13,6 +13,11 @@
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.1.0/js/select2.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -72,27 +77,27 @@
                 <table class="form-table">
                     <tr>
                         <td>{{ form.cliente.label_tag }}</td>
-                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                        <td>{{ form.codigo.label_tag}}</td>
                     </tr>
                     <tr>
                         <td>{{ form.cliente }}</td>
+                        <td>{{ form.codigo}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.fecha_emision.label_tag }}</td>
+                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.fecha_emision }}</td>
                         <td>{{ form.fecha_entrega }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.codigo.label_tag }}</td>
+                        <td>{{ form.nombre.label_tag }}</td>
                         <td>{{ form.comentario.label_tag }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.codigo }}</td>
-                        <td>{{ form.comentario }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre.label_tag }}</td>
-                        <td>{{ form.producto.label_tag }}</td>
-                    </tr>
-                    <tr>
                         <td>{{ form.nombre }}</td>
-                        <td>{{ form.producto }}</td>
+                        <td>{{ form.comentario }}</td>
                     </tr>
                     <tr>
                         <td>{{ form.cantidad.label_tag }}</td>
@@ -110,6 +115,12 @@
                     <tr>
                         <td>{{ form.linea_produccion }}</td>
                         <td>{{ form.estado }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto.label_tag }}</td>  
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto }}</td>
                     </tr>
 
                 </table>
@@ -224,6 +235,19 @@
                 isFormVisible = false;
             }
         });
+    </script>
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2({
+                multiple: true,
+                closeOnSelect: false,          
+                placeholder: 'Seleccione una opción'
+            });
+                    // Handle padding when Select2 dropdown is opened
+            $('.select2').on('select2:open', function() {
+                $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
+            });
+        });  
     </script>
 </body>
 

@@ -171,39 +171,20 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
 
-    class Meta:
-        model = Pedido
-        fields = [
-            'cliente',
-            'fecha_entrega',
-            'codigo',
-            'comentario',
-            'nombre',
-            'producto',
-            'cantidad',
-            'prioridad',
-            'linea_produccion',
-            'estado',
-        ]
-        widgets = {
-            'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
-}
-class TestPedidoForm(forms.ModelForm):
-    
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
+        self.fields['fecha_emision'].widget = forms.widgets.DateInput(
             attrs={
                 'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
                 'class': 'form-control'
             }
         )
 
+
     class Meta:
         model = Pedido
         fields = [
             'cliente',
             'fecha_entrega',
+            'fecha_emision',
             'codigo',
             'comentario',
             'nombre',

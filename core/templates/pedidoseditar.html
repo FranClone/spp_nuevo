@@ -32,27 +32,27 @@
                 <table class="form-table">
                     <tr>
                         <td>{{ form.cliente.label_tag }}</td>
-                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                        <td>{{ form.codigo.label_tag}}</td>
                     </tr>
                     <tr>
                         <td>{{ form.cliente }}</td>
+                        <td>{{ form.codigo}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.fecha_emision.label_tag }}</td>
+                        <td>{{ form.fecha_entrega.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.fecha_emision }}</td>
                         <td>{{ form.fecha_entrega }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.codigo.label_tag }}</td>
+                        <td>{{ form.nombre.label_tag }}</td>
                         <td>{{ form.comentario.label_tag }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.codigo }}</td>
-                        <td>{{ form.comentario }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre.label_tag }}</td>
-                        <td>{{ form.producto.label_tag }}</td>
-                    </tr>
-                    <tr>
                         <td>{{ form.nombre }}</td>
-                        <td>{{ form.producto }}</td>
+                        <td>{{ form.comentario }}</td>
                     </tr>
                     <tr>
                         <td>{{ form.cantidad.label_tag }}</td>
@@ -65,11 +65,17 @@
 
                     <tr>
                         <td>{{ form.linea_produccion.label_tag }}</td>
-                        <td>{{ form.estado.label_tag }} </td>
+                        <td>{{ form.estado.label_tag }}</td>
                     </tr>
                     <tr>
                         <td>{{ form.linea_produccion }}</td>
-                        <td>{{ form.estado}}</td>
+                        <td>{{ form.estado }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto.label_tag }}</td>  
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto }}</td>
                     </tr>
 
                 </table>
@@ -84,9 +90,7 @@
         $('.select2').select2({
             multiple: true,
             closeOnSelect: false,          
-            placeholder: 'Select an option'
-            
-           
+            placeholder: 'Seleccione una opción'
         });
                 // Handle padding when Select2 dropdown is opened
         $('.select2').on('select2:open', function() {
