@@ -212,31 +212,31 @@ class Gantt {
                     <strong>Código:</strong> <span>${pedidoData[0]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Cliente:</strong> <span>${pedidoData[8]}</span>
+                    <strong>Cliente:</strong> <span>${pedidoData[9]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Nombre:</strong> <span>${pedidoData[5]}</span>
+                    <strong>Nombre:</strong> <span>${pedidoData[6]}</span>
                 </div>
                 <div class="popup-item">
                     <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Producto:</strong> <span>${pedidoData[10]}</span>
+                    <strong>Producto:</strong> <span>${pedidoData[11]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Cantidad:</strong> <span>${pedidoData[7]}</span>
+                    <strong>Cantidad:</strong> <span>${pedidoData[8]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Prioridad:</strong> <span>${pedidoData[11]}</span>
+                    <strong>Prioridad:</strong> <span>${pedidoData[12]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Linea produccion:</strong> <span>${pedidoData[6]}</span>
+                    <strong>Linea produccion:</strong> <span>${pedidoData[7]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Progreso:</strong> <span>${pedidoData[4]}</span>
+                    <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
                 </div>
                 <div class="popup-item">
-                    <strong>Comentario:</strong> <span>${pedidoData[9]}</span>
+                    <strong>Comentario:</strong> <span>${pedidoData[10]}</span>
                 </div>
                 <button class="close-button" >Cerrar</button>
             </div>
@@ -317,3 +317,9 @@ function closePopupimport() {
 const popupOverlay = document.getElementById('popupContainer');
 popupOverlay.style.display = 'none';
 }
+
+    // Función para cerrar el popup
+    function closePopup() {
+        var popup = document.getElementById("carga-form");
+        popup.style.display = "none";
+    }

@@ -66,7 +66,7 @@ function showWelcomePopup() {
             } else {
                 popupContent.innerHTML = `
                     <h3>¡Bienvenido!</h3>
-                    <h4>Existe una planificación anterior</h4>
+                    <h4>Existe una planificación Anterior</h4>
                     <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
                 `;
             }
