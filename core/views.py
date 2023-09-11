@@ -35,7 +35,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
 from tablib import Dataset 
 try:
     #se conecta
@@ -48,6 +47,29 @@ except Exception as ex:
 from django.contrib import messages
 
 import logging  # Import the logging module
+
+from django.shortcuts import render
+from mip import Model, xsum, maximize, BINARY, CBC
+#Algoritmo testing
+def mochila(request):
+    p = [10, 13, 18, 31, 7, 15]
+    w = [11, 15, 20, 35, 10, 33]
+    c, I = 47, range(len(w))
+    m = Model('mochila', maximize, CBC)
+
+    x = [m.add_var(var_type=BINARY) for i in I]
+    m.objective = maximize(xsum(p[i] * x[i] for i in I))
+    m += xsum(w[i] * x[i] for i in I) <= c
+    m.optimize()
+    selected = [i for i in I if x[i].x >= 0.99]
+    selected_weights = [w[i] for i in selected]
+    selected_profits = [p[i] for i in selected]
+    selected_items = [i + 1 for i in selected]
+    print("Valores",p,w,c,m)
+    print("Valores",selected,selected_weights,selected_profits,selected_items)
+
+    return render(request, 'mochila.html', {'selected': selected_items, 'weights': selected_weights, 'profits': selected_profits})
+
 
 def importar(request):
     if request.method == 'POST':
