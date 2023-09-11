@@ -116,7 +116,6 @@ class Gantt {
         
                 html += '</tr>';
             }
-            html += this.buildSecondTable();
             return html;
         }
 
@@ -252,7 +251,21 @@ class Gantt {
    
 
 
-
+    showPedidosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+        this.attachEventListeners();
+    }
+    
+    showProductosTable() {
+        // Aquí debes ajustar la lógica para mostrar la tabla de Productos
+        // Puedes copiar y modificar el código de buildSecondTable() según tus necesidades
+        // Asegúrate de actualizar la propiedad this.filteredTasks y llamar a los métodos necesarios
+        // para construir la tabla de Productos
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.buildSecondTable();
+        this.attachEventListeners();
+    }
 
         
         
@@ -393,7 +406,10 @@ class Gantt {
     }
 }
 
-const gantt = new Gantt(tasksData);
+
+
+
+
 
 const periodosSelect = document.querySelector('select[name="periodos"]');
 periodosSelect.value = "diario";
@@ -459,3 +475,5 @@ popupOverlay.style.display = 'none';
         var popup = document.getElementById("carga-form");
         popup.style.display = "none";
     }
+
+
