@@ -246,63 +246,6 @@ class Gantt {
         return html;
     }
     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
@@ -398,6 +341,7 @@ class Gantt {
         const self = this; // Store a reference to the current instance
         popup.innerHTML = `
   
+
         <div class="popup-content" id="popup">
         <h2>Detalles del pedido</h2>
         <div class="popup-item">
@@ -509,3 +453,9 @@ function closePopupimport() {
 const popupOverlay = document.getElementById('popupContainer');
 popupOverlay.style.display = 'none';
 }
+
+    // Función para cerrar el popup
+    function closePopup() {
+        var popup = document.getElementById("carga-form");
+        popup.style.display = "none";
+    }
