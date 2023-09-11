@@ -375,27 +375,35 @@ def gantt_view(request):
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
+    prioridad_colores = {
+        'alto': '#ff0000',  # Rojo para alta prioridad
+        'mediano': '#E3DA4D',  # Naranja para media prioridad
+        'bajo': '#0b9851',  # Verde para baja prioridad
+    }
+    
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
     
     tasks = []
     for pedido in pedidos:
         productos = [producto.nombre for producto in pedido.producto.all()]
         color = random.choice(colores)
+        color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')  # Predeterminado a azul si no se encuentra una prioridad válida) 
         porcentaje_progreso = random.randint(10, 100)
         task_data = [
             pedido.codigo,                       
-            fecha_actual,                     
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),
-            pedido.fecha_emision.strftime('%Y/%m/%d'),
-            color,                           
-            porcentaje_progreso,
-            pedido.nombre,   
-            pedido.linea_produccion,       
-            pedido.cantidad,
-            pedido.cliente,
-            pedido.comentario,
-            productos,
-            pedido.prioridad,
+            fecha_actual,   #1                  
+            pedido.fecha_entrega.strftime('%Y/%m/%d'),#2
+            pedido.fecha_emision.strftime('%Y/%m/%d'),#3
+            color,                           #4
+            porcentaje_progreso,#5
+            pedido.nombre,   #6
+            pedido.linea_produccion,  #7   
+            pedido.cantidad, #8
+            pedido.cliente, #9
+            pedido.comentario, #10
+            productos, #11
+            pedido.prioridad, #12
+            color_p, #13
         ]
         tasks.append(task_data)
 
