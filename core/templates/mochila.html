@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Knapsack Algorithm Results</title>
+</head>
+<body>
+    <h1>Knapsack Algorithm Results</h1>
+    <table>
+        <tr>
+            <th>Selected Item</th>
+            <th>Weight</th>
+            <th>Profit</th>
+        </tr>
+        {% for item_number in selected %}
+        <tr>
+            <td>Item {{ item_number }}</td>
+            <td>Peso{{ weights }}</td>
+            <td>Ganancias{{ profits}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
