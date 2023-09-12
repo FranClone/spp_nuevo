@@ -104,9 +104,9 @@ class Gantt {
                 for (let j = 0; j < daysBefore; j++) {
                     html += '<td></td>';
                 }
-        
+        // <span>${task[5]}%</span> Trae el porcentaje
                 html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
+        
                     <a class="popup-link" data-pedido-id="${i}">${task[6]}</a>
                 </td>`;
         
@@ -121,24 +121,6 @@ class Gantt {
 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-
-
-
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
 
     buildSecondTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -226,7 +208,7 @@ class Gantt {
                 }
     
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
+              
                     <a class="popup-link" data-pedido-id="${i}">Unidades ${task[8]}</a>
                 </td>`;
     
@@ -254,7 +236,7 @@ class Gantt {
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-        this.attachEventListeners();
+  
     }
     
     showProductosTable() {
@@ -264,7 +246,7 @@ class Gantt {
         // para construir la tabla de Productos
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
-        this.attachEventListeners();
+
     }
 
         
@@ -325,7 +307,7 @@ class Gantt {
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-        this.attachEventListeners();
+      //  this.attachEventListeners();
     }
 
     attachEventListeners() {
@@ -405,10 +387,6 @@ class Gantt {
         popup.style.display = 'none';
     }
 }
-
-
-
-
 
 
 const periodosSelect = document.querySelector('select[name="periodos"]');
