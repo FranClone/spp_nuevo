@@ -427,6 +427,18 @@ def gantt_view(request):
             pedido.prioridad, #12
             color_p, #13
         ]
+        for producto in producto.all():
+            color_producto = random.choice(colores)
+            porcentaje_progreso_producto = random.randint(10, 100)
+            task_data_producto = [
+                producto.codigo,  
+                fecha_actual,     
+                color_producto,
+                porcentaje_progreso_producto,
+                pedido.prioridad,
+                color_p,
+            ]
+            tasks.append(task_data_producto)
         tasks.append(task_data)
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
