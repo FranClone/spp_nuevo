@@ -406,13 +406,16 @@ def gantt_view(request):
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
     tasks=[]
     for pedido in pedidos:
+
         productos = pedido.producto.all()
         
         if productos.exists():
             for producto in productos:
                 productos_name = [producto.nombre]
                 producto_codigo = [producto.codigo]
-                
+                largo = [producto.largo for producto in pedido.producto.all()]
+                ancho = [producto.ancho for producto in pedido.producto.all()]
+                alto = [producto.alto for producto in pedido.producto.all()]
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
@@ -431,6 +434,9 @@ def gantt_view(request):
                     productos_name,  # 11
                     pedido.prioridad,  # 12
                     color_p,  # 13
+                    largo, #14
+                    ancho, #15
+                    alto, #16
                     producto_codigo  # Agregar el código del producto
                 ]
 
@@ -439,7 +445,9 @@ def gantt_view(request):
             # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
             productos_name = ["N/A"]
             producto_codigo = ["N/A"]
-            
+            largo = [producto.largo for producto in pedido.producto.all()]
+            ancho = [producto.ancho for producto in pedido.producto.all()]
+            alto = [producto.alto for producto in pedido.producto.all()]
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
@@ -458,6 +466,9 @@ def gantt_view(request):
                 productos_name,  # 11
                 pedido.prioridad,  # 12
                 color_p,  # 13
+                largo, #14
+                ancho, #15
+                alto, #16
                 producto_codigo  # Agregar el código del producto
             ]
 
