@@ -404,44 +404,67 @@ def gantt_view(request):
     }
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
-    
-    tasks = []
+    tasks=[]
     for pedido in pedidos:
-        productos = [producto.nombre for producto in pedido.producto.all()]
-        color = random.choice(colores)
-        color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')  # Predeterminado a azul si no se encuentra una prioridad válida) 
-        porcentaje_progreso = random.randint(10, 100)
-        task_data = [
-            pedido.codigo,                       
-            fecha_actual,   #1                  
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),#2
-            pedido.fecha_emision.strftime('%Y/%m/%d'),#3
-            color,                           #4
-            porcentaje_progreso,#5
-            pedido.nombre,   #6
-            pedido.linea_produccion,  #7   
-            pedido.cantidad, #8
-            pedido.cliente, #9
-            pedido.comentario, #10
-            productos, #11
-            pedido.prioridad, #12
-            color_p, #13
-        ]
-        for producto in producto.all():
-            color_producto = random.choice(colores)
-            porcentaje_progreso_producto = random.randint(10, 100)
-            task_data_producto = [
-                producto.codigo,  
-                fecha_actual,     
-                color_producto,
-                porcentaje_progreso_producto,
-                pedido.prioridad,
-                color_p,
+        productos = pedido.producto.all()
+        
+        if productos.exists():
+            for producto in productos:
+                productos_name = [producto.nombre]
+                producto_codigo = [producto.codigo]
+                
+                color = random.choice(colores)
+                color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
+                porcentaje_progreso = random.randint(10, 100)
+                tasks_pedido = [
+                    pedido.codigo,
+                    fecha_actual,   # 1
+                    pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                    pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                    color,  # 4
+                    porcentaje_progreso,  # 5
+                    pedido.nombre,  # 6
+                    pedido.linea_produccion,  # 7
+                    pedido.cantidad,  # 8
+                    pedido.cliente,  # 9
+                    pedido.comentario,  # 10
+                    productos_name,  # 11
+                    pedido.prioridad,  # 12
+                    color_p,  # 13
+                    producto_codigo  # Agregar el código del producto
+                ]
+
+                tasks.append(tasks_pedido)
+        else:
+            # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
+            productos_name = ["N/A"]
+            producto_codigo = ["N/A"]
+            
+            color = random.choice(colores)
+            color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
+            porcentaje_progreso = random.randint(10, 100)
+            tasks_pedido = [
+                pedido.codigo,
+                fecha_actual,   # 1
+                pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                color,  # 4
+                porcentaje_progreso,  # 5
+                pedido.nombre,  # 6
+                pedido.linea_produccion,  # 7
+                pedido.cantidad,  # 8
+                pedido.cliente,  # 9
+                pedido.comentario,  # 10
+                productos_name,  # 11
+                pedido.prioridad,  # 12
+                color_p,  # 13
+                producto_codigo  # Agregar el código del producto
             ]
-            tasks.append(task_data_producto)
-        tasks.append(task_data)
+
+            tasks.append(tasks_pedido)
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
+
 
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)

@@ -194,7 +194,6 @@ class Gantt {
 
             for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[11][j]; // Obtiene el nombre del producto
-
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -220,7 +219,6 @@ class Gantt {
 
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
-
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
@@ -255,7 +253,6 @@ class Gantt {
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-        this.attachEventListeners();
     }
 
     showProductosTable() {
@@ -265,7 +262,6 @@ class Gantt {
         // para construir la tabla de Productos
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
-        this.attachEventListeners();
     }
 
 
@@ -326,7 +322,6 @@ class Gantt {
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-        this.attachEventListeners();
     }
 
     attachEventListeners() {
@@ -346,15 +341,16 @@ class Gantt {
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation(); // Evita que el evento se propague al contenedor principal
-        const pedidoId = event.target.dataset.pedidoId; // Obtenemos el ID del pedido desde el atributo data-pedido-id
-        const productoId = event.target.dataset.productoId; // Obtenemos el ID del producto desde el atributo data-producto-id
+        const pedidoId = parseInt(event.target.dataset.pedidoId);
         const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup desde el atributo data-popup-type
         const popup = document.createElement('div');
+        const self = this;
         popup.className = 'popup-overlay';
-        const pedidoData = this.tasks[pedidoId];
-        const productoData = this.tasks[productoId];
-        const self = this; // Almacena una referencia a la instancia actual
+        console.log('Pedido ID:', pedidoId);
+        let pedidoData = null; // Variable para almacenar los datos del pedido
+        let productoData = null; // Variable para almacenar los datos del producto  
         if (popupType === 'pedido') {
+            pedidoData = this.tasks[pedidoId];
             popup.innerHTML = `
 
         <div class="popup-content" id="popup">
@@ -394,17 +390,12 @@ class Gantt {
 
         `;
         } else if (popupType === 'producto') {
+            productoData = this.tasks[pedidoId];
             popup.innerHTML = `
             <div class="popup-content" id="popup">
-            <h2>Detalles del pedido</h2>
+            <h2>Detalles del producto</h2>
             <div class="popup-item">
-                <strong>Código:</strong> <span>${productoData[0]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Cliente:</strong> <span>${productoData[1]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Comentario:</strong> <span>${productoData[2]}</span>
+                <strong>Código:</strong> <span>${productoData[14]}</span>
             </div>
             <button class="close-button" >Cerrar</button>
             </div>
@@ -475,7 +466,6 @@ shuffleButton.addEventListener('click', () => {
     shuffle(gantt.tasks);
     gantt.setMinAndMaxDate();
     document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
-    gantt.attachEventListeners();
 });
 //Popup para importar
 function showPopupimport() {

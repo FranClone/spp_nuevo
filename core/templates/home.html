@@ -217,7 +217,6 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        const tasksData = {{ tasks|safe }};
         const gantt = new Gantt(tasksData);
 
         const showPedidosButton = document.getElementById("showPedidosButton");
