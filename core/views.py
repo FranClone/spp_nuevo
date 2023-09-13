@@ -360,7 +360,7 @@ def patron_editar(request,id):
             formulario.save()
             return redirect('plan_patrones_corte')
         else:
-            print("error")
+            print("errorr")
     return render(request, 'planificador/planificador_patronescorteeditar.html', data)
 
 
