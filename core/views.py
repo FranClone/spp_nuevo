@@ -397,33 +397,15 @@ def gantt_view(request):
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
+    prioridad_colores = {
+        'alto': '#ff0000',  # Rojo para alta prioridad
+        'mediano': '#E3DA4D',  # Naranja para media prioridad
+        'bajo': '#0b9851',  # Verde para baja prioridad
+    }
+    
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
     tasks=[]
     for pedido in pedidos:
-<<<<<<< HEAD
-        productos = [producto.nombre for producto in pedido.producto.all()]
-        largo = [producto.largo for producto in pedido.producto.all()]
-        ancho = [producto.ancho for producto in pedido.producto.all()]
-        alto = [producto.alto for producto in pedido.producto.all()]
-        color = random.choice(colores)
-        porcentaje_progreso = random.randint(10, 100)
-        task_data = [
-            pedido.codigo,                       
-            fecha_actual,                     
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),
-            pedido.fecha_emision.strftime('%Y/%m/%d'),
-            color,                           
-            porcentaje_progreso,
-            pedido.nombre,   
-            pedido.linea_produccion,       
-            pedido.cantidad,
-            pedido.cliente,
-            pedido.comentario,
-            productos,
-            pedido.prioridad,
-        ]
-        tasks.append(task_data)
-=======
 
         productos = pedido.producto.all()
         
@@ -491,9 +473,11 @@ def gantt_view(request):
             ]
 
             tasks.append(tasks_pedido)
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
+
+
+
 
 
 def eliminar_materia_prima(request,id):
