@@ -75,6 +75,7 @@ class Gantt {
     }
 
 
+<<<<<<< HEAD
         buildTableBody() {
             var html = '';
         
@@ -115,6 +116,36 @@ class Gantt {
                 }
         
                 html += '</tr>';
+=======
+    buildTableBody() {
+        var html = '';
+
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            var dMin = new Date(task[3]);
+            var dMax = new Date(task[2]);
+
+            // Calcular la diferencia en días entre dMin y dMax
+            var dateDiff = this.diffInDays(dMax, dMin);
+
+            var daysBefore = this.diffInDays(this.minDate, dMin);
+            var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+            // Ensure that daysBefore is at least 0 (minimum start date constraint)
+            daysBefore = Math.max(daysBefore, 0);
+
+            // Ensure that daysAfter is at least 0 (maximum end date constraint)
+            daysAfter = Math.max(daysAfter, 0);
+
+            console.log('Fecha de inicio (dMin):', dMin);
+            console.log('Fecha de finalización (dMax):', dMax);
+
+            html += '<tr>';
+
+            for (let j = 0; j < daysBefore; j++) {
+                html += '<td></td>';
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
             }
             return html;
         }
@@ -122,6 +153,16 @@ class Gantt {
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
 
+<<<<<<< HEAD
+=======
+
+
+
+
+
+
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
     buildSecondTable() {
         var html = '<table class="second-table"><thead><tr>';
         
@@ -129,7 +170,11 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
         const isDiarioSelected = selectedPeriod === "diario";
@@ -180,8 +225,13 @@ class Gantt {
                 var largo = task[14][j];
                 var ancho = task[15][j];
                 var alto = task[16][j];
+<<<<<<< HEAD
                 
     
+=======
+
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
     
@@ -211,14 +261,22 @@ class Gantt {
 
                 bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
 
+<<<<<<< HEAD
     
+=======
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
     
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
                     <span>${task[5]}%</span>
+<<<<<<< HEAD
                     <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
+=======
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
                 </td>`;
     
                 for (let k = 0; k < daysAfter; k++) {
@@ -243,6 +301,110 @@ class Gantt {
    
 
 
+    SalidaTable() {
+        var html = '<table class="second-table"><thead><tr>';
+
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">L/A/AL</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Solicitados</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Saldo</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Ø</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Grado de Urgencia</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Lateral</th>';/*por determinar*/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nota</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cant.desep.de 20MM</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+
+
+                var dMin = new Date(task[3]);
+                var dMax = new Date(task[2]);
+
+                // Calcular la diferencia en días entre dMin y dMax
+                var dateDiff = this.diffInDays(dMax, dMin);
+
+                var daysBefore = this.diffInDays(this.minDate, dMin);
+                var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+                // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                daysBefore = Math.max(daysBefore, 0);
+
+                // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                daysAfter = Math.max(daysAfter, 0);
+
+                console.log('Fecha de inicio (dMin):', dMin);
+                console.log('Fecha de finalización (dMax):', dMax);
+
+                bodyHtml += '<tr>';
+
+                bodyHtml += `<td>${task[7]}</td>`;/*Linea de Produccion*/
+                bodyHtml += `<td></td>`;/*Item*/
+                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Cliente*/
+                bodyHtml += `<td></td>`;/*OP*  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Mercado*/
+                bodyHtml += `<td>${product}</td>`;/*Producto*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+
+                bodyHtml += '</tr>';
+            }
+        }
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+    }
+
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
@@ -251,6 +413,14 @@ class Gantt {
     showProductosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
+<<<<<<< HEAD
+=======
+    }
+
+    showSalidaTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.SalidaTable();
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
     }
 
         
@@ -320,14 +490,22 @@ class Gantt {
         document.getElementById('gantt').addEventListener('click', function(event) {
             const target = event.target;
             if (target.classList.contains('popup-link')) {
+<<<<<<< HEAD
                     self.handlePopupClick(event);
                         }
                     });
                 }
+=======
+                self.handlePopupClick(event);
+            }
+        });
+    }
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
 
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
+<<<<<<< HEAD
         const pedidoId = event.target.dataset.pedidoId;// Obtenemos el ID del pedido desde el atributo data-pedido-id
         const popup = document.createElement('div');
         popup.className = 'popup-overlay';
@@ -335,6 +513,20 @@ class Gantt {
         const pedidoData = this.tasks[pedidoId];
         const self = this; // Store a reference to the current instance
         popup.innerHTML = `
+=======
+        const pedidoId = parseInt(event.target.dataset.pedidoId);// Obtenemos el ID del pedido desde el atributo data-pedido-id
+        const productoId = event.target.dataset.productoId;
+        const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup 
+        const popup = document.createElement('div');
+        popup.className = 'popup-overlay';
+        console.log('Pedido ID:', pedidoId);
+        let pedidoData = this.tasks[pedidoId]; // Cambio a let
+        let productoData = this.tasks[productoId]; // Cambio a let
+        const self = this; // Store a reference to the current instance
+        if (popupType === 'pedido') {
+            pedidoData = this.tasks[pedidoId];
+            popup.innerHTML = `
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
   
 
         <div class="popup-content" id="popup">
@@ -371,9 +563,28 @@ class Gantt {
         </div>
         <button class="close-button" >Cerrar</button>
     </div>
+<<<<<<< HEAD
 
         `;
     
+=======
+
+        `
+
+        } else if (popupType === 'producto') {
+            productoData = this.tasks[pedidoId];
+            popup.innerHTML = `
+            <div class="popup-content" id="popup">
+            <h2>Detalles del producto</h2>
+            <div class="popup-item">
+                <strong>Código:</strong> <span>${productoData[17]}</span>
+            </div>
+            <button class="close-button" >Cerrar</button>
+            </div>
+        `;
+        }
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
         document.body.appendChild(popup);
 
         // Add a click event listener to the close button
@@ -387,6 +598,10 @@ class Gantt {
         popup.style.display = 'none';
     }
 }
+
+
+
+
 
 
 const periodosSelect = document.querySelector('select[name="periodos"]');
