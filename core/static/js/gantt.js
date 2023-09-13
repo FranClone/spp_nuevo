@@ -104,9 +104,9 @@ class Gantt {
                 for (let j = 0; j < daysBefore; j++) {
                     html += '<td></td>';
                 }
-        // <span>${task[5]}%</span> Trae el porcentaje
-                html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
         
+                html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
+                    <span>${task[5]}%</span>
                     <a class="popup-link" data-pedido-id="${i}">${task[6]}</a>
                 </td>`;
         
@@ -128,6 +128,7 @@ class Gantt {
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
     
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
@@ -176,6 +177,10 @@ class Gantt {
     
             for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+                
     
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
@@ -202,14 +207,18 @@ class Gantt {
     
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
+
+
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
+
     
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
     
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
-              
-                    <a class="popup-link" data-pedido-id="${i}">Unidades ${task[8]}</a>
+                    <span>${task[5]}%</span>
+                    <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
                 </td>`;
     
                 for (let k = 0; k < daysAfter; k++) {
@@ -217,6 +226,7 @@ class Gantt {
                 }
     
                 bodyHtml += '</tr>';
+                
             }
         }
     
@@ -236,23 +246,14 @@ class Gantt {
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-  
     }
     
     showProductosTable() {
-        // Aquí debes ajustar la lógica para mostrar la tabla de Productos
-        // Puedes copiar y modificar el código de buildSecondTable() según tus necesidades
-        // Asegúrate de actualizar la propiedad this.filteredTasks y llamar a los métodos necesarios
-        // para construir la tabla de Productos
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
-
     }
 
         
-        
-
-
     diffInDays(max, min) {
         var diffTime = Math.abs(max - min);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -307,7 +308,6 @@ class Gantt {
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-      //  this.attachEventListeners();
     }
 
     attachEventListeners() {

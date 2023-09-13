@@ -8,7 +8,6 @@ class PatronCorte(models.Model):
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False, default='')
     nombre = models.CharField(max_length=20, null=False, blank=False)
     descripcion = models.CharField(max_length=20, null=False, blank=False)
-    rollizo = models.CharField(max_length=10)
     rendimiento = models.FloatField(max_length=5)
     velocidad_linea = models.FloatField()
     setup_time = models.FloatField()

@@ -15,6 +15,7 @@ class DetallePedido(models.Model):
     espesor_producto = models.FloatField(blank=True, null=True)
     ancho_producto = models.FloatField(blank=True, null=True)
     largo_producto = models.FloatField(blank=True, null=True)
+    cantidad = models.PositiveIntegerField(null=False, blank=False)
     volumen_producto = models.FloatField(max_length=10, validators=[MinValueValidator(0)])
     fecha_entrega = models.DateField()
     estado_pedido_linea = models.BooleanField(blank=True, null=True)
