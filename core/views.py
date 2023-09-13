@@ -50,25 +50,25 @@ import logging  # Import the logging module
 
 from django.shortcuts import render
 from mip import Model, xsum, maximize, BINARY, CBC
-#Algoritmo testing
+#Test Algoritmo
 def mochila(request):
+
     p = [10, 13, 18, 31, 7, 15]
     w = [11, 15, 20, 35, 10, 33]
     c, I = 47, range(len(w))
-    m = Model('mochila', maximize, CBC)
+    m = Model('mochila',maximize,CBC)
 
     x = [m.add_var(var_type=BINARY) for i in I]
     m.objective = maximize(xsum(p[i] * x[i] for i in I))
     m += xsum(w[i] * x[i] for i in I) <= c
     m.optimize()
     selected = [i for i in I if x[i].x >= 0.99]
-    selected_weights = [w[i] for i in selected]
+    #
     selected_profits = [p[i] for i in selected]
-    selected_items = [i + 1 for i in selected]
-    print("Valores",p,w,c,m)
-    print("Valores",selected,selected_weights,selected_profits,selected_items)
+    selected_weights = [w[i] for i in selected]
+    print("selected items: {}".format(selected))
 
-    return render(request, 'mochila.html', {'selected': selected_items, 'weights': selected_weights, 'profits': selected_profits})
+    return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
 
 
 def importar(request):
@@ -397,15 +397,33 @@ def gantt_view(request):
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
-    prioridad_colores = {
-        'alto': '#ff0000',  # Rojo para alta prioridad
-        'mediano': '#E3DA4D',  # Naranja para media prioridad
-        'bajo': '#0b9851',  # Verde para baja prioridad
-    }
-    
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
     tasks=[]
     for pedido in pedidos:
+<<<<<<< HEAD
+        productos = [producto.nombre for producto in pedido.producto.all()]
+        largo = [producto.largo for producto in pedido.producto.all()]
+        ancho = [producto.ancho for producto in pedido.producto.all()]
+        alto = [producto.alto for producto in pedido.producto.all()]
+        color = random.choice(colores)
+        porcentaje_progreso = random.randint(10, 100)
+        task_data = [
+            pedido.codigo,                       
+            fecha_actual,                     
+            pedido.fecha_entrega.strftime('%Y/%m/%d'),
+            pedido.fecha_emision.strftime('%Y/%m/%d'),
+            color,                           
+            porcentaje_progreso,
+            pedido.nombre,   
+            pedido.linea_produccion,       
+            pedido.cantidad,
+            pedido.cliente,
+            pedido.comentario,
+            productos,
+            pedido.prioridad,
+        ]
+        tasks.append(task_data)
+=======
 
         productos = pedido.producto.all()
         
@@ -473,6 +491,7 @@ def gantt_view(request):
             ]
 
             tasks.append(tasks_pedido)
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
 

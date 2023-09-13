@@ -9,14 +9,4 @@ class Migration(migrations.Migration):
         ('core', '0076_boletatest_pedido_fecha_emision_and_more'),
     ]
 
-    operations = [
-        migrations.RemoveField(
-            model_name='pedido',
-            name='producto',
-        ),
-        migrations.AddField(
-            model_name='pedido',
-            name='producto',
-            field=models.ManyToManyField(to='core.producto'),
-        ),
-    ]
+
