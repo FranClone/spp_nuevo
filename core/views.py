@@ -408,6 +408,10 @@ def gantt_view(request):
     tasks = []
     for pedido in pedidos:
         productos = [producto.nombre for producto in pedido.producto.all()]
+        largo = [producto.largo for producto in pedido.producto.all()]
+        ancho = [producto.ancho for producto in pedido.producto.all()]
+        alto = [producto.alto for producto in pedido.producto.all()]
+
         color = random.choice(colores)
         color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')  # Predeterminado a azul si no se encuentra una prioridad válida) 
         porcentaje_progreso = random.randint(10, 100)
@@ -426,6 +430,9 @@ def gantt_view(request):
             productos, #11
             pedido.prioridad, #12
             color_p, #13
+            largo, #14
+            ancho, #15
+            alto, #16
         ]
         tasks.append(task_data)
 

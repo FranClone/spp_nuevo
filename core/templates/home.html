@@ -9,6 +9,7 @@
     <script src="{% static 'js/home.js' %}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.3.1/decimal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
@@ -130,8 +131,9 @@
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
         <button id="showPedidosButton"  >Ver Pedidos</button>
-        <button id="showProductosButton">Ver Productos</button>
-        <h4 class="text-center">Pedidos JCE</h4>
+        <button id="showProductosButton">Ver Produccion</button>
+        <button id="showSalidaButton">Ver Salida Algoritmo</button>
+        <h4 id="titulo">Pedidos JCE</h4>
         <div id="gantt">
             <script>
                 const tasksData = {{ tasks|safe }};
@@ -217,18 +219,31 @@
 <script>
 
     document.addEventListener("DOMContentLoaded", function () {
-        const tasksData = {{ tasks|safe }};
         const gantt = new Gantt(tasksData);
 
         const showPedidosButton = document.getElementById("showPedidosButton");
         const showProductosButton = document.getElementById("showProductosButton");
+        const showSalidaButton = document.getElementById("showSalidaButton");
+        const titulo = document.getElementById("titulo");
+        const ganttContainer = document.getElementById("gantt");
+
+        // Inicialmente, muestra la tabla de "Produccion JCE"
+        gantt.showProductosTable();
+        titulo.textContent = "Produccion JCE";
 
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
+            titulo.textContent = "Pedidos JCE";
         });
 
         showProductosButton.addEventListener("click", function () {
             gantt.showProductosTable();
+            titulo.textContent = "Produccion JCE";
+        });
+
+        showSalidaButton.addEventListener("click", function () {
+            gantt.showSalidaTable();
+            titulo.textContent = "Salida Algoritmo JCE";
         });
     });
 

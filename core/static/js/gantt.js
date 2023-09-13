@@ -119,15 +119,13 @@ class Gantt {
             return html;
         }
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-
     buildSecondTable() {
         var html = '<table class="second-table"><thead><tr>';
         
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
     
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
@@ -176,6 +174,10 @@ class Gantt {
     
             for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+                
     
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
@@ -202,14 +204,19 @@ class Gantt {
     
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
+
+
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
+
     
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
     
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
-              
-                    <a class="popup-link" data-pedido-id="${i}">Unidades ${task[8]}</a>
+
+                    <span>${task[5]}%</span>
+                    <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
                 </td>`;
     
                 for (let k = 0; k < daysAfter; k++) {
@@ -227,26 +234,125 @@ class Gantt {
         return html;
     }
     
+
+    SalidaTable() {
+        var html = '<table class="second-table"><thead><tr>';
+        
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">L/A/AL</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Solicitados</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Saldo</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Ø</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Grado de Urgencia</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Lateral</th>';/*por determinar*/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nota</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cant.desep.de 20MM</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
+
+        
+    
+        html += '</tr></thead><tbody>';
+        
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+    
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+    
+            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+                
+    
+                var dMin = new Date(task[3]);
+                var dMax = new Date(task[2]);
+    
+                // Calcular la diferencia en días entre dMin y dMax
+                var dateDiff = this.diffInDays(dMax, dMin);
+    
+                var daysBefore = this.diffInDays(this.minDate, dMin);
+                var daysAfter = this.diffInDays(dMax, this.maxDate);
+    
+                // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                daysBefore = Math.max(daysBefore, 0);
+    
+                // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                daysAfter = Math.max(daysAfter, 0);
+    
+                console.log('Fecha de inicio (dMin):', dMin);
+                console.log('Fecha de finalización (dMax):', dMax);
+    
+                bodyHtml += '<tr>';
+
+                bodyHtml += `<td>${task[7]}</td>`;/*Linea de Produccion*/
+                bodyHtml += `<td></td>`;/*Item*/
+                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/ 
+                bodyHtml += `<td></td>`;/*Cliente*/ 
+                bodyHtml += `<td></td>`;/*OP*  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Mercado*/ 
+                bodyHtml += `<td>${product}</td>`;/*Producto*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+                bodyHtml += `<td></td>`;/*ETA*/ 
+    
+                bodyHtml += '</tr>';
+            }
+        }
+    
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+    
+        html += '</tbody></table>';
+        return html;
+    }
+    
     
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+   
    
 
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-  
     }
     
     showProductosTable() {
-        // Aquí debes ajustar la lógica para mostrar la tabla de Productos
-        // Puedes copiar y modificar el código de buildSecondTable() según tus necesidades
-        // Asegúrate de actualizar la propiedad this.filteredTasks y llamar a los métodos necesarios
-        // para construir la tabla de Productos
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
 
+    }
+
+    showSalidaTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.SalidaTable();
     }
 
         
@@ -307,7 +413,7 @@ class Gantt {
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-      //  this.attachEventListeners();
+
     }
 
     attachEventListeners() {
@@ -372,7 +478,8 @@ class Gantt {
         <button class="close-button" >Cerrar</button>
     </div>
 
-        `;
+        `
+        
     
         document.body.appendChild(popup);
 
