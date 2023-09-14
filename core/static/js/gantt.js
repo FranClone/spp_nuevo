@@ -75,7 +75,7 @@ class Gantt {
     }
 
 
-<<<<<<< HEAD
+
         buildTableBody() {
             var html = '';
         
@@ -116,36 +116,7 @@ class Gantt {
                 }
         
                 html += '</tr>';
-=======
-    buildTableBody() {
-        var html = '';
 
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-
-            var dMin = new Date(task[3]);
-            var dMax = new Date(task[2]);
-
-            // Calcular la diferencia en días entre dMin y dMax
-            var dateDiff = this.diffInDays(dMax, dMin);
-
-            var daysBefore = this.diffInDays(this.minDate, dMin);
-            var daysAfter = this.diffInDays(dMax, this.maxDate);
-
-            // Ensure that daysBefore is at least 0 (minimum start date constraint)
-            daysBefore = Math.max(daysBefore, 0);
-
-            // Ensure that daysAfter is at least 0 (maximum end date constraint)
-            daysAfter = Math.max(daysAfter, 0);
-
-            console.log('Fecha de inicio (dMin):', dMin);
-            console.log('Fecha de finalización (dMax):', dMax);
-
-            html += '<tr>';
-
-            for (let j = 0; j < daysBefore; j++) {
-                html += '<td></td>';
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
             }
             return html;
         }
@@ -153,16 +124,7 @@ class Gantt {
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
     /*---------------------------------------------------------------------------------------------------------------------------------*/ 
 
-<<<<<<< HEAD
-=======
 
-
-
-
-
-
-
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
     buildSecondTable() {
         var html = '<table class="second-table"><thead><tr>';
         
@@ -170,11 +132,7 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
         const isDiarioSelected = selectedPeriod === "diario";
@@ -225,13 +183,7 @@ class Gantt {
                 var largo = task[14][j];
                 var ancho = task[15][j];
                 var alto = task[16][j];
-<<<<<<< HEAD
-                
-    
-=======
 
-
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
     
@@ -261,22 +213,16 @@ class Gantt {
 
                 bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
 
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
     
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
                     <span>${task[5]}%</span>
-<<<<<<< HEAD
-                    <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
-=======
+
                     <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+
                 </td>`;
     
                 for (let k = 0; k < daysAfter; k++) {
@@ -413,14 +359,13 @@ class Gantt {
     showProductosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
-<<<<<<< HEAD
-=======
+
     }
 
     showSalidaTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.SalidaTable();
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+
     }
 
         
@@ -490,30 +435,17 @@ class Gantt {
         document.getElementById('gantt').addEventListener('click', function(event) {
             const target = event.target;
             if (target.classList.contains('popup-link')) {
-<<<<<<< HEAD
+
                     self.handlePopupClick(event);
                         }
                     });
                 }
-=======
-                self.handlePopupClick(event);
-            }
-        });
-    }
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+
 
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
-<<<<<<< HEAD
-        const pedidoId = event.target.dataset.pedidoId;// Obtenemos el ID del pedido desde el atributo data-pedido-id
-        const popup = document.createElement('div');
-        popup.className = 'popup-overlay';
-        console.log('Pedido ID:', pedidoId);
-        const pedidoData = this.tasks[pedidoId];
-        const self = this; // Store a reference to the current instance
-        popup.innerHTML = `
-=======
+
         const pedidoId = parseInt(event.target.dataset.pedidoId);// Obtenemos el ID del pedido desde el atributo data-pedido-id
         const productoId = event.target.dataset.productoId;
         const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup 
@@ -526,7 +458,7 @@ class Gantt {
         if (popupType === 'pedido') {
             pedidoData = this.tasks[pedidoId];
             popup.innerHTML = `
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+
   
 
         <div class="popup-content" id="popup">
@@ -563,11 +495,6 @@ class Gantt {
         </div>
         <button class="close-button" >Cerrar</button>
     </div>
-<<<<<<< HEAD
-
-        `;
-    
-=======
 
         `
 
@@ -584,7 +511,6 @@ class Gantt {
         `;
         }
 
->>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
         document.body.appendChild(popup);
 
         // Add a click event listener to the close button
