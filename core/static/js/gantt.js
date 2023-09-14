@@ -75,52 +75,52 @@ class Gantt {
     }
 
 
-        buildTableBody() {
-            var html = '';
-        
-            for (let i = 0; i < this.filteredTasks.length; i++) {
-                var task = this.filteredTasks[i];
-        
-                var dMin = new Date(task[3]);
-                var dMax = new Date(task[2]);
-        
-                // Calcular la diferencia en días entre dMin y dMax
-                var dateDiff = this.diffInDays(dMax, dMin);
-        
-                var daysBefore = this.diffInDays(this.minDate, dMin);
-                var daysAfter = this.diffInDays(dMax, this.maxDate);
-        
-                // Ensure that daysBefore is at least 0 (minimum start date constraint)
-                daysBefore = Math.max(daysBefore, 0);
-        
-                // Ensure that daysAfter is at least 0 (maximum end date constraint)
-                daysAfter = Math.max(daysAfter, 0);
-        
-                console.log('Fecha de inicio (dMin):', dMin);
-                console.log('Fecha de finalización (dMax):', dMax);
-        
-                html += '<tr>';
-        
-                for (let j = 0; j < daysBefore; j++) {
-                    html += '<td></td>';
-                }
-        
-                html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}">${task[6]}</a>
-                </td>`;
-        
-                for (let j = 0; j < daysAfter; j++) {
-                    html += '<td></td>';
-                }
-        
-                html += '</tr>';
-            }
-            return html;
-        }
+    buildTableBody() {
+        var html = '';
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            var dMin = new Date(task[3]);
+            var dMax = new Date(task[2]);
+
+            // Calcular la diferencia en días entre dMin y dMax
+            var dateDiff = this.diffInDays(dMax, dMin);
+
+            var daysBefore = this.diffInDays(this.minDate, dMin);
+            var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+            // Ensure that daysBefore is at least 0 (minimum start date constraint)
+            daysBefore = Math.max(daysBefore, 0);
+
+            // Ensure that daysAfter is at least 0 (maximum end date constraint)
+            daysAfter = Math.max(daysAfter, 0);
+
+            console.log('Fecha de inicio (dMin):', dMin);
+            console.log('Fecha de finalización (dMax):', dMax);
+
+            html += '<tr>';
+
+            for (let j = 0; j < daysBefore; j++) {
+                html += '<td></td>';
+            }
+
+            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
+                    <span>${task[5]}%</span>
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">${task[6]}</a>
+                </td>`;
+
+            for (let j = 0; j < daysAfter; j++) {
+                html += '<td></td>';
+            }
+
+            html += '</tr>';
+        }
+        return html;
+    }
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
 
 
 
@@ -131,22 +131,22 @@ class Gantt {
 
     buildSecondTable() {
         var html = '<table class="second-table"><thead><tr>';
-        
+
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
-    
+
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
         const isDiarioSelected = selectedPeriod === "diario";
         const isSemanalSelected = selectedPeriod === "semanal";
         const isMensualSelected = selectedPeriod === "mensual";
-    
+
         if (isDiarioSelected) {
             var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
             const actual = new Date(this.minDate);
-    
+
             for (let i = 0; i < diffDays; i++) {
                 html += '<th style="color: white; width: 70vh; font-size: 13px;">' + this.formatDate(actual, "diario") + '</th>';
                 actual.setDate(actual.getDate() + 1);
@@ -154,104 +154,104 @@ class Gantt {
         } else if (isSemanalSelected) {
             var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
             const actual = new Date(this.minDate);
-    
+
             for (let i = 0; i < diffWeeks; i++) {
                 const startOfWeek = new Date(actual);
                 const endOfWeek = new Date(actual);
                 endOfWeek.setDate(startOfWeek.getDate() + 6);
-    
+
                 html += '<th>' + this.formatDate(startOfWeek, "semanal", endOfWeek) + '</th>';
                 actual.setDate(startOfWeek.getDate() + 7);
             }
         } else if (isMensualSelected) {
             var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
             const actual = new Date(this.minDate);
-    
+
             for (let i = 0; i < diffMonths; i++) {
                 actual.setMonth(actual.getMonth() + 1);
                 html += '<th>' + this.formatDate(actual, "mensual") + '</th>';
             }
         }
-    
+
         html += '</tr></thead><tbody>';
-        
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-    
+
             for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[11][j]; // Obtiene el nombre del producto
                 var largo = task[14][j];
                 var ancho = task[15][j];
                 var alto = task[16][j];
-                
-    
+
+
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
-    
+
                 // Calcular la diferencia en días entre dMin y dMax
                 var dateDiff = this.diffInDays(dMax, dMin);
-    
+
                 var daysBefore = this.diffInDays(this.minDate, dMin);
                 var daysAfter = this.diffInDays(dMax, this.maxDate);
-    
+
                 // Ensure that daysBefore is at least 0 (minimum start date constraint)
                 daysBefore = Math.max(daysBefore, 0);
-    
+
                 // Ensure that daysAfter is at least 0 (maximum end date constraint)
                 daysAfter = Math.max(daysAfter, 0);
-    
+
                 console.log('Fecha de inicio (dMin):', dMin);
                 console.log('Fecha de finalización (dMax):', dMax);
-    
+
                 bodyHtml += '<tr>';
-    
+
                 // Agregar el valor de task[7] en la primera columna
                 bodyHtml += `<td>${task[7]}</td>`;
-    
+
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
 
 
                 bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
 
-    
+
                 for (let k = 0; k < daysBefore; k++) {
                     bodyHtml += '<td ></td>';
                 }
-    
+
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
                     <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
                 </td>`;
-    
+
                 for (let k = 0; k < daysAfter; k++) {
                     bodyHtml += '<td></td>';
                 }
-    
+
                 bodyHtml += '</tr>';
             }
         }
-    
+
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
-    
+
         html += '</tbody></table>';
         return html;
     }
-    
-    
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
 
 
 
     SalidaTable() {
         var html = '<table class="second-table"><thead><tr>';
-        
+
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
@@ -275,89 +275,89 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
 
-        
-    
+
+
         html += '</tr></thead><tbody>';
-        
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-    
+
             for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[11][j]; // Obtiene el nombre del producto
                 var largo = task[14][j];
                 var ancho = task[15][j];
                 var alto = task[16][j];
-                
-    
+
+
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
-    
+
                 // Calcular la diferencia en días entre dMin y dMax
                 var dateDiff = this.diffInDays(dMax, dMin);
-    
+
                 var daysBefore = this.diffInDays(this.minDate, dMin);
                 var daysAfter = this.diffInDays(dMax, this.maxDate);
-    
+
                 // Ensure that daysBefore is at least 0 (minimum start date constraint)
                 daysBefore = Math.max(daysBefore, 0);
-    
+
                 // Ensure that daysAfter is at least 0 (maximum end date constraint)
                 daysAfter = Math.max(daysAfter, 0);
-    
+
                 console.log('Fecha de inicio (dMin):', dMin);
                 console.log('Fecha de finalización (dMax):', dMax);
-    
+
                 bodyHtml += '<tr>';
 
                 bodyHtml += `<td>${task[7]}</td>`;/*Linea de Produccion*/
                 bodyHtml += `<td></td>`;/*Item*/
-                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/ 
-                bodyHtml += `<td></td>`;/*Cliente*/ 
+                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Cliente*/
                 bodyHtml += `<td></td>`;/*OP*  / pedido id?*/
-                bodyHtml += `<td></td>`;/*Mercado*/ 
-                bodyHtml += `<td>${product}</td>`;/*Producto*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-                bodyHtml += `<td></td>`;/*ETA*/ 
-    
+                bodyHtml += `<td></td>`;/*Mercado*/
+                bodyHtml += `<td>${product}</td>`;/*Producto*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+
                 bodyHtml += '</tr>';
             }
         }
-    
+
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
-    
+
         html += '</tbody></table>';
         return html;
     }
-    
-    
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
-   
-   
+
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+
+
 
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
     }
-    
+
     showProductosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
@@ -368,8 +368,8 @@ class Gantt {
         document.getElementById('gantt').innerHTML = this.SalidaTable();
     }
 
-        
-        
+
+
 
 
     diffInDays(max, min) {
@@ -435,24 +435,29 @@ class Gantt {
 
         const self = this; // Store a reference to the current instance
 
-        document.getElementById('gantt').addEventListener('click', function(event) {
+        document.getElementById('gantt').addEventListener('click', function (event) {
             const target = event.target;
             if (target.classList.contains('popup-link')) {
-                    self.handlePopupClick(event);
-                        }
-                    });
-                }
+                self.handlePopupClick(event);
+            }
+        });
+    }
 
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
-        const pedidoId = event.target.dataset.pedidoId;// Obtenemos el ID del pedido desde el atributo data-pedido-id
+        const pedidoId = parseInt(event.target.dataset.pedidoId); // Obtenemos el ID del pedido desde el atributo data-pedido-id
+        const productoId = event.target.dataset.productoId;
+        const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup
         const popup = document.createElement('div');
         popup.className = 'popup-overlay';
         console.log('Pedido ID:', pedidoId);
-        const pedidoData = this.tasks[pedidoId];
+        let pedidoData = this.tasks[pedidoId]; // Cambio a let
+        let productoData = this.tasks[productoId]; // Cambio a let
         const self = this; // Store a reference to the current instance
-        popup.innerHTML = `
+        if (popupType === 'pedido') {
+            pedidoData = this.tasks[pedidoId];
+            popup.innerHTML = `
   
 
         <div class="popup-content" id="popup">
@@ -490,9 +495,21 @@ class Gantt {
         <button class="close-button" >Cerrar</button>
     </div>
 
-        `
-        
-    
+        `;
+
+        } else if (popupType === 'producto') {
+            productoData = this.tasks[pedidoId];
+            popup.innerHTML = `
+            <div class="popup-content" id="popup">
+            <h2>Detalles del producto</h2>
+            <div class="popup-item">
+                <strong>Código:</strong> <span>${productoData[17]}</span>
+            </div>
+            <button class="close-button" >Cerrar</button>
+            </div>
+        `;
+        }
+
         document.body.appendChild(popup);
 
         // Add a click event listener to the close button
@@ -500,8 +517,9 @@ class Gantt {
         closeButton.addEventListener('click', () => {
             self.closePopup(popup);
         });
+        
     }
-    
+
     closePopup(popup) {
         popup.style.display = 'none';
     }
@@ -515,66 +533,66 @@ class Gantt {
 const periodosSelect = document.querySelector('select[name="periodos"]');
 periodosSelect.value = "diario";
 periodosSelect.addEventListener('change', function () {
-gantt.setMinAndMaxDate();
-document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
+    gantt.setMinAndMaxDate();
+    document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
 });
 
 const toggleLineasButton = document.getElementById('toggle-lineas-button');
 toggleLineasButton.addEventListener('change', function () {
-const selectedLine = this.value;
-gantt.filterTasksByLine(selectedLine);
+    const selectedLine = this.value;
+    gantt.filterTasksByLine(selectedLine);
 });
 
 function toggleCargaForm() {
-const cargaForm = document.getElementById('carga-form');
-if (cargaForm.style.display === 'none') {
-    cargaForm.style.display = 'block';
-} else {
-    cargaForm.style.display = 'none';
-}
+    const cargaForm = document.getElementById('carga-form');
+    if (cargaForm.style.display === 'none') {
+        cargaForm.style.display = 'block';
+    } else {
+        cargaForm.style.display = 'none';
+    }
 }
 
 function showPopup() {
-const popupOverlay = document.getElementById('popup-ejecutar');
-popupOverlay.style.display = 'block';
+    const popupOverlay = document.getElementById('popup-ejecutar');
+    popupOverlay.style.display = 'block';
 }
 
 function hidePopup() {
-const popupOverlay = document.getElementById('popup-ejecutar');
-popupOverlay.style.display = 'none';
-window.location.href = '/pantalla-carga/';
+    const popupOverlay = document.getElementById('popup-ejecutar');
+    popupOverlay.style.display = 'none';
+    window.location.href = '/pantalla-carga/';
 }
 
 // Fisher-Yates shuffle function
 function shuffle(array) {
-for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-}
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
 }
 // Add your shuffleButton click event listener here
 const shuffleButton = document.getElementById('shuffleButton');
 shuffleButton.addEventListener('click', () => {
-shuffle(gantt.tasks);
-gantt.setMinAndMaxDate();
-document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
-gantt.attachEventListeners();
+    shuffle(gantt.tasks);
+    gantt.setMinAndMaxDate();
+    document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
+    gantt.attachEventListeners();
 });
 //Popup para importar
 function showPopupimport() {
-const popupOverlay = document.getElementById('popupContainer');
-popupOverlay.style.display = 'block';
+    const popupOverlay = document.getElementById('popupContainer');
+    popupOverlay.style.display = 'block';
 }
 
 function closePopupimport() {
-const popupOverlay = document.getElementById('popupContainer');
-popupOverlay.style.display = 'none';
+    const popupOverlay = document.getElementById('popupContainer');
+    popupOverlay.style.display = 'none';
 }
 
-    // Función para cerrar el popup
-    function closePopup() {
-        var popup = document.getElementById("carga-form");
-        popup.style.display = "none";
-    }
+// Función para cerrar el popup
+function closePopup() {
+    var popup = document.getElementById("carga-form");
+    popup.style.display = "none";
+}
 
 
