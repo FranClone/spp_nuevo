@@ -26,8 +26,7 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG')
-
-ALLOWED_HOSTS = ['3.81.172.38']
+ALLOWED_HOSTS = ['3.81.172.38','localhost','127.0.0.1']
 AUTH_USER_MODEL = 'asignaciones.UserProfile'
 CSRF_TRUSTED_ORIGINS = [" https://15b86721bcf6d6.lhr.life "]
 
