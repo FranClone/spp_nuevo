@@ -92,13 +92,13 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(numero_buzon, nombre, alto, ancho, largo, linea, conicidad, almacenamiento, inventario_inicial, volumen_procesado, inventario_final) {
+function openPopup(numero_buzon, nombre, alto, ancho, largo, conicidad, almacenamiento, inventario_inicial, volumen_procesado, inventario_final) {
     document.getElementById('popupCodigo').textContent = numero_buzon;
     document.getElementById('popupNombre').textContent = nombre;
     document.getElementById('popupAlto').textContent = alto;
     document.getElementById('popupAncho').textContent = ancho;
     document.getElementById('popupLargo').textContent = largo;
-    document.getElementById('popupLinea').textContent = linea;
+   // document.getElementById('popupLinea').textContent = linea;
     document.getElementById('popupConicidad').textContent = conicidad;
     document.getElementById('popupAlmacenamiento').textContent = almacenamiento;
     document.getElementById('popupInventario_inicial').textContent = inventario_inicial;

@@ -75,57 +75,51 @@ class Gantt {
     }
 
 
+
     buildTableBody() {
         var html = '';
-
+    
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-
+    
             var dMin = new Date(task[3]);
             var dMax = new Date(task[2]);
-
+    
             // Calcular la diferencia en días entre dMin y dMax
             var dateDiff = this.diffInDays(dMax, dMin);
-
+    
             var daysBefore = this.diffInDays(this.minDate, dMin);
             var daysAfter = this.diffInDays(dMax, this.maxDate);
-
+    
             // Ensure that daysBefore is at least 0 (minimum start date constraint)
             daysBefore = Math.max(daysBefore, 0);
-
+    
             // Ensure that daysAfter is at least 0 (maximum end date constraint)
             daysAfter = Math.max(daysAfter, 0);
-
+    
             console.log('Fecha de inicio (dMin):', dMin);
             console.log('Fecha de finalización (dMax):', dMax);
-
+    
             html += '<tr>';
-
+    
             for (let j = 0; j < daysBefore; j++) {
                 html += '<td></td>';
             }
-
+    
             html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">${task[6]}</a>
-                </td>`;
-
+                <span>${task[5]}%</span>
+                <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[6]}</a>
+            </td>`;
+    
             for (let j = 0; j < daysAfter; j++) {
                 html += '<td></td>';
             }
-
+    
             html += '</tr>';
+
         }
         return html;
     }
-
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-
-
-
-
-
 
 
 
@@ -135,7 +129,7 @@ class Gantt {
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Escuadrias</th>';
 
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
@@ -187,8 +181,6 @@ class Gantt {
                 var largo = task[14][j];
                 var ancho = task[15][j];
                 var alto = task[16][j];
-
-
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -233,6 +225,7 @@ class Gantt {
                 }
 
                 bodyHtml += '</tr>';
+                
             }
         }
 
@@ -242,12 +235,6 @@ class Gantt {
         html += '</tbody></table>';
         return html;
     }
-
-
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-
-
 
     SalidaTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -347,12 +334,6 @@ class Gantt {
     }
 
 
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-    /*---------------------------------------------------------------------------------------------------------------------------------*/
-
-
-
-
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
@@ -361,16 +342,14 @@ class Gantt {
     showProductosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
+
     }
 
     showSalidaTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.SalidaTable();
+
     }
-
-
-
-
 
     diffInDays(max, min) {
         var diffTime = Math.abs(max - min);
@@ -443,6 +422,8 @@ class Gantt {
         });
     }
 
+
+
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
@@ -458,7 +439,6 @@ class Gantt {
         if (popupType === 'pedido') {
             pedidoData = this.tasks[pedidoId];
             popup.innerHTML = `
-  
 
         <div class="popup-content" id="popup">
         <h2>Detalles del pedido</h2>
@@ -493,9 +473,8 @@ class Gantt {
             <strong>Comentario:</strong> <span>${pedidoData[10]}</span>
         </div>
         <button class="close-button" >Cerrar</button>
-    </div>
+    </div>`;
 
-        `;
 
         } else if (popupType === 'producto') {
             productoData = this.tasks[pedidoId];
@@ -524,10 +503,6 @@ class Gantt {
         popup.style.display = 'none';
     }
 }
-
-
-
-
 
 
 const periodosSelect = document.querySelector('select[name="periodos"]');

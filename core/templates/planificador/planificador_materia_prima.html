@@ -140,7 +140,7 @@
                     <th>Clase diamétrica</th>
                     <th>Largo [mm]</th>
                     <th>Cantidad [m³]</th>
-                    <th>Linea Produccion</th>
+                    {% comment %} <th>Linea Produccion</th> {% endcomment %}
                     <th>Mostrar detalle</th>
                 </tr>
             </thead>
@@ -152,10 +152,10 @@
                     <td>{{ materia_prima.clase_diametrica }}</td>
                     <td>{{ materia_prima.largo }}</td>
                     <td>{{ materia_prima.cantidad }}</td>
-                    <td>{{ materia_prima.linea_produccion }}</td>
+                    {% comment %} <td>{{ materia_prima.linea_produccion }}</td> {% endcomment %}
                     <td>
                         <button class="btn block"
-                            onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.largo }}', '{{ materia_prima.cantidad }}', '{{ materia_prima.linea_produccion }}', '{{materia_prima.conicidad}}','{{ materia_prima.costo_almacenamiento }}','{{ materia_prima.inventario_inicial }}','{{ materia_prima.volumen_procesado }}','{{ materia_prima.inventario_final }}')"><i
+                             onclick="openPopup('{{ materia_prima.numero_buzon }}', '{{ materia_prima.tipo_madera }}', '{{ materia_prima.clase_diametrica }}', '{{ materia_prima.largo }}', '{{ materia_prima.cantidad }}', {% comment %}'{{ materia_prima.linea_produccion }}',{% endcomment %} '{{materia_prima.conicidad}}','{{ materia_prima.costo_almacenamiento }}','{{ materia_prima.inventario_inicial }}','{{ materia_prima.volumen_procesado }}','{{ materia_prima.inventario_final }}')"><i 
                                 class="fa-regular fa-clipboard fa-xl"></i></button>
                         <a href="eliminarmateria/{{materia_prima.id}}" class="fas fa-trash-alt fa-xl"></a>
                         <a href="editarmateria/{{materia_prima.id}}"  class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
