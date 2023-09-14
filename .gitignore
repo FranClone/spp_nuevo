@@ -6,3 +6,4 @@ __pycache__
 core/static/perfect-scrollbar/
 core/static_recopiled/perfect-scrollbar/
 SPP_Django/.env
+.env
