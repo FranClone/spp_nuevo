@@ -249,6 +249,7 @@ a {
 
 .select2-container--default .select2-selection--multiple {
     width: 100% !important;
+    
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;

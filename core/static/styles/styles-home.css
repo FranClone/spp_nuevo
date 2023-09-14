@@ -579,3 +579,26 @@ table tr {
     height: 30px;
     border-radius: 0px;
 }
+
+
+#showProductosButton, #showPedidosButton, #showSalidaButton{
+
+    background-color: rgba(142, 142, 142, 0.705);
+    color: white;
+    border-radius: 3px;
+    padding: 3px;
+    border: 1px solid white;
+    float: left;
+    margin-top: 0vh;
+    margin-left: 0%;
+    margin-right: 0%;
+
+
+}
+
+
+
+#titulo {
+    margin-left: 44%;
+}
+

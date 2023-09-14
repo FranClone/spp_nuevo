@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Knapsack Algorithm Results</title>
+    <style>
+        /* Initially hide the table */
+        #result-table {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Resultado Algoritmo</h1>
+
+    <!-- Add a button to run the algorithm and show results -->
+    <button id="run-algorithm-button">Run</button>
+
+    <table id="result-table">
+        <tr>
+            <th>Item seleccionado</th>
+        </tr>
+        {% for item_number in selected %}
+        <tr>
+            <td>Item {{ item_number }}</td>
+            <td>Ganancias {{ selected_profits }}</td>
+            <td>Peso {{ selected_weights }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add JavaScript to run the algorithm and show/hide the table -->
+    <script>
+        document.getElementById("run-algorithm-button").addEventListener("click", function() {
+            // Make an AJAX request to your Django view
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "{% url 'mochila' %}", true);
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    // Algorithm has run, update the table and show it
+                    var resultTable = document.getElementById("result-table");
+                    resultTable.style.display = "table"; // Show the table
+      
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+</html>

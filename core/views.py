@@ -35,7 +35,6 @@ from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
-
 from tablib import Dataset 
 try:
     #se conecta
@@ -48,6 +47,29 @@ except Exception as ex:
 from django.contrib import messages
 
 import logging  # Import the logging module
+
+from django.shortcuts import render
+from mip import Model, xsum, maximize, BINARY, CBC
+#Test Algoritmo
+def mochila(request):
+
+    p = [10, 13, 18, 31, 7, 15]
+    w = [11, 15, 20, 35, 10, 33]
+    c, I = 47, range(len(w))
+    m = Model('mochila',maximize,CBC)
+
+    x = [m.add_var(var_type=BINARY) for i in I]
+    m.objective = maximize(xsum(p[i] * x[i] for i in I))
+    m += xsum(w[i] * x[i] for i in I) <= c
+    m.optimize()
+    selected = [i for i in I if x[i].x >= 0.99]
+    #
+    selected_profits = [p[i] for i in selected]
+    selected_weights = [w[i] for i in selected]
+    print("selected items: {}".format(selected))
+
+    return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
+
 
 def importar(request):
     if request.method == 'POST':
@@ -338,7 +360,7 @@ def patron_editar(request,id):
             formulario.save()
             return redirect('plan_patrones_corte')
         else:
-            print("error")
+            print("errorr")
     return render(request, 'planificador/planificador_patronescorteeditar.html', data)
 
 
@@ -375,31 +397,88 @@ def gantt_view(request):
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
-    colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
+    prioridad_colores = {
+        'alto': '#ff0000',  # Rojo para alta prioridad
+        'mediano': '#E3DA4D',  # Naranja para media prioridad
+        'bajo': '#0b9851',  # Verde para baja prioridad
+    }
     
-    tasks = []
+    colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
+    tasks=[]
     for pedido in pedidos:
-        productos = [producto.nombre for producto in pedido.producto.all()]
-        color = random.choice(colores)
-        porcentaje_progreso = random.randint(10, 100)
-        task_data = [
-            pedido.codigo,                       
-            fecha_actual,                     
-            pedido.fecha_entrega.strftime('%Y/%m/%d'),
-            pedido.fecha_emision.strftime('%Y/%m/%d'),
-            color,                           
-            porcentaje_progreso,
-            pedido.nombre,   
-            pedido.linea_produccion,       
-            pedido.cantidad,
-            pedido.cliente,
-            pedido.comentario,
-            productos,
-            pedido.prioridad,
-        ]
-        tasks.append(task_data)
+
+        productos = pedido.producto.all()
+        
+        if productos.exists():
+            for producto in productos:
+                productos_name = [producto.nombre]
+                producto_codigo = [producto.codigo]
+                largo = [producto.largo for producto in pedido.producto.all()]
+                ancho = [producto.ancho for producto in pedido.producto.all()]
+                alto = [producto.alto for producto in pedido.producto.all()]
+                color = random.choice(colores)
+                color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
+                porcentaje_progreso = random.randint(10, 100)
+                tasks_pedido = [
+                    pedido.codigo,
+                    fecha_actual,   # 1
+                    pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                    pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                    color,  # 4
+                    porcentaje_progreso,  # 5
+                    pedido.nombre,  # 6
+                    pedido.linea_produccion,  # 7
+                    pedido.cantidad,  # 8
+                    pedido.cliente,  # 9
+                    pedido.comentario,  # 10
+                    productos_name,  # 11
+                    pedido.prioridad,  # 12
+                    color_p,  # 13
+                    largo, #14
+                    ancho, #15
+                    alto, #16
+                    producto_codigo  # Agregar el código del producto
+                ]
+
+                tasks.append(tasks_pedido)
+        else:
+            # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
+            productos_name = ["N/A"]
+            producto_codigo = ["N/A"]
+            largo = [producto.largo for producto in pedido.producto.all()]
+            ancho = [producto.ancho for producto in pedido.producto.all()]
+            alto = [producto.alto for producto in pedido.producto.all()]
+            color = random.choice(colores)
+            color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
+            porcentaje_progreso = random.randint(10, 100)
+            tasks_pedido = [
+                pedido.codigo,
+                fecha_actual,   # 1
+                pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                color,  # 4
+                porcentaje_progreso,  # 5
+                pedido.nombre,  # 6
+                pedido.linea_produccion,  # 7
+                pedido.cantidad,  # 8
+                pedido.cliente,  # 9
+                pedido.comentario,  # 10
+                productos_name,  # 11
+                pedido.prioridad,  # 12
+                color_p,  # 13
+                largo, #14
+                ancho, #15
+                alto, #16
+                producto_codigo  # Agregar el código del producto
+            ]
+
+            tasks.append(tasks_pedido)
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
+
+
+
+
 
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)

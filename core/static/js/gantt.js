@@ -75,6 +75,7 @@ class Gantt {
     }
 
 
+<<<<<<< HEAD
         buildTableBody() {
             var html = '';
         
@@ -115,14 +116,314 @@ class Gantt {
                 }
         
                 html += '</tr>';
+=======
+    buildTableBody() {
+        var html = '';
+
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            var dMin = new Date(task[3]);
+            var dMax = new Date(task[2]);
+
+            // Calcular la diferencia en días entre dMin y dMax
+            var dateDiff = this.diffInDays(dMax, dMin);
+
+            var daysBefore = this.diffInDays(this.minDate, dMin);
+            var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+            // Ensure that daysBefore is at least 0 (minimum start date constraint)
+            daysBefore = Math.max(daysBefore, 0);
+
+            // Ensure that daysAfter is at least 0 (maximum end date constraint)
+            daysAfter = Math.max(daysAfter, 0);
+
+            console.log('Fecha de inicio (dMin):', dMin);
+            console.log('Fecha de finalización (dMax):', dMax);
+
+            html += '<tr>';
+
+            for (let j = 0; j < daysBefore; j++) {
+                html += '<td></td>';
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
             }
-        
             return html;
         }
-        
-        
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+
+<<<<<<< HEAD
+=======
 
 
+
+
+
+
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+    buildSecondTable() {
+        var html = '<table class="second-table"><thead><tr>';
+        
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Diametros</th>';
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+        // Copiar el encabezado de la primera tabla
+        const selectedPeriod = document.querySelector('select[name="periodos"]').value;
+        const isDiarioSelected = selectedPeriod === "diario";
+        const isSemanalSelected = selectedPeriod === "semanal";
+        const isMensualSelected = selectedPeriod === "mensual";
+    
+        if (isDiarioSelected) {
+            var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
+            const actual = new Date(this.minDate);
+    
+            for (let i = 0; i < diffDays; i++) {
+                html += '<th style="color: white; width: 70vh; font-size: 13px;">' + this.formatDate(actual, "diario") + '</th>';
+                actual.setDate(actual.getDate() + 1);
+            }
+        } else if (isSemanalSelected) {
+            var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
+            const actual = new Date(this.minDate);
+    
+            for (let i = 0; i < diffWeeks; i++) {
+                const startOfWeek = new Date(actual);
+                const endOfWeek = new Date(actual);
+                endOfWeek.setDate(startOfWeek.getDate() + 6);
+    
+                html += '<th>' + this.formatDate(startOfWeek, "semanal", endOfWeek) + '</th>';
+                actual.setDate(startOfWeek.getDate() + 7);
+            }
+        } else if (isMensualSelected) {
+            var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
+            const actual = new Date(this.minDate);
+    
+            for (let i = 0; i < diffMonths; i++) {
+                actual.setMonth(actual.getMonth() + 1);
+                html += '<th>' + this.formatDate(actual, "mensual") + '</th>';
+            }
+        }
+    
+        html += '</tr></thead><tbody>';
+        
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+    
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+    
+            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+<<<<<<< HEAD
+                
+    
+=======
+
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+                var dMin = new Date(task[3]);
+                var dMax = new Date(task[2]);
+    
+                // Calcular la diferencia en días entre dMin y dMax
+                var dateDiff = this.diffInDays(dMax, dMin);
+    
+                var daysBefore = this.diffInDays(this.minDate, dMin);
+                var daysAfter = this.diffInDays(dMax, this.maxDate);
+    
+                // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                daysBefore = Math.max(daysBefore, 0);
+    
+                // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                daysAfter = Math.max(daysAfter, 0);
+    
+                console.log('Fecha de inicio (dMin):', dMin);
+                console.log('Fecha de finalización (dMax):', dMax);
+    
+                bodyHtml += '<tr>';
+    
+                // Agregar el valor de task[7] en la primera columna
+                bodyHtml += `<td>${task[7]}</td>`;
+    
+                // Agregar el nombre del producto en la segunda columna
+                bodyHtml += `<td>${product}</td>`;
+
+
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
+
+<<<<<<< HEAD
+    
+=======
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+                for (let k = 0; k < daysBefore; k++) {
+                    bodyHtml += '<td ></td>';
+                }
+    
+                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
+                    <span>${task[5]}%</span>
+<<<<<<< HEAD
+                    <a class="popup-link" data-pedido-id="${i}">U ${task[8]}</a>
+=======
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+                </td>`;
+    
+                for (let k = 0; k < daysAfter; k++) {
+                    bodyHtml += '<td></td>';
+                }
+    
+                bodyHtml += '</tr>';
+                
+            }
+        }
+    
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+    
+        html += '</tbody></table>';
+        return html;
+    }
+    
+    
+    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+    /*---------------------------------------------------------------------------------------------------------------------------------*/ 
+   
+
+
+    SalidaTable() {
+        var html = '<table class="second-table"><thead><tr>';
+
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>'; /**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">L/A/AL</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Solicitados</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Saldo</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Ø</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozos</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Grado de Urgencia</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Lateral</th>';/*por determinar*/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nota</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cant.desep.de 20MM</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[11][j]; // Obtiene el nombre del producto
+                var largo = task[14][j];
+                var ancho = task[15][j];
+                var alto = task[16][j];
+
+
+                var dMin = new Date(task[3]);
+                var dMax = new Date(task[2]);
+
+                // Calcular la diferencia en días entre dMin y dMax
+                var dateDiff = this.diffInDays(dMax, dMin);
+
+                var daysBefore = this.diffInDays(this.minDate, dMin);
+                var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+                // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                daysBefore = Math.max(daysBefore, 0);
+
+                // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                daysAfter = Math.max(daysAfter, 0);
+
+                console.log('Fecha de inicio (dMin):', dMin);
+                console.log('Fecha de finalización (dMax):', dMax);
+
+                bodyHtml += '<tr>';
+
+                bodyHtml += `<td>${task[7]}</td>`;/*Linea de Produccion*/
+                bodyHtml += `<td></td>`;/*Item*/
+                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Cliente*/
+                bodyHtml += `<td></td>`;/*OP*  / pedido id?*/
+                bodyHtml += `<td></td>`;/*Mercado*/
+                bodyHtml += `<td>${product}</td>`;/*Producto*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+                bodyHtml += `<td></td>`;/*ETA*/
+
+                bodyHtml += '</tr>';
+            }
+        }
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+    }
+
+
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+    /*---------------------------------------------------------------------------------------------------------------------------------*/
+
+
+
+
+    showPedidosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+    }
+    
+    showProductosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.buildSecondTable();
+<<<<<<< HEAD
+=======
+    }
+
+    showSalidaTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.SalidaTable();
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
+    }
+
+        
     diffInDays(max, min) {
         var diffTime = Math.abs(max - min);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
@@ -177,7 +478,6 @@ class Gantt {
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-        this.attachEventListeners();
     }
 
     attachEventListeners() {
@@ -190,14 +490,22 @@ class Gantt {
         document.getElementById('gantt').addEventListener('click', function(event) {
             const target = event.target;
             if (target.classList.contains('popup-link')) {
+<<<<<<< HEAD
                     self.handlePopupClick(event);
                         }
                     });
                 }
+=======
+                self.handlePopupClick(event);
+            }
+        });
+    }
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
 
     handlePopupClick(event) {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
+<<<<<<< HEAD
         const pedidoId = event.target.dataset.pedidoId;// Obtenemos el ID del pedido desde el atributo data-pedido-id
         const popup = document.createElement('div');
         popup.className = 'popup-overlay';
@@ -205,44 +513,78 @@ class Gantt {
         const pedidoData = this.tasks[pedidoId];
         const self = this; // Store a reference to the current instance
         popup.innerHTML = `
+=======
+        const pedidoId = parseInt(event.target.dataset.pedidoId);// Obtenemos el ID del pedido desde el atributo data-pedido-id
+        const productoId = event.target.dataset.productoId;
+        const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup 
+        const popup = document.createElement('div');
+        popup.className = 'popup-overlay';
+        console.log('Pedido ID:', pedidoId);
+        let pedidoData = this.tasks[pedidoId]; // Cambio a let
+        let productoData = this.tasks[productoId]; // Cambio a let
+        const self = this; // Store a reference to the current instance
+        if (popupType === 'pedido') {
+            pedidoData = this.tasks[pedidoId];
+            popup.innerHTML = `
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
   
-            <div class="popup-content" id="popup">
-                <h2>Detalles del pedido</h2>
-                <div class="popup-item">
-                    <strong>Código:</strong> <span>${pedidoData[0]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Cliente:</strong> <span>${pedidoData[9]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Nombre:</strong> <span>${pedidoData[6]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Producto:</strong> <span>${pedidoData[11]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Cantidad:</strong> <span>${pedidoData[8]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Prioridad:</strong> <span>${pedidoData[12]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Linea produccion:</strong> <span>${pedidoData[7]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Comentario:</strong> <span>${pedidoData[10]}</span>
-                </div>
-                <button class="close-button" >Cerrar</button>
-            </div>
+
+        <div class="popup-content" id="popup">
+        <h2>Detalles del pedido</h2>
+        <div class="popup-item">
+            <strong>Código:</strong> <span>${pedidoData[0]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Cliente:</strong> <span>${pedidoData[9]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Nombre:</strong> <span>${pedidoData[6]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Producto:</strong> <span>${pedidoData[11]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Cantidad:</strong> <span>${pedidoData[8]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Prioridad:</strong> <span>${pedidoData[12]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Linea produccion:</strong> <span>${pedidoData[7]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Comentario:</strong> <span>${pedidoData[10]}</span>
+        </div>
+        <button class="close-button" >Cerrar</button>
+    </div>
+<<<<<<< HEAD
 
         `;
     
+=======
+
+        `
+
+        } else if (popupType === 'producto') {
+            productoData = this.tasks[pedidoId];
+            popup.innerHTML = `
+            <div class="popup-content" id="popup">
+            <h2>Detalles del producto</h2>
+            <div class="popup-item">
+                <strong>Código:</strong> <span>${productoData[17]}</span>
+            </div>
+            <button class="close-button" >Cerrar</button>
+            </div>
+        `;
+        }
+
+>>>>>>> c616fa0cf2bac5504680c5b8876e783ad429ec19
         document.body.appendChild(popup);
 
         // Add a click event listener to the close button
@@ -257,7 +599,10 @@ class Gantt {
     }
 }
 
-const gantt = new Gantt(tasksData);
+
+
+
+
 
 const periodosSelect = document.querySelector('select[name="periodos"]');
 periodosSelect.value = "diario";
@@ -323,3 +668,5 @@ popupOverlay.style.display = 'none';
         var popup = document.getElementById("carga-form");
         popup.style.display = "none";
     }
+
+
