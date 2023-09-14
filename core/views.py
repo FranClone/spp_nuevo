@@ -404,6 +404,7 @@ def gantt_view(request):
     }
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
+
     tasks=[]
     for pedido in pedidos:
 
@@ -475,9 +476,6 @@ def gantt_view(request):
             tasks.append(tasks_pedido)
 
     return render(request, 'home.html', {'tasks': tasks, 'form': form})
-
-
-
 
 
 def eliminar_materia_prima(request,id):
