@@ -1,33 +1,88 @@
+
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE = edge">
+    <meta name="viewport" content="width = device-width, initial-scale = 1.0">
+    <title>SPP - Login</title>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
     <title>Knapsack Algorithm Results</title>
     <style>
-        /* Initially hide the table */
         #result-table {
             display: none;
+            border-collapse: collapse; /* Add this to collapse table borders */
+            width: auto; /* Set the table width to 100% */
+        }
+    
+        #result-table th,
+        #result-table td {
+            border: 1px solid #ddd; /* Add borders to table cells */
+            padding: 8px; /* Add padding to cells for spacing */
+            text-align: left; /* Align text to the left within cells */
+        }
+    
+
+    
+        #run-algorithm-button {
+            background-color: rgba(255, 0, 0, 0.705);
+            width:30vh;
+            color: white;
+            border-radius: 3px;
+            padding: 10px;
+            border: 1px solid white;
+            float: center;
+            margin-top: 1%;
+            margin-left: 1%;
+            margin-right: 1%;
+        }
+        #btn-home {
+            background-color: rgba(255, 0, 0, 0.705);
+            width: 30vh;
+            color: white;
+            border-radius: 3px;
+            padding: 10px;
+            border: 1px solid white;
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .button-container {
+            text-align: center; /* Center-align the button */
         }
     </style>
 </head>
 <body>
+    <div class="login-box" id="login">
+        <img src='{% static "img/logo_betech.png" %}' class="avatar" alt="Avatar Image">
+
     <h1>Resultado Algoritmo</h1>
-
-    <!-- Add a button to run the algorithm and show results -->
+    <div>
     <button id="run-algorithm-button">Run</button>
-
-    <table id="result-table">
+    <table id="result-table" >
         <tr>
             <th>Item seleccionado</th>
+            <th>Ganancias</th>
+            <th>Peso</th>
         </tr>
         {% for item_number in selected %}
         <tr>
             <td>Item {{ item_number }}</td>
-            <td>Ganancias {{ selected_profits }}</td>
-            <td>Peso {{ selected_weights }}</td>
+            <td> {{ selected_profits }}</td>
+            <td> {{ selected_weights }}</td>
         </tr>
         {% endfor %}
     </table>
-
+    <a href="{% url 'home' %}">
+        <button  id="btn-home"  type="button">Atrás</button>
+      </a>  
+</div>
+</div>
     <!-- Add JavaScript to run the algorithm and show/hide the table -->
     <script>
         document.getElementById("run-algorithm-button").addEventListener("click", function() {
@@ -41,6 +96,7 @@
                     resultTable.style.display = "table"; // Show the table
       
                 }
+                
             };
             xhr.send();
         });
