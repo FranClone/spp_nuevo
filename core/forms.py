@@ -150,12 +150,23 @@ class CrearProductoForm(forms.ModelForm):
             'largo',
             'ancho',
             'alto',
-            'demanda',
+            'grado_urgencia',
             'inventario_inicial',
             'valor_inventario',
             'costo_almacenamiento',
             'volumen_obtenido',
             'inventario_final',
+            'paquetes_solicitados',
+            'paquetes_saldo',
+            'cantidad_piezas',
+            'cantidad_trozos',
+            'piezas_xpaquete',
+            'piezas_xtrozo',
+            'nombre_rollizo',
+            'volumen_obtenido',
+            'inventario_final',
+            'patron_corte',
+            'linea',
         ]
 #Lista valores prioridad
 
@@ -171,7 +182,7 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
 
-        self.fields['fecha_emision'].widget = forms.widgets.DateInput(
+        self.fields['fecha_produccion'].widget = forms.widgets.DateInput(
             attrs={
                 'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
                 'class': 'form-control'
@@ -183,21 +194,20 @@ class ActualizarPedidoForm(forms.ModelForm):
         model = Pedido
         fields = [
             'cliente',
+            'fecha_produccion',
             'fecha_entrega',
-            'fecha_emision',
-            'codigo',
+            'orden_pedido',
             'comentario',
             'nombre',
             'producto',
-            'cantidad',
             'prioridad',
-            'linea_produccion',
             'estado',
+            'version'
         ]
         widgets = {
             'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
 }
-          
+   
 
 class ProductoTerminadoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto terminado"""

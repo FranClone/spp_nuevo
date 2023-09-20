@@ -6,7 +6,7 @@ class Rollizo(models.Model):
     descripcion_rollizo = models.CharField(max_length=500, blank=True, null=True)
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
     diametro = models.IntegerField()
-    rollizo_largo = models.ForeignKey('RollizoLargo', on_delete=models.CASCADE, verbose_name='Largo')
+    largo = models.ForeignKey('RollizoLargo', on_delete=models.CASCADE, verbose_name='Largo')
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
     CLASE_DIAMETRICA_CHOICES = []

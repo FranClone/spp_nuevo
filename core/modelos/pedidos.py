@@ -18,25 +18,24 @@ class Pedido(models.Model):
     ('completado', 'Completado'),
     ]
     
-    OPCION_PRODUCCION= [
-    ('', 'Seleccione una opción'),
-    ('grueso', 'Grueso'),
-    ('delgado', 'Delgado'),
-    ]
+    # OPCION_PRODUCCION= [
+    # ('', 'Seleccione una opción'),
+    # ('grueso', 'Grueso'),
+    # ('delgado', 'Delgado'),
+    # ]
     
     # Entradas
     cliente = models.CharField(max_length=50, null=False, blank=False)
-    fecha_emision = models.DateField(null=False, blank=False)
+    fecha_produccion = models.DateField(null=False, blank=False)
     fecha_entrega = models.DateField(null=False, blank=False)
-    codigo = models.CharField(max_length=20, unique=True, null=False, blank=False)
+    orden_pedido = models.CharField(max_length=20, unique=True, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     nombre = models.CharField(max_length=20, null=False, blank=False )
     #producto = models.CharField(max_length=20, null=False, blank=False , default='Sin comentario')
     producto = models.ManyToManyField(Producto)
-    cantidad = models.PositiveIntegerField(null=False, blank=False)
     prioridad = models.CharField(max_length=20,null=False, blank=False,choices=OPCION_PRIORIDAD, default='')
-    linea_produccion = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_PRODUCCION, default='')
-    
+    #linea_produccion = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_PRODUCCION, default='')
+    version = models.PositiveIntegerField(null=False, blank=False)
     #porcentaje_avance = models.FloatField(max_length=5)
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
     
@@ -44,7 +43,7 @@ class Pedido(models.Model):
     estado = models.CharField(max_length=20, null=False, blank=False,choices=OPCION_ESTADO, default='')
 
     def __str__(self):
-        return f"Pedido {self.codigo}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
+        return f"Pedido {self.orden_pedido}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
     
 
 # class Pedido_Producto(models.Model):

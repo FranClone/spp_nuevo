@@ -421,15 +421,15 @@ def gantt_view(request):
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
                 tasks_pedido = [
-                    pedido.codigo,
+                    pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                    pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                    pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                     color,  # 4
                     porcentaje_progreso,  # 5
                     pedido.nombre,  # 6
-                    pedido.linea_produccion,  # 7
-                    pedido.cantidad,  # 8
+                   # pedido.linea_produccion,  # 7
+                   # pedido.cantidad,  # 8
                     pedido.cliente,  # 9
                     pedido.comentario,  # 10
                     productos_name,  # 11
@@ -453,10 +453,10 @@ def gantt_view(request):
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
             tasks_pedido = [
-                pedido.codigo,
+                pedido.orden_pedido,
                 fecha_actual,   # 1
                 pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                pedido.fecha_emision.strftime('%Y/%m/%d'),  # 3
+                pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                 color,  # 4
                 porcentaje_progreso,  # 5
                 pedido.nombre,  # 6

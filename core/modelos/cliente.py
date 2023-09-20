@@ -13,7 +13,8 @@ class Cliente(models.Model):
     nombre_fantasia = models.CharField(max_length=100, blank=True, null=True)
     ciudad = models.CharField(max_length=100, blank=True, null=True)
     telefono = models.IntegerField(blank=True, null=True)
-
+    mercado = models.CharField(max_length=100)
+    puerto_destino  = models.CharField(max_length=100)
     class Meta:
         db_table = 'CLIENTE'
 

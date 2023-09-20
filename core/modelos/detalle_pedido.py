@@ -18,6 +18,7 @@ class DetallePedido(models.Model):
     volumen_producto = models.FloatField(max_length=10, validators=[MinValueValidator(0)])
     fecha_entrega = models.DateField()
     estado_pedido_linea = models.BooleanField(blank=True, null=True)
+    cantidad = models.PositiveIntegerField(null=False, blank=False)
 
     class Meta:
         db_table = 'DETALLE_PEDIDO'
