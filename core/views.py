@@ -22,6 +22,7 @@ from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
+from .modelos.cliente import Cliente
 from .modelos.resources import PedidoResource
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -30,7 +31,9 @@ from django.http import JsonResponse
 from datetime import datetime
 import random
 from django.urls import reverse
-
+import pandas as pd
+from django.db import connection
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
@@ -38,7 +41,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from tablib import Dataset 
 from .forms import Excelform
-
+from django.contrib import messages
+import logging  # Import the logging module
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -47,9 +51,7 @@ try:
 except Exception as ex:
     print(ex)
 
-from django.contrib import messages
-import pandas as pd
-import logging  # Import the logging module
+
 
 from django.shortcuts import render
 from mip import Model, xsum, maximize, BINARY, CBC
@@ -74,9 +76,7 @@ def mochila(request):
     return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
 
 
-import pandas as pd
-from django.db import connection
-from django.db import transaction
+
 
 def importar(request):
     if request.method == 'POST':
@@ -472,18 +472,15 @@ def gantt_view(request):
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                     color,  # 4
-                    porcentaje_progreso,  # 5
-                   # pedido.nombre,  # 6
-                   # pedido.linea_produccion,  
-                   # pedido.cantidad,  
-                    nombre_cliente,  # 7
-                    pedido.comentario,  # 8
-                    productos_name,  # 9
-                    pedido.prioridad,  # 10
-                    color_p,  # 11
-                    largo, #12
-                    ancho, #13
-                    alto, #14
+                    porcentaje_progreso,  # 5 
+                    nombre_cliente,  # 6
+                    pedido.comentario,  # 7
+                    productos_name,  # 8
+                    pedido.prioridad,  # 9
+                    color_p,  # 10
+                    largo, #11
+                    ancho, #12
+                    alto, #13
                     producto_codigo  # Agregar el código del producto
                 ]
 
@@ -506,15 +503,14 @@ def gantt_view(request):
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                 color,  # 4
                 porcentaje_progreso,  # 5
-                # pedido.nombre,  # 6
-                nombre_cliente,  # 7
-                pedido.comentario,  # 8
-                productos_name,  # 9
-                pedido.prioridad,  # 10
-                color_p,  # 11
-                largo, #12
-                ancho, #13
-                alto, #14
+                nombre_cliente,  # 6
+                pedido.comentario,  # 7
+                productos_name,  # 8
+                pedido.prioridad,  # 9
+                color_p,  # 10
+                largo, #11
+                ancho, #12
+                alto, #13
                 producto_codigo  # Agregar el código del producto
             ]
 

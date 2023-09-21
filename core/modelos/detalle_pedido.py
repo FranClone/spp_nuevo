@@ -11,21 +11,22 @@ from django.core.validators import MinValueValidator
 class DetallePedido(models.Model):
     pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, verbose_name='Pedido')
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
-    detalle_producto = models.CharField(max_length=300)
+    detalle_producto = models.CharField(max_length=300,null=True)
     alto_producto = models.FloatField(blank=True, null=True)
     ancho_producto = models.FloatField(blank=True, null=True)
     largo_producto = models.FloatField(blank=True, null=True)
-    volumen_producto = models.FloatField(max_length=10, validators=[MinValueValidator(0)])
-    fecha_entrega = models.DateField()
+    volumen_producto = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
+    fecha_entrega = models.DateField(null=True)
     estado_pedido_linea = models.BooleanField(blank=True, null=True)
     #
+    grado_urgencia = models.CharField(max_length=100, null=True, blank=False)
     #piezas x paquete * paquetes saldo
-    cantidad_piezas = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
+    cantidad_piezas = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)
      #piezas * piezas x trozo
-    cantidad_trozos = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
-    piezas_xpaquete = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
-    piezas_xtrozo = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)    
-    paquetes_solicitados = models.DecimalField(max_digits=5, decimal_places=2, null=False, blank=False)
+    cantidad_trozos = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)
+    piezas_xpaquete = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)
+    piezas_xtrozo = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)    
+    paquetes_solicitados = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)
     volumen_obtenido = models.FloatField(max_length=10, null=True)
     paquetes_saldo = models.DecimalField(max_digits=5, decimal_places=2, null=True, blank=False)
 

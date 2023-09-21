@@ -86,30 +86,30 @@
                 <tr>
                     <th>{{ form.inventario_inicial.label_tag }}</th>
                     <th>{{ form.valor_inventario.label_tag }}</th>
-                    <th>{{ form.nombre_rollizo.label_tag }}</th>
+                    <th>{{ form.costo_almacenamiento.label_tag }}</th>
+             
                 </tr>
                 <tr>
                     <td>{{ form.inventario_inicial }}</td>
                     <td>{{ form.valor_inventario }}</td>
-                    <td>{{ form.nombre_rollizo }}</td>
+                    <td>{{ form.costo_almacenamiento }}</td>
                 </tr>
 
                 <tr>  
-                    <th>{{ form.linea.label_tag }}</th>
-                    <th>{{ form.patron_corte.label_tag }}</th>
+                    <th>{{ form.nombre_rollizo.label_tag }}</th>
+                    <th>{{ form.inventario_final.label_tag }}</th>   
                 </tr>
                 <tr>
+                    <td>{{ form.nombre_rollizo }}</td>
+                    <td>{{ form.inventario_final }}</td>              
+                </tr>
+                <tr>                  
+                    <th>{{ form.linea.label_tag }}</th>
+                    <th>{{ form.patron_corte.label_tag }}</th> 
+                </tr>
+                <tr>   
                     <td>{{ form.linea }}</td>
                     <td>{{ form.patron_corte }}</td>
-                    
-                </tr>
-                <tr>
-                    <th>{{ form.costo_almacenamiento.label_tag }}</th>
-                    <th>{{ form.inventario_final.label_tag }}</th>
-                </tr>
-                <tr>  
-                    <td>{{ form.costo_almacenamiento }}</td>
-                    <td>{{ form.inventario_final }}</td>
                 </tr>
 
             </table>
@@ -147,7 +147,7 @@
                                 
                                 <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
                                 '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento}},
-                                , '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}' ,'{{producto.patron_corte}} ,'{{producto.linea}}' ')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                , '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}' ,'{{producto.patron_corte}} ,'{{producto.linea}}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
                             <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>      
                         </td>

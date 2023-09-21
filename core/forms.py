@@ -142,7 +142,6 @@ class CrearProductoForm(forms.ModelForm):
     ancho = forms.FloatField(min_value=0)
     largo = forms.FloatField(min_value=0)
     inventario_inicial = forms.FloatField(min_value=0)
-    volumen_obtenido = forms.FloatField(min_value=0)
     inventario_final = forms.FloatField(min_value=0)
     
     class Meta:
@@ -158,10 +157,9 @@ class CrearProductoForm(forms.ModelForm):
             'valor_inventario',
             'costo_almacenamiento',
             'nombre_rollizo',
+            'inventario_final',
             'patron_corte',
-            'linea',
-            'volumen_obtenido',
-            'inventario_final'
+            'linea'
         ]
 #Lista valores prioridad
 
