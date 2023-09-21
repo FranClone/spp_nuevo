@@ -177,11 +177,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[9][j]; // Obtiene el nombre del producto
-                var largo = task[12][j];
-                var ancho = task[13][j];
-                var alto = task[14][j];
+            for (let j = 0; j < task[8].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[8][j]; // Obtiene el nombre del producto
+                var largo = task[11][j];
+                var ancho = task[12][j];
+                var alto = task[13][j];
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -219,9 +219,9 @@ class Gantt {
                     bodyHtml += '<td ></td>';
                 }
 
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[11]}; border: 1px solid #000;">
+                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[10]}; border: 1px solid #000;">
                     <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[7]}</a>
                 </td>`;
 
                 for (let k = 0; k < daysAfter; k++) {
@@ -278,11 +278,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[9][j]; // Obtiene el nombre del producto
-                var largo = task[12][j];
-                var ancho = task[13][j];
-                var alto = task[14][j];
+            for (let j = 0; j < task[8].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[8][j]; // Obtiene el nombre del producto
+                var largo = task[11][j];
+                var ancho = task[12][j];
+                var alto = task[13][j];
 
 
                 var dMin = new Date(task[3]);
@@ -452,25 +452,22 @@ class Gantt {
             <strong>Código:</strong> <span>${pedidoData[0]}</span>
         </div>
         <div class="popup-item">
-            <strong>Cliente:</strong> <span>${pedidoData[7]}</span>
-        </div>
-        <div class="popup-item">
-            <strong>Nombre:</strong> <span>${pedidoData[6]}</span>
+            <strong>Cliente:</strong> <span>${pedidoData[6]}</span>
         </div>
         <div class="popup-item">
             <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
         </div>
         <div class="popup-item">
-            <strong>Producto:</strong> <span>${pedidoData[9]}</span>
+            <strong>Producto:</strong> <span>${pedidoData[8]}</span>
         </div>
         <div class="popup-item">
-            <strong>Prioridad:</strong> <span>${pedidoData[10]}</span>
+            <strong>Prioridad:</strong> <span>${pedidoData[9]}</span>
         </div>
         <div class="popup-item">
             <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
         </div>
         <div class="popup-item">
-            <strong>Comentario:</strong> <span>${pedidoData[8]}</span>
+            <strong>Comentario:</strong> <span>${pedidoData[7]}</span>
         </div>
         <button class="close-button" >Cerrar</button>
     </div>`;
@@ -482,7 +479,7 @@ class Gantt {
             <div class="popup-content" id="popup">
             <h2>Detalles del producto</h2>
             <div class="popup-item">
-                <strong>Código:</strong> <span>${productoData[17]}</span>
+                <strong>Código:</strong> <span>${productoData[16]}</span>
             </div>
             <button class="close-button" >Cerrar</button>
             </div>
