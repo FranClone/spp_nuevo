@@ -18,6 +18,7 @@ from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
+from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
@@ -137,6 +138,7 @@ def process_uploaded_file(xlsfile):
             print(f"Fallo en la importación de datos: {str(e)}")
 
     return {'success': True}
+
 
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
@@ -462,16 +464,16 @@ def gantt_view(request):
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
+                nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
+
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                     color,  # 4
-                    porcentaje_progreso,  # 5
-                   # pedido.linea_produccion,  
-                   # pedido.cantidad,  
-                    pedido.cliente,  # 6
+                    porcentaje_progreso,  # 5 
+                    nombre_cliente,  # 6
                     pedido.comentario,  # 7
                     productos_name,  # 8
                     pedido.prioridad,  # 9
@@ -493,6 +495,7 @@ def gantt_view(request):
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
+            nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
@@ -500,7 +503,7 @@ def gantt_view(request):
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                 color,  # 4
                 porcentaje_progreso,  # 5
-                pedido.cliente,  # 6
+                nombre_cliente,  # 6
                 pedido.comentario,  # 7
                 productos_name,  # 8
                 pedido.prioridad,  # 9
