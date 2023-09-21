@@ -36,6 +36,8 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from tablib import Dataset 
+from .forms import Excelform
+
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -45,7 +47,7 @@ except Exception as ex:
     print(ex)
 
 from django.contrib import messages
-
+import pandas as pd
 import logging  # Import the logging module
 
 from django.shortcuts import render
@@ -73,6 +75,7 @@ def mochila(request):
 
 import pandas as pd
 from django.db import connection
+from django.db import transaction
 
 def importar(request):
     if request.method == 'POST':
@@ -88,6 +91,7 @@ def importar(request):
         
     #return render(request, 'home.html')
     return redirect(reverse('home')) 
+
 
 def process_uploaded_file(xlsfile):
     if xlsfile:
