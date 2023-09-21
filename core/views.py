@@ -71,6 +71,9 @@ def mochila(request):
     return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
 
 
+import pandas as pd
+from django.db import connection
+
 def importar(request):
     if request.method == 'POST':
         print("post")
@@ -85,24 +88,50 @@ def importar(request):
         
     #return render(request, 'home.html')
     return redirect(reverse('home')) 
+
 def process_uploaded_file(xlsfile):
     if xlsfile:
-        file_content = xlsfile.read()
-        pedido_resource = PedidoResource()
-        dataset = Dataset()
-        imported_data = dataset.load(file_content)
-        result = pedido_resource.import_data(dataset, dry_run=True)
-        if result.has_errors():
-            errors = result.invalid_rows  # Get the list of rows with errors
-            for error in errors:
-                print(f"Error in row {error.row}: {error.error_messages}")
-        else:
-            print("No errors found during the dry run.")
-        if not result.has_errors():
-            pedido_resource.import_data(dataset, dry_run=False)
-            return {'success': True}
-    
-    return {'success': False}
+        try:
+            # Cargar el archivo Excel en un DataFrame de pandas
+            df = pd.read_excel(xlsfile)
+
+            with transaction.atomic():
+                # Use a transaction to ensure data integrity
+
+                # Crear una instancia de Pedido para cada registro y guardarla en la base de datos
+                for index, row in df.iterrows():
+                    productos_str = str(row['producto'])  # Convert 'producto' to a string
+                    if productos_str and isinstance(productos_str, str):
+                        productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
+
+                        pedido = Pedido(
+                            cliente=row['cliente'],
+                            fecha_produccion=row['fecha_produccion'],
+                            fecha_entrega=row['fecha_entrega'],
+                            orden_pedido=row['orden_pedido'],
+                            comentario=row['comentario'],
+                            nombre=row['nombre'],
+                            prioridad=row['prioridad'],
+                            version=row['version'],
+                            estado=row['estado']
+                        )
+                        pedido.save()
+
+                        # Asignar los productos usando the method .set()
+                        productos = Producto.objects.filter(nombre__in=productos_list)
+                        pedido.producto.set(productos)
+
+                print("Importación exitosa.")
+
+        except Exception as e:
+            print(f"Fallo en la importación de datos: {str(e)}")
+
+    return {'success': True}
+
+
+
+
+
 
 
 class Administracion(View):
@@ -398,10 +427,19 @@ def gantt_view(request):
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
     prioridad_colores = {
-        'alto': '#ff0000',  # Rojo para alta prioridad
-        'mediano': '#E3DA4D',  # Naranja para media prioridad
-        'bajo': '#0b9851',  # Verde para baja prioridad
-    }
+    'alto': '#ff0000',  # Rojo para alta prioridad
+    'mediano': '#E3DA4D',  # Naranja para media prioridad
+    'bajo': '#0b9851',  # Verde para baja prioridad
+    'Alto': '#ff0000',
+    'Medio': '#E3DA4D',
+    'Bajo': '#0b9851',
+    'Alta': '#ff0000',
+    'Media': '#E3DA4D',
+    'Baja': '#0b9851',
+    'alta': '#ff0000',
+    'media': '#E3DA4D',
+    'baja': '#0b9851'
+}
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
 
@@ -428,16 +466,16 @@ def gantt_view(request):
                     color,  # 4
                     porcentaje_progreso,  # 5
                     pedido.nombre,  # 6
-                   # pedido.linea_produccion,  # 7
-                   # pedido.cantidad,  # 8
-                    pedido.cliente,  # 9
-                    pedido.comentario,  # 10
-                    productos_name,  # 11
-                    pedido.prioridad,  # 12
-                    color_p,  # 13
-                    largo, #14
-                    ancho, #15
-                    alto, #16
+                   # pedido.linea_produccion,  
+                   # pedido.cantidad,  
+                    pedido.cliente,  # 7
+                    pedido.comentario,  # 8
+                    productos_name,  # 9
+                    pedido.prioridad,  # 10
+                    color_p,  # 11
+                    largo, #12
+                    ancho, #13
+                    alto, #14
                     producto_codigo  # Agregar el código del producto
                 ]
 
@@ -460,16 +498,14 @@ def gantt_view(request):
                 color,  # 4
                 porcentaje_progreso,  # 5
                 pedido.nombre,  # 6
-                pedido.linea_produccion,  # 7
-                pedido.cantidad,  # 8
-                pedido.cliente,  # 9
-                pedido.comentario,  # 10
-                productos_name,  # 11
-                pedido.prioridad,  # 12
-                color_p,  # 13
-                largo, #14
-                ancho, #15
-                alto, #16
+                pedido.cliente,  # 7
+                pedido.comentario,  # 8
+                productos_name,  # 9
+                pedido.prioridad,  # 10
+                color_p,  # 11
+                largo, #12
+                ancho, #13
+                alto, #14
                 producto_codigo  # Agregar el código del producto
             ]
 
