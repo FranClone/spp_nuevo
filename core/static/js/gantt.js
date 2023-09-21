@@ -206,7 +206,7 @@ class Gantt {
                 bodyHtml += `<td></td>`;
 
                 // Agregar el valor de task[7] en la primera columna
-                bodyHtml += `<td>${task[7]}</td>`;
+                bodyHtml += `<td>${task[6]}</td>`;
 
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
