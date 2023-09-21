@@ -183,6 +183,8 @@ class PedidoResource(ModelResource):
                                             model_fields=['nombre'], separator='|'))
     class Meta:
         model = Pedido
-        fields = ('id', 'cliente', 'fecha_produccion','fecha_entrega', 'orden_pedido', 'comentario', 'nombre', 'producto', 'prioridad','version', 'estado')
-      #  export_order = ('id', 'cliente', 'fecha_produccion','fecha_entrega', 'orden_pedido', 'comentario', 'nombre', 'producto', 'prioridad','version', 'estado')
+        fields = ('id', 'cliente', 'fecha_produccion', 'fecha_entrega', 'orden_pedido', 'comentario', 'nombre', 'producto', 'prioridad', 'version', 'estado')    
+
+
+
 

@@ -128,12 +128,6 @@ def process_uploaded_file(xlsfile):
 
     return {'success': True}
 
-
-
-
-
-
-
 class Administracion(View):
     @method_decorator(login_required) #HomeView da acceso a ambos, get req y post req. Get request pide la info para tu ver, post request es lo que envias para que el servidor haga algo con esa información
     def get(self, request, *args, **kwargs):

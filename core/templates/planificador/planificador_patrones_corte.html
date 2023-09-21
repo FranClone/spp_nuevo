@@ -65,10 +65,10 @@
                         <td>{{ form.descripcion.label_tag}}</td>
                         <td>{{ form.rollizo.label_tag}}</td>
                     </tr>
-                    {% comment %} <tr>
+                    <tr>
                         <td>{{ form.descripcion}}</td>
                         <td>{{ form.rollizo}}</td>
-                    </tr> {% endcomment %}
+                    </tr> 
                     <tr>
                         <td>{{ form.rendimiento.label_tag}}</td>
                         <td>{{ form.velocidad_linea.label_tag}}</td>
@@ -119,12 +119,12 @@
                         <tr>
                             <td>{{ patron.codigo }}</td>
                             <td>{{ patron.producto_asociado }}</td>
-                            {% comment %} <td>{{ patron.rollizo }}</td> {% endcomment %}
+                            <td>{{ patron.rollizo }}</td> 
                             <td>{{ patron.rendimiento}}</td>
                             <td>  
                                 <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
                                 <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
-                                '{{ patron.producto_asociado }}',{% comment %} '{{patron.rollizo}}',{% endcomment %}'{{patron.descripcion}}','{{patron.rendimiento}}', 
+                                '{{ patron.producto_asociado }}','{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}', 
                                 '{{patron.velocidad_linea}}','{{patron.setup_time}}','{{patron.lead_time}}','{{patron.utilizado}}')">
                                     <i class="fa-regular fa-clipboard fa-xl"></i>
                                 </button>
@@ -157,9 +157,9 @@
         <div class="popup-item">
             <strong>Producto Asociado:</strong> <span id="popupProductoAsociado" ></span>
         </div>
-        {% comment %} <div class="popup-item">
-            <strong>Clase Diamétrica (Rollizo):</strong> <span id="popupClaseDiametricoRollizo"></span>
-        </div> {% endcomment %}
+         <div class="popup-item">
+            <strong>Clase Diamétrica (Rollizo):</strong> <span id="popupRollizo"></span>
+        </div> 
         <div class="popup-item">
             <strong>Descripcion:</strong> <span id="popupPCorteDescripcion"></span>
         </div>
@@ -197,9 +197,6 @@
                 isFilterVisible = true;
             }
         });
-    </script> {% endcomment %}
-        <!--Este script crea la función para desplegar el menú de carga manual-->
-    {% comment %} <script>
         const toggleButton = document.getElementById("toggle-carga-button");
         const cargaForm = document.querySelector(".form-container-productos form");
 
