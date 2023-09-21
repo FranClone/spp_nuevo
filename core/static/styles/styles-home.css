@@ -602,3 +602,6 @@ table tr {
     margin-left: 44%;
 }
 
+.bold-heading {
+    font-weight: bold;
+}
