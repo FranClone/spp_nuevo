@@ -36,6 +36,8 @@ from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from tablib import Dataset 
+from .forms import Excelform
+
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -45,7 +47,7 @@ except Exception as ex:
     print(ex)
 
 from django.contrib import messages
-
+import pandas as pd
 import logging  # Import the logging module
 
 from django.shortcuts import render
@@ -70,7 +72,6 @@ def mochila(request):
 
     return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
 
-
 def importar(request):
     if request.method == 'POST':
         print("post")
@@ -85,24 +86,142 @@ def importar(request):
         
     #return render(request, 'home.html')
     return redirect(reverse('home')) 
+from django.db import transaction
+
 def process_uploaded_file(xlsfile):
     if xlsfile:
-        file_content = xlsfile.read()
-        pedido_resource = PedidoResource()
-        dataset = Dataset()
-        imported_data = dataset.load(file_content)
-        result = pedido_resource.import_data(dataset, dry_run=True)
-        if result.has_errors():
-            errors = result.invalid_rows  # Get the list of rows with errors
-            for error in errors:
-                print(f"Error in row {error.row}: {error.error_messages}")
-        else:
-            print("No errors found during the dry run.")
-        if not result.has_errors():
-            pedido_resource.import_data(dataset, dry_run=False)
-            return {'success': True}
+        try:
+            # Cargar el archivo Excel en un DataFrame de pandas
+            df = pd.read_excel(xlsfile)
+
+            with transaction.atomic():
+                # Use a transaction to ensure data integrity
+
+                # Crear una instancia de Pedido para cada registro y guardarla en la base de datos
+                for index, row in df.iterrows():
+                    productos_str = str(row['producto'])  # Convert 'producto' to a string
+                    if productos_str and isinstance(productos_str, str):
+                        productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
+
+                        pedido = Pedido(
+                            cliente=row['cliente'],
+                            fecha_produccion=row['fecha_produccion'],
+                            fecha_entrega=row['fecha_entrega'],
+                            orden_pedido=row['orden_pedido'],
+                            comentario=row['comentario'],
+                            nombre=row['nombre'],
+                            prioridad=row['prioridad'],
+                            version=row['version'],
+                            estado=row['estado']
+                        )
+                        pedido.save()
+
+                        # Asignar los productos usando the method .set()
+                        productos = Producto.objects.filter(nombre__in=productos_list)
+                        pedido.producto.set(productos)
+
+                print("Importación exitosa.")
+
+        except Exception as e:
+            print(f"Fallo en la importación de datos: {str(e)}")
+
+    return {'success': True}
+
+# def process_uploaded_file(xlsfile):
+#     if xlsfile:
+#         # Cargar el archivo Excel en un DataFrame de pandas
+#         df = pd.read_excel(xlsfile)
+
+#         try:
+#             # Crear una instancia de Pedido para cada registro y guardarla en la base de datos
+#             for index, row in df.iterrows():
+#                 productos_str = str(row['producto'])  # Convert 'producto' to a string
+#                 if productos_str and isinstance(productos_str, str):
+#                     productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
+
+#                     pedido = Pedido(
+#                         cliente=row['cliente'],
+#                         fecha_produccion=row['fecha_produccion'],
+#                         fecha_entrega=row['fecha_entrega'],
+#                         orden_pedido=row['orden_pedido'],
+#                         comentario=row['comentario'],
+#                         nombre=row['nombre'],
+#                         prioridad=row['prioridad'],
+#                         version=row['version'],
+#                         estado=row['estado']
+#                     )
+#                     pedido.save()
+
+#                     # Asignar los productos usando el método .set()
+#                     productos = Producto.objects.filter(nombre__in=productos_list)
+#                     pedido.producto.set(productos)
+
+#             print("Importación exitosa.")
+#         except Exception as e:
+#             print(f"Fallo en la importación de datos: {str(e)}")
+
+#     return {'success': True}
+# def importar(request):
+#     if request.method == 'POST':
+#         print("post")
+#         if 'subir' in request.POST:
+#             result = process_uploaded_file(request.FILES.get('xlsfile'))
+#             if result.get('success'):
+#                 # Log success message to the console
+#                 print("File uploaded and processed successfully.")
+#             else:
+#                 # Log error message to the console
+#                 print("Data import failed. Please check the file format.")
+        
+#     #return render(request, 'home.html')
+#     return redirect(reverse('home')) 
+# def process_uploaded_file(xlsfile):
+#     errors = []
+
+#     if xlsfile:
+#         file_content = xlsfile.read()
+#         pedido_resource = PedidoResource()
+#         dataset = Dataset()
+#         imported_data = dataset.load(file_content)
+#         result = pedido_resource.import_data(dataset, dry_run=True)
+
+#         if result.has_errors():
+#             error_list = result.invalid_rows  # Get a list of rows with errors
+#             for error_row in error_list:
+#                 error_message = f"Error in row {error_row['row']}:\n"
+#                 for error_col, error_msg in error_row['errors'].items():
+#                     error_message += f"- Column {error_col}: {', '.join(error_msg)}\n"
+#                 errors.append(error_message)
+#         else:
+#             errors.append("No errors found during the dry run.")
+
+#         if not result.has_errors():
+#             pedido_resource.import_data(dataset, dry_run=False)
+#             return {'success': True, 'errors': errors}
     
-    return {'success': False}
+#     # Print errors to the terminal
+#     for error in errors:
+#         print(error)
+
+#     return {'success': False, 'errors': errors}
+# def process_uploaded_file(xlsfile):
+#     if xlsfile:
+#         file_content = xlsfile.read()
+#         pedido_resource = PedidoResource()
+#         dataset = Dataset()
+#         imported_data = dataset.load(file_content)
+#         result = pedido_resource.import_data(dataset, dry_run=True)
+#         if result.has_errors():
+#             errors = result.invalid_rows  # Get the list of rows with errors
+#             for error in errors:
+#                 print(f"Error in row {error.row}: {error.error_messages}")
+#         else:
+#             print("No errors found during the dry run.")
+#         if not result.has_errors():
+#             pedido_resource.import_data(dataset, dry_run=False)
+#             return {'success': True}
+    
+#     return {'success': False}
 
 
 class Administracion(View):
@@ -427,10 +546,6 @@ def gantt_view(request):
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                     color,  # 4
                     porcentaje_progreso,  # 5
-                    pedido.nombre,  # 6
-                   # pedido.linea_produccion,  # 7
-                   # pedido.cantidad,  # 8
-                    pedido.cliente,  # 9
                     pedido.comentario,  # 10
                     productos_name,  # 11
                     pedido.prioridad,  # 12
@@ -459,9 +574,8 @@ def gantt_view(request):
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                 color,  # 4
                 porcentaje_progreso,  # 5
-                pedido.nombre,  # 6
-                pedido.linea_produccion,  # 7
-                pedido.cantidad,  # 8
+        
+   
                 pedido.cliente,  # 9
                 pedido.comentario,  # 10
                 productos_name,  # 11

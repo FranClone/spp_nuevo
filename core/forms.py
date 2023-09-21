@@ -11,6 +11,10 @@ from .modelos.productos_terminados import ProductoTerminado
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.exceptions import ValidationError
 
+
+class Excelform(forms.Form):
+    excel_file = forms.FileField()
+
 class CustomUserCreationForm(UserCreationForm):
     #campo rut_body
     rut_body = forms.CharField(
@@ -150,23 +154,14 @@ class CrearProductoForm(forms.ModelForm):
             'largo',
             'ancho',
             'alto',
-            'grado_urgencia',
             'inventario_inicial',
             'valor_inventario',
             'costo_almacenamiento',
-            'volumen_obtenido',
-            'inventario_final',
-            'paquetes_solicitados',
-            'paquetes_saldo',
-            'cantidad_piezas',
-            'cantidad_trozos',
-            'piezas_xpaquete',
-            'piezas_xtrozo',
             'nombre_rollizo',
-            'volumen_obtenido',
-            'inventario_final',
             'patron_corte',
             'linea',
+            'volumen_obtenido',
+            'inventario_final'
         ]
 #Lista valores prioridad
 
@@ -198,7 +193,6 @@ class ActualizarPedidoForm(forms.ModelForm):
             'fecha_entrega',
             'orden_pedido',
             'comentario',
-            'nombre',
             'producto',
             'prioridad',
             'estado',
