@@ -18,9 +18,11 @@ from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
+from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
+from .modelos.cliente import Cliente
 from .modelos.resources import PedidoResource
 from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -29,13 +31,18 @@ from django.http import JsonResponse
 from datetime import datetime
 import random
 from django.urls import reverse
-
+import pandas as pd
+from django.db import connection
+from django.db import transaction
 from django.shortcuts import render, get_object_or_404
 from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
 from tablib import Dataset 
+from .forms import Excelform
+from django.contrib import messages
+import logging  # Import the logging module
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -44,9 +51,7 @@ try:
 except Exception as ex:
     print(ex)
 
-from django.contrib import messages
 
-import logging  # Import the logging module
 
 from django.shortcuts import render
 from mip import Model, xsum, maximize, BINARY, CBC
@@ -71,6 +76,8 @@ def mochila(request):
     return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
 
 
+
+
 def importar(request):
     if request.method == 'POST':
         print("post")
@@ -85,24 +92,52 @@ def importar(request):
         
     #return render(request, 'home.html')
     return redirect(reverse('home')) 
+
+
 def process_uploaded_file(xlsfile):
     if xlsfile:
-        file_content = xlsfile.read()
-        pedido_resource = PedidoResource()
-        dataset = Dataset()
-        imported_data = dataset.load(file_content)
-        result = pedido_resource.import_data(dataset, dry_run=True)
-        if result.has_errors():
-            errors = result.invalid_rows  # Get the list of rows with errors
-            for error in errors:
-                print(f"Error in row {error.row}: {error.error_messages}")
-        else:
-            print("No errors found during the dry run.")
-        if not result.has_errors():
-            pedido_resource.import_data(dataset, dry_run=False)
-            return {'success': True}
-    
-    return {'success': False}
+        try:
+            # Cargar el archivo Excel en un DataFrame de pandas
+            df = pd.read_excel(xlsfile)
+
+            with transaction.atomic():
+                # Use a transaction to ensure data integrity
+
+                # Crear una instancia de Pedido para cada registro y guardarla en la base de datos
+                for index, row in df.iterrows():
+                    productos_str = str(row['producto'])  # Convert 'producto' to a string
+                    if productos_str and isinstance(productos_str, str):
+                        productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
+                        
+                        id_cliente = row['cliente']
+                        try:
+                            cliente = Cliente.objects.get(id=id_cliente)
+                        except Cliente.DoesNotExist:
+                            print(f"Cliente con id {id_cliente} no existe.")
+                            continue
+
+                        pedido = Pedido(
+                            cliente=cliente,
+                            fecha_produccion=row['fecha_produccion'],
+                            fecha_entrega=row['fecha_entrega'],
+                            orden_pedido=row['orden_pedido'],
+                            comentario=row['comentario'],
+                            prioridad=row['prioridad'],
+                            version=row['version'],
+                            estado=row['estado']
+                        )
+                        pedido.save()
+
+                        # Asignar los productos usando the method .set()
+                        productos = Producto.objects.filter(nombre__in=productos_list)
+                        pedido.producto.set(productos)
+
+                print("Importación exitosa.")
+
+        except Exception as e:
+            print(f"Fallo en la importación de datos: {str(e)}")
+
+    return {'success': True}
 
 
 class Administracion(View):
@@ -398,10 +433,19 @@ def gantt_view(request):
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
     prioridad_colores = {
-        'alto': '#ff0000',  # Rojo para alta prioridad
-        'mediano': '#E3DA4D',  # Naranja para media prioridad
-        'bajo': '#0b9851',  # Verde para baja prioridad
-    }
+    'alto': '#ff0000',  # Rojo para alta prioridad
+    'mediano': '#E3DA4D',  # Naranja para media prioridad
+    'bajo': '#0b9851',  # Verde para baja prioridad
+    'Alto': '#ff0000',
+    'Medio': '#E3DA4D',
+    'Bajo': '#0b9851',
+    'Alta': '#ff0000',
+    'Media': '#E3DA4D',
+    'Baja': '#0b9851',
+    'alta': '#ff0000',
+    'media': '#E3DA4D',
+    'baja': '#0b9851'
+}
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
 
@@ -420,24 +464,23 @@ def gantt_view(request):
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
+                nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
+
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                     color,  # 4
-                    porcentaje_progreso,  # 5
-                    pedido.nombre,  # 6
-                   # pedido.linea_produccion,  # 7
-                   # pedido.cantidad,  # 8
-                    pedido.cliente,  # 9
-                    pedido.comentario,  # 10
-                    productos_name,  # 11
-                    pedido.prioridad,  # 12
-                    color_p,  # 13
-                    largo, #14
-                    ancho, #15
-                    alto, #16
+                    porcentaje_progreso,  # 5 
+                    nombre_cliente,  # 6
+                    pedido.comentario,  # 7
+                    productos_name,  # 8
+                    pedido.prioridad,  # 9
+                    color_p,  # 10
+                    largo, #11
+                    ancho, #12
+                    alto, #13
                     producto_codigo  # Agregar el código del producto
                 ]
 
@@ -452,6 +495,7 @@ def gantt_view(request):
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
+            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
@@ -459,17 +503,14 @@ def gantt_view(request):
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
                 color,  # 4
                 porcentaje_progreso,  # 5
-                pedido.nombre,  # 6
-                pedido.linea_produccion,  # 7
-                pedido.cantidad,  # 8
-                pedido.cliente,  # 9
-                pedido.comentario,  # 10
-                productos_name,  # 11
-                pedido.prioridad,  # 12
-                color_p,  # 13
-                largo, #14
-                ancho, #15
-                alto, #16
+                nombre_cliente,  # 6
+                pedido.comentario,  # 7
+                productos_name,  # 8
+                pedido.prioridad,  # 9
+                color_p,  # 10
+                largo, #11
+                ancho, #12
+                alto, #13
                 producto_codigo  # Agregar el código del producto
             ]
 

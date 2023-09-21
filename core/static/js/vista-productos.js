@@ -94,17 +94,21 @@ $(document).ready(function() {
 
 
 
-function openPopup(codigo, nombre, alto, ancho, largo, descripcion, demanda, inventario_inicial, valor_inventario, costo_almacenamiento) {
+function openPopup(codigo, nombre, alto, ancho, largo, descripcion, inventario_inicial, valor_inventario,
+     costo_almacenamiento, nombre_rollizo,inventario_final,patron_corte,linea) {
     document.getElementById('popupCodigo').innerText = codigo;
     document.getElementById('popupNombre').innerText = nombre;
     document.getElementById('popupDescripcion').innerText = descripcion;
     document.getElementById('popupAlto').innerText = alto;
     document.getElementById('popupAncho').innerText = ancho;
     document.getElementById('popupLargo').innerText = largo;
-    document.getElementById('popupDemanda').innerText = demanda;
     document.getElementById('popupInventario_inicial').innerText = inventario_inicial;
     document.getElementById('popupValor_inventario').innerText = valor_inventario ;
     document.getElementById('popupCosto_almacenamiento').innerText = costo_almacenamiento;
+    document.getElementById('popupRollizo').innerText = nombre_rollizo;
+    document.getElementById('popupInvFInal').innerText = inventario_final;
+    document.getElementById('popupPatronCorte').innerText = patron_corte;
+    document.getElementById('popuplinea').innerText = linea;
     document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }

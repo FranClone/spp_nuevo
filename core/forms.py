@@ -11,6 +11,10 @@ from .modelos.productos_terminados import ProductoTerminado
 from django.contrib.admin.widgets import FilteredSelectMultiple
 from django.core.exceptions import ValidationError
 
+
+class Excelform(forms.Form):
+    excel_file = forms.FileField()
+
 class CustomUserCreationForm(UserCreationForm):
     #campo rut_body
     rut_body = forms.CharField(
@@ -122,7 +126,7 @@ class CrearPatronCorteForm(forms.ModelForm):
             'codigo',
             'nombre',
             'descripcion',
-           # 'rollizo',
+            'rollizo',
             'rendimiento',
             'velocidad_linea',
             'setup_time',
@@ -138,7 +142,6 @@ class CrearProductoForm(forms.ModelForm):
     ancho = forms.FloatField(min_value=0)
     largo = forms.FloatField(min_value=0)
     inventario_inicial = forms.FloatField(min_value=0)
-    volumen_obtenido = forms.FloatField(min_value=0)
     inventario_final = forms.FloatField(min_value=0)
     
     class Meta:
@@ -150,23 +153,13 @@ class CrearProductoForm(forms.ModelForm):
             'largo',
             'ancho',
             'alto',
-            'grado_urgencia',
             'inventario_inicial',
             'valor_inventario',
             'costo_almacenamiento',
-            'volumen_obtenido',
-            'inventario_final',
-            'paquetes_solicitados',
-            'paquetes_saldo',
-            'cantidad_piezas',
-            'cantidad_trozos',
-            'piezas_xpaquete',
-            'piezas_xtrozo',
             'nombre_rollizo',
-            'volumen_obtenido',
             'inventario_final',
             'patron_corte',
-            'linea',
+            'linea'
         ]
 #Lista valores prioridad
 
@@ -198,7 +191,6 @@ class ActualizarPedidoForm(forms.ModelForm):
             'fecha_entrega',
             'orden_pedido',
             'comentario',
-            'nombre',
             'producto',
             'prioridad',
             'estado',
@@ -214,4 +206,3 @@ class ProductoTerminadoForm(forms.ModelForm):
     class Meta:
         model = ProductoTerminado
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
-        
