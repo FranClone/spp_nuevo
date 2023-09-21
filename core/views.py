@@ -464,7 +464,7 @@ def gantt_view(request):
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
-                nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
+                nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
 
                 tasks_pedido = [
                     pedido.orden_pedido,
@@ -495,7 +495,7 @@ def gantt_view(request):
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
-            nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
+            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
