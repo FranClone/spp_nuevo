@@ -126,7 +126,7 @@ class CrearPatronCorteForm(forms.ModelForm):
             'codigo',
             'nombre',
             'descripcion',
-           # 'rollizo',
+            'rollizo',
             'rendimiento',
             'velocidad_linea',
             'setup_time',
@@ -208,4 +208,3 @@ class ProductoTerminadoForm(forms.ModelForm):
     class Meta:
         model = ProductoTerminado
         fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
-        
