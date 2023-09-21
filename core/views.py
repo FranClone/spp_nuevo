@@ -421,10 +421,19 @@ def gantt_view(request):
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
     
     prioridad_colores = {
-        'alto': '#ff0000',  # Rojo para alta prioridad
-        'mediano': '#E3DA4D',  # Naranja para media prioridad
-        'bajo': '#0b9851',  # Verde para baja prioridad
-    }
+    'alto': '#ff0000',  # Rojo para alta prioridad
+    'mediano': '#E3DA4D',  # Naranja para media prioridad
+    'bajo': '#0b9851',  # Verde para baja prioridad
+    'Alto': '#ff0000',
+    'Medio': '#E3DA4D',
+    'Bajo': '#0b9851',
+    'Alta': '#ff0000',
+    'Media': '#E3DA4D',
+    'Baja': '#0b9851',
+    'alta': '#ff0000',
+    'media': '#E3DA4D',
+    'baja': '#0b9851'
+}
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
 
@@ -451,16 +460,16 @@ def gantt_view(request):
                     color,  # 4
                     porcentaje_progreso,  # 5
                     pedido.nombre,  # 6
-                   # pedido.linea_produccion,  # 7
-                   # pedido.cantidad,  # 8
-                    pedido.cliente,  # 9
-                    pedido.comentario,  # 10
-                    productos_name,  # 11
-                    pedido.prioridad,  # 12
-                    color_p,  # 13
-                    largo, #14
-                    ancho, #15
-                    alto, #16
+                   # pedido.linea_produccion,  
+                   # pedido.cantidad,  
+                    pedido.cliente,  # 7
+                    pedido.comentario,  # 8
+                    productos_name,  # 9
+                    pedido.prioridad,  # 10
+                    color_p,  # 11
+                    largo, #12
+                    ancho, #13
+                    alto, #14
                     producto_codigo  # Agregar el código del producto
                 ]
 
@@ -483,16 +492,14 @@ def gantt_view(request):
                 color,  # 4
                 porcentaje_progreso,  # 5
                 pedido.nombre,  # 6
-                # pedido.linea_produccion,  # 7
-                # pedido.cantidad,  # 8
-                pedido.cliente,  # 9
-                pedido.comentario,  # 10
-                productos_name,  # 11
-                pedido.prioridad,  # 12
-                color_p,  # 13
-                largo, #14
-                ancho, #15
-                alto, #16
+                pedido.cliente,  # 7
+                pedido.comentario,  # 8
+                productos_name,  # 9
+                pedido.prioridad,  # 10
+                color_p,  # 11
+                largo, #12
+                ancho, #13
+                alto, #14
                 producto_codigo  # Agregar el código del producto
             ]
 

@@ -128,6 +128,7 @@ class Gantt {
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Escuadrias</th>';
 
@@ -176,11 +177,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[11][j]; // Obtiene el nombre del producto
-                var largo = task[14][j];
-                var ancho = task[15][j];
-                var alto = task[16][j];
+            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[9][j]; // Obtiene el nombre del producto
+                var largo = task[12][j];
+                var ancho = task[13][j];
+                var alto = task[14][j];
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -202,6 +203,9 @@ class Gantt {
                 bodyHtml += '<tr>';
 
                 // Agregar el valor de task[7] en la primera columna
+                bodyHtml += `<td></td>`;
+
+                // Agregar el valor de task[7] en la primera columna
                 bodyHtml += `<td>${task[7]}</td>`;
 
                 // Agregar el nombre del producto en la segunda columna
@@ -215,7 +219,7 @@ class Gantt {
                     bodyHtml += '<td ></td>';
                 }
 
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[13]}; border: 1px solid #000;">
+                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[11]}; border: 1px solid #000;">
                     <span>${task[5]}%</span>
                     <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[8]}</a>
                 </td>`;
@@ -241,6 +245,7 @@ class Gantt {
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>'; /**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>'; /**/
@@ -273,11 +278,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[11].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[11][j]; // Obtiene el nombre del producto
-                var largo = task[14][j];
-                var ancho = task[15][j];
-                var alto = task[16][j];
+            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[9][j]; // Obtiene el nombre del producto
+                var largo = task[12][j];
+                var ancho = task[13][j];
+                var alto = task[14][j];
 
 
                 var dMin = new Date(task[3]);
@@ -300,7 +305,8 @@ class Gantt {
 
                 bodyHtml += '<tr>';
 
-                bodyHtml += `<td>${task[7]}</td>`;/*Linea de Produccion*/
+                bodyHtml += `<td></td>`;/*Linea de Produccion*/
+                bodyHtml += `<td>${task[7]}</td>`;/*Cliente*/
                 bodyHtml += `<td></td>`;/*Item*/
                 bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
                 bodyHtml += `<td></td>`;/*Cliente*/
@@ -446,7 +452,7 @@ class Gantt {
             <strong>Código:</strong> <span>${pedidoData[0]}</span>
         </div>
         <div class="popup-item">
-            <strong>Cliente:</strong> <span>${pedidoData[9]}</span>
+            <strong>Cliente:</strong> <span>${pedidoData[7]}</span>
         </div>
         <div class="popup-item">
             <strong>Nombre:</strong> <span>${pedidoData[6]}</span>
@@ -455,22 +461,16 @@ class Gantt {
             <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
         </div>
         <div class="popup-item">
-            <strong>Producto:</strong> <span>${pedidoData[11]}</span>
+            <strong>Producto:</strong> <span>${pedidoData[9]}</span>
         </div>
         <div class="popup-item">
-            <strong>Cantidad:</strong> <span>${pedidoData[8]}</span>
-        </div>
-        <div class="popup-item">
-            <strong>Prioridad:</strong> <span>${pedidoData[12]}</span>
-        </div>
-        <div class="popup-item">
-            <strong>Linea produccion:</strong> <span>${pedidoData[7]}</span>
+            <strong>Prioridad:</strong> <span>${pedidoData[10]}</span>
         </div>
         <div class="popup-item">
             <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
         </div>
         <div class="popup-item">
-            <strong>Comentario:</strong> <span>${pedidoData[10]}</span>
+            <strong>Comentario:</strong> <span>${pedidoData[8]}</span>
         </div>
         <button class="close-button" >Cerrar</button>
     </div>`;

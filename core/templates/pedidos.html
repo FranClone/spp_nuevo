@@ -100,27 +100,20 @@
                         <td>{{ form.comentario }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.cantidad.label_tag }}</td>
                         <td>{{ form.prioridad.label_tag }}</td>
+                        <td>{{ form.estado.label_tag }}</td>                     
                     </tr>
                     <tr>
-                        <td>{{ form.cantidad }}</td>
                         <td>{{ form.prioridad }}</td>
-                    </tr>
-
-                    <tr>
-                        <td>{{ form.linea_produccion.label_tag }}</td>
-                        <td>{{ form.estado.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.linea_produccion }}</td>
                         <td>{{ form.estado }}</td>
                     </tr>
                     <tr>
-                        <td>{{ form.producto.label_tag }}</td>  
+                        <td>{{ form.producto.label_tag }}</td>
+                        <td>{{ form.version.label_tag }}</td> 
                     </tr>
                     <tr>
                         <td>{{ form.producto }}</td>
+                        <td>{{ form.version }}</td>
                     </tr>
 
                 </table>
@@ -152,7 +145,7 @@
                             <td>{{ pedido.fecha_entrega }}</td>
                             <td>{{ pedido.estado }}</td>
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.orden_pedido}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_produccion}}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ pedido.orden_pedido}}', '{{ pedido.cliente }}', '{{ pedido.nombre }}','{{pedido.fecha_produccion}}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}','{{ pedido.version }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                                 <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl" ></a>
                                 <a href="editarpedido/{{pedido.id}}"class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
                             </td>
