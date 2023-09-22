@@ -602,6 +602,7 @@ table tr {
     margin-left: 44%;
 }
 
+
 .title-container {
     display: flex; /* Utiliza flexbox para alinear elementos en línea */
     align-items: center; /* Centra verticalmente los elementos en el contenedor */
@@ -609,4 +610,6 @@ table tr {
 
 #titulo {
     margin-right: 10px; /* Agrega un espacio a la derecha del título */
-}
+
+.bold-heading {
+    font-weight: bold;

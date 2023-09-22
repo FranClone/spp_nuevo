@@ -53,30 +53,6 @@ except Exception as ex:
 
 
 
-from django.shortcuts import render
-from mip import Model, xsum, maximize, BINARY, CBC
-#Test Algoritmo
-def mochila(request):
-
-    p = [10, 13, 18, 31, 7, 15]
-    w = [11, 15, 20, 35, 10, 33]
-    c, I = 47, range(len(w))
-    m = Model('mochila',maximize,CBC)
-
-    x = [m.add_var(var_type=BINARY) for i in I]
-    m.objective = maximize(xsum(p[i] * x[i] for i in I))
-    m += xsum(w[i] * x[i] for i in I) <= c
-    m.optimize()
-    selected = [i for i in I if x[i].x >= 0.99]
-    #
-    selected_profits = [p[i] for i in selected]
-    selected_weights = [w[i] for i in selected]
-    print("selected items: {}".format(selected))
-
-    return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
-
-
-
 
 def importar(request):
     if request.method == 'POST':
@@ -426,7 +402,7 @@ def pedidos(request):
             form = ActualizarPedidoForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('pedidos')
+                return redirect('home')
 
     else:
         form = ActualizarPedidoForm()
@@ -470,40 +446,34 @@ def gantt_view(request):
             for producto in productos:
                 productos_name = [producto.nombre]
                 producto_codigo = [producto.codigo]
-                largo = [producto.largo for producto in pedido.producto.all()]
-                ancho = [producto.ancho for producto in pedido.producto.all()]
-                alto = [producto.alto for producto in pedido.producto.all()]
-                color = random.choice(colores)
-                color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
                 nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
                 nombre_linea = producto.linea.nombre_linea
-                
+                color = random.choice(colores)
+                color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
 
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                    color,  # 4
-                    porcentaje_progreso,  # 5 
-                    nombre_cliente,  # 6
-                    pedido.comentario,  # 7
-                    productos_name,  # 8
-                    pedido.prioridad,  # 9
-                    color_p,  # 10
-                    largo, #11
-                    ancho, #12
-                    alto, #13
-                    producto_codigo, #14  # Agregar el código del producto
-                    nombre_linea #15
+
+                    porcentaje_progreso,  # 4
+                    nombre_cliente,  # 5
+                    pedido.comentario,  # 6
+                    productos_name,  # 7
+                    pedido.prioridad,  # 8
+                    producto_codigo,  #9 Agregar el código del producto
+                    nombre_linea, #10
+                    color,  # 11
+                    color_p  # 12
                 ]
 
                 tasks.append(tasks_pedido)
         else:
             # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
-            productos_name = ["N/A"]
-            producto_codigo = ["N/A"]
+            #productos_name = ["N/A"]
+            #producto_codigo = ["N/A"]
             largo = [producto.largo for producto in pedido.producto.all()]
             ancho = [producto.ancho for producto in pedido.producto.all()]
             alto = [producto.alto for producto in pedido.producto.all()]
@@ -512,24 +482,37 @@ def gantt_view(request):
             porcentaje_progreso = random.randint(10, 100)
             nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
             nombre_linea = producto.linea.nombre_linea
+
+            descripcion = producto.descripcion
+            inventario_inicial = producto.inventario_inicial
+            valor_inventario = producto.valor_inventario
+            costo_almacenamiento = producto.costo_almacenamiento
+            nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
+            inventario_final = producto.inventario_final
+            patron_corte = [patron.nombre_patron for patron in producto.patron_corte.all()]
+
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
                 pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                color,  # 4
-                porcentaje_progreso,  # 5
-                nombre_cliente,  # 6
-                pedido.comentario,  # 7
-                productos_name,  # 8
-                pedido.prioridad,  # 9
-                color_p,  # 10
-                largo, #11
-                ancho, #12
-                alto, #13
-                producto_codigo,  #14 Agregar el código del producto
-                nombre_linea #15
-                
+                porcentaje_progreso,  # 4
+                nombre_cliente,  # 5
+                productos_name,  # 6
+                producto_codigo,  # 7
+                largo, #8
+                ancho, #9
+                alto, #10
+                color,  # 11
+                color_p,  # 12
+                nombre_linea,# 13
+                descripcion,# 14
+                inventario_inicial,# 15
+                valor_inventario,# 16
+                costo_almacenamiento,# 17
+                nombre_rollizo,# 18
+                inventario_final,# 19
+                patron_corte,# 20
             ]
 
             tasks.append(tasks_pedido)

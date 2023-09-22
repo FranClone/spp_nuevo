@@ -117,9 +117,9 @@ class Gantt {
                 html += '<td></td>';
             }
     
-            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[4]}; border: 1px solid #000;">
-                <span>${task[5]}%</span>
-                <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[6]}</a>
+            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[12]}; border: 1px solid #000;">
+                <span>${task[4]}%</span>
+                <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[0]}</a>
             </td>`;
     
             for (let j = 0; j < daysAfter; j++) {
@@ -188,11 +188,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[8].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[8][j]; // Obtiene el nombre del producto
-                var largo = task[11][j];
-                var ancho = task[12][j];
-                var alto = task[13][j];
+            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[7][j]; // Obtiene el nombre del producto
+                var largo = task[8][j];
+                var ancho = task[9][j];
+                var alto = task[10][j];
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -217,7 +217,7 @@ class Gantt {
                 bodyHtml += `<td></td>`;
 
                 // Agregar el valor de task[7] en la primera columna
-                bodyHtml += `<td>${task[6]}</td>`;
+                bodyHtml += `<td>${task[5]}</td>`;
 
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
@@ -230,9 +230,9 @@ class Gantt {
                     bodyHtml += '<td ></td>';
                 }
 
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[10]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[7]}</a>
+                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[11]}; border: 1px solid #000;">
+                    <span>${task[4]}%</span>
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[6]}</a>
                 </td>`;
 
                 for (let k = 0; k < daysAfter; k++) {
@@ -280,7 +280,6 @@ class Gantt {
         
 
 
-
         html += '</tr></thead><tbody>';
 
         // Utiliza una variable diferente para el cuerpo de la tabla
@@ -290,11 +289,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[8].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[8][j]; // Obtiene el nombre del producto
-                var largo = task[11][j];
-                var ancho = task[12][j];
-                var alto = task[13][j];
+            for (let j = 0; j < task[6].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[6][j]; // Obtiene el nombre del producto
+                var largo = task[8][j];
+                var ancho = task[9][j];
+                var alto = task[10][j];
 
 
                 var dMin = new Date(task[3]);
@@ -318,7 +317,7 @@ class Gantt {
                 bodyHtml += '<tr>';
 
                 bodyHtml += `<td></td>`;/*Linea de Produccion*/
-                bodyHtml += `<td>${task[6]}</td>`;/*Cliente*/
+                bodyHtml += `<td>${task[5]}</td>`;/*Cliente*/
                 bodyHtml += `<td></td>`;/*Item*/
                 bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
                 bodyHtml += `<td></td>`;/*Cliente*/
@@ -339,7 +338,6 @@ class Gantt {
                 bodyHtml += `<td></td>`;/*ETA*/
                 bodyHtml += `<td></td>`;/*ETA*/
                 bodyHtml += `<td></td>`;/*ETA*/
-
                 bodyHtml += '</tr>';
             }
         }
@@ -462,7 +460,7 @@ class Gantt {
         if (lineValue === "lineas") {
             this.filteredTasks = this.tasks;
         } else {
-            this.filteredTasks = this.tasks.filter(task => task[6] === lineValue);
+            this.filteredTasks = this.tasks.filter(task => task[5] === lineValue);
         }
 
         document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
@@ -507,22 +505,34 @@ class Gantt {
             <strong>Código:</strong> <span>${pedidoData[0]}</span>
         </div>
         <div class="popup-item">
-            <strong>Cliente:</strong> <span>${pedidoData[6]}</span>
+            <strong>Fecha actual:</strong> <span>${pedidoData[1]}</span>
         </div>
         <div class="popup-item">
             <strong>Fecha de entrega:</strong> <span>${pedidoData[2]}</span>
         </div>
         <div class="popup-item">
-            <strong>Producto:</strong> <span>${pedidoData[8]}</span>
+            <strong>Fecha de produccion:</strong> <span>${pedidoData[3]}</span>
         </div>
         <div class="popup-item">
-            <strong>Prioridad:</strong> <span>${pedidoData[9]}</span>
+            <strong>Progreso:</strong> <span>${pedidoData[4]}</span>
         </div>
         <div class="popup-item">
-            <strong>Progreso:</strong> <span>${pedidoData[5]}</span>
+            <strong>Cliente:</strong> <span>${pedidoData[5]}</span>
         </div>
         <div class="popup-item">
-            <strong>Comentario:</strong> <span>${pedidoData[7]}</span>
+            <strong>Comentario:</strong> <span>${pedidoData[6]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Productos:</strong> <span>${pedidoData[7]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Prioridad:</strong> <span>${pedidoData[8]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Codigos productos:</strong> <span>${pedidoData[9]}</span>
+        </div>
+        <div class="popup-item">
+            <strong>Linea:</strong> <span>${pedidoData[10]}</span>
         </div>
         <button class="close-button" >Cerrar</button>
     </div>`;
@@ -534,7 +544,58 @@ class Gantt {
             <div class="popup-content" id="popup">
             <h2>Detalles del producto</h2>
             <div class="popup-item">
-                <strong>Código:</strong> <span>${productoData[16]}</span>
+                <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Fecha de entrega:</strong> <span>${productoData[2]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Fecha de produccion:</strong> <span>${productoData[3]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Progreso :</strong> <span>${productoData[4]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Cliente:</strong> <span>${productoData[5]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Nombre producto:</strong> <span>${productoData[6]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Codigo producto:</strong> <span>${productoData[7]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Largo:</strong> <span>${productoData[8]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Ancho:</strong> <span>${productoData[9]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Alto:</strong> <span>${productoData[10]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Linea:</strong> <span>${productoData[13]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Descripcion:</strong> <span>${productoData[14]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Inventario:</strong> <span>${productoData[15]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Valor inventario:</strong> <span>${productoData[16]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Costo almacenamiento:</strong> <span>${productoData[17]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Rollizo:</strong> <span>${productoData[18]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Inventario final:</strong> <span>${productoData[19]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Patron corte:</strong> <span>${productoData[20]}</span>
             </div>
             <button class="close-button" >Cerrar</button>
             </div>
@@ -585,8 +646,8 @@ function showPopup() {
 }
 
 function hidePopup() {
-    const popupOverlay = document.getElementById('popup-ejecutar');
-    popupOverlay.style.display = 'none';
+    /* const popupOverlay = document.getElementById('popup-ejecutar');
+    popupOverlay.style.display = 'none'; */
     window.location.href = '/pantalla-carga/';
 }
 
