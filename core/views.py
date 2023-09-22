@@ -127,8 +127,20 @@ def process_uploaded_file(xlsfile):
                             estado=row['estado']
                         )
                         pedido.save()
+                        
+                                # Obtiene la fecha y hora actual formateada
+                        fecha_actual = datetime.now()
+                        fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
 
-                        # Asignar los productos usando the method .set()
+                                # Agrega 'titulofecha' al contexto para pasarlo a la plantilla
+                        titulofecha = {
+                            'titulofecha': f"(Cargados {fecha_actual_formateada})"
+                            }
+                        
+                        print(titulofecha)
+
+                        
+
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
 
@@ -465,6 +477,8 @@ def gantt_view(request):
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 porcentaje_progreso = random.randint(10, 100)
                 nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
+                nombre_linea = producto.linea.nombre_linea
+                
 
                 tasks_pedido = [
                     pedido.orden_pedido,
@@ -481,7 +495,8 @@ def gantt_view(request):
                     largo, #11
                     ancho, #12
                     alto, #13
-                    producto_codigo  # Agregar el código del producto
+                    producto_codigo, #14  # Agregar el código del producto
+                    nombre_linea #15
                 ]
 
                 tasks.append(tasks_pedido)
@@ -496,6 +511,7 @@ def gantt_view(request):
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
             nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
+            nombre_linea = producto.linea.nombre_linea
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
@@ -511,7 +527,9 @@ def gantt_view(request):
                 largo, #11
                 ancho, #12
                 alto, #13
-                producto_codigo  # Agregar el código del producto
+                producto_codigo,  #14 Agregar el código del producto
+                nombre_linea #15
+                
             ]
 
             tasks.append(tasks_pedido)

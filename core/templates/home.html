@@ -134,9 +134,12 @@
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
         <button id="showPedidosButton"  >Ver Pedidos</button>
-        <button id="showProductosButton">Ver Produccion</button>
+        <button id="showProductosButton">Ver Productos</button>
         <button id="showSalidaButton">Ver Salida Algoritmo</button>
-        <h4 id="titulo">Pedidos JCE</h4>
+        <div class="title-container">
+            <h4 id="titulo">Pedidos JCE</h4>
+            <span id="titulofecha">{{ titulofecha }}</span>
+        </div>
         <div id="gantt">
             <script>
                 const tasksData = {{ tasks|safe }};
@@ -231,8 +234,8 @@
         const ganttContainer = document.getElementById("gantt");
 
         // Inicialmente, muestra la tabla de "Produccion JCE"
-        gantt.showProductosTable();
-        titulo.textContent = "Produccion JCE";
+        gantt.showPedidosTable();
+        titulo.textContent = "Pedidos JCE";
 
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
@@ -241,7 +244,7 @@
 
         showProductosButton.addEventListener("click", function () {
             gantt.showProductosTable();
-            titulo.textContent = "Produccion JCE";
+            titulo.textContent = "Productos JCE";
         });
 
         showSalidaButton.addEventListener("click", function () {
