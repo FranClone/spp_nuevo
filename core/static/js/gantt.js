@@ -34,6 +34,15 @@ class Gantt {
     buildTableHeader() {
         var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
 
+            // Agrega las nuevas columnas aquí
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
+
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
         const isDiarioSelected = selectedPeriod === "diario";
         const isSemanalSelected = selectedPeriod === "semanal";
@@ -84,7 +93,9 @@ class Gantt {
     
             var dMin = new Date(task[3]);
             var dMax = new Date(task[2]);
-    
+
+                    // Agregar dos columnas adicionales a la izquierda
+
             // Calcular la diferencia en días entre dMin y dMax
             var dateDiff = this.diffInDays(dMax, dMin);
     
@@ -106,7 +117,7 @@ class Gantt {
                 html += '<td></td>';
             }
     
-            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[12]}; border: 1px solid #000;">
+            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[15]}; border: 1px solid #000;">
                 <span>${task[4]}%</span>
                 <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[0]}</a>
             </td>`;
@@ -177,11 +188,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[7][j]; // Obtiene el nombre del producto
-                var largo = task[8][j];
-                var ancho = task[9][j];
-                var alto = task[10][j];
+            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[9][j]; // Obtiene el nombre del producto
+                var largo = task[10][j];
+                var ancho = task[11][j];
+                var alto = task[12][j];
                 var dMin = new Date(task[3]);
                 var dMax = new Date(task[2]);
 
@@ -219,9 +230,9 @@ class Gantt {
                     bodyHtml += '<td ></td>';
                 }
 
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[11]}; border: 1px solid #000;">
+                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[14]}; border: 1px solid #000;">
                     <span>${task[4]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[6]}</a>
+                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[7]}</a>
                 </td>`;
 
                 for (let k = 0; k < daysAfter; k++) {
@@ -266,6 +277,7 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
+        
 
 
         html += '</tr></thead><tbody>';
@@ -277,11 +289,11 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            for (let j = 0; j < task[6].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[6][j]; // Obtiene el nombre del producto
-                var largo = task[8][j];
-                var ancho = task[9][j];
-                var alto = task[10][j];
+            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[7][j]; // Obtiene el nombre del producto
+                var largo = task[10][j];
+                var ancho = task[11][j];
+                var alto = task[12][j];
 
 
                 var dMin = new Date(task[3]);
@@ -338,9 +350,52 @@ class Gantt {
     }
 
 
+
+    PedidoTable() {
+        var html = '<table class="second-table"><thead><tr>';
+
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+                bodyHtml += `<td>${task[1]}</td>`;/*Fecha de carga*/
+                bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
+                bodyHtml += `<td>${task[5]}</td>`;/*Cliente*/
+                bodyHtml += `<td>${task[3]}</td>`;/*Fecha Creacion*/
+                bodyHtml += `<td>${task[2]}</td>`;/*ETA*/
+                bodyHtml += `<td>${task[13]}</td>`;/*Linea*/
+                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+
+                bodyHtml += '</tr>';
+            
+        }
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+    }
+
+
     showPedidosTable() {
         this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
+        document.getElementById('gantt').innerHTML = this.PedidoTable();
     }
 
     showProductosTable() {
@@ -504,43 +559,46 @@ class Gantt {
                 <strong>Cliente:</strong> <span>${productoData[5]}</span>
             </div>
             <div class="popup-item">
-                <strong>Nombre producto:</strong> <span>${productoData[6]}</span>
+                <strong>Comentario:</strong> <span>${productoData[6]}</span>
             </div>
             <div class="popup-item">
-                <strong>Codigo producto:</strong> <span>${productoData[7]}</span>
+                <strong>Nombre producto:</strong> <span>${productoData[7]}</span>
             </div>
             <div class="popup-item">
-                <strong>Largo:</strong> <span>${productoData[8]}</span>
+            <strong>Prioridad:</strong> <span>${pedidoData[8]}</span>
             </div>
             <div class="popup-item">
-                <strong>Ancho:</strong> <span>${productoData[9]}</span>
+                <strong>Codigo producto:</strong> <span>${productoData[9]}</span>
             </div>
             <div class="popup-item">
-                <strong>Alto:</strong> <span>${productoData[10]}</span>
+                <strong>Largo:</strong> <span>${productoData[10]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Ancho:</strong> <span>${productoData[11]}</span>
+            </div>
+            <div class="popup-item">
+                <strong>Alto:</strong> <span>${productoData[12]}</span>
             </div>
             <div class="popup-item">
                 <strong>Linea:</strong> <span>${productoData[13]}</span>
             </div>
             <div class="popup-item">
-                <strong>Descripcion:</strong> <span>${productoData[14]}</span>
+                <strong>Descripcion:</strong> <span>${productoData[16]}</span>
             </div>
             <div class="popup-item">
-                <strong>Inventario:</strong> <span>${productoData[15]}</span>
+                <strong>Inventario:</strong> <span>${productoData[17]}</span>
             </div>
             <div class="popup-item">
-                <strong>Valor inventario:</strong> <span>${productoData[16]}</span>
+                <strong>Valor inventario:</strong> <span>${productoData[18]}</span>
             </div>
             <div class="popup-item">
-                <strong>Costo almacenamiento:</strong> <span>${productoData[17]}</span>
+                <strong>Costo almacenamiento:</strong> <span>${productoData[19]}</span>
             </div>
             <div class="popup-item">
-                <strong>Rollizo:</strong> <span>${productoData[18]}</span>
+                <strong>Rollizo:</strong> <span>${productoData[20]}</span>
             </div>
             <div class="popup-item">
-                <strong>Inventario final:</strong> <span>${productoData[19]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Patron corte:</strong> <span>${productoData[20]}</span>
+                <strong>Patron corte:</strong> <span>${productoData[21]}</span>
             </div>
             <button class="close-button" >Cerrar</button>
             </div>
