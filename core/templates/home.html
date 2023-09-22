@@ -31,14 +31,12 @@
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
     <button type="button" class="carga-button" onclick="showPopupimport()">Cargar Pedido</button> 
     <div class="buttons-top horizontal-container">
-
-
         {% comment %} Sistema de filtro por atributo {% endcomment %}
-        <select name="lineas" id="toggle-lineas-button" class="carga-button-top">
+        <!--<select name="lineas" id="toggle-lineas-button" class="carga-button-top">
             <option value="lineas">Lineas Producción</option>
             <option value="Delgado">Delgado</option>
             <option value="Grueso">Grueso</option>
-        </select>
+        </select>-->
 
         <select name="periodos" id="toggle-lineas-button" class="carga-button-top">
             <option value="diario">Diario</option>
@@ -156,16 +154,19 @@
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
         <button id="showPedidosButton"  >Ver Pedidos</button>
-        <button id="showProductosButton">Ver Produccion</button>
+        <button id="showProductosButton">Ver Productos</button>
         <button id="showSalidaButton">Ver Salida Algoritmo</button>
-        <h4 id="titulo">Pedidos JCE</h4>
+        <div class="title-container">
+            <h4 id="titulo">Pedidos JCE</h4>
+            <span id="titulofecha">{{ titulofecha }}</span>
+        </div>
         <div id="gantt">
             <script>
                 const tasksData = {{ tasks|safe }};
             </script>
         </div>
     </div>
-    <div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
+    <!--<div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
         <div class="popup-ejecutar" >
             <div class="main">
                 <h1>Planificacion Diaria</h1>
@@ -214,13 +215,13 @@
                 <button class="red-button" id="shuffleButton" onclick="hidePopup()">Aceptar</button>
             </div>
         </div>
-    </div>
+    </div>-->
     <div class="buttons-bot">
 
 
 
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
-            onclick="showPopup()">Ejecutar</button>
+            onclick="/* showPopup() */hidePopup()   ">Ejecutar</button>
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
     <script src="{% static 'js/gantt.js' %}"></script>
@@ -251,8 +252,8 @@
         const ganttContainer = document.getElementById("gantt");
 
         // Inicialmente, muestra la tabla de "Produccion JCE"
-        gantt.showProductosTable();
-        titulo.textContent = "Produccion JCE";
+        gantt.showPedidosTable();
+        titulo.textContent = "Pedidos JCE";
 
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
@@ -261,7 +262,7 @@
 
         showProductosButton.addEventListener("click", function () {
             gantt.showProductosTable();
-            titulo.textContent = "Produccion JCE";
+            titulo.textContent = "Productos JCE";
         });
 
         showSalidaButton.addEventListener("click", function () {
@@ -275,8 +276,4 @@
 
 
 </html>
-
-
-
-
 

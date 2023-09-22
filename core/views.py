@@ -53,30 +53,6 @@ except Exception as ex:
 
 
 
-from django.shortcuts import render
-from mip import Model, xsum, maximize, BINARY, CBC
-#Test Algoritmo
-def mochila(request):
-
-    p = [10, 13, 18, 31, 7, 15]
-    w = [11, 15, 20, 35, 10, 33]
-    c, I = 47, range(len(w))
-    m = Model('mochila',maximize,CBC)
-
-    x = [m.add_var(var_type=BINARY) for i in I]
-    m.objective = maximize(xsum(p[i] * x[i] for i in I))
-    m += xsum(w[i] * x[i] for i in I) <= c
-    m.optimize()
-    selected = [i for i in I if x[i].x >= 0.99]
-    #
-    selected_profits = [p[i] for i in selected]
-    selected_weights = [w[i] for i in selected]
-    print("selected items: {}".format(selected))
-
-    return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
-
-
-
 
 def importar(request):
     if request.method == 'POST':
@@ -127,8 +103,20 @@ def process_uploaded_file(xlsfile):
                             estado=row['estado']
                         )
                         pedido.save()
+                        
+                                # Obtiene la fecha y hora actual formateada
+                        fecha_actual = datetime.now()
+                        fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
 
-                        # Asignar los productos usando the method .set()
+                                # Agrega 'titulofecha' al contexto para pasarlo a la plantilla
+                        titulofecha = {
+                            'titulofecha': f"(Cargados {fecha_actual_formateada})"
+                            }
+                        
+                        print(titulofecha)
+
+                        
+
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
 
@@ -414,7 +402,7 @@ def pedidos(request):
             form = ActualizarPedidoForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('pedidos')
+                return redirect('home')
 
     else:
         form = ActualizarPedidoForm()
@@ -456,32 +444,46 @@ def gantt_view(request):
         
         if productos.exists():
             for producto in productos:
-                productos_name = [producto.nombre]
-                producto_codigo = [producto.codigo]
                 largo = [producto.largo for producto in pedido.producto.all()]
                 ancho = [producto.ancho for producto in pedido.producto.all()]
                 alto = [producto.alto for producto in pedido.producto.all()]
+                productos_name = [producto.nombre]
+                producto_codigo = [producto.codigo]
+                porcentaje_progreso = random.randint(10, 100)
+                nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
+                nombre_linea = producto.linea.nombre_linea
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
-                porcentaje_progreso = random.randint(10, 100)
-                nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
+                descripcion = producto.descripcion
+                inventario_inicial = producto.inventario_inicial
+                valor_inventario = producto.valor_inventario
+                costo_almacenamiento = producto.costo_almacenamiento
+                nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
+                patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
 
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                    color,  # 4
-                    porcentaje_progreso,  # 5 
-                    nombre_cliente,  # 6
-                    pedido.comentario,  # 7
-                    productos_name,  # 8
-                    pedido.prioridad,  # 9
-                    color_p,  # 10
-                    largo, #11
-                    ancho, #12
-                    alto, #13
-                    producto_codigo  # Agregar el código del producto
+                    porcentaje_progreso,  # 4
+                    nombre_cliente,  # 5
+                    pedido.comentario,  # 6
+                    productos_name,  # 7
+                    pedido.prioridad,  # 8
+                    producto_codigo,  #9 Agregar el código del producto
+                    largo, #10
+                    ancho, # 11
+                    alto, # 12
+                    nombre_linea, # 13
+                    color,  # 14
+                    color_p,  # 15
+                    descripcion,# 16
+                    inventario_inicial,# 17
+                    valor_inventario,# 18
+                    costo_almacenamiento,# 19
+                    nombre_rollizo,# 20
+                    patron_corte,# 21
                 ]
 
                 tasks.append(tasks_pedido)
@@ -489,29 +491,22 @@ def gantt_view(request):
             # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
             productos_name = ["N/A"]
             producto_codigo = ["N/A"]
-            largo = [producto.largo for producto in pedido.producto.all()]
-            ancho = [producto.ancho for producto in pedido.producto.all()]
-            alto = [producto.alto for producto in pedido.producto.all()]
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
-            nombre_cliente = pedido._meta.get_field('cliente').related_model._meta.db_table
+            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
                 pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                color,  # 4
-                porcentaje_progreso,  # 5
-                nombre_cliente,  # 6
-                pedido.comentario,  # 7
-                productos_name,  # 8
-                pedido.prioridad,  # 9
-                color_p,  # 10
-                largo, #11
-                ancho, #12
-                alto, #13
-                producto_codigo  # Agregar el código del producto
+                porcentaje_progreso,  # 4
+                nombre_cliente,  # 5
+                productos_name,  # 6
+                producto_codigo,  # 7
+                color,  # 11
+                color_p,  # 12
+            
             ]
 
             tasks.append(tasks_pedido)
