@@ -65,11 +65,11 @@ function showWelcomePopup() {
                 `;
             } else {
                 popupContent.innerHTML = `
-                    <h3>¡Bienvenido!</h3>
-                    <h4>No Existe una planificación Anterior</h4>
-                    <h4>¿Quieres subir nuevos pedidos?</h4>
-                    <button type="button" class="carga-button" onclick="showPopupimport(), hideWelcomePopup()">Subir Archivo</button>
-                    <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
+                <h3>¡Bienvenido!</h3>
+                <h4>No Existe una planificación Anterior</h4>
+                <h4>¿Quieres subir nuevos pedidos?</h4>
+                <button type="button" class="carga-button" onclick="showPopupimport(), hideWelcomePopup()">Cargar Pedido</button>
+                <button class="popup-close-pedidos" onclick="hideWelcomePopup()">x</button>
                 `;
             }
 

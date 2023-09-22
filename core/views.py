@@ -53,30 +53,6 @@ except Exception as ex:
 
 
 
-from django.shortcuts import render
-from mip import Model, xsum, maximize, BINARY, CBC
-#Test Algoritmo
-def mochila(request):
-
-    p = [10, 13, 18, 31, 7, 15]
-    w = [11, 15, 20, 35, 10, 33]
-    c, I = 47, range(len(w))
-    m = Model('mochila',maximize,CBC)
-
-    x = [m.add_var(var_type=BINARY) for i in I]
-    m.objective = maximize(xsum(p[i] * x[i] for i in I))
-    m += xsum(w[i] * x[i] for i in I) <= c
-    m.optimize()
-    selected = [i for i in I if x[i].x >= 0.99]
-    #
-    selected_profits = [p[i] for i in selected]
-    selected_weights = [w[i] for i in selected]
-    print("selected items: {}".format(selected))
-
-    return render(request, 'mochila.html', {'selected': selected,'selected_profits':selected_profits,'selected_weights':selected_weights})
-
-
-
 
 def importar(request):
     if request.method == 'POST':
@@ -414,7 +390,7 @@ def pedidos(request):
             form = ActualizarPedidoForm(request.POST)
             if form.is_valid():
                 form.save()
-                return redirect('pedidos')
+                return redirect('home')
 
     else:
         form = ActualizarPedidoForm()
