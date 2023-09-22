@@ -375,6 +375,7 @@ class Gantt {
             var task = this.filteredTasks[i];
                 bodyHtml += `<td>${task[1]}</td>`;/*Fecha de carga*/
                 bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
+
                 bodyHtml += `<td>${task[5]}</td>`;/*Cliente*/
                 bodyHtml += `<td>${task[3]}</td>`;/*Fecha Creacion*/
                 bodyHtml += `<td>${task[2]}</td>`;/*ETA*/
