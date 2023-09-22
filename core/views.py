@@ -444,6 +444,9 @@ def gantt_view(request):
         
         if productos.exists():
             for producto in productos:
+                largo = [producto.largo for producto in pedido.producto.all()]
+                ancho = [producto.ancho for producto in pedido.producto.all()]
+                alto = [producto.alto for producto in pedido.producto.all()]
                 productos_name = [producto.nombre]
                 producto_codigo = [producto.codigo]
                 porcentaje_progreso = random.randint(10, 100)
@@ -451,7 +454,11 @@ def gantt_view(request):
                 nombre_linea = producto.linea.nombre_linea
                 color = random.choice(colores)
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
-
+                descripcion = producto.descripcion
+                inventario_inicial = producto.inventario_inicial
+                valor_inventario = producto.valor_inventario
+                costo_almacenamiento = producto.costo_almacenamiento
+                nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
@@ -464,33 +471,29 @@ def gantt_view(request):
                     productos_name,  # 7
                     pedido.prioridad,  # 8
                     producto_codigo,  #9 Agregar el código del producto
-                    nombre_linea, #10
-                    color,  # 11
-                    color_p  # 12
+                    largo, #10
+                    ancho, # 11
+                    alto, # 12
+                    nombre_linea, # 13
+                    color,  # 14
+                    color_p,  # 15
+                    descripcion,# 16
+                    inventario_inicial,# 17
+                    valor_inventario,# 18
+                    costo_almacenamiento,# 19
+                    nombre_rollizo,# 20
+               
                 ]
 
                 tasks.append(tasks_pedido)
         else:
             # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
-            #productos_name = ["N/A"]
-            #producto_codigo = ["N/A"]
-            largo = [producto.largo for producto in pedido.producto.all()]
-            ancho = [producto.ancho for producto in pedido.producto.all()]
-            alto = [producto.alto for producto in pedido.producto.all()]
+            productos_name = ["N/A"]
+            producto_codigo = ["N/A"]
             color = random.choice(colores)
             color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
             porcentaje_progreso = random.randint(10, 100)
             nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
-            nombre_linea = producto.linea.nombre_linea
-
-            descripcion = producto.descripcion
-            inventario_inicial = producto.inventario_inicial
-            valor_inventario = producto.valor_inventario
-            costo_almacenamiento = producto.costo_almacenamiento
-            nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
-            inventario_final = producto.inventario_final
-            patron_corte = [patron.nombre_patron for patron in producto.patron_corte.all()]
-
             tasks_pedido = [
                 pedido.orden_pedido,
                 fecha_actual,   # 1
@@ -500,19 +503,9 @@ def gantt_view(request):
                 nombre_cliente,  # 5
                 productos_name,  # 6
                 producto_codigo,  # 7
-                largo, #8
-                ancho, #9
-                alto, #10
                 color,  # 11
                 color_p,  # 12
-                nombre_linea,# 13
-                descripcion,# 14
-                inventario_inicial,# 15
-                valor_inventario,# 16
-                costo_almacenamiento,# 17
-                nombre_rollizo,# 18
-                inventario_final,# 19
-                patron_corte,# 20
+            
             ]
 
             tasks.append(tasks_pedido)
