@@ -543,7 +543,7 @@ class Gantt {
             productoData = this.tasks[pedidoId];
             popup.innerHTML = `
             <div class="popup-content" id="popup">
-            <h2>Detalles del producto</h2>
+            <h2>Detalles</h2>
             <div class="popup-item">
                 <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
             </div>
