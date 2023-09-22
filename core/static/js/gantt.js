@@ -392,7 +392,47 @@ class Gantt {
         html += '</tbody></table>';
         return html;
     }
+//______________
+    PatronTable() {
+        var html = '<table class="second-table"><thead><tr>';
 
+        // Agregar dos columnas adicionales a la izquierda
+
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">diametro</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozo</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cantidad Piezas</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Producto Asociado</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalles</th>';
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+                bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
+
+                bodyHtml += `<td>${task[35]}</td>`;/*Diametro*/
+                bodyHtml += `<td>${task[24]}</td>`;/*Largo Trozo*/
+                bodyHtml += `<td>${task[28]}</td>`;/*Cantidad Piezas*/
+                bodyHtml += `<td>${task[44]}</td>`;/*Producto Asociado*/
+                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
+
+                bodyHtml += '</tr>';
+            
+        }
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+}
+//__________
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
@@ -409,6 +449,10 @@ class Gantt {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.SalidaTable();
 
+    }
+    showPatronesTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.PatronTable();
     }
 
     diffInDays(max, min) {
@@ -604,8 +648,52 @@ class Gantt {
             <button class="close-button" >Cerrar</button>
             </div>
         `;
+        
+    } else if (popupType === 'patron') {
+        productoData = this.tasks[pedidoId];
+        popup.innerHTML = `
+            <div class="popup-content" id="popup">
+                <h2>Detalles</h2>
+                <div class="popup-item">
+                    <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Diametro:</strong> <span>${productoData[35]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Largo trozo:</strong> <span>${productoData[24]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Codigo patrón:</strong> <span>${productoData[36]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Nombre patrón:</strong> <span>${productoData[37]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Descripción patrón:</strong> <span>${productoData[38]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Rendimiento patrón:</strong> <span>${productoData[39]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Velocidad línea patrón:</strong> <span>${productoData[40]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Setup time patrón:</strong> <span>${productoData[41]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Lead time patrón:</strong> <span>${productoData[42]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Utilizado patrón:</strong> <span>${productoData[43]}</span>
+                </div>
+                <div class="popup-item">
+                    <strong>Producto asociado patrón:</strong> <span>${productoData[44]}</span>
+                </div>
+                <button class="close-button">Cerrar</button>
+            </div>
+        `;
         }
-
         document.body.appendChild(popup);
 
         // Add a click event listener to the close button
