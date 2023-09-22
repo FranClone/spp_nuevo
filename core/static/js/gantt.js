@@ -501,7 +501,7 @@ class Gantt {
             popup.innerHTML = `
 
         <div class="popup-content" id="popup">
-        <h2>Detalles del pedido</h2>
+        <h2>Detalles</h2>
         <div class="popup-item">
             <strong>Código:</strong> <span>${pedidoData[0]}</span>
         </div>
