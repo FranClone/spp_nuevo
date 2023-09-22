@@ -459,12 +459,13 @@ def gantt_view(request):
                 valor_inventario = producto.valor_inventario
                 costo_almacenamiento = producto.costo_almacenamiento
                 nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
+                patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
+
                 tasks_pedido = [
                     pedido.orden_pedido,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-
                     porcentaje_progreso,  # 4
                     nombre_cliente,  # 5
                     pedido.comentario,  # 6
@@ -482,7 +483,7 @@ def gantt_view(request):
                     valor_inventario,# 18
                     costo_almacenamiento,# 19
                     nombre_rollizo,# 20
-               
+                    patron_corte,# 21
                 ]
 
                 tasks.append(tasks_pedido)
