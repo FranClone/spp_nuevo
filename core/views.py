@@ -14,10 +14,12 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm
+from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
+from .modelos.rollizo import Rollizo
+from .modelos.linea import Linea
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
@@ -680,3 +682,102 @@ def descargar_excel(request, nombre_archivo):
     else:
         raise Http404("El archivo no existe")
 
+
+
+
+def linea(request):
+    lineas = Linea.objects.all()
+    form = CrearLineaForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearLineaForm(request.POST)
+            if form.is_valid():
+                nueva_linea = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_linea.id)  # Mensaje de depuración
+                return redirect('plan_linea')
+    
+    context = {
+        'form': form,
+        'lineas': lineas
+    }
+    return render(request, 'planificador/planificador_linea.html', context)
+
+
+def rollizo(request):
+    rollizos = Rollizo.objects.all()
+    form = CrearRollizoForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearRollizoForm(request.POST)
+            if form.is_valid():
+                nuevo_rollizo = form.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_rollizo.id)  # Mensaje de depuración
+                return redirect('plan_rollizo')
+    
+    context = {
+        'form': form,
+        'rollizos': rollizos
+    }
+    return render(request, 'planificador/planificador_rollizo.html', context)
+
+
+def eliminar_rollizo(request,id):
+    rollizo=Rollizo.objects.get(id=id)
+    rollizo.delete()
+    return redirect('plan_rollizo')
+
+def eliminar_linea(request,id):
+    linea=Linea.objects.get(id=id)
+    linea.delete()
+    return redirect('plan_linea')
+ 
+
+def cliente(request):
+    clientes = Cliente.objects.all()
+    form = CrearClienteForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearClienteForm(request.POST)
+            if form.is_valid():
+                nueva_cliente = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_cliente.id)  # Mensaje de depuración
+                return redirect('admin_cliente')
+    
+    context = {
+        'form': form,
+        'clientes': clientes
+    }
+    return render(request, 'admin/admin_cliente.html', context)
+
+
+def empresa(request):
+    empresas = Empresa.objects.all()
+    form = CrearEmpresaForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearEmpresaForm(request.POST)
+            if form.is_valid():
+                nueva_empresa = form.save()
+                return redirect('admin_empresa')
+    
+    context = {
+        'form': form,
+        'empresas': empresas
+    }
+    return render(request, 'admin/admin_empresa.html', context)
+
+
+def eliminar_cliente(request,id):
+    cliente=Cliente.objects.get(id=id)
+    cliente.delete()
+    return redirect('admin_cliente')
+
+
+def eliminar_empresa(request,id):
+    empresa=Empresa.objects.get(id=id)
+    empresa.delete()
+    return redirect('admin_empresa')
