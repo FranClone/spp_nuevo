@@ -7,11 +7,10 @@ from .modelos.patron_corte import PatronCorte
 from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
 from .modelos.productos_terminados import ProductoTerminado
-##
-from django.contrib.admin.widgets import FilteredSelectMultiple
-from django.core.exceptions import ValidationError
-
-
+from .modelos.detalle_pedido import DetallePedido
+from django.forms import inlineformset_factory
+from django.utils.translation import gettext_lazy as _
+from datetime import date
 class Excelform(forms.Form):
     excel_file = forms.FileField()
 
@@ -162,43 +161,102 @@ class CrearProductoForm(forms.ModelForm):
             'linea'
         ]
 #Lista valores prioridad
+# class DetallePedidoForm(forms.ModelForm):
+
+#     class Meta:
+#         model = DetallePedido
+#         fields = [
+    
+#             'detalle_producto',
+#             'alto_producto',
+#             'ancho_producto',
+#             'largo_producto',
+#             'volumen_producto',
+#             'fecha_entrega',
+#             'estado_pedido_linea',
+#             #'grado_urgencia',
+#             'cantidad_piezas',
+#             'cantidad_trozos',
+#             'piezas_xpaquete',
+#             'piezas_xtrozo',
+#             'paquetes_solicitados',
+#             'volumen_obtenido',
+#             'paquetes_saldo',
+
+#         ]
+
+class DetallePedidoForm(forms.ModelForm):
+
+    class Meta:
+        model = DetallePedido
+        fields = [
+            'producto',
+            'detalle_producto',
+            'alto_producto',
+            'ancho_producto',
+            'largo_producto',
+            'volumen_producto',
+            #'fecha_entrega',
+            'estado_pedido_linea',
+            'cantidad_piezas',
+            'cantidad_trozos',
+            'piezas_xpaquete',
+            'piezas_xtrozo',
+            'paquetes_solicitados',
+            'volumen_obtenido',
+            'paquetes_saldo',
+            'grado_urgencia'
+            # Add other fields here
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Set the widget for the producto field to a Select widget
+        self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'id'))
+        #self.fields['producto'].widget = forms.SelectMultiple(choices=Producto.objects.values_list('id', 'id'))
 
 
 class ActualizarPedidoForm(forms.ModelForm):
-    
     def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
-            attrs={
-                'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
-                'class': 'form-control'
-            }
-        )
+         super().__init__(*args, **kwargs)
+         self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
+             attrs={
+                 'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
+                 'class': 'form-control'
+             }
+         )
 
-        self.fields['fecha_produccion'].widget = forms.widgets.DateInput(
-            attrs={
-                'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
-                'class': 'form-control'
-            }
-        )
-
+         self.fields['fecha_produccion'].widget = forms.widgets.DateInput(
+             attrs={
+                 'type': 'date', 'placeholder': 'yyyy-mm-dd (DOB)',
+                 'class': 'form-control'
+             }
+         )
 
     class Meta:
-        model = Pedido
-        fields = [
-            'cliente',
-            'fecha_produccion',
-            'fecha_entrega',
-            'orden_pedido',
-            'comentario',
-            'producto',
-            'prioridad',
-            'estado',
-            'version'
-        ]
-        widgets = {
-            'producto': forms.SelectMultiple(attrs={'class': 'select2', 'multiple':'multiple'})
-}
+         model = Pedido
+         fields = [
+             'cliente',
+             'fecha_produccion',
+             'fecha_entrega',
+             'orden_pedido',
+             'comentario',
+           #  'producto',
+             'prioridad',
+             'estado',
+             'version'
+         ]
+         
+
+DetallePedidoFormSet = inlineformset_factory(
+    Pedido,  # Parent model
+    DetallePedido,  # Child model
+    form=DetallePedidoForm,  # Use the modified DetallePedidoForm
+    extra=1,  # Number of empty forms to display
+    can_delete=True,  # Allow formset to delete records
+)
+
+
    
 
 class ProductoTerminadoForm(forms.ModelForm):

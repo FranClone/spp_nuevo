@@ -217,9 +217,7 @@ class Gantt {
                 bodyHtml += `<td></td>`;
 
                 // Agregar el valor de task[7] en la primera columna
-
                 bodyHtml += `<td>${task[5]}</td>`;
-
 
                 // Agregar el nombre del producto en la segunda columna
                 bodyHtml += `<td>${product}</td>`;
@@ -688,5 +686,7 @@ function closePopup() {
     var popup = document.getElementById("carga-form");
     popup.style.display = "none";
 }
+
+
 
 

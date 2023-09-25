@@ -14,7 +14,7 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm
+from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm,ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
@@ -24,7 +24,7 @@ from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
 from .modelos.cliente import Cliente
 from .modelos.resources import PedidoResource
-from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
+#from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
@@ -39,6 +39,7 @@ from django.contrib import messages
 from django.http import HttpResponse
 from reportlab.lib.pagesizes import letter
 from reportlab.pdfgen import canvas
+from django.forms import formset_factory
 from tablib import Dataset 
 from .forms import Excelform
 from django.contrib import messages
@@ -389,33 +390,80 @@ def patron_editar(request,id):
 
 def pantalla_carga(request):
     return render(request, 'pantalla-carga.html')
-
+########################################################################
+from django.forms import inlineformset_factory
+from .modelos.detalle_pedido import DetallePedido
 def pedidos(request):
     pedidos = Pedido.objects.all()
-
+    DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+    detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
     if request.method == 'POST':
         if 'editar' in request.POST:
             pass
         elif 'eliminar' in request.POST:
             pass
         elif 'crear' in request.POST:
-            form = ActualizarPedidoForm(request.POST)
-            if form.is_valid():
-                form.save()
-                return redirect('home')
+            # Handle Pedido form
+            pedido_form = ActualizarPedidoForm(request.POST)
+            
+            if pedido_form.is_valid():
+                # Save the Pedido instance
+                pedido_instance = pedido_form.save()
+                
+                # Create a formset with the Pedido instance
+                DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+                detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido', instance=pedido_instance)
+                
+                if detalle_pedido_formset.is_valid():
+                
+                    for form in detalle_pedido_formset:
+                        # Get the Producto instance from the form data
+                        producto_instance   = form.cleaned_data.get('producto')
+                        producto_code = producto_instance.id
+                        producto_id = int(producto_code)
+                        print(producto_id)
+                        try:
+                            producto = Producto.objects.get(id=producto_id)
+                        except Producto.DoesNotExist:
+                            producto = None
 
+                        if producto is not None:
+                            # Set the Producto for this DetallePedido
+                            form.instance.producto = producto
+                    detalle_pedido_formset.save()
+                    print(f"Producto with id {producto_id} does not exist.")
+                        # detalle_pedido_form.producto = producto
+                        # detalle_pedido_form.save()
+                    
+                    print("Formset cleaned data:", detalle_pedido_formset.cleaned_data)
+                    return redirect('pedidos')
+                else:
+                    print("Pedido Form Errors:", pedido_form.errors)
+                    print("Detalle Pedido Formset Errors:")
+                    for form in detalle_pedido_formset:
+                        print(form.errors)
+            else:
+                print("Pedido Form Errors:", pedido_form.errors)
+        else:
+            pedido_form = ActualizarPedidoForm()
     else:
-        form = ActualizarPedidoForm()
+        pedido_form = ActualizarPedidoForm()
 
     context = {
-        'form': form,
+        'pedido_form': pedido_form,
+        'detalle_pedido_formset': detalle_pedido_formset,
         'pedidos': pedidos
     }
+
     return render(request, 'pedidos.html', context)
+
 
 def gantt_view(request):
     
-    form = ActualizarPedidoForm() 
+    pedido_form = ActualizarPedidoForm()
+    DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+    detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
+
     pedidos = Pedido.objects.all()
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
@@ -510,8 +558,12 @@ def gantt_view(request):
             ]
 
             tasks.append(tasks_pedido)
-
-    return render(request, 'home.html', {'tasks': tasks, 'form': form})
+    context = {
+    'tasks': tasks,
+    'pedido_form': pedido_form,  # Include the pedido_form in the context
+    'detalle_pedido_formset': detalle_pedido_formset,  # Include the detalle_pedido_formset in the context
+    }
+    return render(request, 'home.html', context)
 
 
 def eliminar_materia_prima(request,id):

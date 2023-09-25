@@ -1,5 +1,7 @@
 from django.core.exceptions import ValidationError
-
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from datetime import date
 
 def validate_rut(rut):
     #el guión no necesita validación
@@ -30,3 +32,9 @@ def validate_rut(rut):
             raise ValidationError('El dígito verificador es incorrecto')
     
 ###
+def validate_not_past_date(value):
+    if value < date.today():
+        raise ValidationError(
+            _('Date cannot be in the past.'),
+            code='date_in_past'
+        )

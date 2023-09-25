@@ -98,57 +98,101 @@
                 </div>   
             </form>
         </div>
-        
+    </div>
     <div class="form-container-productos">
        
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
+                {{ detalle_pedido_formset.management_form }}
+    
                 <tr>
-                    <td>{{ form.cliente.label_tag }}</td>
-                    <td>{{ form.orden_pedido.label_tag}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.cliente }}</td>
-                    <td>{{ form.orden_pedido}}</td>
-                </tr>
-                <tr>
-                    <td>Fecha Creación</td>
-                    <td>{{ form.fecha_entrega.label_tag }}</td>
+                    <th>{{ pedido_form.cliente.label_tag }}</th>
+                    <th>{{ pedido_form.orden_pedido.label_tag }}</th>
+                    <th>{{ pedido_form.fecha_produccion.label_tag }}</th>
+                    <th>{{ pedido_form.fecha_entrega.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td>{{ form.fecha_produccion }}</td>
-                    <td>{{ form.fecha_entrega }}</td>
+                    <td>{{ pedido_form.cliente }}</td>
+                    <td>{{ pedido_form.orden_pedido }}</td>
+                    <td>{{ pedido_form.fecha_produccion }}</td>
+                    <td>{{ pedido_form.fecha_entrega }}</td>
                 </tr>
-
+            
                 <tr>
-                    <td>{{ form.prioridad.label_tag }}</td>
-                    <td>{{ form.estado.label_tag }}</td>                     
-                </tr>
-                <tr>
-                    <td>{{ form.prioridad }}</td>
-                    <td>{{ form.estado }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.producto.label_tag }}</td>
-                    <td>{{ form.version.label_tag }}</td> 
+                    <th>{{ pedido_form.prioridad.label_tag }}</th>
+                    <th>{{ pedido_form.estado.label_tag }}</th>
+                    <th>{{ pedido_form.version.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td>{{ form.producto }}</td>
-                    <td>{{ form.version }}</td>
+                    <td>{{ pedido_form.prioridad }}</td>
+                    <td>{{ pedido_form.estado }}</td>
+                
+                    <td>{{ pedido_form.version }}</td>
                 </tr>
-                <tr>            
-                    <td>{{ form.comentario.label_tag }}</td>
+                {% for detalle_form in detalle_pedido_formset %}
+                
+                <tr>
+                    <th>{{ pedido_form.comentario.label_tag }}</td>
+                    <th>{{ detalle_form.detalle_producto.label_tag }}</th>
+                    <th>{{ detalle_form.producto.label_tag }}</th>
+                    <th>{{ detalle_form.ancho_producto.label_tag }}</th>
+                </tr>   
+                 <tr>
+                    <td>{{ pedido_form.comentario }}</td>
+                    <td>{{ detalle_form.detalle_producto }}</td>
+                    <td>{{ detalle_form.producto }}</td>
+                    <td>{{ detalle_form.ancho_producto }}</td>
+                   
                 </tr>
-                <tr>   
-                    <td>{{ form.comentario }}</td>
+              
+                <tr>
+                    <th>{{ detalle_form.largo_producto.label_tag }}</th>
+                    <th>{{ detalle_form.alto_producto.label_tag }}</th>
+                    <th>{{ detalle_form.volumen_producto.label_tag }}</th>                    
+                    <th>{{ detalle_form.estado_pedido_linea.label_tag }}</th>
+                  
                 </tr>
+                <tr>
+                    <td>{{ detalle_form.largo_producto }}</td>
+                    <td>{{ detalle_form.alto_producto }}</td>
+                    <td>{{ detalle_form.volumen_producto }}</td>                 
+                    <td>{{ detalle_form.estado_pedido_linea }}</td>
+                </tr>
+                 <tr>
+                    <th>{{ detalle_form.cantidad_piezas.label_tag }}</th>
+                    <th>{{ detalle_form.cantidad_trozos.label_tag }}</th>
+                    <th>{{ detalle_form.piezas_xpaquete.label_tag }}</th>
+                    <th>{{ detalle_form.piezas_xtrozo.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ detalle_form.cantidad_piezas }}</td>
+                    <td>{{ detalle_form.cantidad_trozos }}</td>
+                    <td>{{ detalle_form.piezas_xpaquete }}</td>
+                    <td>{{ detalle_form.piezas_xtrozo }}</td>
+                </tr> 
+                <tr>
+                    <th>{{ detalle_form.paquetes_solicitados.label_tag }}</th>
+                    <th>{{ detalle_form.volumen_obtenido.label_tag }}</th>
+                    <th>{{ detalle_form.paquetes_saldo.label_tag }}</th>
+                    <th>{{ detalle_form.grado_urgencia.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ detalle_form.paquetes_solicitados }}</td>
+                    <td>{{ detalle_form.volumen_obtenido }}</td>
+                    <td>{{ detalle_form.paquetes_saldo }}</td>
+                    <td>{{ detalle_form.grado_urgencia }}</td>
+                </tr> 
+     
+                <!-- Add other DetallePedido fields here -->
+                {% endfor %}
+                
             </table>
             <button type="submit" name="crear" class="red-button">Crear</button>    
             <button class="red-button" onclick="closePopup()">Cerrar</button>
         </form>
     </div>
-    </div>
+   
 
     <br>
     {% comment %} Mover estilo {% endcomment %}
@@ -166,59 +210,8 @@
             </script>
         </div>
     </div>
-    <!--<div id="popup-ejecutar" class="popup-ejecutar" style="display: none;">.
-        <div class="popup-ejecutar" >
-            <div class="main">
-                <h1>Planificacion Diaria</h1>
-                <div class="info">
-                    <table class="info-table">
-                        <tr>
-                            <th id="info-date-th">Fecha de Actualización</th>
-                            <td id="info-date-td">[Fecha de actualización]</td>
-                            <th id="info-user-th">Usuario</th>
-                            <td id="info-user-td">[Nombre de usuario]</td>
-                        </tr>
-                    </table>
-                </div>
-
-                <div class="data">
-                    <table class="data-table">
-                        <tr>
-                            <th>Clase Diamétrica</th>
-                            <th>Cantidad (m³)</th>
-                            <th>Patrón de Corte</th>
-                            <th>Productos</th>
-                            <th>Cantidad de Productos</th>
-                            <th>Rendimiento Teórico</th>
-                        </tr>
-                        <tr>
-                            <td>[Valor 1]</td>
-                            <td>[Valor 2]</td>
-                            <td>[Valor 3]</td>
-                            <td>[Valor 4]</td>
-                            <td>[Valor 5]</td>
-                            <td>[Valor 6]</td>
-                        </tr>
-                        <tr>
-                            <td>[Valor 1]</td>
-                            <td>[Valor 2]</td>
-                            <td>[Valor 3]</td>
-                            <td>[Valor 4]</td>
-                            <td>[Valor 5]</td>
-                            <td>[Valor 6]</td>
-                        </tr>
-
-                    </table>
-                </div>
-                <br><br>
-                <button class="red-button">Editar</button>
-                <button class="red-button" id="shuffleButton" onclick="hidePopup()">Aceptar</button>
-            </div>
-        </div>
-    </div>-->
+ 
     <div class="buttons-bot">
-
-
 
         <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="/* showPopup() */hidePopup()   ">Ejecutar</button>
