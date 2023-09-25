@@ -6,6 +6,10 @@ from .modelos.materia_prima import MateriaPrima
 from .modelos.patron_corte import PatronCorte
 from .modelos.pedidos import Pedido
 from .modelos.producto import Producto
+from .modelos.rollizo import Rollizo
+from .modelos.linea import Linea
+from .modelos.cliente import Cliente
+from .modelos.empresa import Empresa
 from .modelos.productos_terminados import ProductoTerminado
 from .modelos.detalle_pedido import DetallePedido
 from django.forms import inlineformset_factory
@@ -214,6 +218,67 @@ class DetallePedidoForm(forms.ModelForm):
         # Set the widget for the producto field to a Select widget
         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'id'))
         #self.fields['producto'].widget = forms.SelectMultiple(choices=Producto.objects.values_list('id', 'id'))
+
+class CrearRollizoForm(forms.ModelForm):
+    exclude = ['fecha_crea']
+    class Meta:
+        model = Rollizo
+        fields =[
+            'nombre_rollizo',
+            'descripcion_rollizo',
+            'linea',
+            'diametro',
+            'largo',
+            'usuario_crea',
+            'clase_diametrica'
+        ]
+        
+        
+
+class CrearLineaForm(forms.ModelForm):
+    exclude = ['fecha_crea']
+    class Meta:
+        model = Linea
+        fields =[
+            'nombre_linea',
+            'descripcion_linea',
+            'empresa',
+            'usuario_crea'       
+        ]
+        
+        
+class CrearClienteForm(forms.ModelForm):
+    exclude = ['fecha_crea']
+    class Meta:
+        model = Cliente
+        fields =[      
+                 'rut_cliente',
+                 'nombre_cliente',
+                 'correo_cliente',
+                 'usuario_crea',
+                 'ciudad',
+                 'telefono',
+                 'mercado',
+                 'puerto_destino'
+        ]
+        
+class CrearEmpresaForm(forms.ModelForm):
+    exclude = ['fecha_crea']
+    class Meta:
+        model = Empresa
+        fields =[    
+                 'rut_empresa',
+                 'nombre_empresa',
+                 'correo_empresa',
+                 'estado_empresa',
+                 'fecha_vigencia',
+                 'usuario_crea',
+                 'nombre_fantasia',
+                 'ciudad',
+                 'telefono',
+                 'productos',
+                 'cliente',
+        ]
 
 
 class ActualizarPedidoForm(forms.ModelForm):

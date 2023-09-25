@@ -14,15 +14,21 @@ from django.utils.decorators import method_decorator
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm,ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm
+
+from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
+
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
+from .modelos.rollizo import Rollizo
+from .modelos.linea import Linea
+from .modelos.detalle_pedido import DetallePedido
 from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
-from .modelos.cliente import Cliente
+from django.forms import inlineformset_factory
+from .modelos.detalle_pedido import DetallePedido
 from .modelos.resources import PedidoResource
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -104,7 +110,27 @@ def process_uploaded_file(xlsfile):
                             estado=row['estado']
                         )
                         pedido.save()
-                        
+
+                        for producto_nombre in productos_list:
+                            producto = Producto.objects.get(nombre=producto_nombre)
+                            detalle_pedido = DetallePedido(
+                                pedido=pedido,
+                                producto=producto,
+                                alto_producto=row['alto'],
+                                ancho_producto=row['ancho'],
+                                largo_producto=row['largo'],
+                                volumen_producto=row['volumen_producto'],
+                                fecha_entrega=row['fecha_entrega'],
+                                grado_urgencia=row['prioridad'], 
+                                cantidad_piezas=row['cantidad_piezas'],
+                                cantidad_trozos=row['cantidad_trozos'],
+                                piezas_xpaquete=row['piezas_xpaquete'],
+                                piezas_xtrozo=row['piezas_xtrozo'],
+                                paquetes_solicitados=row['paquetes_solicitados'],
+                                paquetes_saldo=row['paquetes_saldo'],
+                                detalle_producto=row['comentario'],
+                            )
+                            detalle_pedido.save()
                                 # Obtiene la fecha y hora actual formateada
                         fecha_actual = datetime.now()
                         fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
@@ -120,11 +146,11 @@ def process_uploaded_file(xlsfile):
 
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
-
+                    
                 print("Importación exitosa.")
-
         except Exception as e:
-            print(f"Fallo en la importación de datos: {str(e)}")
+            print(f"Error processing row {index + 2}: {str(e)}")
+
 
     return {'success': True}
 
@@ -390,9 +416,8 @@ def patron_editar(request,id):
 
 def pantalla_carga(request):
     return render(request, 'pantalla-carga.html')
-########################################################################
-from django.forms import inlineformset_factory
-from .modelos.detalle_pedido import DetallePedido
+
+#Form pedido y detalle pedido
 def pedidos(request):
     pedidos = Pedido.objects.all()
     DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
@@ -488,8 +513,8 @@ def gantt_view(request):
     tasks=[]
     for pedido in pedidos:
 
-        productos = pedido.producto.all()
-        
+        productos = pedido.producto.all()   
+
         if productos.exists():
             for producto in productos:
                 largo = [producto.largo for producto in pedido.producto.all()]
@@ -508,6 +533,43 @@ def gantt_view(request):
                 costo_almacenamiento = producto.costo_almacenamiento
                 nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
                 patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
+                detalle_pedido = DetallePedido.objects.get(pedido=pedido, producto=producto)
+                alto_producto = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
+                ancho_producto = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
+                largo_producto = detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
+                volumen_producto = detalle_pedido.volumen_producto if detalle_pedido.volumen_producto is not None else "N/A"
+                estado_pedido_linea = detalle_pedido.estado_pedido_linea if detalle_pedido.estado_pedido_linea is not None else "N/A"
+                grado_urgencia = detalle_pedido.grado_urgencia if detalle_pedido.grado_urgencia is not None else "N/A"
+                cantidad_piezas = detalle_pedido.cantidad_piezas if detalle_pedido.cantidad_piezas is not None else "N/A"
+                cantidad_trozos = detalle_pedido.cantidad_trozos if detalle_pedido.cantidad_trozos is not None else "N/A"
+                piezas_xpaquete = detalle_pedido.piezas_xpaquete if detalle_pedido.piezas_xpaquete is not None else "N/A"
+                piezas_xtrozo = detalle_pedido.piezas_xtrozo if detalle_pedido.piezas_xtrozo is not None else "N/A"
+                paquetes_solicitados = detalle_pedido.paquetes_solicitados if detalle_pedido.paquetes_solicitados is not None else "N/A"
+                volumen_obtenido = detalle_pedido.volumen_obtenido if detalle_pedido.volumen_obtenido is not None else "N/A"
+                paquetes_saldo = detalle_pedido.paquetes_saldo if detalle_pedido.paquetes_saldo is not None else "N/A"
+                diametro_rollizo = producto.nombre_rollizo.diametro if producto.nombre_rollizo else "N/A"
+                try:
+                    patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
+                    codigo_patron = patron_corte_data.codigo
+                    nombre_patron = patron_corte_data.nombre
+                    descripcion_patron = patron_corte_data.descripcion
+                    rendimiento_patron = patron_corte_data.rendimiento
+                    velocidad_linea_patron = patron_corte_data.velocidad_linea
+                    setup_time_patron = patron_corte_data.setup_time
+                    lead_time_patron = patron_corte_data.lead_time
+                    utilizado_patron = str(patron_corte_data.utilizado)
+                    producto_asociado_patron = patron_corte_data.producto_asociado
+                except PatronCorte.DoesNotExist:
+                    codigo_patron = "N/A"
+                    nombre_patron = "N/A"
+                    descripcion_patron = "N/A"
+                    rendimiento_patron = "N/A"
+                    velocidad_linea_patron = "N/A"
+                    setup_time_patron = "N/A"
+                    lead_time_patron = "N/A"
+                    utilizado_patron = "N/A"
+                    producto_asociado_patron = "N/A"
+
 
                 tasks_pedido = [
                     pedido.orden_pedido,
@@ -519,7 +581,7 @@ def gantt_view(request):
                     pedido.comentario,  # 6
                     productos_name,  # 7
                     pedido.prioridad,  # 8
-                    producto_codigo,  #9 Agregar el código del producto
+                    producto_codigo,  #9 
                     largo, #10
                     ancho, # 11
                     alto, # 12
@@ -528,10 +590,33 @@ def gantt_view(request):
                     color_p,  # 15
                     descripcion,# 16
                     inventario_inicial,# 17
-                    valor_inventario,# 18
+                    valor_inventario,# 18   
                     costo_almacenamiento,# 19
                     nombre_rollizo,# 20
                     patron_corte,# 21
+                    alto_producto,  # 22
+                    ancho_producto,  # 23
+                    largo_producto,  # 24
+                    volumen_producto,  # 25
+                    estado_pedido_linea,  # 26
+                    grado_urgencia,  # 27
+                    cantidad_piezas,  # 28
+                    cantidad_trozos,  # 29
+                    piezas_xpaquete,  #30
+                    piezas_xtrozo,  # 31
+                    paquetes_solicitados,  # 32
+                    volumen_obtenido,  # 33
+                    paquetes_saldo, # 34
+                    diametro_rollizo, # 35
+                    codigo_patron,  # 36
+                    nombre_patron,  # 37
+                    descripcion_patron,  # 38
+                    rendimiento_patron,  # 39
+                    velocidad_linea_patron,  # 40
+                    setup_time_patron,  # 41
+                    lead_time_patron,  # 42
+                    utilizado_patron,  # 43
+                    producto_asociado_patron,  # 44
                 ]
 
                 tasks.append(tasks_pedido)
@@ -651,3 +736,102 @@ def descargar_excel(request, nombre_archivo):
     else:
         raise Http404("El archivo no existe")
 
+
+
+
+def linea(request):
+    lineas = Linea.objects.all()
+    form = CrearLineaForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearLineaForm(request.POST)
+            if form.is_valid():
+                nueva_linea = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_linea.id)  # Mensaje de depuración
+                return redirect('plan_linea')
+    
+    context = {
+        'form': form,
+        'lineas': lineas
+    }
+    return render(request, 'planificador/planificador_linea.html', context)
+
+
+def rollizo(request):
+    rollizos = Rollizo.objects.all()
+    form = CrearRollizoForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearRollizoForm(request.POST)
+            if form.is_valid():
+                nuevo_rollizo = form.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_rollizo.id)  # Mensaje de depuración
+                return redirect('plan_rollizo')
+    
+    context = {
+        'form': form,
+        'rollizos': rollizos
+    }
+    return render(request, 'planificador/planificador_rollizo.html', context)
+
+
+def eliminar_rollizo(request,id):
+    rollizo=Rollizo.objects.get(id=id)
+    rollizo.delete()
+    return redirect('plan_rollizo')
+
+def eliminar_linea(request,id):
+    linea=Linea.objects.get(id=id)
+    linea.delete()
+    return redirect('plan_linea')
+ 
+
+def cliente(request):
+    clientes = Cliente.objects.all()
+    form = CrearClienteForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearClienteForm(request.POST)
+            if form.is_valid():
+                nueva_cliente = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_cliente.id)  # Mensaje de depuración
+                return redirect('admin_cliente')
+    
+    context = {
+        'form': form,
+        'clientes': clientes
+    }
+    return render(request, 'admin/admin_cliente.html', context)
+
+
+def empresa(request):
+    empresas = Empresa.objects.all()
+    form = CrearEmpresaForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = CrearEmpresaForm(request.POST)
+            if form.is_valid():
+                nueva_empresa = form.save()
+                return redirect('admin_empresa')
+    
+    context = {
+        'form': form,
+        'empresas': empresas
+    }
+    return render(request, 'admin/admin_empresa.html', context)
+
+
+def eliminar_cliente(request,id):
+    cliente=Cliente.objects.get(id=id)
+    cliente.delete()
+    return redirect('admin_cliente')
+
+
+def eliminar_empresa(request,id):
+    empresa=Empresa.objects.get(id=id)
+    empresa.delete()
+    return redirect('admin_empresa')

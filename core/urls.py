@@ -12,7 +12,7 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
 from . import views
-from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel
+from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
 from django.urls import path
 
 urlpatterns = [
@@ -48,6 +48,26 @@ urlpatterns = [
     # url para desplegar el bar chart vertical
     path('dashboard/', Dashboard.as_view(), name = "dashboard"),
     path('descargar-excel/<str:nombre_archivo>/', descargar_excel, name='descargar_excel'),
+    
+    
+    path('planificador_linea/',linea, name = "plan_linea"),
+    path('planificador_linea/eliminarlinea/<int:id>',eliminar_linea, name = "eliminar_linea"),
+    
+    
+    path('planificador_rollizo/',rollizo, name = "plan_rollizo"),
+    path('planificador_rollizo/eliminarpatron/<int:id>',eliminar_rollizo, name = "eliminar_rollizo"),
+    
+    
+    path('admin_cliente/',cliente, name = "admin_cliente"),
+    path('admin_cliente/eliminarcliente/<int:id>',eliminar_cliente, name = "eliminar_cliente"),
+    
+    path('admin_empresa/',empresa, name = "admin_empresa"),
+    path('admin_cliente/eliminarempresa/<int:id>',eliminar_empresa, name = "eliminar_empresa"),
+
+    
+
+
+    
 
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
