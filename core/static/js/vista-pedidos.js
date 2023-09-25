@@ -117,3 +117,46 @@ $(document).ready(function() {
 
     });
 });
+
+//Validacion Fechas
+
+$(document).ready(function () {
+    // Add an event listener to both fecha_produccion and fecha_entrega fields
+    $("#id_fecha_produccion, #id_fecha_entrega").on("change", function () {
+        var selectedDate = new Date($(this).val());
+        var today = new Date();
+        var errorSpan = $(this).siblings(".error-message"); // Find the error message element
+
+        if (selectedDate < today) {
+            errorSpan.text("Date cannot be in the past.");
+            $(this).val(""); // Clear the date field
+        } else {
+            errorSpan.text(""); // Clear the validation message
+        }
+    });
+
+    // Add an event listener to the form submission
+    $("form").on("submit", function () {
+        var selectedDateProduc = new Date($("#id_fecha_produccion").val());
+        var selectedDateEntrega = new Date($("#id_fecha_entrega").val());
+        var today = new Date();
+        var errorSpanProduc = $("#id_fecha_produccion").siblings(".error-message");
+        var errorSpanEntrega = $("#id_fecha_entrega").siblings(".error-message");
+
+        // Validate fecha_produccion
+        if (selectedDateProduc < today) {
+            errorSpanProduc.text("Date cannot be in the past.");
+            return false; // Prevent the form from submitting
+        } else {
+            errorSpanProduc.text(""); // Clear the validation message
+        }
+
+        // Validate fecha_entrega
+        if (selectedDateEntrega < today) {
+            errorSpanEntrega.text("Date cannot be in the past.");
+            return false; // Prevent the form from submitting
+        } else {
+            errorSpanEntrega.text(""); // Clear the validation message
+        }
+    });
+});
