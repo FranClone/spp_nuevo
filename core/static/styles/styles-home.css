@@ -613,7 +613,6 @@ table tr {
 }
     .bold-heading {
     font-weight: bold;
-<<<<<<< HEAD
 }
 
 
@@ -635,7 +634,5 @@ table tr {
     min-width: 80px;
     max-width: 100px;
     width: 15%;
-    
-=======
->>>>>>> 2e1a6989c8f43821d50c35418139b2fa256847e2
+   
 }
