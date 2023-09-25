@@ -22,5 +22,5 @@ class Producto(models.Model):
     #Linea de corte
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
     def __str__(self):
-        return f' {self.nombre}'
+        return f' {self.nombre} '
 

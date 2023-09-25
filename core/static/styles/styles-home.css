@@ -610,7 +610,8 @@ table tr {
 #titulo {
     margin-right: 10px; /* Agrega un espacio a la derecha del título */}
 
-.bold-heading {
+}
+    .bold-heading {
     font-weight: bold;
 }
 

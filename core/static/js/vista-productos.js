@@ -126,9 +126,24 @@ $(document).ready(function() {
 });
 
 
+//Validador de fechas
+$(document).ready(function () {
+    function validateDateField($field) {
+        var selectedDate = new Date($field.val());
+        var today = new Date();
 
+        if (selectedDate < today) {
+            alert("Date cannot be in the past.");
+            $field.val("");
+        }
+    }
 
- 
+    // Add an event listener to the fecha_produccion field
+    $("#id_fecha_produccion").on("change", function () {
+        validateDateField($(this));
+    });
+});
+
 
 
 
