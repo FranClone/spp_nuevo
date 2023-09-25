@@ -392,6 +392,58 @@ class Gantt {
         html += '</tbody></table>';
         return html;
     }
+
+
+
+    ProductosTable() {
+        var html = '<table class="second-table"><thead><tr>';
+
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Producto</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">La/An/Al</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        // Itera sobre cada producto y crea una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+                var product = task[7][j]; // Obtiene el nombre del producto
+                var largo = task[10][j];
+                var ancho = task[11][j];
+                var alto = task[12][j];
+                bodyHtml += `<td>${task[1]}</td>`;/*Fecha de carga*/
+                bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
+                bodyHtml += `<td>${task[7]}</td>`;/*Nombre del Producto*/
+                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*La/An/Al*/
+                bodyHtml += `<td>${task[3]}</td>`;/*Fecha Creacion*/
+                bodyHtml += `<td>${task[2]}</td>`;/*ETA*/
+                bodyHtml += `<td>${task[13]}</td>`;/*Linea*/
+                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+
+            }
+
+                bodyHtml += '</tr>';
+            
+        }
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+    }
 //______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -432,7 +484,6 @@ class Gantt {
         html += '</tbody></table>';
         return html;
 }
-//__________
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
@@ -440,6 +491,11 @@ class Gantt {
     }
 
     showProductosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.ProductosTable();
+    }
+
+    showProduccionTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.buildSecondTable();
 
@@ -587,66 +643,57 @@ class Gantt {
             productoData = this.tasks[pedidoId];
             popup.innerHTML = `
             <div class="popup-content" id="popup">
-            <h2>Detalles</h2>
-            <div class="popup-item">
-                <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Fecha de entrega:</strong> <span>${productoData[2]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Fecha de produccion:</strong> <span>${productoData[3]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Progreso :</strong> <span>${productoData[4]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Cliente:</strong> <span>${productoData[5]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Comentario:</strong> <span>${productoData[6]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Nombre producto:</strong> <span>${productoData[7]}</span>
-            </div>
-            <div class="popup-item">
-            <strong>Prioridad:</strong> <span>${pedidoData[8]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Codigo producto:</strong> <span>${productoData[9]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Largo:</strong> <span>${productoData[10]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Ancho:</strong> <span>${productoData[11]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Alto:</strong> <span>${productoData[12]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Linea:</strong> <span>${productoData[13]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Descripcion:</strong> <span>${productoData[16]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Inventario:</strong> <span>${productoData[17]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Valor inventario:</strong> <span>${productoData[18]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Costo almacenamiento:</strong> <span>${productoData[19]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Rollizo:</strong> <span>${productoData[20]}</span>
-            </div>
-            <div class="popup-item">
-                <strong>Patron corte:</strong> <span>${productoData[21]}</span>
-            </div>
-            <button class="close-button" >Cerrar</button>
-            </div>
+            <h2 style="text-align: center;">Detalles</h2>
+            <table>
+                <tr>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Codigo pedido</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Fecha de entrega</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Fecha de produccion</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Progreso </strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Cliente</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Comentario</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nombre producto</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Prioridad</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Codigo producto</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ancho</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Alto</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Linea</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Descripción</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Inventario</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Valor inventario</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Costo almacenamiento</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Rollizo</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Patrón corte</strong></td>
+                </tr>
+                <tr>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[0]}</td> 
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[2]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[3]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[4]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[5]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[6]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[7]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${pedidoData[8]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[9]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[10]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[11]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[12]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[13]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[16]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[17]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[18]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[19]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[20]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[21]}</td>
+                </tr>
+            </table>
+            <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+        </div>
+        
+        
+        
+        
         `;
         
     } else if (popupType === 'patron') {

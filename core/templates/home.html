@@ -14,6 +14,8 @@
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -197,10 +199,24 @@
     <br>
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
-        <button id="showPedidosButton"  >Ver Pedidos</button>
-        <button id="showProductosButton">Ver Productos</button>
-        <button id="showPatronesButton">Ver Patrones</button>
-        <button id="showSalidaButton">Ver Salida Algoritmo</button>
+
+
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle"
+                    data-toggle="dropdown">
+              Vistas <span class="caret"></span>
+            </button>
+          
+            <ul class="dropdown-menu" role="menu">
+                <button id="showPedidosButton"  >Ver Pedidos</button>
+                <button id="showPedidosButton">Ver Productos</button>
+                <button id="showPatronesButton">Ver Patrones</button>
+                <button id="showProduccionButton">Ver Produccion</button>
+                <button id="showSalidaButton">Ver Salida Algoritmo</button>
+            </ul>
+        </div>
+
+
         <div class="title-container">
             <h4 id="titulo">Pedidos JCE</h4>
             <span id="titulofecha">{{ titulofecha }}</span>
@@ -240,7 +256,8 @@
         const gantt = new Gantt(tasksData);
 
         const showPedidosButton = document.getElementById("showPedidosButton");
-        const showProductosButton = document.getElementById("showProductosButton");
+        const showProduccionButton = document.getElementById("showProduccionButton");
+        const showProductosnButton = document.getElementById("showProductosButton");
         const showSalidaButton = document.getElementById("showSalidaButton");
         const showPatronesButton = document.getElementById("showPatronesButton");
         const titulo = document.getElementById("titulo");
@@ -253,6 +270,11 @@
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
             titulo.textContent = "Pedidos JCE";
+        });
+
+        showProduccionButton.addEventListener("click", function () {
+            gantt.showProduccionTable();
+            titulo.textContent = "Produccion JCE";
         });
 
         showProductosButton.addEventListener("click", function () {
