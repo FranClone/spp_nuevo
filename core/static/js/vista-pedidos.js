@@ -121,41 +121,71 @@ $(document).ready(function() {
 //Validacion Fechas
 
 $(document).ready(function () {
+    // Calculate yesterday's date
+    var yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    // Format yesterday's date in yyyy-mm-dd format
+    var formattedYesterday = yesterday.toISOString().split('T')[0];
+
+    // Set the min attribute for fecha_produccion and fecha_entrega to yesterday's date
+    $("#id_fecha_produccion, #id_fecha_entrega").attr("min", formattedYesterday);
+
     // Add an event listener to both fecha_produccion and fecha_entrega fields
     $("#id_fecha_produccion, #id_fecha_entrega").on("change", function () {
-        var selectedDate = new Date($(this).val());
-        var today = new Date();
-        var errorSpan = $(this).siblings(".error-message"); // Find the error message element
+        var fechaProduc = new Date($("#id_fecha_produccion").val());
+        var fechaEntrega = new Date($("#id_fecha_entrega").val());
+        var errorSpanProduc = $("#id_fecha_produccion").siblings(".error-message");
+        var errorSpanEntrega = $("#id_fecha_entrega").siblings(".error-message");
 
-        if (selectedDate < today) {
-            errorSpan.text("Date cannot be in the past.");
-            $(this).val(""); // Clear the date field
+        // Validate fecha_produccion
+        if (fechaProduc < yesterday) {
+            errorSpanProduc.text("Date cannot be earlier than yesterday.");
+            $("#id_fecha_produccion").val(""); // Clear the date field
         } else {
-            errorSpan.text(""); // Clear the validation message
+            errorSpanProduc.text(""); // Clear the validation message
+        }
+
+        // Validate fecha_entrega
+        if (fechaEntrega < yesterday) {
+            errorSpanEntrega.text("Date cannot be earlier than yesterday.");
+            $("#id_fecha_entrega").val(""); // Clear the date field
+        } else if (fechaProduc > fechaEntrega) {
+            errorSpanProduc.text("Fecha produccion cannot be later than Fecha entrega.");
+            errorSpanEntrega.text("Fecha entrega cannot be earlier than Fecha produccion.");
+            $("#id_fecha_produccion").val(""); // Clear the date field
+            $("#id_fecha_entrega").val(""); // Clear the date field
+        } else {
+            errorSpanProduc.text(""); // Clear the validation message
+            errorSpanEntrega.text(""); // Clear the validation message
         }
     });
 
     // Add an event listener to the form submission
     $("form").on("submit", function () {
-        var selectedDateProduc = new Date($("#id_fecha_produccion").val());
-        var selectedDateEntrega = new Date($("#id_fecha_entrega").val());
-        var today = new Date();
+        var fechaProduc = new Date($("#id_fecha_produccion").val());
+        var fechaEntrega = new Date($("#id_fecha_entrega").val());
         var errorSpanProduc = $("#id_fecha_produccion").siblings(".error-message");
         var errorSpanEntrega = $("#id_fecha_entrega").siblings(".error-message");
 
         // Validate fecha_produccion
-        if (selectedDateProduc < today) {
-            errorSpanProduc.text("Date cannot be in the past.");
+        if (fechaProduc < yesterday) {
+            errorSpanProduc.text("Date cannot be earlier than yesterday.");
             return false; // Prevent the form from submitting
         } else {
             errorSpanProduc.text(""); // Clear the validation message
         }
 
         // Validate fecha_entrega
-        if (selectedDateEntrega < today) {
-            errorSpanEntrega.text("Date cannot be in the past.");
+        if (fechaEntrega < yesterday) {
+            errorSpanEntrega.text("Date cannot be earlier than yesterday.");
+            return false; // Prevent the form from submitting
+        } else if (fechaProduc > fechaEntrega) {
+            errorSpanProduc.text("Fecha produccion cannot be later than Fecha entrega.");
+            errorSpanEntrega.text("Fecha entrega cannot be earlier than Fecha produccion.");
             return false; // Prevent the form from submitting
         } else {
+            errorSpanProduc.text(""); // Clear the validation message
             errorSpanEntrega.text(""); // Clear the validation message
         }
     });
