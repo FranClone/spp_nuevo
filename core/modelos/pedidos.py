@@ -1,7 +1,7 @@
 from django.db import models
 from .producto import Producto
 from datetime import datetime
-from core.validators import validate_not_past_date  
+
 class Pedido(models.Model):
     """Este modelo define la entidad Pedido"""
     OPCION_PRIORIDAD= [
@@ -26,9 +26,8 @@ class Pedido(models.Model):
     
     # Entradas
     cliente = models.ForeignKey('Cliente', on_delete=models.CASCADE, verbose_name='Cliente')
-    fecha_produccion = models.DateField(null=False, blank=False )
-    fecha_entrega = models.DateField(null=False, blank=False ,
-        validators=[validate_not_past_date] )
+    fecha_produccion = models.DateField(null=False, blank=False)
+    fecha_entrega = models.DateField(null=False, blank=False )
     orden_pedido = models.CharField(max_length=20, unique=True, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     producto = models.ManyToManyField(Producto, through='DetallePedido')

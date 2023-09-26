@@ -21,11 +21,7 @@ class Migration(migrations.Migration):
             old_name='codigo',
             new_name='orden_pedido',
         ),
-        migrations.RenameField(
-            model_name='rollizo',
-            old_name='rollizo_largo',
-            new_name='largo',
-        ),
+  
         migrations.RemoveField(
             model_name='cliente',
             name='estado_cliente',
