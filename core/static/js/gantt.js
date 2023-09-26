@@ -372,21 +372,33 @@ class Gantt {
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
 
+    // Maintain a list of unique orden_pedido values
+        var uniqueOrdenPedido = [];
+
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
+
+            
+            // Check if orden_pedido already exists in the uniqueOrdenPedido list
+            if (!uniqueOrdenPedido.includes(task[0])) {
                 bodyHtml += `<td></td>`;/*Item*/
                 bodyHtml += `<td></td>`;/*Folio*/
-                bodyHtml += `<td>${task[1]}</td>`;/*Fecha de carga*/
+                bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
                 bodyHtml += `<td>${task[9]}</td>`;/*OP Orden producto*/
-                bodyHtml += `<td>${task[5]}</td>`;/*Cliente*/
-                bodyHtml += `<td>${task[3]}</td>`;/*Fecha Creacion*/
-                bodyHtml += `<td>${task[2]}</td>`;/*ETA*/
-                bodyHtml += `<td>${task[13]}</td>`;/*Linea*/
-                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+
+                bodyHtml += `<td>${task[5]}</td>`; /*Cliente*/
+                bodyHtml += `<td>${task[3]}</td>`; /*Fecha Creacion*/
+                bodyHtml += `<td>${task[2]}</td>`; /*ETA*/
+                bodyHtml += `<td>${task[13]}</td>`; /*Linea*/
+                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
+
 
                 bodyHtml += '</tr>';
-            
+                
+                // Add the orden_pedido to the uniqueOrdenPedido list
+                uniqueOrdenPedido.push(task[0]);
+            }
         }
 
         // Agrega el cuerpo de la tabla al encabezado
@@ -395,6 +407,7 @@ class Gantt {
         html += '</tbody></table>';
         return html;
     }
+
 
 
 
@@ -693,8 +706,6 @@ class Gantt {
             </table>
             <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
         </div>
-        
-        
         
         
         `;
