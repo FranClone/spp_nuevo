@@ -8,7 +8,7 @@ from .modelos.producto import Producto
 from .modelos.empresa import Empresa
 from .modelos.inv_inicial_rollizo import InvInicialRollizo
 from .modelos.detalle_pedido import DetallePedido
-from .modelos.rollizo_largo import RollizoLargo
+
 from .modelos.rollizo import Rollizo
 from .modelos.bodega import Bodega
 from .modelos.linea import Linea
@@ -136,26 +136,26 @@ def insertar_detalle_pedido(detalle_producto, volumen_producto, fecha_entrega):
     detalle_pedido.save()
 
 
-def sel_rollizo_clasificado_empresa(rut_empresa):
-    rollizo_largo = RollizoLargo.objects.annotate(
-        cantidad=Sum(
-            'rollizo__productocorte__producto__stockproducto__cantidad_m3')
-    ).filter(
-        rollizo__productocorte__producto__productosempresa__empresa__rut_empresa=rut_empresa
-    ).annotate(rollizo_id=F('rollizo__id'),
-               descripcion_rollizo=F('rollizo__descripcion_rollizo'),
-               linea_id=F('rollizo__linea__id'),
-               diametro=F('rollizo__diametro')
-               ).values(
-        'rollizo_id',
-        'descripcion_rollizo',
-        'linea_id',
-        'diametro',
-        'nombre_largo',
-        'largo',
-        'cantidad'
-    )
-    return rollizo_largo
+# def sel_rollizo_clasificado_empresa(rut_empresa):
+#     rollizo_largo = RollizoLargo.objects.annotate(
+#         cantidad=Sum(
+#             'rollizo__productocorte__producto__stockproducto__cantidad_m3')
+#     ).filter(
+#         rollizo__productocorte__producto__productosempresa__empresa__rut_empresa=rut_empresa
+#     ).annotate(rollizo_id=F('rollizo__id'),
+#                descripcion_rollizo=F('rollizo__descripcion_rollizo'),
+#                linea_id=F('rollizo__linea__id'),
+#                diametro=F('rollizo__diametro')
+#                ).values(
+#         'rollizo_id',
+#         'descripcion_rollizo',
+#         'linea_id',
+#         'diametro',
+#         'nombre_largo',
+#         'largo',
+#         'cantidad'
+#     )
+#     return rollizo_largo
 
 
 def sel_rollizo_empresa(rut_empresa):

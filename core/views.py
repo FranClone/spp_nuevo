@@ -31,7 +31,7 @@ from django.forms import inlineformset_factory
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.resources import PedidoResource
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
-from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_clasificado_empresa, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
+from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
 from datetime import datetime
@@ -224,15 +224,15 @@ class Inventario_pdto(View):
 
         return render(request, 'inventario_producto.html', context)
 
-class Inventario_roll(View):
-    @method_decorator(login_required) 
-    def get(self, request, *args, **kwargs):
-        #lista de clases diamétricas, desde 14 hasta 40
-        clase_diametrica = list(range(14, 41, 2))
-        rut_empresa = request.user.empresa.rut_empresa
-        clas = sel_rollizo_clasificado_empresa(rut_empresa)
-        noclas = sel_rollizo_empresa(rut_empresa)
-        return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
+# class Inventario_roll(View):
+#     @method_decorator(login_required) 
+#     def get(self, request, *args, **kwargs):
+#         #lista de clases diamétricas, desde 14 hasta 40
+#         clase_diametrica = list(range(14, 41, 2))
+#         rut_empresa = request.user.empresa.rut_empresa
+#         clas = sel_rollizo_clasificado_empresa(rut_empresa)
+#         noclas = sel_rollizo_empresa(rut_empresa)
+#         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
 class Pedidos(View):
     def get(self, request, *args, **kwargs):

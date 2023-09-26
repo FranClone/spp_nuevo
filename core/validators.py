@@ -31,10 +31,3 @@ def validate_rut(rut):
         if dv_calculado != rut[-1].upper():
             raise ValidationError('El dígito verificador es incorrecto')
     
-###
-def validate_not_past_date(value):
-    if value < date.today():
-        raise ValidationError(
-            _('Date cannot be in the past.'),
-            code='date_in_past'
-        )
