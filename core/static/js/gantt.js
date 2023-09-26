@@ -358,7 +358,7 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Orden Producto</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
@@ -385,7 +385,7 @@ class Gantt {
                 bodyHtml += `<td>${task[45]}</td>`;/*Item*/
                 bodyHtml += `<td>${task[46]}</td>`;/*Folio*/
                 bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
-                bodyHtml += `<td>${task[9]}</td>`;/*OP Orden producto*/
+                bodyHtml += `<td>${task[0]}</td>`;/*OP Orden Interna*/
 
                 bodyHtml += `<td>${task[5]}</td>`; /*Cliente*/
                 bodyHtml += `<td>${task[3]}</td>`; /*Fecha Creacion*/
@@ -662,46 +662,46 @@ class Gantt {
             <h2 style="text-align: center;">Detalles</h2>
             <table>
                 <tr>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Orden producto</strong></td>
-
-
-
-
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Comentario</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>OP</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Mercado</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nombre producto</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Prioridad</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Orden producto</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ancho</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Alto</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Linea</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Descripción</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Inventario</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Valor inventario</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Costo almacenamiento</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Rollizo</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Patrón corte</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PQTES.Solicitados</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PQTES.Saldo</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>TROZOS</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS. X PQTE.</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ø</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo Trozo</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Prioridad</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nota</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS. X TROZO</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Puerto_destino</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>M3 Prod</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Estado</strong></td>
                 </tr>
                 <tr>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[0]}</td> 
-
-
-
-
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[6]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[7]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${pedidoData[8]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[9]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[10]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${pedidoData[10]}</td>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[11]}</td>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[12]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[13]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[16]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[17]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[18]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[19]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[20]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[21]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[32]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[34]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[28]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[29]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[30]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[35]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[8]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[6]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[31]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[33]}</td>
+                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[26]}</td>
                 </tr>
             </table>
             <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
