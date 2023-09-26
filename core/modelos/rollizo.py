@@ -18,4 +18,4 @@ class Rollizo(models.Model):
         db_table = 'ROLLIZO'
 
     def __str__(self):
-        return self.nombre_rollizo
+        return self.nombre_rollizo                             

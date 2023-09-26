@@ -103,7 +103,7 @@ def process_uploaded_file(xlsfile):
                             cliente=cliente,
                             fecha_produccion=row['fecha_produccion'],
                             fecha_entrega=row['fecha_entrega'],
-                            orden_pedido=row['orden_pedido'],
+                            orden_interna=row['orden_interna'],
                             comentario=row['comentario'],
                             prioridad=row['prioridad'],
                             version=row['version'],
@@ -116,6 +116,8 @@ def process_uploaded_file(xlsfile):
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
+                                item=row['item'],
+                                folio=row['folio'],
                                 alto_producto=row['alto'],
                                 ancho_producto=row['ancho'],
                                 largo_producto=row['largo'],
@@ -521,7 +523,7 @@ def gantt_view(request):
                 ancho = [producto.ancho for producto in pedido.producto.all()]
                 alto = [producto.alto for producto in pedido.producto.all()]
                 productos_name = [producto.nombre]
-                producto_codigo = [producto.codigo]
+                producto_codigo = [producto.orden_producto]
                 porcentaje_progreso = random.randint(10, 100)
                 nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
                 nombre_linea = producto.linea.nombre_linea
@@ -572,7 +574,7 @@ def gantt_view(request):
 
 
                 tasks_pedido = [
-                    pedido.orden_pedido,
+                    pedido.orden_interna,
                     fecha_actual,   # 1
                     pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                     pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
@@ -629,7 +631,7 @@ def gantt_view(request):
             porcentaje_progreso = random.randint(10, 100)
             nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
             tasks_pedido = [
-                pedido.orden_pedido,
+                pedido.orden_interna,
                 fecha_actual,   # 1
                 pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
                 pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
@@ -693,16 +695,43 @@ def producto_editar(request,id):
             print("error")
     return render(request, 'planificador/planificador_productoseditar.html', data)
     
-def pedido_editar(request,id):
-    prod= Pedido.objects.get(id=id)
-    data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
+# def pedido_editar(request,id):
+#     prod= Pedido.objects.get(id=id)
+#     data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
+#     if request.method == 'POST':
+#         formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
+#         if formulario.is_valid():
+#             formulario.save()
+#             return redirect('pedidos')
+#         else:
+#             print("error")
+#     return render(request, 'pedidoseditar.html', data)
+def pedido_editar(request, id):
+    prod = Pedido.objects.get(id=id)
+    
+    # Create a formset for DetallePedido related to the Pedido instance
+    DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+    
     if request.method == 'POST':
-        formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
-        if formulario.is_valid():
-            formulario.save()
+        pedido_form = ActualizarPedidoForm(request.POST, instance=prod)
+        detalle_pedido_formset = DetallePedidoFormSet(request.POST, instance=prod)
+        
+        if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
+            pedido_form.save()
+            detalle_pedido_formset.save()
             return redirect('pedidos')
         else:
-            print("error")
+            print("Error in forms")
+    else:
+        pedido_form = ActualizarPedidoForm(instance=prod)
+        detalle_pedido_formset = DetallePedidoFormSet(instance=prod)
+    
+    data = {
+        'form': pedido_form,
+        'detalle_pedido_formset': detalle_pedido_formset,
+        'id': id
+    }
+    
     return render(request, 'pedidoseditar.html', data)
 
 def materia_editar(request,id):

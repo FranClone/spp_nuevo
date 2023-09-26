@@ -29,48 +29,92 @@
             <form method="post" action="{% url 'pedido_editar' id %}" id="carga-form">
                 {% csrf_token %}
 
-                <table class="form-table">
-                    <tr>
-                        <td>{{ form.cliente.label_tag }}</td>
-                        <td>{{ form.orden_pedido.label_tag}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.cliente }}</td>
-                        <td>{{ form.orden_pedido}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.fecha_produccion.label_tag }}</td>
-                        <td>{{ form.fecha_entrega.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.fecha_produccion }}</td>
-                        <td>{{ form.fecha_entrega }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre.label_tag }}</td>
-                        <td>{{ form.comentario.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre }}</td>
-                        <td>{{ form.comentario }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.prioridad.label_tag }}</td>
-                        <td>{{ form.estado.label_tag }}</td>
+                
+                        <table class="form-table">
+                            <!-- Add Pedido fields -->
+                            {{ detalle_pedido_formset.management_form }}
+                            <tr>
+                                <th>{{ pedido_form.cliente.label_tag }}</th>
+                                <th>{{ pedido_form.orden_pedido.label_tag }}</th>
+                                <th>{{ pedido_form.fecha_produccion.label_tag }}</th>
+                                <th>{{ pedido_form.fecha_entrega.label_tag }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ pedido_form.cliente }}</td>
+                                <td>{{ pedido_form.orden_pedido }}</td>
+                                <td>{{ pedido_form.fecha_produccion }}</td>              
+                                <td>{{ pedido_form.fecha_entrega }}</td>
+                           
+                            </tr>
                         
-                    </tr>
-                    <tr>
-                        <td>{{ form.prioridad }}</td>
-                        <td>{{ form.estado }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.producto.label_tag }}</td>
-                        <td>{{ form.version.label_tag }}</td> 
-                    </tr>
-                    <tr>
-                        <td>{{ form.producto }}</td>
-                        <td>{{ form.version }}</td>
-                    </tr>
+                            <tr>
+                                <th>{{ pedido_form.prioridad.label_tag }}</th>
+                                <th>{{ pedido_form.estado.label_tag }}</th>
+                                <th>{{ pedido_form.version.label_tag }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ pedido_form.prioridad }}</td>
+                                <td>{{ pedido_form.estado }}</td>
+                                <td>{{ pedido_form.version }}</td>
+                            </tr>
+                            {% for detalle_form in detalle_pedido_formset %}
+                            
+                            <tr>
+                                <th>{{ pedido_form.comentario.label_tag }}</td>
+                                <th>{{ detalle_form.detalle_producto.label_tag }}</th>
+                                <th>{{ detalle_form.producto.label_tag }}</th>
+                                <th>{{ detalle_form.ancho_producto.label_tag }}</th>
+                            </tr>   
+                             <tr>
+                                <td>{{ pedido_form.comentario }}</td>
+                                <td>{{ detalle_form.detalle_producto }}</td>
+                                <td>{{ detalle_form.producto }}</td>
+                                <td>{{ detalle_form.ancho_producto }}</td>
+                               
+                            </tr>
+                          
+                            <tr>
+                                <th>{{ detalle_form.largo_producto.label_tag }}</th>
+                                <th>{{ detalle_form.alto_producto.label_tag }}</th>
+                                <th>{{ detalle_form.volumen_producto.label_tag }}</th>                    
+                                <th>{{ detalle_form.estado_pedido_linea.label_tag }}</th>
+                              
+                            </tr>
+                            <tr>
+                                <td>{{ detalle_form.largo_producto }}</td>
+                                <td>{{ detalle_form.alto_producto }}</td>
+                                <td>{{ detalle_form.volumen_producto }}</td>                 
+                                <td>{{ detalle_form.estado_pedido_linea }}</td>
+                            </tr>
+                             <tr>
+                                <th>{{ detalle_form.cantidad_piezas.label_tag }}</th>
+                                <th>{{ detalle_form.cantidad_trozos.label_tag }}</th>
+                                <th>{{ detalle_form.piezas_xpaquete.label_tag }}</th>
+                                <th>{{ detalle_form.piezas_xtrozo.label_tag }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ detalle_form.cantidad_piezas }}</td>
+                                <td>{{ detalle_form.cantidad_trozos }}</td>
+                                <td>{{ detalle_form.piezas_xpaquete }}</td>
+                                <td>{{ detalle_form.piezas_xtrozo }}</td>
+                            </tr> 
+                            <tr>
+                                <th>{{ detalle_form.paquetes_solicitados.label_tag }}</th>
+                                <th>{{ detalle_form.volumen_obtenido.label_tag }}</th>
+                                <th>{{ detalle_form.paquetes_saldo.label_tag }}</th>
+                                <th>{{ detalle_form.grado_urgencia.label_tag }}</th>
+                            </tr>
+                            <tr>
+                                <td>{{ detalle_form.paquetes_solicitados }}</td>
+                                <td>{{ detalle_form.volumen_obtenido }}</td>
+                                <td>{{ detalle_form.paquetes_saldo }}</td>
+                                <td>{{ detalle_form.grado_urgencia }}</td>
+                            </tr> 
+                 
+                            <!-- Add other DetallePedido fields here -->
+                            {% endfor %}
+                            <!-- Add a button to submit the form -->
+          
 
                 </table>
                 <button type="submit" name="Editar" class="red-button">Editar</button>
