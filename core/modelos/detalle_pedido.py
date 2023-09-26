@@ -31,7 +31,8 @@ class DetallePedido(models.Model):
     paquetes_solicitados =  models.FloatField( validators=[MinValueValidator(0)],null=True)
     volumen_obtenido =  models.FloatField( validators=[MinValueValidator(0)],null=True)
     paquetes_saldo = models.FloatField(validators=[MinValueValidator(0)],null=True)
-
+    mercado = models.CharField(max_length=40, null=True, blank=False)
+    puerto_destino = models.CharField(max_length=40, null=True, blank=False)
     class Meta:
         db_table = 'DETALLE_PEDIDO'
         
