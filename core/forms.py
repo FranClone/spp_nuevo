@@ -150,7 +150,7 @@ class CrearProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
         fields = [
-            'codigo',
+            'orden_producto',
             'nombre',
             'descripcion',
             'largo',
@@ -195,6 +195,8 @@ class DetallePedidoForm(forms.ModelForm):
         model = DetallePedido
         fields = [
             'producto',
+            'item',
+            'folio',
             'detalle_producto',
             'alto_producto',
             'ancho_producto',
@@ -304,7 +306,7 @@ class ActualizarPedidoForm(forms.ModelForm):
              'cliente',
              'fecha_produccion',
              'fecha_entrega',
-             'orden_pedido',
+             'orden_interna',
              'comentario',
            #  'producto',
              'prioridad',
