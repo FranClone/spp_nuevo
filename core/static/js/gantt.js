@@ -355,14 +355,13 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
 
 
@@ -382,17 +381,14 @@ class Gantt {
             
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
-                bodyHtml += `<td>${task[45]}</td>`;/*Item*/
-                bodyHtml += `<td>${task[46]}</td>`;/*Folio*/
+                bodyHtml += `<td>${task[13]}</td>`; /*Linea*/
                 bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
                 bodyHtml += `<td>${task[0]}</td>`;/*OP Orden Interna*/
-
                 bodyHtml += `<td>${task[5]}</td>`; /*Cliente*/
+                bodyHtml += `<td>${task[47]}</td>`; /*Mercado*/
                 bodyHtml += `<td>${task[3]}</td>`; /*Fecha Creacion*/
                 bodyHtml += `<td>${task[2]}</td>`; /*ETA*/
-                bodyHtml += `<td>${task[13]}</td>`; /*Linea*/
                 bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
-
 
                 bodyHtml += '</tr>';
                 
@@ -659,11 +655,10 @@ class Gantt {
             productoData = this.tasks[pedidoId];
             popup.innerHTML = `
             <div class="popup-content" id="popup">
-            <h2 style="text-align: center;">Detalles</h2>
+            <h2 style="text-align: center;">Detalles de folio ${productoData[46]}</h2>
             <table>
                 <tr>
-                    <td class="detalle-pedido-t"><strong>OP</strong></td>
-                    <td class="detalle-pedido-t"><strong>Mercado</strong></td>
+                    <td class="detalle-pedido-t"><strong>Item</strong></td>
                     <td class="detalle-pedido-t"><strong>Nombre producto</strong></td>
                     <td class="detalle-pedido-t"><strong>Largo</strong></td>
                     <td class="detalle-pedido-t"><strong>Ancho</strong></td>
@@ -683,8 +678,7 @@ class Gantt {
                     <td class="detalle-pedido-t"><strong>Estado</strong></td>
                 </tr>
                 <tr>
-                    <td class="detalle-pedido">${productoData[0]}</td> 
-                    <td class="detalle-pedido">${productoData[47]}</td>
+                    <td class="detalle-pedido">${productoData[45]}</td> 
                     <td class="detalle-pedido">${productoData[7]}</td>
                     <td class="detalle-pedido">${pedidoData[10]}</td>
                     <td class="detalle-pedido">${productoData[11]}</td>
