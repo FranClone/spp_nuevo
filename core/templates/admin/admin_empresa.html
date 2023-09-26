@@ -110,7 +110,8 @@
                 
             </table>
             
-    <button type="submit" name="crear" class="red-button">Crear</button>
+            <button type="submit" name="crear" class="red-button">Crear</button>
+            <button type="button" id="cancelar" class="form-close-x">x</button>
         </form>
         
     </div>
@@ -127,7 +128,8 @@
                         <th>Correo</th>
                         <th>Nombre Fantacia</th>
                         <th>Ciudad</th>
-                        <th>Telefono</th>         
+                        <th>Telefono</th>
+                        <th>Detalles</th>         
                     </tr>
                 </thead>
                 <tbody>
@@ -237,6 +239,16 @@
                 cargaForm.style.display = "none";
                 isFormVisible = false;
             }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const botonCancelar = document.getElementById('cancelar');
+            const formulario = document.getElementById('carga-form');
+            
+            botonCancelar.addEventListener('click', function() {
+                formulario.style.display = 'none';
+            });
         });
     </script>
 

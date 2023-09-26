@@ -16,6 +16,7 @@
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -58,7 +59,7 @@
                 {% csrf_token %}
                 <h2 class="bold-heading">Seleccionar Método de Carga</h2>
                 <hr>
-                <h2>Cargar Archivo Excel</h2>
+                <h2 class="Excel">Cargar Archivo Excel</h2>
                 <div class="button-row">
                     <table>
                         <tr>
@@ -67,8 +68,9 @@
                                     <button type="button" class="carga-button-bot">Descargar Plantilla</button>
                                 </a>
                             </td>
-                            <td>
-                                <input type="file" name="xlsfile">
+                            <td class="custom-file-input">
+                                <input type="file" name="xlsfile" id="fileInput">
+                                <label for="fileInput">Seleccionar archivo</label>
                             </td>
                         </tr>
                     </table>
@@ -76,14 +78,16 @@
                 <div class="button-row">
                     <table>
                         <tr>
-                            <td>
-                    <button  type="submit" class="carga-button-bot" name="subir">Subir Archivo</button>
+                            <td class="custom-file-input">
+                    <span id="file-name-display" class="file-name">Ningún archivo seleccionado</span>
+                    <button  type="submit" class="subir" name="subir">Subir Archivo</button>
+                    
                 </td>
             </tr>
         </table>
                 </div>
                 <!-- Close button without submitting the form -->
-                <h2>Agregar Pedido Manualmente</h2>
+                <h2 class="agregar">Agregar Pedido Manualmente</h2>
                 <div class="button-row">
                     <table>
                         <tr>
@@ -91,7 +95,7 @@
                     <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Abrir Formulario</button>      
                 </td>
                 <td>
-                    <button type="button" class="carga-button" onclick="closePopupimport()">Cerrar</button>
+                    <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
                 </td>
             </tr>
     
@@ -191,7 +195,7 @@
                 
             </table>
             <button type="submit" name="crear" class="red-button">Crear</button>    
-            <button class="red-button" onclick="closePopup()">Cerrar</button>
+            <button class="form-close-x" onclick="closePopup()">x</button>
         </form>
     </div>
    
@@ -294,6 +298,16 @@
     });
 
 
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Escucha cambios en el input[type="file"]
+        $('input[type="file"]').change(function() {
+            var fileName = $(this).val().split('\\').pop(); // Obtén el nombre del archivo seleccionado
+            $('#file-name-display').text(fileName); // Muestra el nombre del archivo en el span
+        });
+    });
 </script>
 
 

@@ -355,8 +355,10 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Orden Producto</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
@@ -376,18 +378,21 @@ class Gantt {
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
+
             
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
-                bodyHtml += '<tr>';
+                bodyHtml += `<td></td>`;/*Item*/
+                bodyHtml += `<td></td>`;/*Folio*/
                 bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
-                bodyHtml += `<td>${task[0]}</td>`; /*Nro Pedido*/
+                bodyHtml += `<td>${task[9]}</td>`;/*OP Orden producto*/
 
                 bodyHtml += `<td>${task[5]}</td>`; /*Cliente*/
                 bodyHtml += `<td>${task[3]}</td>`; /*Fecha Creacion*/
                 bodyHtml += `<td>${task[2]}</td>`; /*ETA*/
                 bodyHtml += `<td>${task[13]}</td>`; /*Linea*/
                 bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
+
 
                 bodyHtml += '</tr>';
                 
@@ -657,15 +662,15 @@ class Gantt {
             <h2 style="text-align: center;">Detalles</h2>
             <table>
                 <tr>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Codigo pedido</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Fecha de entrega</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Fecha de produccion</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Progreso </strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Cliente</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Orden producto</strong></td>
+
+
+
+
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Comentario</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nombre producto</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Prioridad</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Codigo producto</strong></td>
+                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Orden producto</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ancho</strong></td>
                     <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Alto</strong></td>
@@ -679,10 +684,10 @@ class Gantt {
                 </tr>
                 <tr>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[0]}</td> 
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[2]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[3]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[4]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[5]}</td>
+
+
+
+
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[6]}</td>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[7]}</td>
                     <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${pedidoData[8]}</td>
