@@ -538,13 +538,16 @@ def gantt_view(request):
                 nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
                 patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
                 detalle_pedido = DetallePedido.objects.get(pedido=pedido, producto=producto)
+                mercado = detalle_pedido.mercado if detalle_pedido.mercado is not None else "N/A"
+                destino = detalle_pedido.puerto_destino if detalle_pedido.mercado is not None else "N/A"
                 item = detalle_pedido.item if detalle_pedido.item is not None else "N/A"
                 folio = detalle_pedido.folio if detalle_pedido.folio is not None else "N/A"
                 alto_producto = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
                 ancho_producto = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
                 largo_producto = detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
                 volumen_producto = detalle_pedido.volumen_producto if detalle_pedido.volumen_producto is not None else "N/A"
-                estado_pedido_linea = detalle_pedido.estado_pedido_linea if detalle_pedido.estado_pedido_linea is not None else "N/A"
+                estado = pedido.estado if pedido.estado is not None else "N/A"
+                #estado_pedido_linea = detalle_pedido.estado_pedido_linea if detalle_pedido.estado_pedido_linea is not None else "N/A"
                 grado_urgencia = detalle_pedido.grado_urgencia if detalle_pedido.grado_urgencia is not None else "N/A"
                 cantidad_piezas = detalle_pedido.cantidad_piezas if detalle_pedido.cantidad_piezas is not None else "N/A"
                 cantidad_trozos = detalle_pedido.cantidad_trozos if detalle_pedido.cantidad_trozos is not None else "N/A"
@@ -554,6 +557,8 @@ def gantt_view(request):
                 volumen_obtenido = detalle_pedido.volumen_obtenido if detalle_pedido.volumen_obtenido is not None else "N/A"
                 paquetes_saldo = detalle_pedido.paquetes_saldo if detalle_pedido.paquetes_saldo is not None else "N/A"
                 diametro_rollizo = producto.nombre_rollizo.diametro if producto.nombre_rollizo else "N/A"
+                largo_rollizo = producto.nombre_rollizo.largo or "N/A"
+
                 try:
                     patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
                     codigo_patron = patron_corte_data.codigo
@@ -604,7 +609,7 @@ def gantt_view(request):
                     ancho_producto,  # 23
                     largo_producto,  # 24
                     volumen_producto,  # 25
-                    estado_pedido_linea,  # 26
+                    estado,  # 26
                     grado_urgencia,  # 27
                     cantidad_piezas,  # 28
                     cantidad_trozos,  # 29
@@ -623,8 +628,14 @@ def gantt_view(request):
                     lead_time_patron,  # 42
                     utilizado_patron,  # 43
                     producto_asociado_patron,  # 44
-                    item,#45
-                    folio#46
+                    item, #45
+                    folio, #46
+                    mercado, #47
+                    destino, #48
+                    largo_rollizo, #49
+
+
+                    
                 ]
 
                 tasks.append(tasks_pedido)

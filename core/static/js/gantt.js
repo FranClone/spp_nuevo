@@ -662,46 +662,46 @@ class Gantt {
             <h2 style="text-align: center;">Detalles</h2>
             <table>
                 <tr>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>OP</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Mercado</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nombre producto</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ancho</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Alto</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PQTES.Solicitados</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PQTES.Saldo</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>TROZOS</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS. X PQTE.</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Ø</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Largo Trozo</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Prioridad</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Nota</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>PZAS. X TROZO</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Puerto_destino</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>M3 Prod</strong></td>
-                    <td style="background-color: rgba(142, 142, 142, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"><strong>Estado</strong></td>
+                    <td class="detalle-pedido-t"><strong>OP</strong></td>
+                    <td class="detalle-pedido-t"><strong>Mercado</strong></td>
+                    <td class="detalle-pedido-t"><strong>Nombre producto</strong></td>
+                    <td class="detalle-pedido-t"><strong>Largo</strong></td>
+                    <td class="detalle-pedido-t"><strong>Ancho</strong></td>
+                    <td class="detalle-pedido-t"><strong>Alto</strong></td>
+                    <td class="detalle-pedido-t"><strong>PQTES.Solicitados</strong></td>
+                    <td class="detalle-pedido-t"><strong>PQTES.Saldo</strong></td>
+                    <td class="detalle-pedido-t"><strong>PZAS</strong></td>
+                    <td class="detalle-pedido-t"><strong>TROZOS</strong></td>
+                    <td class="detalle-pedido-t"><strong>PZAS. X PQTE.</strong></td>
+                    <td class="detalle-pedido-t"><strong>Ø</strong></td>
+                    <td class="detalle-pedido-t"><strong>Largo Trozo</strong></td>
+                    <td class="detalle-pedido-t"><strong>Prioridad</strong></td>
+                    <td class="detalle-pedido-t"><strong>Nota</strong></td>
+                    <td class="detalle-pedido-t"><strong>PZAS. X TROZO</strong></td>
+                    <td class="detalle-pedido-t"><strong>Puerto_destino</strong></td>
+                    <td class="detalle-pedido-t"><strong>M3 Prod</strong></td>
+                    <td class="detalle-pedido-t"><strong>Estado</strong></td>
                 </tr>
                 <tr>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[0]}</td> 
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[7]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${pedidoData[10]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[11]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[12]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[32]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[34]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[28]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[29]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[30]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[35]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[8]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[6]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[31]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;"></td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[33]}</td>
-                    <td style="background-color: rgba(194, 194, 194, 0.705); color: Black; width: 30vh; font-size: 13px; border-width: 1px;">${productoData[26]}</td>
+                    <td class="detalle-pedido">${productoData[0]}</td> 
+                    <td class="detalle-pedido">${productoData[47]}</td>
+                    <td class="detalle-pedido">${productoData[7]}</td>
+                    <td class="detalle-pedido">${pedidoData[10]}</td>
+                    <td class="detalle-pedido">${productoData[11]}</td>
+                    <td class="detalle-pedido">${productoData[12]}</td>
+                    <td class="detalle-pedido">${productoData[32]}</td>
+                    <td class="detalle-pedido">${productoData[34]}</td>
+                    <td class="detalle-pedido">${productoData[28]}</td>
+                    <td class="detalle-pedido">${productoData[29]}</td>
+                    <td class="detalle-pedido">${productoData[30]}</td>
+                    <td class="detalle-pedido">${productoData[35]}</td>
+                    <td class="detalle-pedido">${productoData[49]}</td>
+                    <td class="detalle-pedido">${productoData[8]}</td>
+                    <td class="detalle-pedido">${productoData[6]}</td>
+                    <td class="detalle-pedido">${productoData[31]}</td>
+                    <td class="detalle-pedido">${productoData[48]}</td>
+                    <td class="detalle-pedido">${productoData[25]}</td>
+                    <td class="detalle-pedido">${productoData[26]}</td>
                 </tr>
             </table>
             <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
