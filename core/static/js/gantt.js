@@ -382,8 +382,8 @@ class Gantt {
             
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
-                bodyHtml += `<td></td>`;/*Item*/
-                bodyHtml += `<td></td>`;/*Folio*/
+                bodyHtml += `<td>${task[45]}</td>`;/*Item*/
+                bodyHtml += `<td>${task[46]}</td>`;/*Folio*/
                 bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
                 bodyHtml += `<td>${task[9]}</td>`;/*OP Orden producto*/
 

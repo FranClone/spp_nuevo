@@ -131,6 +131,8 @@ def process_uploaded_file(xlsfile):
                                 paquetes_solicitados=row['paquetes_solicitados'],
                                 paquetes_saldo=row['paquetes_saldo'],
                                 detalle_producto=row['comentario'],
+                                mercado=row['mercado'],
+                                puerto_destino=row['puerto_destino']
                             )
                             detalle_pedido.save()
                                 # Obtiene la fecha y hora actual formateada
@@ -536,6 +538,8 @@ def gantt_view(request):
                 nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
                 patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
                 detalle_pedido = DetallePedido.objects.get(pedido=pedido, producto=producto)
+                item = detalle_pedido.item if detalle_pedido.item is not None else "N/A"
+                folio = detalle_pedido.folio if detalle_pedido.folio is not None else "N/A"
                 alto_producto = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
                 ancho_producto = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
                 largo_producto = detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
@@ -619,6 +623,8 @@ def gantt_view(request):
                     lead_time_patron,  # 42
                     utilizado_patron,  # 43
                     producto_asociado_patron,  # 44
+                    item,#45
+                    folio#46
                 ]
 
                 tasks.append(tasks_pedido)
