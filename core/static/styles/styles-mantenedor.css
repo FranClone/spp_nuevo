@@ -244,6 +244,8 @@ a {
     margin: 0 auto;
     background-color: red;
     color: white;
+    border: 1px solid white;
+    border-radius: 5px;
 }
 
 /* Style contenedor MultiSelect */
@@ -267,4 +269,23 @@ a {
     border-radius: 0px;
 }
 
+.form-close-x {
+    background-color: red;
+    color: white;
+    border: 1px solid white;
+    padding: 1px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+
+
+#id_fecha_entrega, #id_cliente, #id_detalle_pedido-0-producto, #id_detalle_pedido-0-estado_pedido_linea, #id_nombre_rollizo, #id_linea {
+    border: 0.1px solid #595959;
+    box-sizing: border-box;
+    height: 30px;
+}
 

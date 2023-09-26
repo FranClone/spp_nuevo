@@ -79,6 +79,7 @@ table tr {
     margin: 5px;
     border: 2px solid white;
     text-decoration: none !important;
+    margin-bottom: 9px;
 }
 
 .carga-button-bot:hover {
@@ -424,10 +425,12 @@ table tr {
 }
 
 .red-button {
+    display: block;
     margin: 0 auto;
     background-color: red;
     color: white;
-    width: 15%;
+    border: 1px solid white;
+    border-radius: 5px;
 }
 
 .main {
@@ -523,7 +526,7 @@ table tr {
 .popup-close-pedidos {
     background-color: red;
     color: white;
-    border: 1px solid black;
+    border: 1px solid white;
     padding: 1px 10px;
     border-radius: 5px;
     cursor: pointer;
@@ -532,7 +535,7 @@ table tr {
     right: 5px;
 }
 /* Style datepicker */
-#id_fecha_entrega {
+#id_fecha_entrega, #id_cliente, #id_detalle_pedido-0-producto, #id_detalle_pedido-0-estado_pedido_linea {
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;
@@ -610,11 +613,47 @@ table tr {
 #titulo {
     margin-right: 10px; /* Agrega un espacio a la derecha del título */}
 
-
-    .bold-heading {
+.bold-heading {
     font-weight: bold;
+    margin:auto;
+    margin-top: 10px;
 }
 
+.agregar{
+    margin: auto;
+    margin-bottom: 12px;
+    margin-top: 17px;
+
+}
+
+
+.Excel{
+    margin: auto;
+    margin-bottom: 12px;
+}
+
+
+.subir{
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 5px;
+    margin-top: 9px ;
+    margin-bottom: 9px;
+}
+
+
+.subir:hover {
+background-color: white;
+color: red;
+transition: 0.5s ease-in-out;
+}
 
 
 .btn, .btn-default, .dropdown-toggle{
@@ -637,5 +676,102 @@ table tr {
    
 }
 .dropdown-menu.show{
-    margin-top: 5vh; 
+    margin-top: 10%; 
+}
+
+
+.xlsfile{
+    margin-top: 1vh;
+    background-color: red;
+    color: white;
+    min-width: 80px;
+    max-width: 100px;
+    width: 15%;
+
+}
+
+
+/* Estilo para el contenedor del botón personalizado */
+.custom-file-input {
+    overflow: hidden;
+    display: inline-block;
+
+}
+
+/* Estilo para el botón personalizado */
+.custom-file-input input[type="file"] {
+    position: absolute;
+    opacity: 0;
+    right: 0;
+    top: 8px;
+}
+
+.custom-file-input label {
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    border-radius: 6px;
+    padding: 10px;
+    margin: 5px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    cursor: pointer;
+    display: inline-block;
+    margin-left: 29px;
+    margin-bottom: 9px;
+}
+
+.custom-file-input label:hover {
+    background-color: white;
+    color: red;
+    transition: 0.5s ease-in-out; 
+}
+
+/* Ocultar el nombre de archivo seleccionado */
+.custom-file-input input[type="file"]::-webkit-file-upload-button {
+    visibility: hidden;
+}
+
+/* Estilo para mostrar el nombre del archivo seleccionado */
+.custom-file-input .file-name {
+    margin-left: 10px;
+    font-weight: bold;
+}
+
+
+.form-close-x {
+    background-color: red;
+    color: white;
+    border: 1px solid white;
+    padding: 1px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+
+.form-table {
+    width: 100%;
+    border-collapse: collapse;
+    /* Combina los bordes de la tabla */
+}
+
+.form-table td {
+    padding: 5px;
+    vertical-align: top;
+    /* Alinea los campos verticalmente */
+}
+
+.form-table label {
+    display: block;
+    /* Hace que las etiquetas ocupen todo el ancho de la celda */
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+.form-table input {
+    width: 100%;
+    box-sizing: border-box;
+    /* Incluye el ancho del borde y el relleno en el ancho total */
 }

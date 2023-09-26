@@ -30,50 +30,20 @@
                 {% csrf_token %}
 
                 <table class="form-table">
+                    {{ detalle_pedido_formset.management_form }}
+
                     <tr>
-                        <td>{{ form.cliente.label_tag }}</td>
-                        <td>{{ form.orden_pedido.label_tag}}</td>
+                        <th>{{ pedido_form.cliente.label_tag }}</th>
                     </tr>
                     <tr>
-                        <td>{{ form.cliente }}</td>
-                        <td>{{ form.orden_pedido}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.fecha_produccion.label_tag }}</td>
-                        <td>{{ form.fecha_entrega.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.fecha_produccion }}</td>
-                        <td>{{ form.fecha_entrega }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre.label_tag }}</td>
-                        <td>{{ form.comentario.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.nombre }}</td>
-                        <td>{{ form.comentario }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.prioridad.label_tag }}</td>
-                        <td>{{ form.estado.label_tag }}</td>
-                        
-                    </tr>
-                    <tr>
-                        <td>{{ form.prioridad }}</td>
-                        <td>{{ form.estado }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.producto.label_tag }}</td>
-                        <td>{{ form.version.label_tag }}</td> 
-                    </tr>
-                    <tr>
-                        <td>{{ form.producto }}</td>
-                        <td>{{ form.version }}</td>
+                        <td>{{ pedido_form.cliente }}</td>
                     </tr>
 
                 </table>
                 <button type="submit" name="Editar" class="red-button">Editar</button>
+                <button type="button" class="red-button">
+                    <a href="{% url 'pedidos' %}">Cancelar</a>
+                </button>
             </form>
 
         </div>
