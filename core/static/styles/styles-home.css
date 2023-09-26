@@ -676,7 +676,7 @@ transition: 0.5s ease-in-out;
    
 }
 .dropdown-menu.show{
-    margin-top: 10%; 
+    margin-top: 5vh; 
 }
 
 
@@ -774,4 +774,24 @@ transition: 0.5s ease-in-out;
     width: 100%;
     box-sizing: border-box;
     /* Incluye el ancho del borde y el relleno en el ancho total */
+}
+
+.detalle-pedido{
+    background-color: rgba(194, 194, 194, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px; 
+    text-align: center;
+}
+
+
+.detalle-pedido-t{
+    background-color: rgba(142, 142, 142, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px;
+    text-align: center;
+
 }

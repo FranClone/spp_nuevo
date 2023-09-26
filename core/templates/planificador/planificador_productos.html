@@ -64,12 +64,12 @@
             {% csrf_token %}
             <table class="form-table">
                 <tr>
-                    <th>{{ form.codigo.label_tag }}</th>
+                    <th>{{ form.orden_producto.label_tag }}</th>
                     <th>{{ form.nombre.label_tag }}</th>
                     <th>{{ form.descripcion.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td>{{ form.codigo }}</td>
+                    <td>{{ form.orden_producto }}</td>
                     <td>{{ form.nombre }}</td>
                     <td>{{ form.descripcion }}</td>
                 </tr>
