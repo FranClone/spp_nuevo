@@ -123,7 +123,7 @@ def process_uploaded_file(xlsfile):
                             pqte=row['pqte'],  
                             tipo_empaque=row['tipo_empaque'],  
                             alto_paquete=row['alto_paquete'],  
-                           # anc_paquete=row['anc_paquete'],  
+                            anc_paquete=row['anc_paquete'],  
                             int_paquete=row['int_paquete']  
                         )
                         empaque.save()
@@ -606,6 +606,7 @@ def gantt_view(request):
                 tipo_empaque = empaque.tipo_empaque if empaque.tipo_empaque is not None else "N/A"
                 alto_paquete = empaque.alto_paquete if empaque.alto_paquete is not None else "N/A"
                 int_paquete = empaque.int_paquete if empaque.int_paquete is not None else "N/A"
+                anc_paquete = empaque.anc_paquete if empaque.anc_paquete is not None else "N/A"
                 try:
                     patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
                     codigo_patron = patron_corte_data.codigo
@@ -697,8 +698,7 @@ def gantt_view(request):
                     piezas,  # 64
                     cpo,  # 65
                     piezas_x_cpo,  # 66
-
-                    #anc_paquete # 67
+                    anc_paquete, # 67
                 ]
 
                 tasks.append(tasks_pedido)
