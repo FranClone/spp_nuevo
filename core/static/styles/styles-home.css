@@ -97,7 +97,8 @@ table tr {
 }
 
 .fixed-width {
-    width: 80px; /* Puedes ajustar este valor según tus preferencias */
+    width: 80px;
+    /* Puedes ajustar este valor según tus preferencias */
 }
 
 .event-cell a.popup-link {
@@ -212,7 +213,7 @@ table tr {
 }
 
 /*configurar lineas dentro de la tabla (columnas)*/
-#gantt table tr td { 
+#gantt table tr td {
     padding: 6px;
     line-height: 15px;
     border-left: 1px solid black;
@@ -299,7 +300,7 @@ table tr {
 
 .horizontal-container {
     display: flex;
-    float: right;    
+    float: right;
 }
 
 .horizontal-container div {
@@ -408,14 +409,14 @@ table tr {
 
 /* Color del fondo del scrollbar cuando no está en hover */
 
- ::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
     background-color: black;
 }
 
 
 /* Color del thumb del scrollbar (el deslizador) cuando no está en hover */
 
- ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     background-color: rgb(65, 64, 64);
     border-radius: 6px;
 }
@@ -423,7 +424,7 @@ table tr {
 
 /* Color del thumb del scrollbar cuando está en hover */
 
- ::-webkit-scrollbar-thumb:hover {
+::-webkit-scrollbar-thumb:hover {
     background-color: red;
 }
 
@@ -537,8 +538,12 @@ table tr {
     top: 5px;
     right: 5px;
 }
+
 /* Style datepicker */
-#id_fecha_entrega, #id_cliente, #id_detalle_pedido-0-producto, #id_detalle_pedido-0-estado_pedido_linea {
+#id_fecha_entrega,
+#id_cliente,
+#id_detalle_pedido-0-producto,
+#id_detalle_pedido-0-estado_pedido_linea {
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;
@@ -555,12 +560,14 @@ table tr {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
 }
+
 .formimport {
     background-color: white;
     padding: 20px;
     border-radius: 5px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-    display: flex; /* Use flexbox to align elements */
+    display: flex;
+    /* Use flexbox to align elements */
     flex-direction: column;
     align-items: center;
 }
@@ -569,18 +576,21 @@ table tr {
 /* Style contenedor MultiSelect */
 .select2.select2-container {
     width: 100% !important;
-  }
+}
 
 .select2-container--default .select2-selection--multiple {
     width: 100% !important;
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;
-    border-radius:0.1px !important;
+    border-radius: 0.1px !important;
 }
 
 
-.form-control, #id_prioridad, #id_estado, #id_linea_produccion {
+.form-control,
+#id_prioridad,
+#id_estado,
+#id_linea_produccion {
     border: 0.1px solid #595959;
     box-sizing: border-box;
     height: 30px;
@@ -588,7 +598,11 @@ table tr {
 }
 
 
-#showProductosButton, #showPedidosButton, #showSalidaButton,#showPatronesButton,#showProduccionButton {
+#showProductosButton,
+#showPedidosButton,
+#showSalidaButton,
+#showPatronesButton,
+#showProduccionButton {
     background-color: rgba(142, 142, 142, 0.705);
     color: white;
     border-radius: 3px;
@@ -609,12 +623,16 @@ table tr {
 
 
 .title-container {
-    display: flex; /* Utiliza flexbox para alinear elementos en línea */
-    align-items: center; /* Centra verticalmente los elementos en el contenedor */
+    display: flex;
+    /* Utiliza flexbox para alinear elementos en línea */
+    align-items: center;
+    /* Centra verticalmente los elementos en el contenedor */
 }
 
 #titulo {
-    margin-right: 10px; /* Agrega un espacio a la derecha del título */}
+    margin-right: 10px;
+    /* Agrega un espacio a la derecha del título */
+}
 
 .bold-heading {
     font-weight: bold;
@@ -622,7 +640,7 @@ table tr {
     margin-top: 20px;
 }
 
-.agregar{
+.agregar {
     margin: auto;
     margin-bottom: 12px;
     margin-top: 17px;
@@ -630,13 +648,13 @@ table tr {
 }
 
 
-.Excel{
+.Excel {
     margin: auto;
     margin-bottom: 12px;
 }
 
 
-.subir{
+.subir {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
@@ -647,43 +665,46 @@ table tr {
     cursor: pointer;
     display: inline-block;
     margin-left: 5px;
-    margin-top: 9px ;
+    margin-top: 9px;
     margin-bottom: 9px;
 }
 
 
 .subir:hover {
-background-color: white;
-color: red;
-transition: 0.5s ease-in-out;
+    background-color: white;
+    color: red;
+    transition: 0.5s ease-in-out;
 }
 
 
-.btn, .btn-default, .dropdown-toggle{
+.btn,
+.btn-default,
+.dropdown-toggle {
     background-color: red;
     color: white;
     min-width: 80px;
     max-width: 100px;
     width: 15%;
-    
+
 }
 
 
-.btn-group{
+.btn-group {
     margin-top: 1vh;
     background-color: red;
     color: white;
     min-width: 80px;
     max-width: 100px;
     width: 15%;
-   
+
 }
-.dropdown-menu.show{
-    margin-top: 5vh; 
+
+.dropdown-menu.show {
+    margin-top: 5vh;
 }
 
 
-.xlsfile{
+.xlsfile {
     margin-top: 1vh;
     background-color: red;
     color: white;
@@ -722,7 +743,7 @@ transition: 0.5s ease-in-out;
 .custom-file-input label:hover {
     background-color: white;
     color: red;
-    transition: 0.5s ease-in-out; 
+    transition: 0.5s ease-in-out;
 }
 
 /* Ocultar el nombre de archivo seleccionado */
@@ -775,6 +796,7 @@ transition: 0.5s ease-in-out;
     /* Incluye el ancho del borde y el relleno en el ancho total */
 }
 
+
 .detalle-pedido{
     background-color: rgba(194, 194, 194, 0.705); 
     color: Black; 
@@ -784,6 +806,7 @@ transition: 0.5s ease-in-out;
     text-align: center;
     border-right: 1px solid black;
 }
+
 
 
 .detalle-pedido-t{
@@ -796,6 +819,73 @@ transition: 0.5s ease-in-out;
 
 }
 
+.popup2 {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    justify-content: center;
+    align-items: flex-start;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Estilos para el contenido del popup */
+.popup2-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #6d6c6c;
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 400px;
+    border-radius: 10px;
+    font-size: 22px;
+}
+
+.popup2-title {
+    font-size: 24px;
+    margin-bottom: 15px;
+    text-align: center;
+    color: #fff;
+}
+
+/* Estilos para el botón "Continuar" */
+.popup2-continue {
+    background: #007BFF;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-top: 10px;
+    text-align: center;
+}
+
+.popup2-content p {
+    text-align: center;
+    color: #ffffff;
+    /* Gris */
+}
+
+.popup2-close-button {
+    background: #ff0000;
+    /* Color de fondo rojo */
+    color: #fff;
+    /* Texto blanco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 10px;
 
 .button-container {
     display: flex;
