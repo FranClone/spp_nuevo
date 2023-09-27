@@ -697,10 +697,12 @@ def gantt_view(request):
                     piezas,  # 64
                     cpo,  # 65
                     piezas_x_cpo,  # 66
+
                     #anc_paquete # 67
                 ]
 
                 tasks.append(tasks_pedido)
+
     context = {
     'tasks': tasks,
     'pedido_form': pedido_form,  # Include the pedido_form in the context

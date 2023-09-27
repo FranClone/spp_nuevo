@@ -355,14 +355,16 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Linea</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Fecha carga</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">OP</th>';
+        html += '<th style="color: white; width: 25vh; font-size: 15px; text-align: center;">Cliente</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Mercado</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Fecha Creacion</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">ETA</th>';
+        html += '<th style="color: white; width: 25vh; font-size: 15px; text-align: center;">Destino</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Programa</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Detalle</th>';
 
 
 
@@ -381,14 +383,24 @@ class Gantt {
             
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
-                bodyHtml += `<td>${task[13]}</td>`; /*Linea*/
-                bodyHtml += `<td>${task[1]}</td>`; /*Fecha de carga*/
-                bodyHtml += `<td>${task[0]}</td>`;/*OP Orden Interna*/
-                bodyHtml += `<td>${task[5]}</td>`; /*Cliente*/
-                bodyHtml += `<td>${task[47]}</td>`; /*Mercado*/
-                bodyHtml += `<td>${task[3]}</td>`; /*Fecha Creacion*/
-                bodyHtml += `<td>${task[2]}</td>`; /*ETA*/
-                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
+
+                const fechaISO = task[1];/*Fecha de carga*/
+                const fechaISO2 = task[2];/*ETA*/
+                const fechaISO3 = task[3];/*Fecha Creacion*/
+                const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
+                const fechaFormateada2 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
+                const fechaFormateada3 = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha Creacion*/
+
+                bodyHtml += `<td style="text-align: center;">${task[13]}</td>`; /*Linea*/
+                bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
+                bodyHtml += `<td style="text-align: center;">${task[0]}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td style="text-align: center;">${task[5]}</td>`; /*Cliente*/
+                bodyHtml += `<td style="text-align: center;">${task[47]}</td>`; /*Mercado*/
+                bodyHtml += `<td style="text-align: center;">${fechaFormateada3}</td>`; /*Fecha Creacion*/
+                bodyHtml += `<td style="text-align: center;">${fechaFormateada2}</td>`; /*ETA*/
+                bodyHtml += `<td style="text-align: center;">${task[48]}</td>`; /*Destino*/
+                bodyHtml += `<td style="text-align: center;">${task[63]}</td>`; /*Programa*/
+                bodyHtml += `<td style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
 
                 bodyHtml += '</tr>';
                 
