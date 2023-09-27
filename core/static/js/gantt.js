@@ -714,7 +714,7 @@ class Gantt {
                     html += `<td class="detalle-pedido">${task[10]}</td>`; // Lar.Producc
                     html += `<td class="detalle-pedido">${task[55]}</td>`; // Tipo Empaque
                     html += `<td class="detalle-pedido">${task[56]}</td>`; // Alto.Paquete
-                    html += `<td class="detalle-pedido">Ancho Paquete</td>`; // Anc.paquete
+                    html += `<td class="detalle-pedido">${task[67]}</td>`; // Anc.paquete
                     html += `<td class="detalle-pedido">${task[57]}</td>`; // Int.paquete
                     html += `<td class="detalle-pedido">${task[64]}</td>`; // Pzas
                     html += `<td class="detalle-pedido">${task[65]}</td>`; // Cpo
@@ -734,9 +734,9 @@ class Gantt {
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
-                    <h2 style="text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
+                    <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
-                    <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
                 </div>
             `;
         }

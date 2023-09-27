@@ -6,6 +6,7 @@ class Empaque(models.Model):
     tipo_empaque = models.CharField(max_length=40, null=True, blank=False)
     alto_paquete = models.FloatField(validators=[MinValueValidator(0)], null=True)
     int_paquete = models.FloatField(validators=[MinValueValidator(0)], null=True)
+    anc_paquete = models.FloatField(validators=[MinValueValidator(0)], null=True)
 
     class Meta:
         db_table = 'Paquete'
