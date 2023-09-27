@@ -21,7 +21,8 @@ h3 {
 }
 
 table tr {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.801);
+    border: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .btn-agregar-pedido,
@@ -75,8 +76,7 @@ table tr {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
-    padding: 10px;
-    margin: 5px;
+    padding: 13px 5px;
     border: 2px solid white;
     text-decoration: none !important;
     margin-bottom: 9px;
@@ -215,12 +215,12 @@ table tr {
 #gantt table tr td { 
     padding: 6px;
     line-height: 15px;
-    border-left: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-left: 1px solid black;
 }
 
 /*configurar lineas dentro de la tabla (ultima columnas)*/
 #gantt table tr td:last-child {
-    border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-right: 1px solid black;
 
 }
 
@@ -619,7 +619,7 @@ table tr {
 .bold-heading {
     font-weight: bold;
     margin:auto;
-    margin-top: 10px;
+    margin-top: 20px;
 }
 
 .agregar{
@@ -713,14 +713,10 @@ transition: 0.5s ease-in-out;
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
-    padding: 10px;
-    margin: 5px;
+    padding: 13px  3px;
     border: 2px solid white;
     text-decoration: none !important;
     cursor: pointer;
-    display: inline-block;
-    margin-left: 29px;
-    margin-bottom: 9px;
 }
 
 .custom-file-input label:hover {
@@ -786,6 +782,7 @@ transition: 0.5s ease-in-out;
     font-size: 13px; 
     border-width: 1px; 
     text-align: center;
+    border-right: 1px solid black;
 }
 
 
@@ -797,4 +794,14 @@ transition: 0.5s ease-in-out;
     border-width: 1px;
     text-align: center;
 
+}
+
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.file-name{
+    font-weight: bold;
 }
