@@ -29,6 +29,8 @@ from .modelos.materia_prima import MateriaPrima
 from .modelos.productos_terminados import ProductoTerminado
 from django.forms import inlineformset_factory
 from .modelos.detalle_pedido import DetallePedido
+from .modelos.factura import Factura
+from .modelos.empaque import Empaque
 from .modelos.resources import PedidoResource
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -103,38 +105,63 @@ def process_uploaded_file(xlsfile):
                             cliente=cliente,
                             fecha_produccion=row['fecha_produccion'],
                             fecha_entrega=row['fecha_entrega'],
-                            orden_interna=row['orden_interna'],
+                            orden_interna=row['op'],
                             comentario=row['comentario'],
-                            prioridad=row['prioridad'],
+                            #prioridad=row['prioridad'],#agregar para editar en la pagina null=false
                             version=row['version'],
-                            estado=row['estado']
+                            estado=row['estado']#agregar para editar en la pagina null=false
                         )
                         pedido.save()
-
+                        factura = Factura(
+                            FSC=row['FSC'],  
+                            esp_fact=row['esp_fact'], 
+                            anc_fact=row['anc_fact'],  
+                            lar_fact=row['lar_fact']  
+                        )
+                        factura.save()
+                        empaque = Empaque(
+                            pqte=row['pqte'],  
+                            tipo_empaque=row['tipo_empaque'],  
+                            alto_paquete=row['alto_paquete'],  
+                            int_paquete=row['int_paquete']  
+                        )
+                        empaque.save()
                         for producto_nombre in productos_list:
                             producto = Producto.objects.get(nombre=producto_nombre)
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
+                                factura=factura,
+                                empaque=empaque,
                                 item=row['item'],
-                                folio=row['folio'],
+                                #folio=row['folio'], # agregar para editar en la pagina null=True
                                 alto_producto=row['alto'],
                                 ancho_producto=row['ancho'],
                                 largo_producto=row['largo'],
-                                volumen_producto=row['volumen_producto'],
+                                volumen_producto=row['M3'],
                                 fecha_entrega=row['fecha_entrega'],
-                                grado_urgencia=row['prioridad'], 
-                                cantidad_piezas=row['cantidad_piezas'],
-                                cantidad_trozos=row['cantidad_trozos'],
-                                piezas_xpaquete=row['piezas_xpaquete'],
-                                piezas_xtrozo=row['piezas_xtrozo'],
-                                paquetes_solicitados=row['paquetes_solicitados'],
-                                paquetes_saldo=row['paquetes_saldo'],
+                                #grado_urgencia=row['prioridad'], #agregar para editar en la pagina null=True
+                                cantidad_piezas=row['piezas'], 
+                                #cantidad_trozos=row['cantidad_trozos'], #??? 
+                                #piezas_xpaquete=row['piezas_xpaquete'], #???
+                                #piezas_xtrozo=row['piezas_xtrozo'], #???
+                                #paquetes_solicitados=row['paquetes_solicitados'], #???
+                                #paquetes_saldo=row['paquetes_saldo'], #???
                                 detalle_producto=row['comentario'],
                                 mercado=row['mercado'],
-                                puerto_destino=row['puerto_destino']
+                                puerto_destino=row['puerto_destino'],
+                                term=row['term'],
+                                calidad=row['calidad'],
+                                mbf=row['mbf'],
+                                banio=row['baño'],
+                                marca=row['marca'],
+                                programa=row['programa'],
+                                piezas=row['piezas'],
+                                cpo=row['cpo'],
+                                piezas_x_cpo=row['piezas_x_cpo']
                             )
                             detalle_pedido.save()
+                            
                                 # Obtiene la fecha y hora actual formateada
                         fecha_actual = datetime.now()
                         fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')

@@ -289,14 +289,14 @@ class ActualizarPedidoForm(forms.ModelForm):
          super().__init__(*args, **kwargs)
          self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
              attrs={
-                 'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)',
+                 'type': 'date', 'placeholder': 'YYYY-MM-DD (DOB)',
                  'class': 'form-control'
              }
          )
 
          self.fields['fecha_produccion'].widget = forms.widgets.DateInput(
              attrs={
-                 'type': 'date', 'placeholder': 'dd-mm-yyyy (DOB)',
+                 'type': 'date', 'placeholder': 'YYYY-MM-DD (DOB)',
                  'class': 'form-control'
              }
          )
