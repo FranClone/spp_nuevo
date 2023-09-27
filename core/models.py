@@ -1,5 +1,7 @@
 from django.db import models
 from django.utils import timezone
+from core.modelos.empaque import Empaque
+from core.modelos.factura import Factura
 
 class Usuario(models.Model):
     nombre = models.CharField(max_length=50, null=False, blank=False)
