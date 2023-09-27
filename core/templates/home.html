@@ -25,6 +25,15 @@
 </head>
 <body>
     {% include "partials/header.html" %}
+    {% if alert_message %}
+    <div class="popup2" id="popup2">
+        <div class="popup2-content">
+            <h2>Aviso</h2>
+            <p>{{ alert_message }}</p>
+            <button class="popup2-close-button" id="popup2-close-button">Cerrar</button>
+        </div>
+    </div>
+{% endif %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
         <div class="popup-content-pedidos">
             {% comment %} Revisar si estos comentarios son necesarios {% endcomment %}
@@ -309,6 +318,24 @@
         });
     });
 </script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+        const popup = document.getElementById("popup2");
+        const popupCloseButton = document.getElementById("popup2-close-button");
 
+        // Muestra el popup si alert_message tiene un valor
+        if (popup && popupCloseButton) {
+            popup.style.display = "block";
+            
+            
+            // Cierra el popup cuando se hace clic en el botón "Cerrar"
+            popupCloseButton.addEventListener("click", function () {
+                popup.style.display = "none";
+            });
+        }
+
+
+    });
+</script>
 
 </html>

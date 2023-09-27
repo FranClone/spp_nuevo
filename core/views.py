@@ -52,6 +52,7 @@ from tablib import Dataset
 from .forms import Excelform
 from django.contrib import messages
 import logging  # Import the logging module
+from django.db import IntegrityError
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -64,23 +65,32 @@ except Exception as ex:
 
 
 def importar(request):
+    alert_message = None  # Inicialmente, no hay mensaje de alerta
+    success = False  # Inicialmente, no se considera éxito
+
     if request.method == 'POST':
-        print("post")
         if 'subir' in request.POST:
             result = process_uploaded_file(request.FILES.get('xlsfile'))
             if result.get('success'):
-                # Log success message to the console
-                print("File uploaded and processed successfully.")
+                # Importación exitosa, muestra un mensaje de éxito
+                success = True
+                alert_message = 'Importacion exitosa'
             else:
-                # Log error message to the console
-                print("Data import failed. Please check the file format.")
-        
-    #return render(request, 'home.html')
-    return redirect(reverse('home')) 
+                # Importación fallida, muestra un mensaje de error
+                alert_message = 'Error: ' + (result.get('error_message') or '')
 
+    # Redirige a la vista "home" después de procesar la importación
+
+    return render(request, 'home.html', {'alert_message': alert_message, 'success': success})
+
+    #return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
 
 def process_uploaded_file(xlsfile):
-    if xlsfile:
+    success = False
+    error_message = None
+    if not xlsfile:
+        error_message = "No se ha seleccionado ningún archivo para subir."
+    else:
         try:
             # Cargar el archivo Excel en un DataFrame de pandas
             df = pd.read_excel(xlsfile)
@@ -127,6 +137,11 @@ def process_uploaded_file(xlsfile):
                         )
                         empaque.save()
                         for producto_nombre in productos_list:
+                            try:
+                                producto = Producto.objects.get(nombre=producto_nombre)
+                            except Producto.DoesNotExist:
+                                error_message = "Uno o más productos especificados no existen."
+                                break  
                             producto = Producto.objects.get(nombre=producto_nombre)
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
@@ -177,13 +192,27 @@ def process_uploaded_file(xlsfile):
 
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
-                    
+                        success = True
                 print("Importación exitosa.")
+        except IntegrityError as e:
+            error_message = "Error de integridad de datos: Verifica duplicados o datos faltantes."
+            print(f"IntegrityError: {e}")
+        except ValueError as e:
+            error_message = "Error de formato de datos: Verifica los tipos de datos esperados."
+            print(f"ValueError: {e}")
+        id_cliente = row['cliente']
+        try:
+            cliente = Cliente.objects.get(id=id_cliente)
+        except Cliente.DoesNotExist:
+            error_message = "El cliente especificado no existe."
+            
         except Exception as e:
-            print(f"Error processing row {index + 2}: {str(e)}")
+            error_message = "Error desconocido en la importación de datos: " + str(e)
+            print(f"Excepción desconocida: {e}")
+        else:
+            error_message = "Error desconocido en la importación de datos"
 
-
-    return {'success': True}
+    return {'success': success, 'error_message': error_message}
 
 
 class Administracion(View):
@@ -584,6 +613,15 @@ def gantt_view(request):
                 volumen_obtenido = detalle_pedido.volumen_obtenido if detalle_pedido.volumen_obtenido is not None else "N/A"
                 paquetes_saldo = detalle_pedido.paquetes_saldo if detalle_pedido.paquetes_saldo is not None else "N/A"
                 diametro_rollizo = producto.nombre_rollizo.diametro if producto.nombre_rollizo else "N/A"
+                term = detalle_pedido.term if detalle_pedido.term is not None else "N/A"
+                calidad = detalle_pedido.calidad if detalle_pedido.calidad is not None else "N/A"
+                mbf = detalle_pedido.mbf if detalle_pedido.mbf is not None else "N/A"
+                banio = detalle_pedido.banio if detalle_pedido.banio is not None else "N/A"
+                marca = detalle_pedido.marca if detalle_pedido.marca is not None else "N/A"
+                programa = detalle_pedido.programa if detalle_pedido.programa is not None else "N/A"
+                piezas = detalle_pedido.piezas if detalle_pedido.piezas is not None else "N/A"
+                cpo = detalle_pedido.cpo if detalle_pedido.cpo is not None else "N/A"
+                piezas_x_cpo = detalle_pedido.piezas_x_cpo if detalle_pedido.piezas_x_cpo is not None else "N/A"
                 largo_rollizo = producto.nombre_rollizo.largo or "N/A"
                 factura = Factura.objects.get(pk=detalle_pedido.factura.pk)
                 FSC = factura.FSC if factura.FSC is not None else "N/A"
@@ -678,6 +716,15 @@ def gantt_view(request):
                     tipo_empaque,  # 55
                     alto_paquete,  # 56
                     int_paquete,  # 57    
+                    term,  # 58
+                    calidad,  # 59
+                    mbf,  # 60
+                    banio,  # 61
+                    marca,  # 62
+                    programa,  # 63
+                    piezas,  # 64
+                    cpo,  # 65
+                    piezas_x_cpo,  # 66
                 ]
 
                 tasks.append(tasks_pedido)
@@ -923,3 +970,4 @@ def eliminar_empresa(request,id):
     empresa=Empresa.objects.get(id=id)
     empresa.delete()
     return redirect('admin_empresa')
+

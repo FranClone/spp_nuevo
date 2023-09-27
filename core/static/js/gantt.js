@@ -715,7 +715,7 @@ class Gantt {
         
         
         `;
-        
+    
     } else if (popupType === 'patron') {
         productoData = this.tasks[pedidoId];
         popup.innerHTML = `
