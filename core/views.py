@@ -584,8 +584,27 @@ def gantt_view(request):
                 volumen_obtenido = detalle_pedido.volumen_obtenido if detalle_pedido.volumen_obtenido is not None else "N/A"
                 paquetes_saldo = detalle_pedido.paquetes_saldo if detalle_pedido.paquetes_saldo is not None else "N/A"
                 diametro_rollizo = producto.nombre_rollizo.diametro if producto.nombre_rollizo else "N/A"
+                term = detalle_pedido.term if detalle_pedido.term is not None else "N/A"
+                calidad = detalle_pedido.calidad if detalle_pedido.calidad is not None else "N/A"
+                mbf = detalle_pedido.mbf if detalle_pedido.mbf is not None else "N/A"
+                banio = detalle_pedido.banio if detalle_pedido.banio is not None else "N/A"
+                marca = detalle_pedido.marca if detalle_pedido.marca is not None else "N/A"
+                programa = detalle_pedido.programa if detalle_pedido.programa is not None else "N/A"
+                piezas = detalle_pedido.piezas if detalle_pedido.piezas is not None else "N/A"
+                cpo = detalle_pedido.cpo if detalle_pedido.cpo is not None else "N/A"
+                piezas_x_cpo = detalle_pedido.piezas_x_cpo if detalle_pedido.piezas_x_cpo is not None else "N/A"
                 largo_rollizo = producto.nombre_rollizo.largo or "N/A"
-
+                factura = Factura.objects.get(pk=detalle_pedido.factura.pk)
+                FSC = factura.FSC if factura.FSC is not None else "N/A"
+                esp_fact = factura.esp_fact if factura.esp_fact is not None else "N/A"
+                anc_fact = factura.anc_fact if factura.anc_fact is not None else "N/A"
+                lar_fact = factura.lar_fact if factura.lar_fact is not None else "N/A"
+                # Añade los atributos de Empaque
+                empaque = Empaque.objects.get(pk=detalle_pedido.empaque.pk)
+                pqte = empaque.pqte if empaque.pqte is not None else "N/A"
+                tipo_empaque = empaque.tipo_empaque if empaque.tipo_empaque is not None else "N/A"
+                alto_paquete = empaque.alto_paquete if empaque.alto_paquete is not None else "N/A"
+                int_paquete = empaque.int_paquete if empaque.int_paquete is not None else "N/A"
                 try:
                     patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
                     codigo_patron = patron_corte_data.codigo
@@ -660,13 +679,51 @@ def gantt_view(request):
                     mercado, #47
                     destino, #48
                     largo_rollizo, #49
-
-
-                    
+                    FSC,  # 50
+                    esp_fact,  # 51
+                    anc_fact,  # 52
+                    lar_fact,  # 53
+                    pqte,  # 54
+                    tipo_empaque,  # 55
+                    alto_paquete,  # 56
+                    int_paquete,  # 57    
+                    term,  # 58
+                    calidad,  # 59
+                    mbf,  # 60
+                    banio,  # 61
+                    marca,  # 62
+                    programa,  # 63
+                    piezas,  # 64
+                    cpo,  # 65
+                    piezas_x_cpo,  # 66
                 ]
 
                 tasks.append(tasks_pedido)
         else:
+            # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
+            productos_name = ["N/A"]
+            producto_codigo = ["N/A"]
+            color = random.choice(colores)
+            color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
+            porcentaje_progreso = random.randint(10, 100)
+            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
+            tasks_pedido = [
+                pedido.orden_interna,
+                fecha_actual,   # 1
+                pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
+                porcentaje_progreso,  # 4
+                nombre_cliente,  # 5
+                productos_name,  # 6
+                producto_codigo,  # 7
+                color,  # 11
+                color_p,  # 12
+            
+            ]
+
+            tasks.append(tasks_pedido)
+            
+    else:
             # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
             productos_name = ["N/A"]
             producto_codigo = ["N/A"]
