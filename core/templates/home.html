@@ -70,47 +70,30 @@
                 <hr>
                 <h2 class="Excel">Cargar Archivo Excel</h2>
                 <div class="button-row">
-                    <table>
-                        <tr>
-                            <td>
-                                <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}">
-                                    <button type="button" class="carga-button-bot">Descargar Plantilla</button>
-                                </a>
-                            </td>
-                            <td class="custom-file-input">
+                    <div class="button-container">
+                        <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}" class="left-button">
+                            <button type="button" class="carga-button-bot">Descargar Plantilla</button>
+                        </a>
+                    
+                        <div class="right-button">
+                            <div class="custom-file-input">
                                 <input type="file" name="xlsfile" id="fileInput">
                                 <label for="fileInput">Seleccionar archivo</label>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                <div class="button-row">
-                    <table>
-                        <tr>
-                            <td class="custom-file-input">
-                    <span id="file-name-display" class="file-name">Ningún archivo seleccionado</span>
-                    <button  type="submit" class="subir" name="subir">Subir Archivo</button>
+                            </div>
+                        </div>
+                    </div>
                     
-                </td>
-            </tr>
-        </table>
+                    <div class="button-row">
+                        <span id="file-name-display" class="file-name">Ningún archivo seleccionado</span>
+                        <button type="submit" class="subir" name="subir">Subir Archivo</button>
+                    </div>
                 </div>
                 <!-- Close button without submitting the form -->
                 <h2 class="agregar">Agregar Pedido Manualmente</h2>
                 <div class="button-row">
-                    <table>
-                        <tr>
-                            <td>
-                    <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Abrir Formulario</button>      
-                </td>
-                <td>
-                    <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
-                </td>
-            </tr>
-    
-           
-            </table>
-                </div>   
+                        <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Abrir Formulario</button>
+                        <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
+                    </div> 
             </form>
         </div>
     </div>

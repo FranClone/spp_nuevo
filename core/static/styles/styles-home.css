@@ -21,7 +21,8 @@ h3 {
 }
 
 table tr {
-    border-bottom: 2px solid rgba(255, 255, 255, 0.801);
+    border: 1px solid black;
+    border-bottom: 1px solid black;
 }
 
 .btn-agregar-pedido,
@@ -75,8 +76,7 @@ table tr {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
-    padding: 10px;
-    margin: 5px;
+    padding: 13px 5px;
     border: 2px solid white;
     text-decoration: none !important;
     margin-bottom: 9px;
@@ -207,18 +207,21 @@ table tr {
     background-color: rgb(123, 123, 123);
     line-height: 30px;
     text-align: center;
+    color: white; 
+    font-size: 15px;
+    
 }
 
 /*configurar lineas dentro de la tabla (columnas)*/
 #gantt table tr td {
     padding: 6px;
     line-height: 15px;
-    border-left: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-left: 1px solid black;
 }
 
 /*configurar lineas dentro de la tabla (ultima columnas)*/
 #gantt table tr td:last-child {
-    border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-right: 1px solid black;
 
 }
 
@@ -633,8 +636,8 @@ table tr {
 
 .bold-heading {
     font-weight: bold;
-    margin: auto;
-    margin-top: 10px;
+    margin:auto;
+    margin-top: 20px;
 }
 
 .agregar {
@@ -731,14 +734,10 @@ table tr {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
-    padding: 10px;
-    margin: 5px;
+    padding: 13px  3px;
     border: 2px solid white;
     text-decoration: none !important;
     cursor: pointer;
-    display: inline-block;
-    margin-left: 29px;
-    margin-bottom: 9px;
 }
 
 .custom-file-input label:hover {
@@ -797,19 +796,24 @@ table tr {
     /* Incluye el ancho del borde y el relleno en el ancho total */
 }
 
-.detalle-pedido {
-    background-color: rgba(194, 194, 194, 0.705);
-    color: Black;
-    font-size: 13px;
-    border-width: 1px;
+
+.detalle-pedido{
+    background-color: rgba(194, 194, 194, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px; 
     text-align: center;
+    border-right: 1px solid black;
 }
 
 
-.detalle-pedido-t {
-    background-color: rgba(142, 142, 142, 0.705);
-    color: Black;
-    font-size: 13px;
+
+.detalle-pedido-t{
+    background-color: rgba(142, 142, 142, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
     border-width: 1px;
     text-align: center;
 
@@ -882,4 +886,12 @@ table tr {
     font-size: 16px;
     cursor: pointer;
     margin-top: 10px;
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.file-name{
+    font-weight: bold;
 }
