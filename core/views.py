@@ -123,6 +123,7 @@ def process_uploaded_file(xlsfile):
                             pqte=row['pqte'],  
                             tipo_empaque=row['tipo_empaque'],  
                             alto_paquete=row['alto_paquete'],  
+                           # anc_paquete=row['anc_paquete'],  
                             int_paquete=row['int_paquete']  
                         )
                         empaque.save()
@@ -697,56 +698,11 @@ def gantt_view(request):
                     cpo,  # 65
                     piezas_x_cpo,  # 66
 
+                    #anc_paquete # 67
                 ]
 
                 tasks.append(tasks_pedido)
-        else:
-            # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
-            productos_name = ["N/A"]
-            producto_codigo = ["N/A"]
-            color = random.choice(colores)
-            color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
-            porcentaje_progreso = random.randint(10, 100)
-            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
-            tasks_pedido = [
-                pedido.orden_interna,
-                fecha_actual,   # 1
-                pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                porcentaje_progreso,  # 4
-                nombre_cliente,  # 5
-                productos_name,  # 6
-                producto_codigo,  # 7
-                color,  # 11
-                color_p,  # 12
-            
-            ]
 
-            tasks.append(tasks_pedido)
-            
-    else:
-            # Si no hay productos asociados al pedido, se crea una entrada con valores predeterminados
-            productos_name = ["N/A"]
-            producto_codigo = ["N/A"]
-            color = random.choice(colores)
-            color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
-            porcentaje_progreso = random.randint(10, 100)
-            nombre_cliente = pedido.cliente.nombre_cliente if pedido.cliente else "N/A"  # "N/A" si no hay cliente
-            tasks_pedido = [
-                pedido.orden_interna,
-                fecha_actual,   # 1
-                pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                porcentaje_progreso,  # 4
-                nombre_cliente,  # 5
-                productos_name,  # 6
-                producto_codigo,  # 7
-                color,  # 11
-                color_p,  # 12
-            
-            ]
-
-            tasks.append(tasks_pedido)
     context = {
     'tasks': tasks,
     'pedido_form': pedido_form,  # Include the pedido_form in the context
