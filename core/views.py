@@ -696,6 +696,7 @@ def gantt_view(request):
                     piezas,  # 64
                     cpo,  # 65
                     piezas_x_cpo,  # 66
+
                 ]
 
                 tasks.append(tasks_pedido)
