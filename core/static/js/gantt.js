@@ -411,14 +411,14 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Producto</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">La/An/Al</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
+        html += '<th class="detalle-pedido-t">Fecha carga</th>';
+        html += '<th class="detalle-pedido-t">Nro Pedido</th>';
+        html += '<th class="detalle-pedido-t">Producto</th>';
+        html += '<th class="detalle-pedido-t">La/An/Al</th>';
+        html += '<th class="detalle-pedido-t">Fecha Emision</th>';
+        html += '<th class="detalle-pedido-t">ETA</th>';
+        html += '<th class="detalle-pedido-t">Linea</th>';
+        html += '<th class="detalle-pedido-t">Detalle</th>';
 
 
 
@@ -435,14 +435,14 @@ class Gantt {
                 var largo = task[10][j];
                 var ancho = task[11][j];
                 var alto = task[12][j];
-                bodyHtml += `<td>${task[1]}</td>`;/*Fecha de carga*/
-                bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
-                bodyHtml += `<td>${task[7]}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*La/An/Al*/
-                bodyHtml += `<td>${task[3]}</td>`;/*Fecha Creacion*/
-                bodyHtml += `<td>${task[2]}</td>`;/*ETA*/
-                bodyHtml += `<td>${task[13]}</td>`;/*Linea*/
-                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
+                bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
+                bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
+                bodyHtml += `<td class="detalle-pedido">L:${largo} A:${ancho} Al:${alto}</td>`;/*La/An/Al*/
+                bodyHtml += `<td class="detalle-pedido">${task[3]}</td>`;/*Fecha Creacion*/
+                bodyHtml += `<td class="detalle-pedido">${task[2]}</td>`;/*ETA*/
+                bodyHtml += `<td class="detalle-pedido">${task[13]}</td>`;/*Linea*/
+                bodyHtml += `<td class="detalle-pedido"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
 
             }
 
@@ -479,7 +479,6 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
                 bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
-
                 bodyHtml += `<td>${task[35]}</td>`;/*Diametro*/
                 bodyHtml += `<td>${task[24]}</td>`;/*Largo Trozo*/
                 bodyHtml += `<td>${task[28]}</td>`;/*Cantidad Piezas*/
@@ -655,47 +654,60 @@ class Gantt {
             productoData = this.tasks[pedidoId];
             popup.innerHTML = `
             <div class="popup-content" id="popup">
-            <h2 style="text-align: center;">Detalles de folio ${productoData[46]}</h2>
+            <h2 style="text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
             <table>
                 <tr>
                     <td class="detalle-pedido-t"><strong>Item</strong></td>
                     <td class="detalle-pedido-t"><strong>Nombre producto</strong></td>
-                    <td class="detalle-pedido-t"><strong>Largo</strong></td>
-                    <td class="detalle-pedido-t"><strong>Ancho</strong></td>
-                    <td class="detalle-pedido-t"><strong>Alto</strong></td>
-                    <td class="detalle-pedido-t"><strong>PQTES.Solicitados</strong></td>
-                    <td class="detalle-pedido-t"><strong>PQTES.Saldo</strong></td>
-                    <td class="detalle-pedido-t"><strong>PZAS</strong></td>
-                    <td class="detalle-pedido-t"><strong>TROZOS</strong></td>
-                    <td class="detalle-pedido-t"><strong>PZAS. X PQTE.</strong></td>
-                    <td class="detalle-pedido-t"><strong>Ø</strong></td>
-                    <td class="detalle-pedido-t"><strong>Largo Trozo</strong></td>
-                    <td class="detalle-pedido-t"><strong>Prioridad</strong></td>
-                    <td class="detalle-pedido-t"><strong>Nota</strong></td>
-                    <td class="detalle-pedido-t"><strong>PZAS. X TROZO</strong></td>
-                    <td class="detalle-pedido-t"><strong>Puerto_destino</strong></td>
-                    <td class="detalle-pedido-t"><strong>M3 Prod</strong></td>
-                    <td class="detalle-pedido-t"><strong>Estado</strong></td>
+                    <td class="detalle-pedido-t"><strong>Est</strong></td>
+                    <td class="detalle-pedido-t"><strong>term</strong></td>
+                    <td class="detalle-pedido-t"><strong>Calidad</strong></td>
+                    <td class="detalle-pedido-t"><strong>FSC</strong></td>
+                    <td class="detalle-pedido-t"><strong>Esp.Fact</strong></td>
+                    <td class="detalle-pedido-t"><strong>Anc.Fact</strong></td>
+                    <td class="detalle-pedido-t"><strong>Lar.Fact</strong></td>
+                    <td class="detalle-pedido-t"><strong>Esp.Producc</strong></td>
+                    <td class="detalle-pedido-t"><strong>Anc.Producc</strong></td>
+                    <td class="detalle-pedido-t"><strong>Lar.Producc</strong></td>
+                    <td class="detalle-pedido-t"><strong>Tipo Empaque</strong></td>
+                    <td class="detalle-pedido-t"><strong>Alto.Paquete</strong></td>
+                    <td class="detalle-pedido-t"><strong>Anc.paquete</strong></td>
+                    <td class="detalle-pedido-t"><strong>Int.paquete</strong></td>
+                    <td class="detalle-pedido-t"><strong>PzasCpo</strong></td>
+                    <td class="detalle-pedido-t"><strong>Pzas Cpo</strong></td>
+                    <td class="detalle-pedido-t"><strong>Pzas x Cpos</strong></td>
+                    <td class="detalle-pedido-t"><strong>Pqte</strong></td>
+                    <td class="detalle-pedido-t"><strong>M3</strong></td>
+                    <td class="detalle-pedido-t"><strong>Mbf</strong></td>
+                    <td class="detalle-pedido-t"><strong>Baño</strong></td>
+                    <td class="detalle-pedido-t"><strong>Marca</strong></td>
+
                 </tr>
                 <tr>
                     <td class="detalle-pedido">${productoData[45]}</td> 
                     <td class="detalle-pedido">${productoData[7]}</td>
-                    <td class="detalle-pedido">${pedidoData[10]}</td>
-                    <td class="detalle-pedido">${productoData[11]}</td>
+                    <td class="detalle-pedido">Est</td>
+                    <td class="detalle-pedido">term</td>
+                    <td class="detalle-pedido">Calidad</td>
+                    <td class="detalle-pedido">FSC</td>
+                    <td class="detalle-pedido">Esp.Fact</td>
+                    <td class="detalle-pedido">Anc.Fact</td>
+                    <td class="detalle-pedido">Lar.Fact</td>
                     <td class="detalle-pedido">${productoData[12]}</td>
-                    <td class="detalle-pedido">${productoData[32]}</td>
-                    <td class="detalle-pedido">${productoData[34]}</td>
-                    <td class="detalle-pedido">${productoData[28]}</td>
-                    <td class="detalle-pedido">${productoData[29]}</td>
-                    <td class="detalle-pedido">${productoData[30]}</td>
-                    <td class="detalle-pedido">${productoData[35]}</td>
-                    <td class="detalle-pedido">${productoData[49]}</td>
-                    <td class="detalle-pedido">${productoData[8]}</td>
-                    <td class="detalle-pedido">${productoData[6]}</td>
-                    <td class="detalle-pedido">${productoData[31]}</td>
-                    <td class="detalle-pedido">${productoData[48]}</td>
+                    <td class="detalle-pedido">${productoData[11]}</td>
+                    <td class="detalle-pedido">${productoData[10]}</td>
+                    <td class="detalle-pedido">Tipo Empaque</td>
+                    <td class="detalle-pedido">Alto.Paquete</td>
+                    <td class="detalle-pedido">Anc.paquete</td>
+                    <td class="detalle-pedido">Int.paquete</td>
+                    <td class="detalle-pedido">PzasCpo</td>
+                    <td class="detalle-pedido">Pzas Cpo</td>
+                    <td class="detalle-pedido">Pzas x Cpos</td>
+                    <td class="detalle-pedido">Pqte</td>
                     <td class="detalle-pedido">${productoData[25]}</td>
-                    <td class="detalle-pedido">${productoData[26]}</td>
+                    <td class="detalle-pedido">Mbf</td>
+                    <td class="detalle-pedido">Baño</td>
+                    <td class="detalle-pedido">Marca</td>
                 </tr>
             </table>
             <button style="margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
