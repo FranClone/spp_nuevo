@@ -3,7 +3,6 @@ Maneja las request del usuario y responde con contenido como páginas HTML, JSON
 En Django, una vista es una función de Python o basada en clases que toma una web request y devuelve una web response.
 Las vistas están típicamente asociadas con una URL en el módulo 'urls.py'.
 """
-from django.conf import settings
 from django.core import serializers
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, user_passes_test
@@ -11,12 +10,11 @@ from django.db import transaction
 from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse_lazy
 from django.utils.decorators import method_decorator
+from django.conf import settings
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-
 from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
-
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
@@ -51,8 +49,13 @@ from django.forms import formset_factory
 from tablib import Dataset 
 from .forms import Excelform
 from django.contrib import messages
+import pandas as pd
 import logging  # Import the logging module
 from django.db import IntegrityError
+from mip import Model,maximize,CBC,BINARY,xsum
+from django.http import JsonResponse
+
+#
 try:
     #se conecta
     conexion = pyodbc.connect(os.environ.get('CONEXION_BD'))
@@ -62,8 +65,70 @@ except Exception as ex:
     print(ex)
 
 
+#TEST ALGORITMO 
 
 
+def solver_betech(archivo1, archivo2):
+    try:
+        archivo1 = os.path.join(settings.MEDIA_ROOT, "LineaDelgado.csv")
+        archivo2 = os.path.join(settings.MEDIA_ROOT, "LineaGruesa.csv")
+
+        df_linea_delgada = pd.read_csv(archivo1, encoding="latin-1", sep=";")
+        df_linea_gruesa = pd.read_csv(archivo2, encoding="latin-1", sep=";")
+        columns_names = df_linea_delgada.columns.values
+
+        diametro = df_linea_delgada[df_linea_delgada.columns.values[18]]
+        print("****************************************")
+        print("LECTURA ARCHIVO LINEA GRUESA")
+        print("****************************************")
+        print(df_linea_gruesa.head())
+        
+        p = [10, 13, 18, 31, 7, 15]
+        w = [11, 15, 20, 35, 10, 33]
+        c, I = 47, range(len(w))
+        
+        m = Model('mochila', maximize, CBC)
+        x = [m.add_var(var_type=BINARY) for i in I]
+        m.objective = maximize(xsum(p[i] * x[i] for i in I))
+        m += xsum(w[i] * x[i] for i in I) <= c
+        m.optimize()
+        selected = [i for i in I if x[i].x >= 0.99]
+        return diametro,selected   
+        # results = {
+        #     'diametro': diametro.tolist(),  # Convert to a list if it's a Pandas Series
+        #     'selected': selected
+        # }
+        
+        # return JsonResponse(results)
+    except Exception as e:
+        print(f"An error occurred: {str(e)}")
+        # Handle the error appropriately
+ 
+        return None, None  # Return some default values o
+
+def execute_code(request, archivo1, archivo2):
+    # Call the solver_betech function to get results
+    diametro, selected = solver_betech(archivo1, archivo2)
+
+    # Convert the diametro Series to a list
+    diametro_list = diametro.tolist()
+
+    # Create a dictionary with the results
+    results = {
+        'diametro': diametro_list,
+        'selected': selected
+    }
+
+    return JsonResponse(results)
+
+
+
+
+
+
+
+
+########################################################################
 def importar(request):
     alert_message = None  # Inicialmente, no hay mensaje de alerta
     success = False  # Inicialmente, no se considera éxito
