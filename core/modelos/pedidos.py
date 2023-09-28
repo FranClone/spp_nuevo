@@ -37,7 +37,7 @@ class Pedido(models.Model):
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
     
     # Salidas
-    estado = models.CharField(max_length=20, null=True, blank=False,choices=OPCION_ESTADO, default='')
+    estado = models.CharField(max_length=20, null=True, blank=False,choices=OPCION_ESTADO, default='pendiente')
 
     def __str__(self):
         return f"Pedido {self.orden_interna}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"

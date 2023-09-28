@@ -423,14 +423,13 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th class="detalle-pedido-t">Fecha carga</th>';
-        html += '<th class="detalle-pedido-t">Nro Pedido</th>';
-        html += '<th class="detalle-pedido-t">Item</th>';
-        html += '<th class="detalle-pedido-t">Producto</th>';
-        html += '<th class="detalle-pedido-t">La/An/Al</th>';
-        html += '<th class="detalle-pedido-t">Fecha Emision</th>';
-        html += '<th class="detalle-pedido-t">ETA</th>';
         html += '<th class="detalle-pedido-t">Linea</th>';
+        html += '<th class="detalle-pedido-t">Producto</th>';
+        html += '<th class="detalle-pedido-t">Largo</th>';
+        html += '<th class="detalle-pedido-t">Ancho</th>';
+        html += '<th class="detalle-pedido-t">Alto</th>';
+        html += '<th class="detalle-pedido-t">Cantidad</th>';
+        html += '<th class="detalle-pedido-t">ETA</th>';
         html += '<th class="detalle-pedido-t">Detalle</th>';
 
 
@@ -445,17 +444,13 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
-                var largo = task[24];
-                var ancho = task[23];
-                var alto = task[22];
-                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
-                bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
-                bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
-                bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td class="detalle-pedido">L:${largo} A:${ancho} Al:${alto}</td>`;/*La/An/Al*/
-                bodyHtml += `<td class="detalle-pedido">${task[3]}</td>`;/*Fecha Creacion*/
-                bodyHtml += `<td class="detalle-pedido">${task[2]}</td>`;/*ETA*/
                 bodyHtml += `<td class="detalle-pedido">${task[13]}</td>`;/*Linea*/
+                bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
+                bodyHtml += `<td class="detalle-pedido">${task[24]}</td>`;/*Largo*/
+                bodyHtml += `<td class="detalle-pedido">${task[23]}</td>`;/*Ancho*/
+                bodyHtml += `<td class="detalle-pedido">${task[22]}</td>`;/*Alto*/
+                bodyHtml += `<td class="detalle-pedido">${task[32]}</td>`;/*Cantidad paquetes*/
+                bodyHtml += `<td class="detalle-pedido">${task[2]}</td>`;/*ETA*/
                 bodyHtml += `<td class="detalle-pedido"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
 
             }
