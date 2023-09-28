@@ -165,12 +165,7 @@ def process_uploaded_file(xlsfile):
                         productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
                         
                         id_cliente = row['cliente']
-                        try:
-                            cliente = Cliente.objects.get(id=id_cliente)
-                        except Cliente.DoesNotExist:
-                            print(f"Cliente con id {id_cliente} no existe.")
-                            continue
-
+                        cliente = Cliente.objects.get(id=id_cliente)
                         pedido = Pedido(
                             cliente=cliente,
                             fecha_produccion=row['fecha_produccion'],
@@ -198,11 +193,7 @@ def process_uploaded_file(xlsfile):
                         )
                         empaque.save()
                         for producto_nombre in productos_list:
-                            try:
-                                producto = Producto.objects.get(nombre=producto_nombre)
-                            except Producto.DoesNotExist:
-                                error_message = "Uno o más productos especificados no existen."
-                                break  
+                            producto = Producto.objects.get(nombre=producto_nombre)
                             producto = Producto.objects.get(nombre=producto_nombre)
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
@@ -234,7 +225,8 @@ def process_uploaded_file(xlsfile):
                                 programa=row['programa'],
                                 piezas=row['piezas'],
                                 cpo=row['cpo'],
-                                piezas_x_cpo=row['piezas_x_cpo']
+                                piezas_x_cpo=row['piezas_x_cpo'],
+                                est=row['Est']
                             )
                             detalle_pedido.save()
                             
@@ -249,8 +241,6 @@ def process_uploaded_file(xlsfile):
                         
                         print(titulofecha)
 
-                        
-
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
                         success = True
@@ -262,7 +252,10 @@ def process_uploaded_file(xlsfile):
             error_message = "Error de formato de datos: Verifica los tipos de datos esperados."
             print(f"ValueError: {e}")
         except Cliente.DoesNotExist:
-            error_message = "El cliente especificado no existe."
+            error_message = (f"Cliente con id {id_cliente} no existe.")
+        except Producto.DoesNotExist:
+            print(f"Uno o más productos especificados no existen: {productos_str}")
+            error_message = "Uno o más productos especificados no existen:"
         except Exception as e:
             error_message = "Error desconocido en la importación de datos: " + str(e)
             print(f"Excepción desconocida: {e}")
@@ -272,7 +265,6 @@ def process_uploaded_file(xlsfile):
         # Código adicional aquí
 
         return {'success': success, 'error_message': error_message}
-    
 
 
 class Administracion(View):
@@ -682,6 +674,7 @@ def gantt_view(request):
                 piezas = detalle_pedido.piezas if detalle_pedido.piezas is not None else "N/A"
                 cpo = detalle_pedido.cpo if detalle_pedido.cpo is not None else "N/A"
                 piezas_x_cpo = detalle_pedido.piezas_x_cpo if detalle_pedido.piezas_x_cpo is not None else "N/A"
+                est = detalle_pedido.est if detalle_pedido.est is not None else "N/A"
                 largo_rollizo = producto.nombre_rollizo.largo or "N/A"
                 factura = Factura.objects.get(pk=detalle_pedido.factura.pk)
                 FSC = factura.FSC if factura.FSC is not None else "N/A"
@@ -786,7 +779,8 @@ def gantt_view(request):
                     piezas,  # 64
                     cpo,  # 65
                     piezas_x_cpo,  # 66
-                    anc_paquete # 67
+                    anc_paquete, # 67
+                    est, # 68
                 ]
 
                 tasks.append(tasks_pedido)
