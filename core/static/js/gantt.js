@@ -413,6 +413,7 @@ class Gantt {
         html += bodyHtml;
 
         html += '</tbody></table>';
+        
         return html;
     }
 
@@ -424,8 +425,8 @@ class Gantt {
 
         // Agregar dos columnas adicionales a la izquierda
 
-        
-        html += '<th class="detalle-pedido-t">Folio</th>';
+
+        html +=  '<button  id="showFolioTable" class="tablink" >Folio</button>';
         html += '<th class="detalle-pedido-t">Fecha carga</th>';
         html += '<th class="detalle-pedido-t">Nro Pedido</th>';
         html += '<th class="detalle-pedido-t">Item</th>';
@@ -437,9 +438,6 @@ class Gantt {
         html += '<th class="detalle-pedido-t">Pqtes Solicitados</th>';
         html += '<th class="detalle-pedido-t">ETA</th>';
         html += '<th class="detalle-pedido-t">Detalle</th>';
-
-
-
         html += '</tr></thead><tbody>';
 
         // Utiliza una variable diferente para el cuerpo de la tabla
@@ -453,7 +451,6 @@ class Gantt {
                 var largo = task[24];
                 var ancho = task[23];
                 var alto = task[22];
-                bodyHtml += '<td class="detalle-pedido"><input type="checkbox"></td>'; // Add a checkbox
                 bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
                 bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
                 bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
@@ -471,13 +468,52 @@ class Gantt {
                 bodyHtml += '</tr>';
             
         }
+     
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+        return html;
+
+    }
+   //________________
+   FolioTable() {
+    var html = '<table class="second-table"><thead><tr>';
+
+    // Agregar dos columnas adicionales a la izquierda
+        html +=   '<button class="tablink" >Productos</button>';
+        html +=   '<button class="tablink">Productos</button>';
+        html +=   '<button class="tablink">Folio</button>';
+        html += '<th class="detalle-pedido-t">Fecha carga</th>';
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+    // Itera sobre cada producto y crea una fila por producto
+    for (let i = 0; i < this.filteredTasks.length; i++) {
+        var task = this.filteredTasks[i];
+        for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+            var product = task[7][j]; // Obtiene el nombre del producto
+            var largo = task[24];
+            var ancho = task[23];
+                var alto = task[22];
+            
+                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
+    
+            }
+
+                bodyHtml += '</tr>';
+            
+        }
 
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
 
         html += '</tbody></table>';
-        return html;
-    }
+    return html;
+} 
 //______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -518,6 +554,12 @@ class Gantt {
         return html;
 }
 
+
+
+    showFolioTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.FolioTable();
+    }
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PedidoTable();
@@ -548,7 +590,10 @@ class Gantt {
         var diffTime = Math.abs(max - min);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
-
+   showPedidosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.PedidoTable();
+    }
     formatDate(date, period, endDate) {
         const day = date.getDate();
         const month = date.getMonth() + 1;
@@ -614,7 +659,6 @@ class Gantt {
             }
         });
     }
-
 
 
     handlePopupClick(event) {
@@ -713,7 +757,6 @@ class Gantt {
             
 
             var html = '<table class="second-table"><thead><tr>';
-            html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
@@ -916,14 +959,23 @@ function closePopup() {
     popup.style.display = "none";
 }
 
+// document.addEventListener("DOMContentLoaded", function () {
+//     const gantt = new Gantt(tasksData);
 
-///////////////
-function toggleCargatst() {
-    const test = document.getElementById('popupContainertest');
-    if (test.style.display === 'none') {
-        test.style.display = 'block';
-    } else {
-        test.style.display = 'none';
-    }
-}
+//     const showFolioTable = document.getElementById("showFolioTable");
+    
+//     const titulo = document.getElementById("titulo");
+//     const ganttContainer = document.getElementById("gantt");
 
+//     // Inicialmente, muestra la tabla de "Produccion JCE"
+
+
+
+//     showFolioTable.addEventListener("click", function () {
+//         gantt.showFolioTable();
+//         titulo.textContent = "Productos por folios JCE";
+//     });
+
+
+
+// });
