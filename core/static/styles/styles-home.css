@@ -818,7 +818,10 @@ table tr {
     text-align: center;
 
 }
-
+.a{
+    width: 90vh; 
+    background-color: rgba(110, 110, 110, 0.705); 
+}
 .popup2 {
     display: none;
     position: fixed;
@@ -895,3 +898,11 @@ table tr {
 .file-name{
     font-weight: bold;
 }
+th.asc::after {
+    content: ' ▲'; /* Flecha hacia arriba */
+  }
+  
+  th.desc::after {
+    content: ' ▼'; /* Flecha hacia abajo */
+  }
+  
