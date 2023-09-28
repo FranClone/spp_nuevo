@@ -423,7 +423,7 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th class="detalle-pedido-t">Linea</th>';
+        html += '<th data-sortable="true" class="detalle-pedido-t asc">Linea</th>';
         html += '<th class="detalle-pedido-t">Producto</th>';
         html += '<th class="detalle-pedido-t">Largo</th>';
         html += '<th class="detalle-pedido-t">Ancho</th>';
@@ -670,12 +670,12 @@ class Gantt {
             html += '<th class="detalle-pedido-t">term</th>';
             html += '<th class="detalle-pedido-t">Calidad</th>';
             html += '<th class="detalle-pedido-t">FSC</th>';
-            html += '<th class="detalle-pedido-t">Esp.Fact</th>';
-            html += '<th class="detalle-pedido-t">Anc.Fact</th>';
-            html += '<th class="detalle-pedido-t">Lar.Fact</th>';
-            html += '<th class="detalle-pedido-t">Esp.Producc</th>';
-            html += '<th class="detalle-pedido-t">Anc.Producc</th>';
-            html += '<th class="detalle-pedido-t">Lar.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Esp.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Anc.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Lar.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Esp.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Anc.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Lar.Producc</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Alto.Paquete</th>';
             html += '<th class="detalle-pedido-t">Anc.paquete</th>';
@@ -700,7 +700,7 @@ class Gantt {
                         html += '<tr>';
                         html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
-                        html += `<td class="detalle-pedido">${task[26]}</td>`; // Est
+                        html += `<td class="detalle-pedido">${task[68]}</td>`; // Est
                         html += `<td class="detalle-pedido">${task[58]}</td>`; // term
                         html += `<td class="detalle-pedido">${task[59]}</td>`; // Calidad
                         html += `<td class="detalle-pedido">${task[50]}</td>`; // FSC

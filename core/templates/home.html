@@ -350,5 +350,59 @@ $(document).ready(function() {
         });
     });
 });
+$(document).ready(function() {
+  $('th[data-sortable="true"]').on('click', function() {
+    var table = $(this).closest('table');
+    var index = $(this).index();
+    var isAscending = $(this).hasClass('asc');
+    
+    // Cambia la clase de la columna clicada
+    $('th[data-sortable="true"]').removeClass('asc desc');
+    $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
+    
+    // Implementa la lógica de ordenamiento aquí (puede requerir una biblioteca o código personalizado).
+    // Puedes ordenar las filas de la tabla según la columna y la dirección (ascendente o descendente).
+    // Actualiza el contenido de la tabla según el nuevo orden.
+    
+    // Ejemplo: ordena las filas por la columna "index" de forma ascendente o descendente
+    var rows = table.find('tbody > tr').get();
+    rows.sort(function(a, b) {
+      var x = $(a).find('td').eq(index).text();
+      var y = $(b).find('td').eq(index).text();
+      return (isAscending ? 1 : -1) * x.localeCompare(y);
+    });
+    
+    $.each(rows, function(index, row) {
+      table.find('tbody').append(row);
+    });
+  });
+});
+$(document).on('click', 'th[data-sortable="true"]', function() {
+  var table = $(this).closest('table');
+  var rows = table.find('tbody > tr').get();
+
+  var index = $(this).index();
+  var isAscending = $(this).hasClass('asc');
+  
+  // Si la columna hace clic es "Linea", no cambies la dirección de ordenamiento
+  if (index === 5) {
+    $(this).toggleClass('desc', !isAscending); // Cambia la clase a "desc" si no está ascendente
+  } else {
+    // Para otras columnas, cambia la dirección de ordenamiento normalmente
+    rows.sort(function(a, b) {
+      var x = $(a).children('td').eq(index).text();
+      var y = $(b).children('td').eq(index).text();
+      return (isAscending ? 1 : -1) * x.localeCompare(y);
+    });
+    
+    // Cambia la clase de la columna clicada
+    $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
+  }
+
+  // Aplica el nuevo orden a las filas
+  $.each(rows, function(index, row) {
+    table.children('tbody').append(row);
+  });
+});
 </script>
 </html>

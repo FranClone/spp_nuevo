@@ -225,7 +225,8 @@ def process_uploaded_file(xlsfile):
                                 programa=row['programa'],
                                 piezas=row['piezas'],
                                 cpo=row['cpo'],
-                                piezas_x_cpo=row['piezas_x_cpo']
+                                piezas_x_cpo=row['piezas_x_cpo'],
+                                est=row['Est']
                             )
                             detalle_pedido.save()
                             
@@ -673,6 +674,7 @@ def gantt_view(request):
                 piezas = detalle_pedido.piezas if detalle_pedido.piezas is not None else "N/A"
                 cpo = detalle_pedido.cpo if detalle_pedido.cpo is not None else "N/A"
                 piezas_x_cpo = detalle_pedido.piezas_x_cpo if detalle_pedido.piezas_x_cpo is not None else "N/A"
+                est = detalle_pedido.est if detalle_pedido.est is not None else "N/A"
                 largo_rollizo = producto.nombre_rollizo.largo or "N/A"
                 factura = Factura.objects.get(pk=detalle_pedido.factura.pk)
                 FSC = factura.FSC if factura.FSC is not None else "N/A"
@@ -777,7 +779,8 @@ def gantt_view(request):
                     piezas,  # 64
                     cpo,  # 65
                     piezas_x_cpo,  # 66
-                    anc_paquete # 67
+                    anc_paquete, # 67
+                    est, # 68
                 ]
 
                 tasks.append(tasks_pedido)
