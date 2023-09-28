@@ -752,6 +752,7 @@ class Gantt {
             
 
             var html = '<table class="second-table"><thead><tr>';
+            html += '<td class="detalle-pedido">Folio</td>';
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
