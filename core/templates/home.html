@@ -210,10 +210,7 @@
                 <button id="showProduccionButton">Ver Produccion</button>
                 <button id="showSalidaButton">Ver Salida Algoritmo</button>
             </ul>
-{% comment %}   
-                <button id="showFolioTable" onclick="showFolioTable()" class="tablink">Folio</button>
-                <button id="showProductosButtontab" onclick="showProductosButton()" class="tablink">Folio</button> {% endcomment %}
-
+            
             {% comment %} <button  id="showFolioTable"  class="tablink">Folio</button> {% endcomment %}
         </div>
 
@@ -352,13 +349,12 @@
 
         const showPedidosButton = document.getElementById("showPedidosButton");
         const showProduccionButton = document.getElementById("showProduccionButton");
-     //   const showFolioTable = document.getElementById("showFolioTable");
         const showProductosButton = document.getElementById("showProductosButton");
         const showSalidaButton = document.getElementById("showSalidaButton");
         const showPatronesButton = document.getElementById("showPatronesButton");
         const titulo = document.getElementById("titulo");
         const ganttContainer = document.getElementById("gantt");
-        showFolioTable.style.display = "none";
+
         // Inicialmente, muestra la tabla de "Produccion JCE"
         gantt.showPedidosTable();
         titulo.textContent = "Pedidos JCE";
@@ -367,36 +363,26 @@
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
             titulo.textContent = "Pedidos JCE";
-        //    showFolioTable.style.display = "none";
         });
 
         showProduccionButton.addEventListener("click", function () {
             gantt.showProduccionTable();
             titulo.textContent = "Produccion JCE";
-      //      showFolioTable.style.display = "none";
         });
 
         showProductosButton.addEventListener("click", function () {
             gantt.showProductosTable();
             titulo.textContent = "Productos JCE";
-            // Show the "Folio" button when "Productos" table is selected
-     //       showFolioTable.style.display = "block";
         });
-    
-   //     showFolioTable.addEventListener("click", function () {
-   //         gantt.showFolioTable();
-            titulo.textContent = "Productos por folios JCE";
-  //      });
+
 
         showSalidaButton.addEventListener("click", function () {
             gantt.showSalidaTable();
             titulo.textContent = "Salida Algoritmo JCE";
-     //       showFolioTable.style.display = "none";
         });
         showPatronesButton.addEventListener("click", function () {
             gantt.showPatronesTable();
             titulo.textContent = "Patrones JCE";
-     //       showFolioTable.style.display = "none";
         });
 
     });
