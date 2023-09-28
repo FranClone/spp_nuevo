@@ -698,37 +698,38 @@ class Gantt {
             // Iterate through the filtered tasks and products
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
-                for (let j = 0; j < task[7].length; j++) {
-                    console.log(task[7]);
-                    // Create a new row for each product
-                    html += '<tr>';
-                    html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
-                    html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
-                    html += `<td class="detalle-pedido">${task[26]}</td>`; // Est
-                    html += `<td class="detalle-pedido">${task[58]}</td>`; // term
-                    html += `<td class="detalle-pedido">${task[59]}</td>`; // Calidad
-                    html += `<td class="detalle-pedido">${task[50]}</td>`; // FSC
-                    html += `<td class="detalle-pedido">${task[51]}</td>`; // Esp.Fact
-                    html += `<td class="detalle-pedido">${task[52]}</td>`; // Anc.Fact
-                    html += `<td class="detalle-pedido">${task[53]}</td>`; // Lar.Fact
-                    html += `<td class="detalle-pedido">${task[22]}</td>`; // alt.Producc
-                    html += `<td class="detalle-pedido">${task[23]}</td>`; // Anc.Producc
-                    html += `<td class="detalle-pedido">${task[24]}</td>`; // Lar.Producc
-                    html += `<td class="detalle-pedido">${task[55]}</td>`; // Tipo Empaque
-                    html += `<td class="detalle-pedido">${task[56]}</td>`; // Alto.Paquete
-                    html += `<td class="detalle-pedido">${task[67]}</td>`; // Anc.paquete
-                    html += `<td class="detalle-pedido">${task[57]}</td>`; // Int.paquete
-                    html += `<td class="detalle-pedido">${task[64]}</td>`; // Pzas
-                    html += `<td class="detalle-pedido">${task[65]}</td>`; // Cpo
-                    html += `<td class="detalle-pedido">${task[66]}</td>`; // Pzas x Cpos
-                    html += `<td class="detalle-pedido">${task[54]}</td>`; // Pqte
-                    html += `<td class="detalle-pedido">${task[25]}</td>`; // M3
-                    html += `<td class="detalle-pedido">${task[60]}</td>`; // Mbf
-                    html += `<td class="detalle-pedido">${task[61]}</td>`; // Baño
-                    html += `<td class="detalle-pedido">${task[62]}</td>`; // Marca
-                    html += '</tr>';
-                }
-            }
+                if (task[0] === productoData[0]) { 
+                    for (let j = 0; j < task[7].length; j++) {
+                        console.log(task[7]);
+                        // Create a new row for each product
+                        html += '<tr>';
+                        html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
+                        html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
+                        html += `<td class="detalle-pedido">${task[26]}</td>`; // Est
+                        html += `<td class="detalle-pedido">${task[58]}</td>`; // term
+                        html += `<td class="detalle-pedido">${task[59]}</td>`; // Calidad
+                        html += `<td class="detalle-pedido">${task[50]}</td>`; // FSC
+                        html += `<td class="detalle-pedido">${task[51]}</td>`; // Esp.Fact
+                        html += `<td class="detalle-pedido">${task[52]}</td>`; // Anc.Fact
+                        html += `<td class="detalle-pedido">${task[53]}</td>`; // Lar.Fact
+                        html += `<td class="detalle-pedido">${task[22]}</td>`; // alt.Producc
+                        html += `<td class="detalle-pedido">${task[23]}</td>`; // Anc.Producc
+                        html += `<td class="detalle-pedido">${task[24]}</td>`; // Lar.Producc
+                        html += `<td class="detalle-pedido">${task[55]}</td>`; // Tipo Empaque
+                        html += `<td class="detalle-pedido">${task[56]}</td>`; // Alto.Paquete
+                        html += `<td class="detalle-pedido">${task[67]}</td>`; // Anc.paquete
+                        html += `<td class="detalle-pedido">${task[57]}</td>`; // Int.paquete
+                        html += `<td class="detalle-pedido">${task[64]}</td>`; // Pzas
+                        html += `<td class="detalle-pedido">${task[65]}</td>`; // Cpo
+                        html += `<td class="detalle-pedido">${task[66]}</td>`; // Pzas x Cpos
+                        html += `<td class="detalle-pedido">${task[54]}</td>`; // Pqte
+                        html += `<td class="detalle-pedido">${task[25]}</td>`; // M3
+                        html += `<td class="detalle-pedido">${task[60]}</td>`; // Mbf
+                        html += `<td class="detalle-pedido">${task[61]}</td>`; // Baño
+                        html += `<td class="detalle-pedido">${task[62]}</td>`; // Marca
+                        html += '</tr>';
+                    }
+            }}
             
             // Close the table structure
             html += '</tbody></table>';
