@@ -425,6 +425,7 @@ class Gantt {
         // Agregar dos columnas adicionales a la izquierda
         html += '<th class="detalle-pedido-t">Fecha carga</th>';
         html += '<th class="detalle-pedido-t">Nro Pedido</th>';
+        html += '<th class="detalle-pedido-t">Item</th>';
         html += '<th class="detalle-pedido-t">Producto</th>';
         html += '<th class="detalle-pedido-t">La/An/Al</th>';
         html += '<th class="detalle-pedido-t">Fecha Emision</th>';
@@ -444,11 +445,12 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
-                var largo = task[10][j];
-                var ancho = task[11][j];
-                var alto = task[12][j];
+                var largo = task[24];
+                var ancho = task[23];
+                var alto = task[22];
                 bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
                 bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
+                bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
                 bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
                 bodyHtml += `<td class="detalle-pedido">L:${largo} A:${ancho} Al:${alto}</td>`;/*La/An/Al*/
                 bodyHtml += `<td class="detalle-pedido">${task[3]}</td>`;/*Fecha Creacion*/
@@ -709,9 +711,9 @@ class Gantt {
                     html += `<td class="detalle-pedido">${task[51]}</td>`; // Esp.Fact
                     html += `<td class="detalle-pedido">${task[52]}</td>`; // Anc.Fact
                     html += `<td class="detalle-pedido">${task[53]}</td>`; // Lar.Fact
-                    html += `<td class="detalle-pedido">${task[12]}</td>`; // Esp.Producc
-                    html += `<td class="detalle-pedido">${task[11]}</td>`; // Anc.Producc
-                    html += `<td class="detalle-pedido">${task[10]}</td>`; // Lar.Producc
+                    html += `<td class="detalle-pedido">${task[22]}</td>`; // alt.Producc
+                    html += `<td class="detalle-pedido">${task[23]}</td>`; // Anc.Producc
+                    html += `<td class="detalle-pedido">${task[24]}</td>`; // Lar.Producc
                     html += `<td class="detalle-pedido">${task[55]}</td>`; // Tipo Empaque
                     html += `<td class="detalle-pedido">${task[56]}</td>`; // Alto.Paquete
                     html += `<td class="detalle-pedido">${task[67]}</td>`; // Anc.paquete
