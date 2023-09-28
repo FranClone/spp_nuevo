@@ -165,12 +165,7 @@ def process_uploaded_file(xlsfile):
                         productos_list = [producto.strip() for producto in productos_str.split(',')]  # Split and clean product names
                         
                         id_cliente = row['cliente']
-                        try:
-                            cliente = Cliente.objects.get(id=id_cliente)
-                        except Cliente.DoesNotExist:
-                            print(f"Cliente con id {id_cliente} no existe.")
-                            continue
-
+                        cliente = Cliente.objects.get(id=id_cliente)
                         pedido = Pedido(
                             cliente=cliente,
                             fecha_produccion=row['fecha_produccion'],
@@ -198,11 +193,7 @@ def process_uploaded_file(xlsfile):
                         )
                         empaque.save()
                         for producto_nombre in productos_list:
-                            try:
-                                producto = Producto.objects.get(nombre=producto_nombre)
-                            except Producto.DoesNotExist:
-                                error_message = "Uno o más productos especificados no existen."
-                                break  
+                            producto = Producto.objects.get(nombre=producto_nombre)
                             producto = Producto.objects.get(nombre=producto_nombre)
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
@@ -249,8 +240,6 @@ def process_uploaded_file(xlsfile):
                         
                         print(titulofecha)
 
-                        
-
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
                         success = True
@@ -262,7 +251,10 @@ def process_uploaded_file(xlsfile):
             error_message = "Error de formato de datos: Verifica los tipos de datos esperados."
             print(f"ValueError: {e}")
         except Cliente.DoesNotExist:
-            error_message = "El cliente especificado no existe."
+            error_message = (f"Cliente con id {id_cliente} no existe.")
+        except Producto.DoesNotExist:
+            print(f"Uno o más productos especificados no existen: {productos_str}")
+            error_message = "Uno o más productos especificados no existen:"
         except Exception as e:
             error_message = "Error desconocido en la importación de datos: " + str(e)
             print(f"Excepción desconocida: {e}")
@@ -272,7 +264,6 @@ def process_uploaded_file(xlsfile):
         # Código adicional aquí
 
         return {'success': success, 'error_message': error_message}
-    
 
 
 class Administracion(View):
