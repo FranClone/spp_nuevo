@@ -424,9 +424,6 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-
-
-        html +=  '<button  id="showFolioTable" class="tablink" >Folio</button>';
         html += '<th class="detalle-pedido-t">Fecha carga</th>';
         html += '<th class="detalle-pedido-t">Nro Pedido</th>';
         html += '<th class="detalle-pedido-t">Item</th>';
@@ -475,45 +472,43 @@ class Gantt {
 
     }
    //________________
-   FolioTable() {
-    var html = '<table class="second-table"><thead><tr>';
+//    FolioTable() {
+//     var html = '<table class="second-table"><thead><tr>';
 
-    // Agregar dos columnas adicionales a la izquierda
-        html +=   '<button class="tablink" >Productos</button>';
-        html +=   '<button class="tablink">Productos</button>';
-        html +=   '<button class="tablink">Folio</button>';
-        html += '<th class="detalle-pedido-t">Fecha carga</th>';
+//     // Agregar dos columnas adicionales a la izquierda
+
+//         html += '<th class="detalle-pedido-t">Fecha carga</th>';
 
 
 
-        html += '</tr></thead><tbody>';
+//         html += '</tr></thead><tbody>';
 
-        // Utiliza una variable diferente para el cuerpo de la tabla
-        var bodyHtml = '';
+//         // Utiliza una variable diferente para el cuerpo de la tabla
+//         var bodyHtml = '';
 
-    // Itera sobre cada producto y crea una fila por producto
-    for (let i = 0; i < this.filteredTasks.length; i++) {
-        var task = this.filteredTasks[i];
-        for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-            var product = task[7][j]; // Obtiene el nombre del producto
-            var largo = task[24];
-            var ancho = task[23];
-                var alto = task[22];
+//     // Itera sobre cada producto y crea una fila por producto
+//     for (let i = 0; i < this.filteredTasks.length; i++) {
+//         var task = this.filteredTasks[i];
+//         for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+//             var product = task[7][j]; // Obtiene el nombre del producto
+//             var largo = task[24];
+//             var ancho = task[23];
+//                 var alto = task[22];
             
-                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
+//                 bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
     
-            }
+//             }
 
-                bodyHtml += '</tr>';
+//                 bodyHtml += '</tr>';
             
-        }
+//         }
 
-        // Agrega el cuerpo de la tabla al encabezado
-        html += bodyHtml;
+//         // Agrega el cuerpo de la tabla al encabezado
+//         html += bodyHtml;
 
-        html += '</tbody></table>';
-    return html;
-} 
+//         html += '</tbody></table>';
+//     return html;
+// } 
 //______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -557,6 +552,8 @@ class Gantt {
 
 
     showFolioTable() {
+        console.log("showFolioTable called");
+        console.log(this.filteredTasks);
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.FolioTable();
     }
@@ -928,24 +925,3 @@ function closePopup() {
     var popup = document.getElementById("carga-form");
     popup.style.display = "none";
 }
-
-// document.addEventListener("DOMContentLoaded", function () {
-//     const gantt = new Gantt(tasksData);
-
-//     const showFolioTable = document.getElementById("showFolioTable");
-    
-//     const titulo = document.getElementById("titulo");
-//     const ganttContainer = document.getElementById("gantt");
-
-//     // Inicialmente, muestra la tabla de "Produccion JCE"
-
-
-
-//     showFolioTable.addEventListener("click", function () {
-//         gantt.showFolioTable();
-//         titulo.textContent = "Productos por folios JCE";
-//     });
-
-
-
-// });
