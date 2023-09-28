@@ -226,8 +226,11 @@
  
     <div class="buttons-bot">
 
-        <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
-            onclick="/* showPopup() */hidePopup()   ">Ejecutar</button>
+        {% comment %} <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
+            onclick="/* showPopup() */hidePopup()   ">Ejecutar</button> {% endcomment %}
+            
+            <button type="button" id="toggle-ejecutar-button" class="carga-button-bot">Ejecutar</button>
+            
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
     <script src="{% static 'js/gantt.js' %}"></script>
@@ -321,4 +324,31 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 </script>
 
+{% comment %} Ejecutar ALGORITMO DE TEST {% endcomment %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+$(document).ready(function() {
+    $("#toggle-ejecutar-button").click(function() {
+        // Specify the values for archivo1 and archivo2
+        var archivo1Value = "LineaDelgado.csv";  // Update with the actual value
+        var archivo2Value = "LineaGruesa.csv";   // Update with the actual value
+
+        // Construct the URL for the execute_code view
+        var url = `/execute_code/${archivo1Value}/${archivo2Value}/`;
+
+        $.ajax({
+            url: url,
+            type: "GET",
+            success: function(response) {
+                // Handle the response from the server (if needed)
+                console.log(response);
+            },
+            error: function(error) {
+                // Handle any errors (if needed)
+                console.error(error);
+            }
+        });
+    });
+});
+</script>
 </html>
