@@ -413,6 +413,7 @@ class Gantt {
         html += bodyHtml;
 
         html += '</tbody></table>';
+        
         return html;
     }
 
@@ -423,6 +424,7 @@ class Gantt {
         var html = '<table style="margin-left: auto; margin-right: auto;"class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
+
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Linea</th>';
         html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Producto</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Largo</th>';
@@ -445,6 +447,7 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
+
                 bodyHtml += `<td style="text-align: center;">${task[13]}</td>`;/*Linea*/
                 bodyHtml += `<td style="text-align: center;">${task[7]}</td>`;/*Nombre del Producto*/
                 bodyHtml += `<td style="text-align: center;">${task[24]}</td>`;/*Largo*/
@@ -455,6 +458,46 @@ class Gantt {
                 bodyHtml += `<td style="text-align: center;">${task[2]}</td>`;/*ETA*/
                 bodyHtml += `<td style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
 
+
+            }
+
+                bodyHtml += '</tr>';
+            
+        }
+     
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+        return html;
+
+    }
+   //________________
+   FolioTable() {
+    var html = '<table class="second-table"><thead><tr>';
+
+    // Agregar dos columnas adicionales a la izquierda
+        html +=   '<button class="tablink" >Productos</button>';
+        html +=   '<button class="tablink">Productos</button>';
+        html +=   '<button class="tablink">Folio</button>';
+        html += '<th class="detalle-pedido-t">Fecha carga</th>';
+
+
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+    // Itera sobre cada producto y crea una fila por producto
+    for (let i = 0; i < this.filteredTasks.length; i++) {
+        var task = this.filteredTasks[i];
+        for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
+            var product = task[7][j]; // Obtiene el nombre del producto
+            var largo = task[24];
+            var ancho = task[23];
+                var alto = task[22];
+            
+                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
+    
             }
 
                 bodyHtml += '</tr>';
@@ -465,8 +508,8 @@ class Gantt {
         html += bodyHtml;
 
         html += '</tbody></table>';
-        return html;
-    }
+    return html;
+} 
 //______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -507,6 +550,12 @@ class Gantt {
         return html;
 }
 
+
+
+    showFolioTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.FolioTable();
+    }
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PedidoTable();
@@ -537,7 +586,10 @@ class Gantt {
         var diffTime = Math.abs(max - min);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
     }
-
+   showPedidosTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.PedidoTable();
+    }
     formatDate(date, period, endDate) {
         const day = date.getDate();
         const month = date.getMonth() + 1;
@@ -603,7 +655,6 @@ class Gantt {
             }
         });
     }
-
 
 
     handlePopupClick(event) {
@@ -708,12 +759,12 @@ class Gantt {
             html += '<th class="detalle-pedido-t">term</th>';
             html += '<th class="detalle-pedido-t">Calidad</th>';
             html += '<th class="detalle-pedido-t">FSC</th>';
-            html += '<th class="detalle-pedido-t">Esp.Fact</th>';
-            html += '<th class="detalle-pedido-t">Anc.Fact</th>';
-            html += '<th class="detalle-pedido-t">Lar.Fact</th>';
-            html += '<th class="detalle-pedido-t">Esp.Producc</th>';
-            html += '<th class="detalle-pedido-t">Anc.Producc</th>';
-            html += '<th class="detalle-pedido-t">Lar.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Esp.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Anc.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Lar.Fact</th>';
+            html += '<th class="detalle-pedido-t a">Esp.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Anc.Producc</th>';
+            html += '<th class="detalle-pedido-t a">Lar.Producc</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Alto.Paquete</th>';
             html += '<th class="detalle-pedido-t">Anc.paquete</th>';
@@ -733,9 +784,10 @@ class Gantt {
                         console.log(task[7]);
                         // Create a new row for each product
                         html += '<tr>';
+                        html += '<td class="detalle-pedido"><input type="checkbox"></td>';
                         html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
-                        html += `<td class="detalle-pedido">${task[26]}</td>`; // Est
+                        html += `<td class="detalle-pedido">${task[68]}</td>`; // Est
                         html += `<td class="detalle-pedido">${task[58]}</td>`; // term
                         html += `<td class="detalle-pedido">${task[59]}</td>`; // Calidad
                         html += `<td class="detalle-pedido">${task[50]}</td>`; // FSC
@@ -760,15 +812,22 @@ class Gantt {
             
             // Close the table structure
             html += '</tbody></table>';
-            
+      
+        
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Agregar Folio</button>
                 </div>
             `;
+
+            
+        
+        
+        
         }
         else if (popupType === 'patron') {
         productoData = this.tasks[pedidoId];
@@ -896,6 +955,23 @@ function closePopup() {
     popup.style.display = "none";
 }
 
+// document.addEventListener("DOMContentLoaded", function () {
+//     const gantt = new Gantt(tasksData);
+
+//     const showFolioTable = document.getElementById("showFolioTable");
+    
+//     const titulo = document.getElementById("titulo");
+//     const ganttContainer = document.getElementById("gantt");
+
+//     // Inicialmente, muestra la tabla de "Produccion JCE"
 
 
 
+//     showFolioTable.addEventListener("click", function () {
+//         gantt.showFolioTable();
+//         titulo.textContent = "Productos por folios JCE";
+//     });
+
+
+
+// });

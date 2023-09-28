@@ -210,6 +210,7 @@
                 <button id="showProduccionButton">Ver Produccion</button>
                 <button id="showSalidaButton">Ver Salida Algoritmo</button>
             </ul>
+            {% comment %} <button  id="showFolioTable"  class="tablink">Folio</button> {% endcomment %}
         </div>
 
 
@@ -222,19 +223,109 @@
                 const tasksData = {{ tasks|safe }};
             </script>
         </div>
+        
     </div>
- 
+
     <div class="buttons-bot">
 
         {% comment %} <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="/* showPopup() */hidePopup()   ">Ejecutar</button> {% endcomment %}
             
-            <button type="button" id="toggle-ejecutar-button" class="carga-button-bot">Ejecutar</button>
-            
+            <button type="button" class="carga-button" id="openPopupButtontest">Algoritmo</button>
+
         <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
-    <script src="{% static 'js/gantt.js' %}"></script>
-</body>
+
+{% comment %} popup ALGORINTO {% endcomment %}
+<div id="popupContainertest" style="width:30%;" class="popup">
+    <!-- Add your popup content here -->
+    <span class="close" id="closePopupButton">&times;</span>
+
+    <table id="diameterTable" style="width:100%;">
+        <thead>
+            <tr>
+                <th>Diametro</th>
+            </tr>
+        </thead>
+        <tbody id="diameterBody">
+            <!-- Diameter results will be displayed here -->
+        </tbody>
+    </table>
+
+    <table id="selectedTable" style="width:100%;" > 
+        <thead>
+            <tr>
+                <th>Selected</th>
+            </tr>
+        </thead>
+        <tbody id="selectedBody">
+            <!-- Selected results will be displayed here -->
+        </tbody>
+    </table>
+</div>
+
+<script src="{% static 'js/gantt.js' %}"></script>
+
+{% comment %} script test algoritmo popup {% endcomment %}
+<script>
+    const openButton = document.getElementById("openPopupButtontest");
+    const closeButton = document.getElementById("closePopupButton");
+    const popupContainertest = document.getElementById("popupContainertest");
+    const diameterTable = document.getElementById("diameterTable");
+    const diameterBody = document.getElementById("diameterBody");
+    const selectedTable = document.getElementById("selectedTable");
+    const selectedBody = document.getElementById("selectedBody");
+
+    // Function to open the popup
+    openButton.addEventListener("click", function () {
+        // Show loading message while waiting for results
+        diameterBody.innerHTML = "<tr><td>Loading...</td></tr>";
+        selectedBody.innerHTML = "<tr><td>Loading...</td></tr>";
+        
+        // Make an AJAX request to execute_code view
+        fetch("/execute_code/your-archivo1/your-archivo2/")
+            .then(response => response.json())
+            .then(data => {
+                // Clear the loading messages
+                diameterBody.innerHTML = "";
+                selectedBody.innerHTML = "";
+
+                // Populate the "Diameter" table with results
+                for (let i = 0; i < data.diametro.length; i++) {
+                    const row = document.createElement("tr");
+                    const diameterCell = document.createElement("td");
+                    diameterCell.innerText = data.diametro[i];
+                    row.appendChild(diameterCell);
+                    diameterBody.appendChild(row);
+                }
+
+                // Populate the "Selected" table with results
+                for (let i = 0; i < data.selected.length; i++) {
+                    const row = document.createElement("tr");
+                    const selectedCell = document.createElement("td");
+                    selectedCell.innerText = data.selected[i];
+                    row.appendChild(selectedCell);
+                    selectedBody.appendChild(row);
+                }
+            })
+            .catch(error => {
+                console.error("An error occurred:", error);
+                diameterBody.innerHTML = "<tr><td>An error occurred while fetching Diameter results.</td></tr>";
+                selectedBody.innerHTML = "<tr><td>An error occurred while fetching Selected results.</td></tr>";
+            });
+
+        // Show the popup
+        popupContainertest.style.display = "block";
+    });
+
+    // Function to close the popup
+    closeButton.addEventListener("click", function () {
+        popupContainertest.style.display = "none";
+    });
+</script>
+
+</script>
+{% comment %}  {% endcomment %}
 <script>
     $(document).ready(function() {
         $('.select2').select2({
@@ -256,6 +347,7 @@
 
         const showPedidosButton = document.getElementById("showPedidosButton");
         const showProduccionButton = document.getElementById("showProduccionButton");
+        const showFolioTable = document.getElementById("showFolioTable");
         const showProductosButton = document.getElementById("showProductosButton");
         const showSalidaButton = document.getElementById("showSalidaButton");
         const showPatronesButton = document.getElementById("showPatronesButton");
@@ -265,6 +357,7 @@
         // Inicialmente, muestra la tabla de "Produccion JCE"
         gantt.showPedidosTable();
         titulo.textContent = "Pedidos JCE";
+
 
         showPedidosButton.addEventListener("click", function () {
             gantt.showPedidosTable();
@@ -279,6 +372,10 @@
         showProductosButton.addEventListener("click", function () {
             gantt.showProductosTable();
             titulo.textContent = "Productos JCE";
+        });
+        showFolioTable.addEventListener("click", function () {
+            gantt.showFolioTable();
+            titulo.textContent = "Productos por folios JCE";
         });
 
         showSalidaButton.addEventListener("click", function () {
