@@ -64,13 +64,17 @@ except Exception as ex:
 
 
 
+from django.shortcuts import render
+
 def importar(request):
     alert_message = None  # Inicialmente, no hay mensaje de alerta
     success = False  # Inicialmente, no se considera éxito
 
     if request.method == 'POST':
-        if 'subir' in request.POST:
-            result = process_uploaded_file(request.FILES.get('xlsfile'))
+        # Verifica si el archivo 'xlsfile' está presente en 'request.FILES'
+        if 'xlsfile' in request.FILES:
+            xlsfile = request.FILES['xlsfile']
+            result = process_uploaded_file(xlsfile)
             if result.get('success'):
                 # Importación exitosa, muestra un mensaje de éxito
                 success = True
@@ -78,12 +82,11 @@ def importar(request):
             else:
                 # Importación fallida, muestra un mensaje de error
                 alert_message = 'Error: ' + (result.get('error_message') or '')
+        else:
+            alert_message = "No se ha seleccionado ningún archivo para subir."
 
-    # Redirige a la vista "home" después de procesar la importación
-
-    return render(request, 'home.html', {'alert_message': alert_message, 'success': success})
-
-    #return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
+        return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
+        
 
 def process_uploaded_file(xlsfile):
     success = False
@@ -178,7 +181,7 @@ def process_uploaded_file(xlsfile):
                             )
                             detalle_pedido.save()
                             
-                                # Obtiene la fecha y hora actual formateada
+                            # Obtiene la fecha y hora actual formateada
                         fecha_actual = datetime.now()
                         fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
 
@@ -201,19 +204,18 @@ def process_uploaded_file(xlsfile):
         except ValueError as e:
             error_message = "Error de formato de datos: Verifica los tipos de datos esperados."
             print(f"ValueError: {e}")
-        id_cliente = row['cliente']
-        try:
-            cliente = Cliente.objects.get(id=id_cliente)
         except Cliente.DoesNotExist:
             error_message = "El cliente especificado no existe."
-            
         except Exception as e:
             error_message = "Error desconocido en la importación de datos: " + str(e)
             print(f"Excepción desconocida: {e}")
         else:
             error_message = "Error desconocido en la importación de datos"
 
-    return {'success': success, 'error_message': error_message}
+        # Código adicional aquí
+
+        return {'success': success, 'error_message': error_message}
+    
 
 
 class Administracion(View):
@@ -951,4 +953,7 @@ def eliminar_empresa(request,id):
     empresa=Empresa.objects.get(id=id)
     empresa.delete()
     return redirect('admin_empresa')
+
+
+
 
