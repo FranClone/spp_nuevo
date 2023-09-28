@@ -423,6 +423,12 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
+
+        
+        html += '<th class="detalle-pedido-t">Folio</th>';
+        html += '<th class="detalle-pedido-t">Fecha carga</th>';
+        html += '<th class="detalle-pedido-t">Nro Pedido</th>';
+        html += '<th class="detalle-pedido-t">Item</th>';
         html += '<th data-sortable="true" class="detalle-pedido-t asc">Linea</th>';
         html += '<th class="detalle-pedido-t">Producto</th>';
         html += '<th class="detalle-pedido-t">Largo</th>';
@@ -444,6 +450,13 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
+                var largo = task[24];
+                var ancho = task[23];
+                var alto = task[22];
+                bodyHtml += '<td class="detalle-pedido"><input type="checkbox"></td>'; // Add a checkbox
+                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
+                bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
+                bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
                 bodyHtml += `<td class="detalle-pedido">${task[13]}</td>`;/*Linea*/
                 bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
                 bodyHtml += `<td class="detalle-pedido">${task[24]}</td>`;/*Largo*/
@@ -664,6 +677,7 @@ class Gantt {
             
             // Create the initial table structure
             var html = '<table class="second-table"><thead><tr>';
+            html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
@@ -698,6 +712,7 @@ class Gantt {
                         console.log(task[7]);
                         // Create a new row for each product
                         html += '<tr>';
+                        html += '<td class="detalle-pedido"><input type="checkbox"></td>';
                         html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
                         html += `<td class="detalle-pedido">${task[68]}</td>`; // Est
@@ -728,15 +743,22 @@ class Gantt {
             
             // Close the table structure
             html += '</tbody></table>';
-            
+      
+        
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Agregar Folio</button>
                 </div>
             `;
+
+            
+        
+        
+        
         }
         else if (popupType === 'patron') {
         productoData = this.tasks[pedidoId];
@@ -865,5 +887,13 @@ function closePopup() {
 }
 
 
-
+///////////////
+function toggleCargatst() {
+    const test = document.getElementById('popupContainertest');
+    if (test.style.display === 'none') {
+        test.style.display = 'block';
+    } else {
+        test.style.display = 'none';
+    }
+}
 
