@@ -352,7 +352,7 @@ class Gantt {
 
 
     PedidoTable() {
-        var html = '<table class="second-table"><thead><tr>';
+        var html = '<table style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Linea</th>';
@@ -421,23 +421,22 @@ class Gantt {
 
 
     ProductosTable() {
-        var html = '<table class="second-table"><thead><tr>';
+        var html = '<table style="margin-left: auto; margin-right: auto;"class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
 
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Linea</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Producto</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Largo</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Ancho</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center;">Alto</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Pqtes Solicitados</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">M3</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">ETA</th>';
+        html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center;">Detalle</th>';
 
-        html +=  '<button  id="showFolioTable" class="tablink" >Folio</button>';
-        html += '<th class="detalle-pedido-t">Fecha carga</th>';
-        html += '<th class="detalle-pedido-t">Nro Pedido</th>';
-        html += '<th class="detalle-pedido-t">Item</th>';
-        html += '<th data-sortable="true" class="detalle-pedido-t asc">Linea</th>';
-        html += '<th class="detalle-pedido-t">Producto</th>';
-        html += '<th class="detalle-pedido-t">Largo</th>';
-        html += '<th class="detalle-pedido-t">Ancho</th>';
-        html += '<th class="detalle-pedido-t">Alto</th>';
-        html += '<th class="detalle-pedido-t">Pqtes Solicitados</th>';
-        html += '<th class="detalle-pedido-t">ETA</th>';
-        html += '<th class="detalle-pedido-t">Detalle</th>';
+
+
         html += '</tr></thead><tbody>';
 
         // Utiliza una variable diferente para el cuerpo de la tabla
@@ -448,20 +447,17 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
-                var largo = task[24];
-                var ancho = task[23];
-                var alto = task[22];
-                bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
-                bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
-                bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
-                bodyHtml += `<td class="detalle-pedido">${task[13]}</td>`;/*Linea*/
-                bodyHtml += `<td class="detalle-pedido">${task[7]}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td class="detalle-pedido">${task[24]}</td>`;/*Largo*/
-                bodyHtml += `<td class="detalle-pedido">${task[23]}</td>`;/*Ancho*/
-                bodyHtml += `<td class="detalle-pedido">${task[22]}</td>`;/*Alto*/
-                bodyHtml += `<td class="detalle-pedido">${task[54]}</td>`;/*pqtes solicitados*/
-                bodyHtml += `<td class="detalle-pedido">${task[2]}</td>`;/*ETA*/
-                bodyHtml += `<td class="detalle-pedido"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+
+                bodyHtml += `<td style="text-align: center;">${task[13]}</td>`;/*Linea*/
+                bodyHtml += `<td style="text-align: center;">${task[7]}</td>`;/*Nombre del Producto*/
+                bodyHtml += `<td style="text-align: center;">${task[24]}</td>`;/*Largo*/
+                bodyHtml += `<td style="text-align: center;">${task[23]}</td>`;/*Ancho*/
+                bodyHtml += `<td style="text-align: center;">${task[22]}</td>`;/*Alto*/
+                bodyHtml += `<td style="text-align: center;">${task[54]}</td>`;/*pqtes solicitados*/
+                bodyHtml += `<td style="text-align: center;">${task[25]}</td>`;/*M3*/
+                bodyHtml += `<td style="text-align: center;">${task[2]}</td>`;/*ETA*/
+                bodyHtml += `<td style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
+
 
             }
 
