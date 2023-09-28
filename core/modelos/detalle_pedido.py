@@ -13,7 +13,7 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
     factura = models.ForeignKey('Factura', on_delete=models.CASCADE, verbose_name='Factura')
     empaque = models.ForeignKey('Empaque', on_delete=models.CASCADE, verbose_name='Empaque')
-    item = models.CharField(max_length=20, unique=True, null=True, blank=False)
+    item = models.CharField(max_length=20, null=True, blank=False)
     folio =  models.CharField(max_length=20, null=True, blank=False)
     detalle_producto = models.CharField(max_length=300,null=True)
     alto_producto = models.FloatField( validators=[MinValueValidator(0)],null=True)
