@@ -423,6 +423,8 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
+        
+        html += '<th class="detalle-pedido-t">Folio</th>';
         html += '<th class="detalle-pedido-t">Fecha carga</th>';
         html += '<th class="detalle-pedido-t">Nro Pedido</th>';
         html += '<th class="detalle-pedido-t">Item</th>';
@@ -448,6 +450,7 @@ class Gantt {
                 var largo = task[24];
                 var ancho = task[23];
                 var alto = task[22];
+                bodyHtml += '<td class="detalle-pedido"><input type="checkbox"></td>'; // Add a checkbox
                 bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
                 bodyHtml += `<td class="detalle-pedido">${task[0]}</td>`;/*Nro Pedido*/
                 bodyHtml += `<td class="detalle-pedido">${task[45]}</td>`;/*Nro Item*/
@@ -669,6 +672,7 @@ class Gantt {
             
             // Create the initial table structure
             var html = '<table class="second-table"><thead><tr>';
+            html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
@@ -703,6 +707,7 @@ class Gantt {
                         console.log(task[7]);
                         // Create a new row for each product
                         html += '<tr>';
+                        html += '<td class="detalle-pedido"><input type="checkbox"></td>';
                         html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
                         html += `<td class="detalle-pedido">${task[26]}</td>`; // Est
@@ -733,15 +738,22 @@ class Gantt {
             
             // Close the table structure
             html += '</tbody></table>';
-            
+      
+        
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Agregar Folio</button>
                 </div>
             `;
+
+            
+        
+        
+        
         }
         else if (popupType === 'patron') {
         productoData = this.tasks[pedidoId];
@@ -870,5 +882,13 @@ function closePopup() {
 }
 
 
-
+///////////////
+function toggleCargatst() {
+    const test = document.getElementById('popupContainertest');
+    if (test.style.display === 'none') {
+        test.style.display = 'block';
+    } else {
+        test.style.display = 'none';
+    }
+}
 
