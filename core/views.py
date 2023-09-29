@@ -626,7 +626,7 @@ def gantt_view(request):
     for pedido in pedidos:
 
         productos = pedido.producto.all()   
-
+        pedido_id = pedido.id
         if productos.exists():
             for producto in productos:
                 largo = [producto.largo for producto in pedido.producto.all()]
@@ -781,6 +781,7 @@ def gantt_view(request):
                     piezas_x_cpo,  # 66
                     anc_paquete, # 67
                     est, # 68
+                    pedido_id, #69
                 ]
 
                 tasks.append(tasks_pedido)
@@ -1006,5 +1007,29 @@ def eliminar_empresa(request,id):
     return redirect('admin_empresa')
 
 
+from django.shortcuts import render, redirect
 
+def asignar_folio_pedido(request):
+    if request.method == 'POST':
+        # Obtiene el valor del folio del formulario POST
+        texto_folio = request.POST.get('texto_folio')
+
+        # Obtiene el ID del pedido del formulario POST
+        pedido_id = request.POST.get('pedido_id')
+
+        # Verifica si el texto_folio no está vacío
+        if texto_folio:
+            # Actualiza todos los detalles de pedidos asociados con el pedido ID
+            DetallePedido.objects.filter(pedido_id=pedido_id).update(folio=texto_folio)
+            alert_message = 'Se ha creado el folio'
+            # Redirige a la página de éxito 'aviso.html'
+            return render(request, 'aviso.html', {'alert_message': alert_message})  # Renderiza la página HTML de éxito
+        else:
+            # En caso de que el campo de texto esté vacío, muestra un mensaje de error
+            alert_message = 'El campo de texto no puede estar vacío'
+
+            return render(request, 'aviso.html', {'alert_message': alert_message})
+    # Renderiza el formulario en una plantilla HTML
+
+    return render(request, 'aviso.html')  # Renderiza la página HTML de formulario
 

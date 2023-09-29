@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -23,6 +24,7 @@
     <title>SPP - Home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
 </head>
+
 <body>
     {% include "partials/header.html" %}
     {% if alert_message %}
@@ -33,7 +35,7 @@
             <button class="popup2-close-button" id="popup2-close-button">Cerrar</button>
         </div>
     </div>
-{% endif %}
+    {% endif %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
         <div class="popup-content-pedidos">
             {% comment %} Revisar si estos comentarios son necesarios {% endcomment %}
@@ -41,7 +43,7 @@
         </div>
     </div>
     <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
-    <button type="button" class="carga-button" onclick="showPopupimport()">Cargar Pedido</button> 
+    <button type="button" class="carga-button" onclick="showPopupimport()">Cargar Pedido</button>
     <div class="buttons-top horizontal-container">
         {% comment %} Sistema de filtro por atributo {% endcomment %}
         <!--<select name="lineas" id="toggle-lineas-button" class="carga-button-top">
@@ -74,7 +76,7 @@
                         <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}" class="left-button">
                             <button type="button" class="carga-button-bot">Descargar Plantilla</button>
                         </a>
-                    
+
                         <div class="right-button">
                             <div class="custom-file-input">
                                 <input type="file" name="xlsfile" id="fileInput">
@@ -82,7 +84,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="button-row">
                         <span id="file-name-display" class="file-name">Ningún archivo seleccionado</span>
                         <button type="submit" class="subir" name="subir">Subir Archivo</button>
@@ -91,19 +93,20 @@
                 <!-- Close button without submitting the form -->
                 <h2 class="agregar">Agregar Pedido Manualmente</h2>
                 <div class="button-row">
-                        <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Abrir Formulario</button>
-                        <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
-                    </div> 
+                    <button type="button" id="toggle-carga-button" class="carga-button-bot"
+                        onclick="toggleCargaForm()">Abrir Formulario</button>
+                    <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
+                </div>
             </form>
         </div>
     </div>
     <div class="form-container-productos">
-       
+
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
                 {{ detalle_pedido_formset.management_form }}
-    
+
                 <tr>
                     <th>{{ pedido_form.cliente.label_tag }}</th>
                     <th>{{ pedido_form.orden_pedido.label_tag }}</th>
@@ -116,7 +119,7 @@
                     <td>{{ pedido_form.fecha_produccion }}</td>
                     <td>{{ pedido_form.fecha_entrega }}</td>
                 </tr>
-            
+
                 <tr>
                     <th>{{ pedido_form.prioridad.label_tag }}</th>
                     <th>{{ pedido_form.estado.label_tag }}</th>
@@ -125,39 +128,39 @@
                 <tr>
                     <td>{{ pedido_form.prioridad }}</td>
                     <td>{{ pedido_form.estado }}</td>
-                
+
                     <td>{{ pedido_form.version }}</td>
                 </tr>
                 {% for detalle_form in detalle_pedido_formset %}
-                
+
                 <tr>
                     <th>{{ pedido_form.comentario.label_tag }}</td>
                     <th>{{ detalle_form.detalle_producto.label_tag }}</th>
                     <th>{{ detalle_form.producto.label_tag }}</th>
                     <th>{{ detalle_form.ancho_producto.label_tag }}</th>
-                </tr>   
-                 <tr>
+                </tr>
+                <tr>
                     <td>{{ pedido_form.comentario }}</td>
                     <td>{{ detalle_form.detalle_producto }}</td>
                     <td>{{ detalle_form.producto }}</td>
                     <td>{{ detalle_form.ancho_producto }}</td>
-                   
+
                 </tr>
-              
+
                 <tr>
                     <th>{{ detalle_form.largo_producto.label_tag }}</th>
                     <th>{{ detalle_form.alto_producto.label_tag }}</th>
-                    <th>{{ detalle_form.volumen_producto.label_tag }}</th>                    
+                    <th>{{ detalle_form.volumen_producto.label_tag }}</th>
                     <th>{{ detalle_form.estado_pedido_linea.label_tag }}</th>
-                  
+
                 </tr>
                 <tr>
                     <td>{{ detalle_form.largo_producto }}</td>
                     <td>{{ detalle_form.alto_producto }}</td>
-                    <td>{{ detalle_form.volumen_producto }}</td>                 
+                    <td>{{ detalle_form.volumen_producto }}</td>
                     <td>{{ detalle_form.estado_pedido_linea }}</td>
                 </tr>
-                 <tr>
+                <tr>
                     <th>{{ detalle_form.cantidad_piezas.label_tag }}</th>
                     <th>{{ detalle_form.cantidad_trozos.label_tag }}</th>
                     <th>{{ detalle_form.piezas_xpaquete.label_tag }}</th>
@@ -168,7 +171,7 @@
                     <td>{{ detalle_form.cantidad_trozos }}</td>
                     <td>{{ detalle_form.piezas_xpaquete }}</td>
                     <td>{{ detalle_form.piezas_xtrozo }}</td>
-                </tr> 
+                </tr>
                 <tr>
                     <th>{{ detalle_form.paquetes_solicitados.label_tag }}</th>
                     <th>{{ detalle_form.volumen_obtenido.label_tag }}</th>
@@ -180,17 +183,17 @@
                     <td>{{ detalle_form.volumen_obtenido }}</td>
                     <td>{{ detalle_form.paquetes_saldo }}</td>
                     <td>{{ detalle_form.grado_urgencia }}</td>
-                </tr> 
-     
+                </tr>
+
                 <!-- Add other DetallePedido fields here -->
                 {% endfor %}
-                
+
             </table>
-            <button type="submit" name="crear" class="red-button">Crear</button>    
+            <button type="submit" name="crear" class="red-button">Crear</button>
             <button class="form-close-x" onclick="closePopup()">x</button>
         </form>
     </div>
-   
+
 
     <br>
     {% comment %} Mover estilo {% endcomment %}
@@ -198,13 +201,12 @@
 
 
         <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown">
-              Vistas <span class="caret"></span>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                Vistas <span class="caret"></span>
             </button>
-          
+
             <ul class="dropdown-menu" role="menu">
-                <button id="showPedidosButton"  >Ver Pedidos</button>
+                <button id="showPedidosButton">Ver Pedidos</button>
                 <button id="showProductosButton">Ver Productos</button>
                 <button id="showPatronesButton">Ver Patrones</button>
                 <button id="showProduccionButton">Ver Produccion</button>
@@ -219,23 +221,24 @@
         </div>
         <div id="gantt">
             <script>
-                const tasksData = {{ tasks|safe }};
+                const tasksData = {{ tasks| safe }};
             </script>
         </div>
     </div>
- 
+
     <div class="buttons-bot">
 
         {% comment %} <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
             onclick="/* showPopup() */hidePopup()   ">Ejecutar</button> {% endcomment %}
-            
-            <button type="button" class="carga-button" id="openPopupButtontest">Algoritmo</button>
 
-        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
+        <button type="button" class="carga-button" id="openPopupButtontest">Algoritmo</button>
+
+        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan
+            actual</button>
     </div>
 
-{% comment %} popup ALGORINTO {% endcomment %}
-<div id="popupContainertest" class="popup">
+    {% comment %} popup ALGORINTO {% endcomment %}
+    <div id="popupContainertest" class="popup">
 
         <!-- Add your popup content here -->
         <span class="close" id="closePopupButton">&times;</span>
@@ -243,19 +246,32 @@
         <table id="resultsTable">
             <thead>
                 <tr>
-                   Diametro
+                    Diametro
                 </tr>
                 <tr>
                     Seleccion
-                 </tr>
+                </tr>
             </thead>
             <tbody id="resultsBody">
                 <!-- Results will be displayed here -->
             </tbody>
         </table>
 
-</div>
+    </div>
 
+
+    <div class="popup-folio-container" id="popup3">
+        <form method="POST" class="formulario" action="{% url 'asignar_folio_pedido' %}">
+            {% csrf_token %}
+            <div class="popup-folio-content">
+                <h2 class="popup-folio-title">Crear folio</h2>
+                <div id="productos-seleccionados"></div>
+                <input type="text" name="texto_folio" placeholder="Ingrese el folio">
+                <button type="submit" class="popup-folio-button">Agregar Folio</button>
+                <button type="button" class="popup-folio-button agregar-folio-button" id="cerrar-popup-button">Cerrar</button>
+            </div>
+        </form>
+    </div>
 
     <script src="{% static 'js/gantt.js' %}"></script>
 </body>
@@ -309,16 +325,16 @@
     });
 </script>
 </script>
-{% comment %}  {% endcomment %}
+{% comment %} {% endcomment %}
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         $('.select2').select2({
             multiple: true,
-            closeOnSelect: false,          
+            closeOnSelect: false,
             placeholder: 'Seleccione una opción'
         });
-                // Handle padding when Select2 dropdown is opened
-        $('.select2').on('select2:open', function() {
+        // Handle padding when Select2 dropdown is opened
+        $('.select2').on('select2:open', function () {
             $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
         });
     });
@@ -371,24 +387,24 @@
 </script>
 
 <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
         // Escucha cambios en el input[type="file"]
-        $('input[type="file"]').change(function() {
+        $('input[type="file"]').change(function () {
             var fileName = $(this).val().split('\\').pop(); // Obtén el nombre del archivo seleccionado
             $('#file-name-display').text(fileName); // Muestra el nombre del archivo en el span
         });
     });
 </script>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function () {
         const popup = document.getElementById("popup2");
         const popupCloseButton = document.getElementById("popup2-close-button");
 
         // Muestra el popup si alert_message tiene un valor
         if (popup && popupCloseButton) {
             popup.style.display = "block";
-            
-            
+
+
             // Cierra el popup cuando se hace clic en el botón "Cerrar"
             popupCloseButton.addEventListener("click", function () {
                 popup.style.display = "none";
@@ -402,82 +418,85 @@ document.addEventListener("DOMContentLoaded", function () {
 {% comment %} Ejecutar ALGORITMO DE TEST {% endcomment %}
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-$(document).ready(function() {
-    $("#toggle-ejecutar-button").click(function() {
-        // Specify the values for archivo1 and archivo2
-        var archivo1Value = "LineaDelgado.csv";  // Update with the actual value
-        var archivo2Value = "LineaGruesa.csv";   // Update with the actual value
+    $(document).ready(function () {
+        $("#toggle-ejecutar-button").click(function () {
+            // Specify the values for archivo1 and archivo2
+            var archivo1Value = "LineaDelgado.csv";  // Update with the actual value
+            var archivo2Value = "LineaGruesa.csv";   // Update with the actual value
 
-        // Construct the URL for the execute_code view
-        var url = `/execute_code/${archivo1Value}/${archivo2Value}/`;
+            // Construct the URL for the execute_code view
+            var url = `/execute_code/${archivo1Value}/${archivo2Value}/`;
 
-        $.ajax({
-            url: url,
-            type: "GET",
-            success: function(response) {
-                // Handle the response from the server (if needed)
-                console.log(response);
-            },
-            error: function(error) {
-                // Handle any errors (if needed)
-                console.error(error);
-            }
+            $.ajax({
+                url: url,
+                type: "GET",
+                success: function (response) {
+                    // Handle the response from the server (if needed)
+                    console.log(response);
+                },
+                error: function (error) {
+                    // Handle any errors (if needed)
+                    console.error(error);
+                }
+            });
         });
     });
-});
-$(document).ready(function() {
-  $('th[data-sortable="true"]').on('click', function() {
-    var table = $(this).closest('table');
-    var index = $(this).index();
-    var isAscending = $(this).hasClass('asc');
-    
-    // Cambia la clase de la columna clicada
-    $('th[data-sortable="true"]').removeClass('asc desc');
-    $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
-    
-    // Implementa la lógica de ordenamiento aquí (puede requerir una biblioteca o código personalizado).
-    // Puedes ordenar las filas de la tabla según la columna y la dirección (ascendente o descendente).
-    // Actualiza el contenido de la tabla según el nuevo orden.
-    
-    // Ejemplo: ordena las filas por la columna "index" de forma ascendente o descendente
-    var rows = table.find('tbody > tr').get();
-    rows.sort(function(a, b) {
-      var x = $(a).find('td').eq(index).text();
-      var y = $(b).find('td').eq(index).text();
-      return (isAscending ? 1 : -1) * x.localeCompare(y);
-    });
-    
-    $.each(rows, function(index, row) {
-      table.find('tbody').append(row);
-    });
-  });
-});
-$(document).on('click', 'th[data-sortable="true"]', function() {
-  var table = $(this).closest('table');
-  var rows = table.find('tbody > tr').get();
+    $(document).ready(function () {
+        $('th[data-sortable="true"]').on('click', function () {
+            var table = $(this).closest('table');
+            var index = $(this).index();
+            var isAscending = $(this).hasClass('asc');
 
-  var index = $(this).index();
-  var isAscending = $(this).hasClass('asc');
-  
-  // Si la columna hace clic es "Linea", no cambies la dirección de ordenamiento
-  if (index === 5) {
-    $(this).toggleClass('desc', !isAscending); // Cambia la clase a "desc" si no está ascendente
-  } else {
-    // Para otras columnas, cambia la dirección de ordenamiento normalmente
-    rows.sort(function(a, b) {
-      var x = $(a).children('td').eq(index).text();
-      var y = $(b).children('td').eq(index).text();
-      return (isAscending ? 1 : -1) * x.localeCompare(y);
-    });
-    
-    // Cambia la clase de la columna clicada
-    $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
-  }
+            // Cambia la clase de la columna clicada
+            $('th[data-sortable="true"]').removeClass('asc desc');
+            $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
 
-  // Aplica el nuevo orden a las filas
-  $.each(rows, function(index, row) {
-    table.children('tbody').append(row);
-  });
-});
+            // Implementa la lógica de ordenamiento aquí (puede requerir una biblioteca o código personalizado).
+            // Puedes ordenar las filas de la tabla según la columna y la dirección (ascendente o descendente).
+            // Actualiza el contenido de la tabla según el nuevo orden.
+
+            // Ejemplo: ordena las filas por la columna "index" de forma ascendente o descendente
+            var rows = table.find('tbody > tr').get();
+            rows.sort(function (a, b) {
+                var x = $(a).find('td').eq(index).text();
+                var y = $(b).find('td').eq(index).text();
+                return (isAscending ? 1 : -1) * x.localeCompare(y);
+            });
+
+            $.each(rows, function (index, row) {
+                table.find('tbody').append(row);
+            });
+        });
+    });
+    $(document).on('click', 'th[data-sortable="true"]', function () {
+        var table = $(this).closest('table');
+        var rows = table.find('tbody > tr').get();
+
+        var index = $(this).index();
+        var isAscending = $(this).hasClass('asc');
+
+        // Si la columna hace clic es "Linea", no cambies la dirección de ordenamiento
+        if (index === 5) {
+            $(this).toggleClass('desc', !isAscending); // Cambia la clase a "desc" si no está ascendente
+        } else {
+            // Para otras columnas, cambia la dirección de ordenamiento normalmente
+            rows.sort(function (a, b) {
+                var x = $(a).children('td').eq(index).text();
+                var y = $(b).children('td').eq(index).text();
+                return (isAscending ? 1 : -1) * x.localeCompare(y);
+            });
+
+            // Cambia la clase de la columna clicada
+            $(this).toggleClass('asc', !isAscending).toggleClass('desc', isAscending);
+        }
+
+        // Aplica el nuevo orden a las filas
+        $.each(rows, function (index, row) {
+            table.children('tbody').append(row);
+        });
+    });
+
+    
 </script>
+
 </html>

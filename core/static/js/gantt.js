@@ -32,9 +32,9 @@ class Gantt {
     }
     //Tabla carta gantt
     buildTableHeader() {
-        var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
+        var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; width: 400px;"><tr>';
 
-            // Agrega las nuevas columnas aquí
+        // Agrega las nuevas columnas aquí
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
@@ -87,45 +87,45 @@ class Gantt {
 
     buildTableBody() {
         var html = '';
-    
+
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-    
+
             var dMin = new Date(task[3]);
             var dMax = new Date(task[2]);
 
-                    // Agregar dos columnas adicionales a la izquierda
+            // Agregar dos columnas adicionales a la izquierda
 
             // Calcular la diferencia en días entre dMin y dMax
             var dateDiff = this.diffInDays(dMax, dMin);
-    
+
             var daysBefore = this.diffInDays(this.minDate, dMin);
             var daysAfter = this.diffInDays(dMax, this.maxDate);
-    
+
             // Ensure that daysBefore is at least 0 (minimum start date constraint)
             daysBefore = Math.max(daysBefore, 0);
-    
+
             // Ensure that daysAfter is at least 0 (maximum end date constraint)
             daysAfter = Math.max(daysAfter, 0);
-    
+
             console.log('Fecha de inicio (dMin):', dMin);
             console.log('Fecha de finalización (dMax):', dMax);
-    
+
             html += '<tr>';
-    
+
             for (let j = 0; j < daysBefore; j++) {
                 html += '<td></td>';
             }
-    
+
             html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[15]}; border: 1px solid #000;">
                 <span>${task[4]}%</span>
                 <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[0]}</a>
             </td>`;
-    
+
             for (let j = 0; j < daysAfter; j++) {
                 html += '<td></td>';
             }
-    
+
             html += '</tr>';
 
         }
@@ -240,7 +240,7 @@ class Gantt {
                 }
 
                 bodyHtml += '</tr>';
-                
+
             }
         }
 
@@ -277,7 +277,7 @@ class Gantt {
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
         html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
-        
+
 
 
         html += '</tr></thead><tbody>';
@@ -373,14 +373,14 @@ class Gantt {
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
 
-    // Maintain a list of unique orden_pedido values
+        // Maintain a list of unique orden_pedido values
         var uniqueOrdenPedido = [];
 
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            
+
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
 
@@ -403,7 +403,7 @@ class Gantt {
                 bodyHtml += `<td style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`; /*Detalle*/
 
                 bodyHtml += '</tr>';
-                
+
                 // Add the orden_pedido to the uniqueOrdenPedido list
                 uniqueOrdenPedido.push(task[0]);
             }
@@ -424,7 +424,7 @@ class Gantt {
 
         // Agregar dos columnas adicionales a la izquierda
 
-        
+
         html += '<th class="detalle-pedido-t">Folio</th>';
         html += '<th class="detalle-pedido-t">Fecha carga</th>';
         html += '<th class="detalle-pedido-t">Nro Pedido</th>';
@@ -468,8 +468,8 @@ class Gantt {
 
             }
 
-                bodyHtml += '</tr>';
-            
+            bodyHtml += '</tr>';
+
         }
 
         // Agrega el cuerpo de la tabla al encabezado
@@ -478,7 +478,7 @@ class Gantt {
         html += '</tbody></table>';
         return html;
     }
-//______________
+    //______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
 
@@ -500,15 +500,15 @@ class Gantt {
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-                bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
-                bodyHtml += `<td>${task[35]}</td>`;/*Diametro*/
-                bodyHtml += `<td>${task[24]}</td>`;/*Largo Trozo*/
-                bodyHtml += `<td>${task[28]}</td>`;/*Cantidad Piezas*/
-                bodyHtml += `<td>${task[44]}</td>`;/*Producto Asociado*/
-                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
+            bodyHtml += `<td>${task[0]}</td>`;/*Nro Pedido*/
+            bodyHtml += `<td>${task[35]}</td>`;/*Diametro*/
+            bodyHtml += `<td>${task[24]}</td>`;/*Largo Trozo*/
+            bodyHtml += `<td>${task[28]}</td>`;/*Cantidad Piezas*/
+            bodyHtml += `<td>${task[44]}</td>`;/*Producto Asociado*/
+            bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
 
-                bodyHtml += '</tr>';
-            
+            bodyHtml += '</tr>';
+
         }
 
         // Agrega el cuerpo de la tabla al encabezado
@@ -516,7 +516,7 @@ class Gantt {
 
         html += '</tbody></table>';
         return html;
-}
+    }
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
@@ -672,9 +672,9 @@ class Gantt {
     </div>`;
 
 
-        }else if (popupType === 'producto') {
+        } else if (popupType === 'producto') {
             productoData = this.tasks[pedidoId];
-            
+
             // Create the initial table structure
             var html = '<table class="second-table"><thead><tr>';
             html += '<th class="detalle-pedido-t">Folio</th>';
@@ -703,16 +703,17 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Baño</th>';
             html += '<th class="detalle-pedido-t">Marca</th>';
             html += '</tr></thead><tbody>';
-            
+
             // Iterate through the filtered tasks and products
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
-                if (task[0] === productoData[0]) { 
+                if (task[0] === productoData[0]) {
                     for (let j = 0; j < task[7].length; j++) {
-                        console.log(task[7]);
+
                         // Create a new row for each product
                         html += '<tr>';
-                        html += '<td class="detalle-pedido"><input type="checkbox"></td>';
+                        html += `<tr data-pedido-id="${task[69]}">`; // Asegúrate de establecer el atributo data-producto-nombre aquí
+                        html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>';
                         html += `<td class="detalle-pedido">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido">${task[7]}</td>`; // Nombre producto
                         html += `<td class="detalle-pedido">${task[68]}</td>`; // Est
@@ -739,30 +740,32 @@ class Gantt {
                         html += `<td class="detalle-pedido">${task[62]}</td>`; // Marca
                         html += '</tr>';
                     }
-            }}
-            
+                }
+            }
+
+
             // Close the table structure
             html += '</tbody></table>';
-      
-        
+
+
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
-                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Agregar Folio</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
                 </div>
             `;
 
-            
-        
-        
-        
+
+
+
+
         }
         else if (popupType === 'patron') {
-        productoData = this.tasks[pedidoId];
-        popup.innerHTML = `
+            productoData = this.tasks[pedidoId];
+            popup.innerHTML = `
             <div class="popup-content" id="popup">
                 <h2>Detalles</h2>
                 <div class="popup-item">
@@ -812,14 +815,71 @@ class Gantt {
         closeButton.addEventListener('click', () => {
             self.closePopup(popup);
         });
-        
+        $(document).on('click', '.abrir-folio-button', function () {
+            // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+            actualizarProductosSeleccionados();
+            self.closePopup(popup);
+            mostrarPopup3();
+        });
     }
 
     closePopup(popup) {
         popup.style.display = 'none';
     }
+
+}
+// Declarar la variable fuera de la función
+var productosSeleccionados = [];
+
+$(document).on('change', '.producto-checkbox', function () {
+    // Obtén el nombre del producto de la fila
+    var pedidoId = $(this).closest('tr').data('pedido-id');
+    if ($(this).prop('checked')) {
+        // El checkbox se ha seleccionado, agrega el nombre del producto a la lista
+        productosSeleccionados.push(pedidoId);
+    } else {
+        // El checkbox se ha deseleccionado, elimina el nombre del producto de la lista
+        var index = productosSeleccionados.indexOf(pedidoId);
+        if (index !== -1) {
+            productosSeleccionados.splice(index, 1);
+        }
+    }
+});
+// Función para actualizar la lista de productos seleccionados en el popup
+function actualizarProductosSeleccionados() {
+    var listaProductos = productosSeleccionados.join(", "); // Convierte la lista en una cadena separada por comas
+    $("#productos-seleccionados").text("Productos seleccionados: " + listaProductos);
 }
 
+// Evento clic en el botón Cerrar del popup
+$(document).on('click', '#cerrar-popup-button', function () {
+    ocultarPopup3();
+});
+
+// Evento clic en el botón Agregar Folio 
+$(document).on('click', '.agregar-folio-button', function () {
+    var textoIngresado = $("#texto-input").val();
+
+    // Guardar el texto en una variable
+    var textoGuardado = textoIngresado;
+    // Hacer algo con la variable textoGuardado, por ejemplo, imprimirlo en la consola
+    console.log("Texto guardado:", textoGuardado);
+    // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+
+
+});
+
+
+// Función para mostrar el popup y el fondo semitransparente
+function mostrarPopup3() {
+    $("#popup3").show();
+}
+
+// Función para ocultar el popup y el fondo semitransparente
+function ocultarPopup3() {
+    $("#popup3").hide();
+
+}
 
 const periodosSelect = document.querySelector('select[name="periodos"]');
 periodosSelect.value = "diario";

@@ -12,7 +12,7 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
 from . import views
-from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
+from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa,asignar_folio_pedido
 from django.urls import path
 
 urlpatterns = [
@@ -30,6 +30,7 @@ urlpatterns = [
     path('pantalla-carga/', pantalla_carga, name = "pantalla-carga"),
     path('pedidos/eliminarpedido/<int:id>', eliminar_pedido, name = "eliminar_pedido"),
     path('register/',Register.as_view(), name="register"),
+    path('asignar_folio_pedido/', asignar_folio_pedido, name = "asignar_folio_pedido"),
     # urls del menu desplegable del navbar
     path('planificador_productos_terminados/', ProductosTerminados.as_view(), name = "plan_productos_terminados"),
     path('plan_materia_prima/', materia_prima, name = "plan_materia_prima"),
