@@ -917,4 +917,59 @@ th.asc::after {
   th.desc::after {
     content: ' ▼'; /* Flecha hacia abajo */
   }
-  
+/* Estilos para el fondo del popup */
+.popup-folio-container {
+    position: fixed; /* Cambiado a "fixed" para mantener el popup en la pantalla incluso cuando se desplaza */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.9); /* Fondo blanco semitransparente */
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    display: none;
+}
+
+/* Estilos para el contenido del popup */
+.popup-folio-content {
+    background: #fff; /* Fondo blanco */
+    padding: 20px;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    max-width: 80%; /* Establece el ancho máximo del popup */
+    max-height: 80%; /* Establece la altura máxima del popup */
+    overflow: auto; /* Añade una barra de desplazamiento si el contenido es demasiado grande */
+}
+
+/* Estilos para el título del popup */
+.popup-folio-title {
+    margin-bottom: 20px;
+}
+
+/* Estilos para los botones del popup */
+.popup-folio-button {
+    background: #ff0000; /* Fondo rojo */
+    color: #fff; /* Texto blanco */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 0 10px;
+}
+
+/* Estilos para el campo de texto del popup */
+.popup-input {
+    width: calc(100% - 20px); /* Ajusta el ancho del campo de texto */
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.formulario{
+    justify-content: center;
+}
