@@ -208,6 +208,7 @@ class Gantt {
             productoData = this.tasks[pedidoId];
         
             var html = '<table class="second-table"><thead><tr>';
+            html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Op</th>';
             html += '<th class="detalle-pedido-t">item</th>';
             html += '<th class="detalle-pedido-t">Producto</th>';
@@ -222,13 +223,6 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Pzas</th>';
             html += '<th class="detalle-pedido-t">M3</th>';
             html += '<th class="detalle-pedido-t">Mbf</th>';
-            html += '<th class="detalle-pedido-t">Diametro  (cm)</th>';
-            html += '<th class="detalle-pedido-t">Trozos</th>';
-            html += `<td class="detalle-pedido-t">Largo Trozo (cm)</td>`;
-            html += '<th class="detalle-pedido-t">Pzas x Trozos</th>';
-            html += '<th class="detalle-pedido-t">Notas</th>';
-            html += '<th class="detalle-pedido-t">Pzas x Pqte</th>';
-            html += '<th class="detalle-pedido-t">Cant. de Sep. de 20MM</th>';
 
             html += '</tr></thead><tbody>';
         
@@ -239,6 +233,8 @@ class Gantt {
                         console.log(task[7]);
         
                         html += '<tr>';
+                        html += `<tr data-pedido-id="${task[69]}">`; // Asegúrate de establecer el atributo data-producto-nombre aquí
+                        html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>';
                         html += `<td class="detalle-pedido center">${task[0]}</td>`; // Op
                         html += `<td class="detalle-pedido right-align">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido left-align">${task[7]}</td>`; // Nombre producto
@@ -253,14 +249,6 @@ class Gantt {
                         html += `<td class="detalle-pedido right-align">${task[64]}</td>`; // Pzas
                         html += `<td class="detalle-pedido right-align">${task[25]}</td>`; // M3
                         html += `<td class="detalle-pedido right-align">${task[60]}</td>`; // Mbf
-                        html += `<td class="detalle-pedido right-align"></td>`; //Diametro  (colocar como null)
-                        html += `<td class="detalle-pedido right-align"></td>`; //Numero de Trozos (colocar como null)
-                        html += `<td class="detalle-pedido right-align"></td>`; //largo trozo (colocar como null)
-                        html += `<td class="detalle-pedido right-align"></td>`; //Piezas*Trozo (colocar como null)   ////consular con los profes
-                        html += `<td class="detalle-pedido right-align"></td>`; //Notas (colocar como null)   ////consular con los profes
-                        html += `<td class="detalle-pedido right-align"></td>`; //Piezas*pqte (colocar como null)
-                        html += `<td class="detalle-pedido right-align"></td>`; //Separadores(colocar como null)
-
         
                         html += '</tr>';
                     }
@@ -276,6 +264,7 @@ class Gantt {
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Producto </h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
                 </div>
             `;
             
@@ -411,12 +400,70 @@ class Gantt {
         closeButton.addEventListener('click', () => {
             self.closePopup(popup);
         });
-        
+        $(document).on('click', '.abrir-folio-button', function () {
+            // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+            actualizarProductosSeleccionados();
+            self.closePopup(popup);
+            mostrarPopup3();
+        });
     }
 
     closePopup(popup) {
         popup.style.display = 'none';
     }
+
+}
+// Declarar la variable fuera de la función
+var productosSeleccionados = [];
+
+$(document).on('change', '.producto-checkbox', function () {
+    // Obtén el nombre del producto de la fila
+    var pedidoId = $(this).closest('tr').data('pedido-id');
+    if ($(this).prop('checked')) {
+        // El checkbox se ha seleccionado, agrega el nombre del producto a la lista
+        productosSeleccionados.push(pedidoId);
+    } else {
+        // El checkbox se ha deseleccionado, elimina el nombre del producto de la lista
+        var index = productosSeleccionados.indexOf(pedidoId);
+        if (index !== -1) {
+            productosSeleccionados.splice(index, 1);
+        }
+    }
+});
+// Función para actualizar la lista de productos seleccionados en el popup
+function actualizarProductosSeleccionados() {
+    var listaProductos = productosSeleccionados.join(", "); // Convierte la lista en una cadena separada por comas
+    $("#productos-seleccionados").text("Productos seleccionados: " + listaProductos);
+}
+
+// Evento clic en el botón Cerrar del popup
+$(document).on('click', '#cerrar-popup-button', function () {
+    ocultarPopup3();
+});
+
+// Evento clic en el botón Agregar Folio 
+$(document).on('click', '.agregar-folio-button', function () {
+    var textoIngresado = $("#texto-input").val();
+
+    // Guardar el texto en una variable
+    var textoGuardado = textoIngresado;
+    // Hacer algo con la variable textoGuardado, por ejemplo, imprimirlo en la consola
+    console.log("Texto guardado:", textoGuardado);
+    // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+
+
+});
+
+
+// Función para mostrar el popup y el fondo semitransparente
+function mostrarPopup3() {
+    $("#popup3").show();
+}
+
+// Función para ocultar el popup y el fondo semitransparente
+function ocultarPopup3() {
+    $("#popup3").hide();
+
 }
 
 
