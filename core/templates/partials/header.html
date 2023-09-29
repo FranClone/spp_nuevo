@@ -20,8 +20,13 @@
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'pedidos' %}">Pedidos</a>
+        <li>
+            <a class="nav-link"  href="{% url 'home' %}" > Pedidos</a>
+            <ul role="menu" class="menu-vertical">
+              <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
+              <li><a href="#" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
+              <li><a href="#" class="nav-link" id="showProductosButton">Ver Productos</a></li>
+            </ul>
         </li>
         <li>
           <a class="nav-link" href="#">Planificador</a>
@@ -50,4 +55,31 @@
         planificador@aserradero.cl
     </div>
   </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const gantt = new Gantt(tasksData);
+      const showPedidosButton = document.getElementById("showPedidosButton");
+      const showProductosButton = document.getElementById("showProductosButton");
+      const titulo = document.getElementById("titulo");
+  
+      // Verifica si los elementos existen antes de adjuntar manejadores de eventos
+      if (showPedidosButton && showProductosButton && titulo) {
+        // Inicialmente, muestra la tabla de "Pedidos JCE"
+        gantt.showPedidosTable();
+        titulo.textContent = "Pedidos JCE";
+  
+        showPedidosButton.onclick = function () {
+          gantt.showPedidosTable();
+          titulo.textContent = "Pedidos JCE";
+        };
+  
+        showProductosButton.onclick = function () {
+          gantt.showProductosTable();
+          titulo.textContent = "Productos JCE";
+        };
+      }
+    });
+  </script>
+  
 </nav>

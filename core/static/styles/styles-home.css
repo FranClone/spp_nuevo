@@ -66,7 +66,7 @@ table tr {
     border-radius: 3px;
     padding: 10px;
     border: 1px solid white;
-    float: right;
+    float: left;
     margin-top: 1%;
     margin-left: 1%;
     margin-right: 1%;
@@ -169,7 +169,7 @@ table tr {
 .table-container {
     background-color: rgba(255, 255, 255, 0.952);
     border-radius: 0;
-    margin-top: 0;
+    margin-top: 60px;
     margin-left: 1%;
     margin-right: 1%;
     padding: 0 10px;
@@ -603,22 +603,21 @@ table tr {
 #showSalidaButton,
 #showPatronesButton,
 #showProduccionButton {
-    background-color: rgba(142, 142, 142, 0.705);
+
     color: white;
     border-radius: 3px;
     padding: 3px;
-    border: 1px solid white;
     float: left;
     margin-top: 0vh;
     margin-left: 9%;
-    margin-right: 0%;
-    width: 13vh;
 }
 
 
 
 #titulo {
     margin-left: 44%;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
 
