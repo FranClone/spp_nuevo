@@ -93,6 +93,7 @@ def solver_betech(archivo1, archivo2):
         m += xsum(w[i] * x[i] for i in I) <= c
         m.optimize()
         selected = [i for i in I if x[i].x >= 0.99]
+        print(diametro)
         return diametro,selected   
         # results = {
         #     'diametro': diametro.tolist(),  # Convert to a list if it's a Pandas Series
@@ -112,6 +113,7 @@ def execute_code(request, archivo1, archivo2):
 
     # Convert the diametro Series to a list
     diametro_list = diametro.tolist()
+    
 
     # Create a dictionary with the results
     results = {

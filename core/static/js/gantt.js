@@ -4,352 +4,8 @@ class Gantt {
         this.tasks = tasks;
         this.dateWidth = 178;
         this.filteredTasks = tasks;
-        this.setMinAndMaxDate();
-        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
         this.attachEventListeners();
     }
-
-    setMinAndMaxDate() {
-        var maxDates = [];
-        var minDates = [];
-
-        for (let i = 0; i < this.tasks.length; i++) {
-            minDates.push(new Date(this.tasks[i][1]));
-            maxDates.push(new Date(this.tasks[i][2]));
-        }
-        this.minDate = new Date(Math.min.apply(null, minDates));
-        this.maxDate = new Date(Math.max.apply(null, maxDates));
-    }
-    //Revisar Filtros semana, meses
-    diffInMonths(max, min) {
-        return (max.getFullYear() - min.getFullYear()) * 12 + max.getMonth() - min.getMonth();
-    }
-
-    diffInWeeks(max, min) {
-        const oneWeek = 7 * 24 * 60 * 60 * 1000;
-        const diffTime = Math.abs(max - min);
-        return Math.ceil(diffTime / oneWeek);
-    }
-    //Tabla carta gantt
-    buildTableHeader() {
-        var html = '<table ><thead  style="position: sticky; top: 0; background-color: white; z-index: 1;width: 400px;"><tr>';
-
-            // Agrega las nuevas columnas aquí
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha carga</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Creación</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalle</th>';
-
-        const selectedPeriod = document.querySelector('select[name="periodos"]').value;
-        const isDiarioSelected = selectedPeriod === "diario";
-        const isSemanalSelected = selectedPeriod === "semanal";
-        const isMensualSelected = selectedPeriod === "mensual";
-        //Encabezado
-        if (isDiarioSelected) {
-            var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffDays; i++) {
-                html += '<th style="color: white; width: 80vh; ">' + this.formatDate(actual, "diario") + '</th>';
-                actual.setDate(actual.getDate() + 1); // Avanza un día
-            }
-
-        } else if (isSemanalSelected) {
-            var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffWeeks; i++) {
-                const startOfWeek = new Date(actual);
-                const endOfWeek = new Date(actual);
-                endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-                html += '<th>' + this.formatDate(startOfWeek, "semanal", endOfWeek) + '</th>';
-                actual.setDate(startOfWeek.getDate() + 7);
-            }
-        } else if (isMensualSelected) {
-            var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffMonths; i++) {
-                actual.setMonth(actual.getMonth() + 1);
-                html += '<th>' + this.formatDate(actual, "mensual") + '</th>';
-            }
-        }
-
-        html += '</tr></thead><tbody">';
-        return html;
-    }
-
-
-
-    buildTableBody() {
-        var html = '';
-    
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-    
-            var dMin = new Date(task[3]);
-            var dMax = new Date(task[2]);
-
-                    // Agregar dos columnas adicionales a la izquierda
-
-            // Calcular la diferencia en días entre dMin y dMax
-            var dateDiff = this.diffInDays(dMax, dMin);
-    
-            var daysBefore = this.diffInDays(this.minDate, dMin);
-            var daysAfter = this.diffInDays(dMax, this.maxDate);
-    
-            // Ensure that daysBefore is at least 0 (minimum start date constraint)
-            daysBefore = Math.max(daysBefore, 0);
-    
-            // Ensure that daysAfter is at least 0 (maximum end date constraint)
-            daysAfter = Math.max(daysAfter, 0);
-    
-            console.log('Fecha de inicio (dMin):', dMin);
-            console.log('Fecha de finalización (dMax):', dMax);
-    
-            html += '<tr>';
-    
-            for (let j = 0; j < daysBefore; j++) {
-                html += '<td></td>';
-            }
-    
-            html += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[15]}; border: 1px solid #000;">
-                <span>${task[4]}%</span>
-                <a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido"${i}">${task[0]}</a>
-            </td>`;
-    
-            for (let j = 0; j < daysAfter; j++) {
-                html += '<td></td>';
-            }
-    
-            html += '</tr>';
-
-        }
-        return html;
-    }
-
-
-
-    buildSecondTable() {
-        var html = '<table class="second-table"><thead><tr>';
-
-        // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Escuadrias</th>';
-
-        // Copiar el encabezado de la primera tabla
-        const selectedPeriod = document.querySelector('select[name="periodos"]').value;
-        const isDiarioSelected = selectedPeriod === "diario";
-        const isSemanalSelected = selectedPeriod === "semanal";
-        const isMensualSelected = selectedPeriod === "mensual";
-
-        if (isDiarioSelected) {
-            var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffDays; i++) {
-                html += '<th style="color: white; width: 70vh; font-size: 13px;">' + this.formatDate(actual, "diario") + '</th>';
-                actual.setDate(actual.getDate() + 1);
-            }
-        } else if (isSemanalSelected) {
-            var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffWeeks; i++) {
-                const startOfWeek = new Date(actual);
-                const endOfWeek = new Date(actual);
-                endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-                html += '<th>' + this.formatDate(startOfWeek, "semanal", endOfWeek) + '</th>';
-                actual.setDate(startOfWeek.getDate() + 7);
-            }
-        } else if (isMensualSelected) {
-            var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffMonths; i++) {
-                actual.setMonth(actual.getMonth() + 1);
-                html += '<th>' + this.formatDate(actual, "mensual") + '</th>';
-            }
-        }
-
-        html += '</tr></thead><tbody>';
-
-        // Utiliza una variable diferente para el cuerpo de la tabla
-        var bodyHtml = '';
-
-        // Itera sobre cada producto y crea una fila por producto
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-
-            for (let j = 0; j < task[9].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[9][j]; // Obtiene el nombre del producto
-                var largo = task[10][j];
-                var ancho = task[11][j];
-                var alto = task[12][j];
-                var dMin = new Date(task[3]);
-                var dMax = new Date(task[2]);
-
-                // Calcular la diferencia en días entre dMin y dMax
-                var dateDiff = this.diffInDays(dMax, dMin);
-
-                var daysBefore = this.diffInDays(this.minDate, dMin);
-                var daysAfter = this.diffInDays(dMax, this.maxDate);
-
-                // Ensure that daysBefore is at least 0 (minimum start date constraint)
-                daysBefore = Math.max(daysBefore, 0);
-
-                // Ensure that daysAfter is at least 0 (maximum end date constraint)
-                daysAfter = Math.max(daysAfter, 0);
-
-                console.log('Fecha de inicio (dMin):', dMin);
-                console.log('Fecha de finalización (dMax):', dMax);
-
-                bodyHtml += '<tr>';
-
-                // Agregar el valor de task[7] en la primera columna
-                bodyHtml += `<td></td>`;
-
-                // Agregar el valor de task[7] en la primera columna
-                bodyHtml += `<td>${task[5]}</td>`;
-
-                // Agregar el nombre del producto en la segunda columna
-                bodyHtml += `<td>${product}</td>`;
-
-
-                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;
-
-
-                for (let k = 0; k < daysBefore; k++) {
-                    bodyHtml += '<td ></td>';
-                }
-
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[14]}; border: 1px solid #000;">
-                    <span>${task[4]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[7]}</a>
-                </td>`;
-
-                for (let k = 0; k < daysAfter; k++) {
-                    bodyHtml += '<td></td>';
-                }
-
-                bodyHtml += '</tr>';
-                
-            }
-        }
-
-        // Agrega el cuerpo de la tabla al encabezado
-        html += bodyHtml;
-
-        html += '</tbody></table>';
-        return html;
-    }
-
-    SalidaTable() {
-        var html = '<table class="second-table"><thead><tr>';
-
-        // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Linea Produccion</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Item</th>'; /**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Folio</th>'; /**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cliente</th>'; /**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>'; /**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>'; /**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Productos</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">L/A/AL</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Solicitados</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">PQTES.Saldo</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Trozos</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Ø</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozos</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Grado de Urgencia</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Lateral</th>';/*por determinar*/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Nota</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Cant.desep.de 20MM</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo del Taco</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">OBS</th>';/**/
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">M3 Prod.</th>';/**/
-        
-
-
-        html += '</tr></thead><tbody>';
-
-        // Utiliza una variable diferente para el cuerpo de la tabla
-        var bodyHtml = '';
-
-        // Itera sobre cada producto y crea una fila por producto
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-
-            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[7][j]; // Obtiene el nombre del producto
-                var largo = task[10][j];
-                var ancho = task[11][j];
-                var alto = task[12][j];
-
-
-                var dMin = new Date(task[3]);
-                var dMax = new Date(task[2]);
-
-                // Calcular la diferencia en días entre dMin y dMax
-                var dateDiff = this.diffInDays(dMax, dMin);
-
-                var daysBefore = this.diffInDays(this.minDate, dMin);
-                var daysAfter = this.diffInDays(dMax, this.maxDate);
-
-                // Ensure that daysBefore is at least 0 (minimum start date constraint)
-                daysBefore = Math.max(daysBefore, 0);
-
-                // Ensure that daysAfter is at least 0 (maximum end date constraint)
-                daysAfter = Math.max(daysAfter, 0);
-
-                console.log('Fecha de inicio (dMin):', dMin);
-                console.log('Fecha de finalización (dMax):', dMax);
-
-                bodyHtml += '<tr>';
-
-                bodyHtml += `<td></td>`;/*Linea de Produccion*/
-                bodyHtml += `<td>${task[5]}</td>`;/*Cliente*/
-                bodyHtml += `<td></td>`;/*Item*/
-                bodyHtml += `<td></td>`;/*Folio  / pedido id?*/
-                bodyHtml += `<td></td>`;/*Cliente*/
-                bodyHtml += `<td></td>`;/*OP*  / pedido id?*/
-                bodyHtml += `<td></td>`;/*Mercado*/
-                bodyHtml += `<td>${product}</td>`;/*Producto*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td>L:${largo} A:${ancho} Al:${alto}</td>`;/*Diametros*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += `<td></td>`;/*ETA*/
-                bodyHtml += '</tr>';
-            }
-        }
-
-        // Agrega el cuerpo de la tabla al encabezado
-        html += bodyHtml;
-
-        html += '</tbody></table>';
-        return html;
-    }
-
-
 
     PedidoTable() {
         var html = '<table style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
@@ -417,9 +73,6 @@ class Gantt {
         return html;
     }
 
-
-
-
     ProductosTable() {
         var html = '<table style="margin-left: auto; margin-right: auto;"class="second-table"><thead><tr>';
 
@@ -469,45 +122,7 @@ class Gantt {
         return html;
 
     }
-   //________________
-//    FolioTable() {
-//     var html = '<table class="second-table"><thead><tr>';
 
-//     // Agregar dos columnas adicionales a la izquierda
-
-//         html += '<th class="detalle-pedido-t">Fecha carga</th>';
-
-
-
-//         html += '</tr></thead><tbody>';
-
-//         // Utiliza una variable diferente para el cuerpo de la tabla
-//         var bodyHtml = '';
-
-//     // Itera sobre cada producto y crea una fila por producto
-//     for (let i = 0; i < this.filteredTasks.length; i++) {
-//         var task = this.filteredTasks[i];
-//         for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-//             var product = task[7][j]; // Obtiene el nombre del producto
-//             var largo = task[24];
-//             var ancho = task[23];
-//                 var alto = task[22];
-            
-//                 bodyHtml += `<td class="detalle-pedido">${task[1]}</td>`;/*Fecha de carga*/
-    
-//             }
-
-//                 bodyHtml += '</tr>';
-            
-//         }
-
-//         // Agrega el cuerpo de la tabla al encabezado
-//         html += bodyHtml;
-
-//         html += '</tbody></table>';
-//     return html;
-// } 
-//______________
     PatronTable() {
         var html = '<table class="second-table"><thead><tr>';
 
@@ -547,14 +162,6 @@ class Gantt {
         return html;
 }
 
-
-
-    showFolioTable() {
-        console.log("showFolioTable called");
-        console.log(this.filteredTasks);
-        this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.FolioTable();
-    }
     showPedidosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PedidoTable();
@@ -565,80 +172,11 @@ class Gantt {
         document.getElementById('gantt').innerHTML = this.ProductosTable();
     }
 
-    showProduccionTable() {
-        this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.buildSecondTable();
-
-    }
-
-    showSalidaTable() {
-        this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.SalidaTable();
-
-    }
     showPatronesTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PatronTable();
     }
 
-    diffInDays(max, min) {
-        var diffTime = Math.abs(max - min);
-        return Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-    }
-   showPedidosTable() {
-        this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.PedidoTable();
-    }
-    formatDate(date, period, endDate) {
-        const day = date.getDate();
-        const month = date.getMonth() + 1;
-        const year = date.getFullYear();
-
-        // Agrega ceros iniciales si es necesario
-        const formattedDay = day < 10 ? '0' + day : day;
-        const formattedMonth = month < 10 ? '0' + month : month;
-
-        if (period === "diario") {
-            return `${formattedDay}-${formattedMonth}-${year}`;
-        } else if (period === "semanal") {
-            const weekStart = new Date(date);
-            weekStart.setDate(weekStart.getDate() - weekStart.getDay() + 1);
-            const weekEnd = new Date(weekStart);
-            weekEnd.setDate(weekEnd.getDate() + 6);
-
-            const startDay = weekStart.getDate();
-            const endDay = weekEnd.getDate();
-
-            return `${formattedDay}-${formattedMonth}-${year} al ${endDay}-${formattedMonth}-${year}`;
-        } else if (period === "mensual") {
-            const monthStart = new Date(date);
-            monthStart.setDate(1);
-            const monthEnd = new Date(date);
-            monthEnd.setMonth(monthEnd.getMonth() + 1, 0);
-
-            const endDay = monthEnd.getDate();
-
-            if (formattedMonth === monthEnd.getMonth() + 1) {
-                return `${formattedDay}-${formattedMonth}-${year}`;
-            } else {
-                return `${formattedDay}-${formattedMonth}-${year} al ${endDay}-${monthEnd.getMonth() + 1}-${year}`;
-            }
-        }
-    }
-
-    getMonthName(month) {
-        return new Date(2020, month - 1, 1).toLocaleString('default', { month: 'long' });
-    }
-
-    filterTasksByLine(lineValue) {
-        if (lineValue === "lineas") {
-            this.filteredTasks = this.tasks;
-        } else {
-            this.filteredTasks = this.tasks.filter(task => task[5] === lineValue);
-        }
-
-        document.getElementById('gantt').innerHTML = this.buildTableHeader() + this.buildTableBody();
-    }
 
     attachEventListeners() {
         console.log('Attaching event listeners');
@@ -668,6 +206,8 @@ class Gantt {
         let pedidoData = this.tasks[pedidoId]; // Cambio a let
         let productoData = this.tasks[productoId]; // Cambio a let
         const self = this; // Store a reference to the current instance
+
+        
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoId];
         
@@ -743,14 +283,10 @@ class Gantt {
                 </div>
             `;
             
-    
-
-
-
+            
         }else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
-            
-
+        
             var html = '<table class="second-table"><thead><tr>';
             html += '<td class="detalle-pedido">Folio</td>';
             html += '<th class="detalle-pedido-t">Item</th>';
@@ -890,13 +426,6 @@ class Gantt {
 }
 
 
-const periodosSelect = document.querySelector('select[name="periodos"]');
-periodosSelect.value = "diario";
-periodosSelect.addEventListener('change', function () {
-    gantt.setMinAndMaxDate();
-    document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
-});
-
 const toggleLineasButton = document.getElementById('toggle-lineas-button');
 toggleLineasButton.addEventListener('change', function () {
     const selectedLine = this.value;
@@ -923,21 +452,6 @@ function hidePopup() {
     window.location.href = '/pantalla-carga/';
 }
 
-// Fisher-Yates shuffle function
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-// Add your shuffleButton click event listener here
-const shuffleButton = document.getElementById('shuffleButton');
-shuffleButton.addEventListener('click', () => {
-    shuffle(gantt.tasks);
-    gantt.setMinAndMaxDate();
-    document.getElementById('gantt').innerHTML = gantt.buildTableHeader() + gantt.buildTableBody();
-    gantt.attachEventListeners();
-});
 //Popup para importar
 function showPopupimport() {
     const popupOverlay = document.getElementById('popupContainer');

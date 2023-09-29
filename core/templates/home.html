@@ -40,24 +40,7 @@
 
         </div>
     </div>
-    <!--Contenedor: línea de producción, Función objetivo y Período de visualización-->
-    <button type="button" class="carga-button" onclick="showPopupimport()">Cargar Pedido</button> 
-    <div class="buttons-top horizontal-container">
-        {% comment %} Sistema de filtro por atributo {% endcomment %}
-        <!--<select name="lineas" id="toggle-lineas-button" class="carga-button-top">
-            <option value="lineas">Lineas Producción</option>
-            <option value="Delgado">Delgado</option>
-            <option value="Grueso">Grueso</option>
-        </select>-->
-
-        <select name="periodos" id="toggle-lineas-button" class="carga-button-top">
-            <option value="diario">Diario</option>
-            <option value="mensual">Mensual</option>
-            <option value="semanal">Semanal</option>
-        </select>
-
-    </div>
-
+    
     <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
 
@@ -196,25 +179,6 @@
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
 
-
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle"
-                    data-toggle="dropdown">
-              Vistas <span class="caret"></span>
-            </button>
-          
-            <ul class="dropdown-menu" role="menu">
-                <button id="showPedidosButton"  >Ver Pedidos</button>
-                <button id="showProductosButton">Ver Productos</button>
-                <button id="showPatronesButton">Ver Patrones</button>
-                <button id="showProduccionButton">Ver Produccion</button>
-                <button id="showSalidaButton">Ver Salida Algoritmo</button>
-            </ul>
-            
-            {% comment %} <button  id="showFolioTable"  class="tablink">Folio</button> {% endcomment %}
-        </div>
-
-
         <div class="title-container">
             <h4 id="titulo">Pedidos JCE</h4>
             <span id="titulofecha">{{ titulofecha }}</span>
@@ -235,7 +199,6 @@
             
             <button type="button" class="carga-button" id="openPopupButtontest">Algoritmo</button>
 
-        <button type="button" id="toggle-plan-button" class="carga-button-bot" onclick="showPopup()">Plan actual</button>
     </div>
 
 {% comment %} popup ALGORINTO {% endcomment %}
@@ -340,54 +303,6 @@
             $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
         });
     });
-</script>
-
-<script>
-
-    document.addEventListener("DOMContentLoaded", function () {
-        const gantt = new Gantt(tasksData);
-
-        const showPedidosButton = document.getElementById("showPedidosButton");
-        const showProduccionButton = document.getElementById("showProduccionButton");
-        const showProductosButton = document.getElementById("showProductosButton");
-        const showSalidaButton = document.getElementById("showSalidaButton");
-        const showPatronesButton = document.getElementById("showPatronesButton");
-        const titulo = document.getElementById("titulo");
-        const ganttContainer = document.getElementById("gantt");
-
-        // Inicialmente, muestra la tabla de "Produccion JCE"
-        gantt.showPedidosTable();
-        titulo.textContent = "Pedidos JCE";
-
-
-        showPedidosButton.addEventListener("click", function () {
-            gantt.showPedidosTable();
-            titulo.textContent = "Pedidos JCE";
-        });
-
-        showProduccionButton.addEventListener("click", function () {
-            gantt.showProduccionTable();
-            titulo.textContent = "Produccion JCE";
-        });
-
-        showProductosButton.addEventListener("click", function () {
-            gantt.showProductosTable();
-            titulo.textContent = "Productos JCE";
-        });
-
-
-        showSalidaButton.addEventListener("click", function () {
-            gantt.showSalidaTable();
-            titulo.textContent = "Salida Algoritmo JCE";
-        });
-        showPatronesButton.addEventListener("click", function () {
-            gantt.showPatronesTable();
-            titulo.textContent = "Patrones JCE";
-        });
-
-    });
-
-
 </script>
 
 <script>

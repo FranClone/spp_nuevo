@@ -72,7 +72,8 @@ INSTALLED_APPS = [
     'dynamic_formsets',
     'django_bleach',
     'axes',
-    'import_export'
+    'import_export',
+    
 ]
 
 MIDDLEWARE = [
