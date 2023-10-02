@@ -74,13 +74,15 @@ class Gantt {
     ProductosTable() {
         var html = '<table style="margin-left: auto; margin-right: auto;"class="second-table"><thead><tr>';
 
+
+
         // Agregar dos columnas adicionales a la izquierda
 
 
         html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo  (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto  (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">ETA</th>';
@@ -96,14 +98,15 @@ class Gantt {
             var task = this.filteredTasks[i];
             for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
                 var product = task[7][j]; // Obtiene el nombre del producto
-
+                const fechaISO = task[2];/*ETA*/
+                const fechaFormateada4 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
                 bodyHtml += `<td class="left-align">${task[7]}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td class="right-align">${task[24]}</td>`;/*Largo*/
-                bodyHtml += `<td class="right-align">${task[23]}</td>`;/*Ancho*/
-                bodyHtml += `<td class="right-align">${task[22]}</td>`;/*Alto*/
-                bodyHtml += `<td class="right-align">${task[54]}</td>`;/*pqtes solicitados*/
+                bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo*/
+                bodyHtml += `<td class="right-align">${task[23].toLocaleString()}</td>`;/*Ancho*/
+                bodyHtml += `<td class="right-align">${task[22].toLocaleString()}</td>`;/*Alto*/
+                bodyHtml += `<td class="right-align">${task[54].toLocaleString()}</td>`;/*pqtes solicitados*/
                 bodyHtml += `<td class="right-align">${task[25]}</td>`;/*M3*/
-                bodyHtml += `<td style="text-align: center;">${task[2]}</td>`;/*ETA*/
+                bodyHtml += `<td style="text-align: center;">${fechaFormateada4}</td>`;/*ETA*/
                 bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
 
 
@@ -125,8 +128,8 @@ class Gantt {
         // Agregar dos columnas adicionales a la izquierda
 
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Nro Pedido</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">diametro (cm)</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozo (cm)</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">diametro <br> (cm)</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Largo Trozo <br> (cm)</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Cantidad Piezas</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Producto Asociado</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalles</th>';
@@ -142,7 +145,7 @@ class Gantt {
             var task = this.filteredTasks[i];
                 bodyHtml += `<td class="right-align">${task[0]}</td>`;/*Nro Pedido*/
                 bodyHtml += `<td class="right-align">${task[35]}</td>`;/*Diametro*/
-                bodyHtml += `<td class="right-align">${task[24]}</td>`;/*Largo Trozo*/
+                bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo Trozo*/
                 bodyHtml += `<td class="right-align">${task[28]}</td>`;/*Cantidad Piezas*/
                 bodyHtml += `<td class="left-align">${task[44]}</td>`;/*Producto Asociado*/
                 bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
@@ -212,12 +215,12 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Op</th>';
             html += '<th class="detalle-pedido-t">item</th>';
             html += '<th class="detalle-pedido-t">Producto</th>';
-            html += '<th class="detalle-pedido-t">Alto (cm)</th>';
-            html += '<th class="detalle-pedido-t">Ancho (cm)</th>';
-            html += '<th class="detalle-pedido-t">Largo (cm)</th>';
+            html += '<th class="detalle-pedido-t">Alto <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Ancho <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Largo <br> (cm)</th>';
             html += `<td class="detalle-pedido-t">Pqte. Solicitados</td>`;
-            html += '<th class="detalle-pedido-t">Alto.Paquete</th>';
-            html += '<th class="detalle-pedido-t">Anc.paquete</th>';
+            html += '<th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>';
             html += '<th class="detalle-pedido-t">Int.paquete</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Pzas</th>';
@@ -228,6 +231,7 @@ class Gantt {
         
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
+                
                 if (task[0] === productoData[0]) { 
                     for (let j = 0; j < task[7].length; j++) {
                         console.log(task[7]);
@@ -235,18 +239,18 @@ class Gantt {
                         html += '<tr>';
                         html += `<tr data-pedido-id="${task[69]}">`; // Asegúrate de establecer el atributo data-producto-nombre aquí
                         // html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>'; // selecion de folio
-                        html += `<td class="detalle-pedido center">${task[0]}</td>`; // Op
+                        html += `<td class="detalle-pedido right-align">${task[0]}</td>`; // Op
                         html += `<td class="detalle-pedido right-align">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido left-align">${task[7]}</td>`; // Nombre producto
-                        html += `<td class="detalle-pedido right-align">${task[22]}</td>`; // alt.Producc
-                        html += `<td class="detalle-pedido right-align">${task[23]}</td>`; // Anc.Producc
-                        html += `<td class="detalle-pedido right-align">${task[24]}</td>`; // Lar.Producc
-                        html += `<td class="detalle-pedido right-align">${task[54]}</td>`; // Pqte
-                        html += `<td class="detalle-pedido right-align">${task[56]}</td>`; // Alto.Paquete
-                        html += `<td class="detalle-pedido right-align">${task[67]}</td>`; // Anc.paquete
-                        html += `<td class="detalle-pedido right-align">${task[57]}</td>`; // Int.paquete
+                        html += `<td class="detalle-pedido right-align">${task[22].toLocaleString()}</td>`; // alt.Producc
+                        html += `<td class="detalle-pedido right-align">${task[23].toLocaleString()}</td>`; // Anc.Producc
+                        html += `<td class="detalle-pedido right-align">${task[24].toLocaleString()}</td>`; // Lar.Producc
+                        html += `<td class="detalle-pedido right-align">${task[54].toLocaleString()}</td>`; // Pqte
+                        html += `<td class="detalle-pedido right-align">${task[56].toLocaleString()}</td>`; // Alto.Paquete
+                        html += `<td class="detalle-pedido right-align">${task[67].toLocaleString()}</td>`; // Anc.paquete
+                        html += `<td class="detalle-pedido right-align">${task[57].toLocaleString()}</td>`; // Int.paquete
                         html += `<td class="detalle-pedido right-align">${task[55]}</td>`; // Tipo Empaque
-                        html += `<td class="detalle-pedido right-align">${task[64]}</td>`; // Pzas
+                        html += `<td class="detalle-pedido right-align">${task[64].toLocaleString()}</td>`; // Pzas
                         html += `<td class="detalle-pedido right-align">${task[25]}</td>`; // M3
                         html += `<td class="detalle-pedido right-align">${task[60]}</td>`; // Mbf
         
@@ -280,20 +284,20 @@ class Gantt {
             html += '<th class="detalle-pedido-t">term</th>';
             html += '<th class="detalle-pedido-t">Calidad</th>';
             html += '<th class="detalle-pedido-t">FSC</th>';
-            html += '<th class="detalle-pedido-t a">Esp.Fact (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Anc.Fact (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Lar.Fact (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Esp.Producc (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Anc.Producc (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Lar.Producc (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
-            html += '<th class="detalle-pedido-t">Alto.Paquete (cm)</th>';
-            html += '<th class="detalle-pedido-t">Anc.paquete (cm)</th>';
-            html += '<th class="detalle-pedido-t">Int.paquete (cm)</th>';
+            html += '<th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Int.paquete</th>';
             html += '<th class="detalle-pedido-t">Pzas</th>';
             html += '<th class="detalle-pedido-t">Pqte</th>';
             html += '<th class="detalle-pedido-t">M3</th>';
-            html += '<th class="detalle-pedido-t">Mbf</th>';
+            html += '<th class="detalle-pedido-t ">Mbf</th>';
             html += '<th class="detalle-pedido-t">Marca</th>';
             html += '</tr></thead><tbody>';
             
@@ -311,20 +315,20 @@ class Gantt {
                         html += `<td class="detalle-pedido left-align">${task[58]}</td>`; // term
                         html += `<td class="detalle-pedido left-align">${task[59]}</td>`; // Calidad
                         html += `<td class="detalle-pedido left-align">${task[50]}</td>`; // FSC
-                        html += `<td class="detalle-pedido right-align ">${task[51]}</td>`; // Esp.Fact
-                        html += `<td class="detalle-pedido right-align">${task[52]}</td>`; // Anc.Fact
-                        html += `<td class="detalle-pedido right-align">${task[53]}</td>`; // Lar.Fact
-                        html += `<td class="detalle-pedido right-align">${task[22]}</td>`; // alt.Producc
-                        html += `<td class="detalle-pedido right-align">${task[23]}</td>`; // Anc.Producc
-                        html += `<td class="detalle-pedido right-align">${task[24]}</td>`; // Lar.Producc
+                        html += `<td class="detalle-pedido right-align ">${task[51].toLocaleString()}</td>`; // Esp.Fact
+                        html += `<td class="detalle-pedido right-align">${task[52].toLocaleString()}</td>`; // Anc.Fact
+                        html += `<td class="detalle-pedido right-align">${task[53].toLocaleString()}</td>`; // Lar.Fact
+                        html += `<td class="detalle-pedido right-align">${task[22].toLocaleString()}</td>`; // alt.Producc
+                        html += `<td class="detalle-pedido right-align">${task[23].toLocaleString()}</td>`; // Anc.Producc
+                        html += `<td class="detalle-pedido right-align">${task[24].toLocaleString()}</td>`; // Lar.Producc
                         html += `<td class="detalle-pedido left-align">${task[55]}</td>`; // Tipo Empaque
                         html += `<td class="detalle-pedido right-align"  style="width:20vh;">${task[56]}</td>`; // Alto.Paquete
                         html += `<td class="detalle-pedido right-align"  style="width:20vh;">${task[67]}</td>`; // Anc.paquete
                         html += `<td class="detalle-pedido right-align"  style="width:20vh;">${task[57]}</td>`; // Int.paquete
-                        html += `<td class="detalle-pedido right-align">${task[64]}</td>`; // Pzas
-                        html += `<td class="detalle-pedido right-align">${task[54]}</td>`; // Pqte
+                        html += `<td class="detalle-pedido right-align">${task[64].toLocaleString()}</td>`; // Pzas
+                        html += `<td class="detalle-pedido right-align">${task[54].toLocaleString()}</td>`; // Pqte
                         html += `<td class="detalle-pedido right-align">${task[25]}</td>`; // M3
-                        html += `<td class="detalle-pedido left-align">${task[60]}</td>`; // Mbf
+                        html += `<td class="detalle-pedido right-align">${task[60]}</td>`; // Mbf
                         html += `<td class="detalle-pedido left-align">${task[62]}</td>`; // Marca
                         html += '</tr>';
                     }
