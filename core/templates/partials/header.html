@@ -15,17 +15,14 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="{% url 'home' %}">Inicio</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
         </li>
         <li>
-            <a class="nav-link"  href="{% url 'home' %}" > Pedidos</a>
+            <a class="nav-link"  href="{% url 'home' %}" > Producción</a>
             <ul role="menu" class="menu-vertical">
               <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
               <li><a href="#" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
-              <li><a href="#" class="nav-link" id="showProductosButton">Ver Productos</a></li>
+              <li><a href="#" class="nav-link" id="showProductosButton">Planificar Producción</a></li>
             </ul>
         </li>
         <li>
@@ -37,13 +34,19 @@
             <li><a class="nav-link" href="{% url 'plan_materia_prima' %}">Materia Prima</a></li>
             <li><a class="nav-link" href="{% url 'plan_rollizo' %}">Rollizo</a></li>
             <li><a class="nav-link" href="{% url 'plan_linea' %}">Linea</a></li>
+            <li class="nav-item">
+              <a class="nav-link" href="#" id="admin-trigger">Administración</a>
+              <ul class="menu-vertical submenu" id="admin-menu">
+                <li><a class="nav-link" href="{% url 'admin_cliente' %}">Cliente</a></li>
+                <li><a class="nav-link" href="{% url 'admin_empresa' %}">Empresa</a></li>
+              </ul>
+            </li>
           </ul>
-        </li>
+        </li>        
         <li class="nav-item">
-          <a class="nav-link" href="#">Administracion</a>
+          <a class="nav-link" href="#">Reportes</a>
           <ul class="menu-vertical">
-            <li><a class="nav-link" href="{% url 'admin_cliente' %}">Cliente</a></li>
-            <li><a class="nav-link" href="{% url 'admin_empresa' %}">Empresa</a></li>
+            <li><a class="nav-link" href="#">TBD</a></li>
           </ul>
         </li>
         <li class="nav-item">

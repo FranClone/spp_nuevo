@@ -11,10 +11,6 @@ body {
     height: 100vh;
 }
 
-li {
-    display: inline-block;
-}
-
 .a-eliminar {
     background-color: white;
     color: black;
@@ -499,7 +495,7 @@ li {
     position: absolute;
     display: none;
     list-style: none;
-    width: 130px;
+    width: 160px;
     background-color: rgb(255, 0, 0);
     opacity: 0.9;
     z-index: 1;
@@ -887,4 +883,18 @@ canvas {
     padding-left: 9%;
     width: fit-content;
     filter: grayscale(1);
+}
+
+
+#admin-menu {
+    display: none;
+  }
+  
+  #admin-trigger:hover + #admin-menu,
+  #admin-menu:hover {
+    display: block;
+  }
+
+.ul{
+    padding-left: 1rem;
 }
