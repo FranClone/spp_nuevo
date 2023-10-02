@@ -22,6 +22,13 @@ class Producto(models.Model):
     patron_corte = models.ManyToManyField(PatronCorte)   
     #Linea de corte                                                  
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
+        
     def __str__(self):
         return f' {self.nombre} '
 

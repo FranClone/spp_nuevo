@@ -15,6 +15,12 @@ class Empresa(models.Model):
     telefono = models.IntegerField(blank=True, null=True)
     productos = models.ManyToManyField('Producto', through='productosempresa')
     cliente = models.ManyToManyField('Cliente', through='clienteempresa')
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
 
     class Meta:
         db_table = 'EMPRESA'
