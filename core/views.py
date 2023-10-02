@@ -1009,8 +1009,7 @@ def eliminar_empresa(request,id):
     return redirect('admin_empresa')
 
 
-
-
+'''
 def asignar_folio_pedido(request):
     if request.method == 'POST':
         # Obtiene el valor del folio del formulario POST
@@ -1034,4 +1033,4 @@ def asignar_folio_pedido(request):
     # Renderiza el formulario en una plantilla HTML
 
     return render(request, 'aviso.html')  # Renderiza la página HTML de formulario
-
+'''

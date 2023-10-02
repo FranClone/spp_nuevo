@@ -208,7 +208,7 @@ class Gantt {
             productoData = this.tasks[pedidoId];
         
             var html = '<table class="second-table"><thead><tr>';
-            html += '<th class="detalle-pedido-t">Folio</th>';
+            //html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Op</th>';
             html += '<th class="detalle-pedido-t">item</th>';
             html += '<th class="detalle-pedido-t">Producto</th>';
@@ -234,7 +234,7 @@ class Gantt {
         
                         html += '<tr>';
                         html += `<tr data-pedido-id="${task[69]}">`; // Asegúrate de establecer el atributo data-producto-nombre aquí
-                        html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>';
+                        // html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>'; // selecion de folio
                         html += `<td class="detalle-pedido center">${task[0]}</td>`; // Op
                         html += `<td class="detalle-pedido right-align">${task[45]}</td>`; // Item
                         html += `<td class="detalle-pedido left-align">${task[7]}</td>`; // Nombre producto
@@ -264,10 +264,10 @@ class Gantt {
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Producto </h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
-                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
                 </div>
             `;
-            
+             // boton para el agregar folio
+            //<button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
             
         }else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
