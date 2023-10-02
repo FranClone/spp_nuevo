@@ -228,8 +228,10 @@
         </tbody>
     </table>
 </div>
+
+<!--action= asignar_folio_pedido
 <div class="popup-folio-container" id="popup3">
-    <form method="POST" class="formulario" action="{% url 'asignar_folio_pedido' %}">
+    <form method="POST" class="formulario">
         {% csrf_token %}
         <div class="popup-folio-content">
             <h2 class="popup-folio-title">Crear folio</h2>
@@ -239,7 +241,7 @@
             <button type="button" class="popup-folio-button agregar-folio-button" id="cerrar-popup-button">Cerrar</button>
         </div>
     </form>
-</div>
+</div>-->   
 <script src="{% static 'js/gantt.js' %}"></script>
 
 {% comment %} script test algoritmo popup {% endcomment %}
