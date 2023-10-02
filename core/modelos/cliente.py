@@ -15,6 +15,12 @@ class Cliente(models.Model):
     telefono = models.IntegerField(blank=True, null=True)
     mercado = models.CharField(max_length=100)
     puerto_destino  = models.CharField(max_length=100)
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
     class Meta:
         db_table = 'CLIENTE'
 

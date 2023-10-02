@@ -13,6 +13,12 @@ class Rollizo(models.Model):
     for i in range(12, 31, 2):
         CLASE_DIAMETRICA_CHOICES.append((i, i))
     clase_diametrica = models.IntegerField(blank=True, null=True, choices=CLASE_DIAMETRICA_CHOICES)
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
 
     class Meta:
         db_table = 'ROLLIZO'

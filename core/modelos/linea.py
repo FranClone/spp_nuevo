@@ -7,6 +7,12 @@ class Linea(models.Model):
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
 
     class Meta:
         db_table = 'LINEA'

@@ -18,6 +18,12 @@ class PatronCorte(models.Model):
     #patron corte:estrategia para realizar cortes >Utilizado:descartado en la planificacion o utilizado
     utilizado = models.BooleanField()
     producto_asociado = models.CharField(max_length=20, null=False, blank=False, default='')
+    eliminado = models.BooleanField(default=False)
+    
+    def eliminar(self):
+        # Marcar el registro como eliminado
+        self.eliminado = True
+        self.save()
 
     def __str__(self):
         return f'Patrón de corte {self.codigo}: {self.rendimiento} %'
