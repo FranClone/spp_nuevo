@@ -19,8 +19,8 @@
         {% block content %}
             <form method="post">
             {% csrf_token %}
-            <input name="Rut" type="text" placeholder="RUT Cliente">
-            <input type='password' name='contraseña' placeholder="Contraseña">
+            <input name="username" type="text" placeholder="Nombre Usuario">
+            <input type='password' name='password' placeholder="Contraseña">
             <input type='submit' value='Ingresar'>
             {% include "partials/footer.html" %}
             </form>

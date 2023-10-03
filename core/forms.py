@@ -71,9 +71,9 @@ class CustomUserCreationForm(UserCreationForm):
         return user
 
 class LoginForm(forms.Form):
-    rut_body = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-rut-body', 'placeholder': '12345678'}), max_length=8, label="")
-    rut_dv = forms.CharField(widget=forms.TextInput(attrs={'class': 'input-rut-dv', 'placeholder': '9'}), max_length=1, label="")
-    password = forms.CharField(widget=forms.PasswordInput(attrs={'placeholder': 'Contraseña'}), max_length=25, label="")
+    rut_body = forms.CharField(max_length=8, label="")
+    rut_dv = forms.CharField(max_length=1, label="")
+    password = forms.CharField(max_length=25, label="")
 
     def clean(self):
         return super().clean()
