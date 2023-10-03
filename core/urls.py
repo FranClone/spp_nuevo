@@ -59,7 +59,7 @@ urlpatterns = [
     path('admin_empresa/',empresa, name = "admin_empresa"),
     path('admin_cliente/eliminarempresa/<int:id>',eliminar_empresa, name = "eliminar_empresa"),
     path('execute_code/<str:archivo1>/<str:archivo2>/', views.execute_code, name='execute_code'),  
-    
+
 
 
     

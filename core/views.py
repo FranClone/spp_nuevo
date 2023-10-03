@@ -364,18 +364,18 @@ class Lista_pedidos(View):
 class Login(View):
     def get(self, request):
         return render(request, 'login.html')
-
-
+    
+    
     #verifica si la solicitud HTTP es de tipo POST
     def post(self, request):
         
-        """if request.method == 'POST':
+        if request.method == 'POST':
             print(request.POST)
             #Se obtienen los valores del campo "Rut" y "contraseña" del formulario
-            Rut = request.POST.get('Rut')
-            contraseña = request.POST.get('contraseña')
+            username = request.POST.get('username')
+            password = request.POST.get('password')
             #autenticar al usuario utilizando el valor del campo "Rut" como nombre de usuario y el valor del campo "contraseña"
-            user = authenticate(request, username=Rut, password=contraseña)
+            user = authenticate(request, username=username, password=password)
             if user:
                 #Si el usuario se autentica correctamente, se inicia sesión
                 print("pasop")
@@ -386,8 +386,7 @@ class Login(View):
                 #Si la autenticación no tiene éxito, se renderiza la plantilla 'login.html' nuevamente
                 print("paso aqui")
                 return render(request, 'login.html', {"error": "Usuario no valido"})
-        return render(request, 'login.html')"""
-        return redirect('pantalla-carga')
+        return render(request, 'login.html')
     
 
 class Logout(View):
