@@ -35,7 +35,7 @@ class Pedido(models.Model):
     version = models.PositiveIntegerField(null=False, blank=False)
     #porcentaje_avance = models.FloatField(max_length=5)
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
-    eliminado = models.BooleanField(default=False)
+  #  eliminado = models.BooleanField(default=False)
 
     # Salidas
     estado = models.CharField(max_length=20, null=True, blank=False,choices=OPCION_ESTADO, default='pendiente')
