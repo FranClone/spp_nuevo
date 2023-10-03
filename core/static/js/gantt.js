@@ -283,7 +283,7 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Est</th>';
             html += '<th class="detalle-pedido-t">term</th>';
             html += '<th class="detalle-pedido-t">Calidad</th>';
-            html += '<th class="detalle-pedido-t">FSC</th>';
+            html += '<th class="detalle-pedido-t" style="width:20vh;" >FSC</th>';
             html += '<th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>';
             html += '<th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>';
             html += '<th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>';

@@ -531,10 +531,88 @@ def pantalla_carga(request):
     return render(request, 'pantalla-carga.html')
 
 #Form pedido y detalle pedido
+# def pedidos(request):
+#     pedidos = Pedido.objects.all()
+#     DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+#     detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
+#     if request.method == 'POST':
+#         if 'editar' in request.POST:
+#             pass
+#         elif 'eliminar' in request.POST:
+#             pass
+#         elif 'crear' in request.POST:
+#             # Handle Pedido form
+#             pedido_form = ActualizarPedidoForm(request.POST)
+            
+#             if pedido_form.is_valid():
+#                 # Save the Pedido instance
+#                 pedido_instance = pedido_form.save()
+                
+#                 # Create a formset with the Pedido instance
+#                 DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
+#                 detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido', instance=pedido_instance)
+                
+#                 if detalle_pedido_formset.is_valid():
+                
+#                     for form in detalle_pedido_formset:
+#                         # Get the Producto instance from the form data
+#                         producto_instance   = form.cleaned_data.get('producto')
+#                         producto_code = producto_instance.id
+#                         producto_id = int(producto_code)
+#                         print(producto_id)
+#                         try:
+#                             producto = Producto.objects.get(id=producto_id)
+#                         except Producto.DoesNotExist:
+#                             producto = None
+
+#                         if producto is not None:
+#                             # Set the Producto for this DetallePedido
+#                             form.instance.producto = producto
+#                     detalle_pedido_formset.save()
+#                     print(f"Producto with id {producto_id} does not exist.")
+#                         # detalle_pedido_form.producto = producto
+#                         # detalle_pedido_form.save()
+                    
+#                     print("Formset cleaned data:", detalle_pedido_formset.cleaned_data)
+#                     return redirect('pedidos')
+#                 else:
+#                     print("Pedido Form Errors:", pedido_form.errors)
+#                     print("Detalle Pedido Formset Errors:")
+#                     for form in detalle_pedido_formset:
+#                         print(form.errors)
+#             else:
+#                 print("Pedido Form Errors:", pedido_form.errors)
+#         else:
+#             pedido_form = ActualizarPedidoForm()
+#     else:
+#         pedido_form = ActualizarPedidoForm()
+
+#     context = {
+#         'pedido_form': pedido_form,
+#         'detalle_pedido_formset': detalle_pedido_formset,
+#         'pedidos': pedidos
+#     }
+
+#     return render(request, 'pedidos.html', context)
+from .forms import ActualizarPedidoForm, DetallePedidoForm, FacturaForm, EmpaqueForm
+from django.db import transaction
+
+from django.db import transaction
+
+from django.db import transaction
+
 def pedidos(request):
     pedidos = Pedido.objects.all()
+
+    # Initialize forms
+    pedido_form = ActualizarPedidoForm()
+    detalle_pedido_form = DetallePedidoForm()
+    factura_form = FacturaForm()
+    empaque_form = EmpaqueForm()
+
     DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
     detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
+    
     if request.method == 'POST':
         if 'editar' in request.POST:
             pass
@@ -544,57 +622,49 @@ def pedidos(request):
             # Handle Pedido form
             pedido_form = ActualizarPedidoForm(request.POST)
             
-            if pedido_form.is_valid():
-                # Save the Pedido instance
-                pedido_instance = pedido_form.save()
-                
-                # Create a formset with the Pedido instance
-                DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
-                detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido', instance=pedido_instance)
-                
-                if detalle_pedido_formset.is_valid():
-                
-                    for form in detalle_pedido_formset:
-                        # Get the Producto instance from the form data
-                        producto_instance   = form.cleaned_data.get('producto')
-                        producto_code = producto_instance.id
-                        producto_id = int(producto_code)
-                        print(producto_id)
-                        try:
-                            producto = Producto.objects.get(id=producto_id)
-                        except Producto.DoesNotExist:
-                            producto = None
+            if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
+                # Save Pedido instance without committing to the database
+                pedido_instance = pedido_form.save(commit=False)
 
-                        if producto is not None:
-                            # Set the Producto for this DetallePedido
-                            form.instance.producto = producto
-                    detalle_pedido_formset.save()
-                    print(f"Producto with id {producto_id} does not exist.")
-                        # detalle_pedido_form.producto = producto
-                        # detalle_pedido_form.save()
-                    
-                    print("Formset cleaned data:", detalle_pedido_formset.cleaned_data)
-                    return redirect('pedidos')
+                # Handle DetallePedido formset
+                detalle_pedido_formset = DetallePedidoFormSet(request.POST, instance=pedido_instance)
+
+                if detalle_pedido_formset.is_valid():
+                    with transaction.atomic():  # Ensure both saves are atomic
+                        pedido_instance.save()
+                        detalle_pedido_formset.save()
+
+                    # Create Factura instance
+                    factura_form = FacturaForm(request.POST)
+                    if factura_form.is_valid():
+                        factura_instance = factura_form.save()
+                    else:
+                        print("Factura Form Errors:", factura_form.errors)
+                        # Handle errors in the factura_form
+
+                    # Create Empaque instance
+                    empaque_form = EmpaqueForm(request.POST)
+                    if empaque_form.is_valid():
+                        empaque_instance = empaque_form.save()
+                    else:
+                        print("Empaque Form Errors:", empaque_form.errors)
+                        # Handle errors in the empaque_form
                 else:
-                    print("Pedido Form Errors:", pedido_form.errors)
-                    print("Detalle Pedido Formset Errors:")
-                    for form in detalle_pedido_formset:
-                        print(form.errors)
+                    print("DetallePedido Formset Errors:", detalle_pedido_formset.errors)
+                    # Handle errors in the detalle_pedido_formset
             else:
                 print("Pedido Form Errors:", pedido_form.errors)
-        else:
-            pedido_form = ActualizarPedidoForm()
-    else:
-        pedido_form = ActualizarPedidoForm()
+                # Handle errors in the pedido_form
 
     context = {
         'pedido_form': pedido_form,
         'detalle_pedido_formset': detalle_pedido_formset,
+        'factura_form': factura_form,
+        'empaque_form': empaque_form,
         'pedidos': pedidos
     }
-
+    
     return render(request, 'pedidos.html', context)
-
 
 def gantt_view(request):
     

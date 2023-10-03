@@ -16,6 +16,7 @@ from .modelos.detalle_pedido import DetallePedido
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
 from datetime import date
+from django.core.validators import MinValueValidator     
 class Excelform(forms.Form):
     excel_file = forms.FileField()
 
@@ -165,21 +166,22 @@ class CrearProductoForm(forms.ModelForm):
             'patron_corte',
             'linea'
         ]
-#Lista valores prioridad
+
+
 # class DetallePedidoForm(forms.ModelForm):
 
 #     class Meta:
 #         model = DetallePedido
 #         fields = [
-    
+#             'producto',
+#             'item',
 #             'detalle_producto',
 #             'alto_producto',
 #             'ancho_producto',
 #             'largo_producto',
 #             'volumen_producto',
-#             'fecha_entrega',
+#             #'fecha_entrega',
 #             'estado_pedido_linea',
-#             #'grado_urgencia',
 #             'cantidad_piezas',
 #             'cantidad_trozos',
 #             'piezas_xpaquete',
@@ -187,40 +189,15 @@ class CrearProductoForm(forms.ModelForm):
 #             'paquetes_solicitados',
 #             'volumen_obtenido',
 #             'paquetes_saldo',
-
+#             'grado_urgencia'
+#             # Add other fields here
 #         ]
-
-class DetallePedidoForm(forms.ModelForm):
-
-    class Meta:
-        model = DetallePedido
-        fields = [
-            'producto',
-            'item',
-            'folio',
-            'detalle_producto',
-            'alto_producto',
-            'ancho_producto',
-            'largo_producto',
-            'volumen_producto',
-            #'fecha_entrega',
-            'estado_pedido_linea',
-            'cantidad_piezas',
-            'cantidad_trozos',
-            'piezas_xpaquete',
-            'piezas_xtrozo',
-            'paquetes_solicitados',
-            'volumen_obtenido',
-            'paquetes_saldo',
-            'grado_urgencia'
-            # Add other fields here
-        ]
         
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        # Set the widget for the producto field to a Select widget
-        self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'id'))
-        #self.fields['producto'].widget = forms.SelectMultiple(choices=Producto.objects.values_list('id', 'id'))
+#     def __init__(self, *args, **kwargs):
+#         super().__init__(*args, **kwargs)
+#         # Set the widget for the producto field to a Select widget
+#         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'id'))
+#         #self.fields['producto'].widget = forms.SelectMultiple(choices=Producto.objects.values_list('id', 'id'))
 
 class CrearRollizoForm(forms.ModelForm):
     exclude = ['fecha_crea']
@@ -283,6 +260,48 @@ class CrearEmpresaForm(forms.ModelForm):
                  'cliente',
         ]
 
+class DetallePedidoForm(forms.ModelForm):
+    pqte = forms.IntegerField(min_value=0)  # Adjust the field type and options as needed
+    tipo_empaque = forms.CharField( max_length=50)
+    alto_paquete =  forms.FloatField(min_value=0)
+    int_paquete =  forms.FloatField(min_value=0)
+    anc_paquete =  forms.FloatField(min_value=0)
+    FSC = forms.CharField(max_length=100)
+    esp_fact =  forms.FloatField( min_value=0)
+    anc_fact =  forms.FloatField( min_value=0)
+    lar_fact =  forms.FloatField( min_value=0)
+    alto_producto =  forms.FloatField( min_value=0)
+    ancho_producto =  forms.FloatField( min_value=0)
+    largo_producto =  forms.FloatField( min_value=0)
+    piezas =  forms.FloatField( min_value=0)
+    volumen_producto =  forms.FloatField( min_value=0)
+    mbf =  forms.FloatField( min_value=0)
+    class Meta:
+        model = DetallePedido
+        fields = [
+            'item',
+            'mercado',
+            'producto',
+            'est',
+            'term',
+            'calidad',
+            'alto_producto',
+            'ancho_producto',
+            'largo_producto',
+            'piezas',
+            'volumen_producto',
+            'mbf',
+            'banio',
+            'marca',
+            'puerto_destino',
+            'programa',
+            #
+
+        ]
+        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
 
 class ActualizarPedidoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
@@ -310,11 +329,9 @@ class ActualizarPedidoForm(forms.ModelForm):
              'orden_interna',
              'comentario',
            #  'producto',
-             'prioridad',
              'estado',
              'version'
          ]
-         
 
 DetallePedidoFormSet = inlineformset_factory(
     Pedido,  # Parent model
@@ -326,13 +343,6 @@ DetallePedidoFormSet = inlineformset_factory(
 
 
    
-
-class ProductoTerminadoForm(forms.ModelForm):
-    """Esta clase permite crear un nuevo producto terminado"""
-    class Meta:
-        model = ProductoTerminado
-        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
-
 class EmpaqueForm(forms.ModelForm):
     class Meta:
         model = Empaque
@@ -342,3 +352,10 @@ class FacturaForm(forms.ModelForm):
     class Meta:
         model = Factura
         fields = '__all__'  # Esto incluirá todos los campos del modelo en el formulario
+
+class ProductoTerminadoForm(forms.ModelForm):
+    """Esta clase permite crear un nuevo producto terminado"""
+    class Meta:
+        model = ProductoTerminado
+        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
+
