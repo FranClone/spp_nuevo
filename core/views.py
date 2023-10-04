@@ -422,10 +422,11 @@ class Register(View):
             form.save()
             return redirect('login')
         return render(request, 'register.html', {'form': form})
-    
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(require_role(['ADMINISTRADOR', 'PLANIFICADOR']), name='dispatch')
 class ProductosTerminados(View):
-    @require_role(['ADMINISTRADOR', 'PLANIFICADOR']) 
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         productos_terminados = ProductoTerminado.objects.all()
         form = ProductoTerminadoForm()
@@ -450,10 +451,12 @@ class Plan_Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'planificador/planificador_productos.html')
-        
+
+
+
+@method_decorator(login_required, name='dispatch')
+@method_decorator(require_role(['ADMINISTRADOR', 'PLANIFICADOR']), name='dispatch')        
 class Dashboard(View): 
-    @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
-    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         
         return render(request, 'dashboard.html')
@@ -1068,7 +1071,7 @@ def eliminar_linea(request,id):
     linea.delete()
     return redirect('plan_linea')
 
-@require_role('BETECH')   
+@require_role('ADMINISTRADOR')  
 @login_required
 def cliente(request):
     clientes = Cliente.objects.all()

@@ -43,7 +43,9 @@
                 {% if 'BETECH' not in request.user.roles %}
                 <li><a class="nav-link" href="{% url 'admin_cliente' %}">Cliente</a></li>
                 {% endif %} 
+                {% if 'ADMINISTRADOR' not in request.user.roles %}
                 <li><a class="nav-link" href="{% url 'admin_empresa' %}">Empresa</a></li>
+                {% endif %} 
               </ul>
             </li>
           </ul>
