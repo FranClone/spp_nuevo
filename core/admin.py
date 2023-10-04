@@ -1128,12 +1128,14 @@ class UserProfileCreationForm(UserCreationForm):
 
     class Meta:
         model = UserProfile
-        fields = ('username', 'rut', 'empresa')
+        fields = ('username', 'rut', 'empresa','roles')
         help_texts = {
             'username': '30 caracteres o menos. Letras, números y @/./+/-/_ solamente.',
             'password1': '<ul class="password-help"><li>La contraseña no puede ser demasiado similar a su otro información personal.</li><li>La contraseña debe contener al menos 8 caracteres.</li><li>La contraseña no puede ser una contraseña comúnmente utilizada.</li><li>La contraseña no puede ser completamente numérica.</li></ul>',
             'rut': 'Ingrese su rut',
-            'empresa': 'Ingrese su empresa'
+            'empresa': 'Ingrese su empresa',
+            'roles': 'Ingrese el rol del usuario'
+            
         }
 
 class UserProfileAdmin(UserAdmin):
@@ -1141,13 +1143,13 @@ class UserProfileAdmin(UserAdmin):
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
-            'fields': ('username', 'rut', 'empresa', 'email', 'password1', 'password2',),
+            'fields': ('username', 'rut', 'empresa','roles', 'email', 'password1', 'password2',),
         }),
     )
     #form = UserProfileChangeForm
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
-        (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa')}),
+        (('Personal info'), {'fields': ('first_name', 'last_name', 'email', 'rut', 'empresa','roles')}),
         (('Permissions'), {'fields': ('is_active', 'is_staff', 'is_superuser', 'groups')}),
         (('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
