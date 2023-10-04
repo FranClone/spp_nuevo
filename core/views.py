@@ -55,6 +55,9 @@ from django.db import IntegrityError
 from mip import Model,maximize,CBC,BINARY,xsum
 from django.http import JsonResponse
 from .roles import require_role
+from .forms import ActualizarPedidoForm, DetallePedidoForm, FacturaForm, EmpaqueForm
+from django.db import transaction
+
 #
 try:
     #se conecta
@@ -124,7 +127,7 @@ def execute_code(request, archivo1, archivo2):
     return JsonResponse(results)
 
 
-
+@login_required
 def importar(request):
     alert_message = None  # Inicialmente, no hay mensaje de alerta
     success = False  # Inicialmente, no se considera éxito
@@ -146,7 +149,7 @@ def importar(request):
 
         return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
         
-
+@login_required
 def process_uploaded_file(xlsfile):
     success = False
     error_message = None
@@ -347,7 +350,7 @@ class Inventario_pdto(View):
 #         clas = sel_rollizo_clasificado_empresa(rut_empresa)
 #         noclas = sel_rollizo_empresa(rut_empresa)
 #         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
-
+@login_required
 class Pedidos(View):
     def get(self, request, *args, **kwargs):
         return render(request, 'pedidos.html') 
@@ -415,8 +418,8 @@ class Register(View):
             form.save()
             return redirect('login')
         return render(request, 'register.html', {'form': form})
-
 class ProductosTerminados(View):
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         productos_terminados = ProductoTerminado.objects.all()
         form = ProductoTerminadoForm()
@@ -432,19 +435,22 @@ class ProductosTerminados(View):
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
 class Plan_Patrones_Corte(View):
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'planificador/planificador_patrones_corte.html')
 
 class Plan_Productos(View):
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'planificador/planificador_productos.html')
 
 class Dashboard(View): 
-    """Esta clase define la vista Dashboard"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         
         return render(request, 'dashboard.html')
-
+    
+@login_required
 def materia_prima(request):
     materias_primas = MateriaPrima.objects.all()
 
@@ -468,6 +474,7 @@ def materia_prima(request):
     }
     return render(request, 'planificador/planificador_materia_prima.html', context)
 
+@login_required
 def producto(request):
     productos = Producto.objects.all()
     form = CrearProductoForm()
@@ -495,7 +502,7 @@ def producto(request):
     }
     return render(request, 'planificador/planificador_productos.html', context)
 
-
+@login_required
 def patron_corte(request):
     patrones_corte = PatronCorte.objects.all()
     form = CrearPatronCorteForm()
@@ -513,7 +520,7 @@ def patron_corte(request):
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
-
+@login_required
 def patron_editar(request,id):
     patron= PatronCorte.objects.get(id=id)
     data = {'form': CrearPatronCorteForm(instance=patron),'id':id}
@@ -526,7 +533,7 @@ def patron_editar(request,id):
             print("errorr")
     return render(request, 'planificador/planificador_patronescorteeditar.html', data)
 
-
+@login_required
 def pantalla_carga(request):
     return render(request, 'pantalla-carga.html')
 
@@ -594,14 +601,10 @@ def pantalla_carga(request):
 #     }
 
 #     return render(request, 'pedidos.html', context)
-from .forms import ActualizarPedidoForm, DetallePedidoForm, FacturaForm, EmpaqueForm
-from django.db import transaction
 
-from django.db import transaction
-
-from django.db import transaction
-
+@login_required
 def pedidos(request):
+    
     pedidos = Pedido.objects.all()
 
     # Initialize forms
@@ -665,7 +668,7 @@ def pedidos(request):
     }
     
     return render(request, 'pedidos.html', context)
-
+@login_required
 def gantt_view(request):
     
     pedido_form = ActualizarPedidoForm()
@@ -864,37 +867,37 @@ def gantt_view(request):
     }
     return render(request, 'home.html', context)
 
-
+@login_required
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)
     materia_prima.delete()
 
     return redirect('plan_materia_prima')
-
+@login_required
 def eliminar_pedido(request,id):
     pedido=Pedido.objects.get(id=id)
     pedido.delete()
 
     return redirect('pedidos')
-
+@login_required
 def eliminar_patron(request,id):
     patron=PatronCorte.objects.get(id=id)
     patron.delete()
 
     return redirect('plan_patrones_corte')
-
+@login_required
 def eliminar_producto(request,id):
     producto=Producto.objects.get(id=id)
     producto.delete()
 
     return redirect('plan_productos')
-
+@login_required
 def eliminar_producto_terminado(request,id):
     producto_terminado=ProductoTerminado.objects.get(id=id)
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
-
+@login_required
 def producto_editar(request,id):
     prod= Producto.objects.get(id=id)
     data = {'form': CrearProductoForm(instance=prod),'id':id}
@@ -918,6 +921,8 @@ def producto_editar(request,id):
 #         else:
 #             print("error")
 #     return render(request, 'pedidoseditar.html', data)
+
+@login_required
 def pedido_editar(request, id):
     prod = Pedido.objects.get(id=id)
     
@@ -945,7 +950,7 @@ def pedido_editar(request, id):
     }
     
     return render(request, 'pedidoseditar.html', data)
-
+@login_required
 def materia_editar(request,id):
     prod= MateriaPrima.objects.get(id=id)
     data = {'form': ActualizarMateriaPrimaForm(instance=prod),'id':id}
@@ -959,11 +964,11 @@ def materia_editar(request,id):
     return render(request, 'planificador/editar_materia_prima.html', data)
     
 #Verificacion de nuevos pedidos para el aviso de inicio
-
+@login_required
 def obtener_ids_pedidos(request):
     ids_pedidos = Pedido.objects.values_list('id', flat=True)
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
-
+@login_required
 def descargar_excel(request, nombre_archivo):
     # Obtén la ruta completa del archivo Excel en la carpeta 'media'
     ruta_archivo = os.path.join(settings.MEDIA_ROOT, nombre_archivo)
@@ -979,7 +984,7 @@ def descargar_excel(request, nombre_archivo):
 
 
 
-
+@login_required
 def linea(request):
     lineas = Linea.objects.all()
     form = CrearLineaForm()
@@ -998,7 +1003,7 @@ def linea(request):
     }
     return render(request, 'planificador/planificador_linea.html', context)
 
-
+@login_required
 def rollizo(request):
     rollizos = Rollizo.objects.all()
     form = CrearRollizoForm()
@@ -1017,18 +1022,18 @@ def rollizo(request):
     }
     return render(request, 'planificador/planificador_rollizo.html', context)
 
-
+@login_required
 def eliminar_rollizo(request,id):
     rollizo=Rollizo.objects.get(id=id)
     rollizo.delete()
     return redirect('plan_rollizo')
-
+@login_required
 def eliminar_linea(request,id):
     linea=Linea.objects.get(id=id)
     linea.delete()
     return redirect('plan_linea')
  
-
+@login_required
 def cliente(request):
     clientes = Cliente.objects.all()
     form = CrearClienteForm()
@@ -1047,7 +1052,7 @@ def cliente(request):
     }
     return render(request, 'admin/admin_cliente.html', context)
 
-
+@login_required
 def empresa(request):
     empresas = Empresa.objects.all()
     form = CrearEmpresaForm()
@@ -1065,13 +1070,13 @@ def empresa(request):
     }
     return render(request, 'admin/admin_empresa.html', context)
 
-
+@login_required
 def eliminar_cliente(request,id):
     cliente=Cliente.objects.get(id=id)
     cliente.delete()
     return redirect('admin_cliente')
 
-
+@login_required
 def eliminar_empresa(request,id):
     empresa=Empresa.objects.get(id=id)
     empresa.delete()
