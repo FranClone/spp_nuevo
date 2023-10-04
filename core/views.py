@@ -691,7 +691,7 @@ def gantt_view(request):
     pedidos = Pedido.objects.all()
 
     fecha_actual = datetime.today().strftime('%Y/%m/%d')
-    
+    #
     prioridad_colores = {
     'alto': '#ff0000',  # Rojo para alta prioridad
     'mediano': '#E3DA4D',  # Naranja para media prioridad
