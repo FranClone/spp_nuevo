@@ -455,7 +455,6 @@ class Dashboard(View):
     @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
-        
         return render(request, 'dashboard.html')
 
 @require_role('ADMINISTRADOR')    
@@ -547,7 +546,8 @@ def patron_editar(request,id):
 
 @login_required
 def pantalla_carga(request):
-    return render(request, 'pantalla-carga.html')
+    rol = request.user.roles
+    return render(request, 'pantalla-carga.html',{'rol': rol})
 
 #Form pedido y detalle pedido
 # def pedidos(request):
