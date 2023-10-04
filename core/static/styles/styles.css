@@ -764,7 +764,6 @@ canvas {
     transition: .2 ease all;
     margin-bottom: 30px;
     padding: 10px;
-    position: relative;
     z-index: 200;
     border: 2px solid transparent;
     align-self: center;
