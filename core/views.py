@@ -350,13 +350,17 @@ class Inventario_pdto(View):
 #         clas = sel_rollizo_clasificado_empresa(rut_empresa)
 #         noclas = sel_rollizo_empresa(rut_empresa)
 #         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
+
+@require_role('ADMINISTRADOR', 'PLANIFICADOR')    
 @login_required
 class Pedidos(View):
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'pedidos.html') 
 
+@require_role('ADMINISTRADOR', 'PLANIFICADOR')    
 class Lista_pedidos(View): 
-    """Esta clase define la vista de Lista de Pedidos"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         context={
 
@@ -418,6 +422,7 @@ class Register(View):
             form.save()
             return redirect('login')
         return render(request, 'register.html', {'form': form})
+@require_role('ADMINISTRADOR', 'PLANIFICADOR')      
 class ProductosTerminados(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -434,6 +439,7 @@ class ProductosTerminados(View):
         productos_terminados = ProductoTerminado.objects.all()
         return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
+
 class Plan_Patrones_Corte(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
@@ -443,13 +449,14 @@ class Plan_Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'planificador/planificador_productos.html')
-
+@require_role('ADMINISTRADOR', 'PLANIFICADOR')
 class Dashboard(View): 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         
         return render(request, 'dashboard.html')
-    
+
+@require_role('ADMINISTRADOR')    
 @login_required
 def materia_prima(request):
     materias_primas = MateriaPrima.objects.all()
@@ -474,6 +481,7 @@ def materia_prima(request):
     }
     return render(request, 'planificador/planificador_materia_prima.html', context)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def producto(request):
     productos = Producto.objects.all()
@@ -502,6 +510,7 @@ def producto(request):
     }
     return render(request, 'planificador/planificador_productos.html', context)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def patron_corte(request):
     patrones_corte = PatronCorte.objects.all()
@@ -520,6 +529,7 @@ def patron_corte(request):
     }
     return render(request, 'planificador/planificador_patrones_corte.html', context)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def patron_editar(request,id):
     patron= PatronCorte.objects.get(id=id)
@@ -602,6 +612,7 @@ def pantalla_carga(request):
 
 #     return render(request, 'pedidos.html', context)
 
+@require_role('ADMINISTRADOR','PLANIFICADOR')  
 @login_required
 def pedidos(request):
     
@@ -668,6 +679,8 @@ def pedidos(request):
     }
     
     return render(request, 'pedidos.html', context)
+
+@require_role('ADMINISTRADOR','PLANIFICADOR')  
 @login_required
 def gantt_view(request):
     
@@ -867,36 +880,47 @@ def gantt_view(request):
     }
     return render(request, 'home.html', context)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)
     materia_prima.delete()
 
     return redirect('plan_materia_prima')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_pedido(request,id):
     pedido=Pedido.objects.get(id=id)
     pedido.delete()
 
     return redirect('pedidos')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_patron(request,id):
     patron=PatronCorte.objects.get(id=id)
     patron.delete()
 
     return redirect('plan_patrones_corte')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_producto(request,id):
     producto=Producto.objects.get(id=id)
     producto.delete()
 
     return redirect('plan_productos')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_producto_terminado(request,id):
     producto_terminado=ProductoTerminado.objects.get(id=id)
     producto_terminado.delete()
 
     return redirect('plan_productos_terminados')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def producto_editar(request,id):
     prod= Producto.objects.get(id=id)
@@ -922,6 +946,7 @@ def producto_editar(request,id):
 #             print("error")
 #     return render(request, 'pedidoseditar.html', data)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def pedido_editar(request, id):
     prod = Pedido.objects.get(id=id)
@@ -950,6 +975,8 @@ def pedido_editar(request, id):
     }
     
     return render(request, 'pedidoseditar.html', data)
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def materia_editar(request,id):
     prod= MateriaPrima.objects.get(id=id)
@@ -964,10 +991,13 @@ def materia_editar(request,id):
     return render(request, 'planificador/editar_materia_prima.html', data)
     
 #Verificacion de nuevos pedidos para el aviso de inicio
+
 @login_required
 def obtener_ids_pedidos(request):
     ids_pedidos = Pedido.objects.values_list('id', flat=True)
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
+
+@require_role('ADMINISTRADOR','PLANIFICADOR')  
 @login_required
 def descargar_excel(request, nombre_archivo):
     # Obtén la ruta completa del archivo Excel en la carpeta 'media'
@@ -983,7 +1013,7 @@ def descargar_excel(request, nombre_archivo):
         raise Http404("El archivo no existe")
 
 
-
+@require_role('ADMINISTRADOR')  
 @login_required
 def linea(request):
     lineas = Linea.objects.all()
@@ -1002,7 +1032,7 @@ def linea(request):
         'lineas': lineas
     }
     return render(request, 'planificador/planificador_linea.html', context)
-
+@require_role('ADMINISTRADOR')  
 @login_required
 def rollizo(request):
     rollizos = Rollizo.objects.all()
@@ -1022,17 +1052,21 @@ def rollizo(request):
     }
     return render(request, 'planificador/planificador_rollizo.html', context)
 
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_rollizo(request,id):
     rollizo=Rollizo.objects.get(id=id)
     rollizo.delete()
     return redirect('plan_rollizo')
+
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_linea(request,id):
     linea=Linea.objects.get(id=id)
     linea.delete()
     return redirect('plan_linea')
- 
+
+@require_role('BETECH')   
 @login_required
 def cliente(request):
     clientes = Cliente.objects.all()
@@ -1052,6 +1086,7 @@ def cliente(request):
     }
     return render(request, 'admin/admin_cliente.html', context)
 
+@require_role('BETECH')  
 @login_required
 def empresa(request):
     empresas = Empresa.objects.all()
@@ -1070,12 +1105,14 @@ def empresa(request):
     }
     return render(request, 'admin/admin_empresa.html', context)
 
+@require_role('BETECH') 
 @login_required
 def eliminar_cliente(request,id):
     cliente=Cliente.objects.get(id=id)
     cliente.delete()
     return redirect('admin_cliente')
 
+@require_role('BETECH') 
 @login_required
 def eliminar_empresa(request,id):
     empresa=Empresa.objects.get(id=id)
