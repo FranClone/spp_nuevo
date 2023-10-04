@@ -54,7 +54,8 @@
       </ul>
     </div>
     <div class="user-welcome">
-        planificador@aserradero.cl
+      {{ request.user.roles }}
+      {{ request.user.email }}
     </div>
   </div>
 

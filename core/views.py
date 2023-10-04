@@ -54,7 +54,7 @@ import logging  # Import the logging module
 from django.db import IntegrityError
 from mip import Model,maximize,CBC,BINARY,xsum
 from django.http import JsonResponse
-from django.shortcuts import render
+from .roles import require_role
 #
 try:
     #se conecta

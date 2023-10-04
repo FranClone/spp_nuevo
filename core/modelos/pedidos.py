@@ -35,7 +35,7 @@ class Pedido(models.Model):
     version = models.PositiveIntegerField(null=False, blank=False)
     #porcentaje_avance = models.FloatField(max_length=5)
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)
-    #eliminado = models.BooleanField(default=False)
+    eliminado = models.BooleanField(default=False)
 
     # Salidas
     estado = models.CharField(max_length=20, null=True, blank=False,choices=OPCION_ESTADO, default='pendiente')
@@ -43,7 +43,10 @@ class Pedido(models.Model):
     def __str__(self):
         return f"Pedido {self.orden_interna}: Fecha Entrega: {self.fecha_entrega} - {self.estado}"
     
-
+    def eliminar(self):
+            # Marcar el registro como eliminado
+            self.eliminado = True
+            self.save()
 # class Pedido_Producto(models.Model):
 #     producto = models.ForeignKey(Producto, on_delete=models.CASCADE, related_name='bcs')
 #     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='bcs')
