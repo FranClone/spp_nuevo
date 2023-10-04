@@ -665,7 +665,7 @@ def pedidos(request):
     }
     
     return render(request, 'pedidos.html', context)
-
+@require_role('ADMINISTRADOR') 
 def gantt_view(request):
     
     pedido_form = ActualizarPedidoForm()
