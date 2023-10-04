@@ -351,15 +351,15 @@ class Inventario_pdto(View):
 #         noclas = sel_rollizo_empresa(rut_empresa)
 #         return render(request, 'inventario_rollizo.html', {"clase_diametrica": clase_diametrica, "clas":clas, "noclas":noclas})
 
-@require_role('ADMINISTRADOR', 'PLANIFICADOR')    
-@login_required
 class Pedidos(View):
+    @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])  
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'pedidos.html') 
 
-@require_role('ADMINISTRADOR', 'PLANIFICADOR')    
+
 class Lista_pedidos(View): 
+    @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])   
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         context={
@@ -422,8 +422,9 @@ class Register(View):
             form.save()
             return redirect('login')
         return render(request, 'register.html', {'form': form})
-@require_role('ADMINISTRADOR', 'PLANIFICADOR')      
+    
 class ProductosTerminados(View):
+    @require_role(['ADMINISTRADOR', 'PLANIFICADOR']) 
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         productos_terminados = ProductoTerminado.objects.all()
@@ -449,8 +450,9 @@ class Plan_Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'planificador/planificador_productos.html')
-@require_role('ADMINISTRADOR', 'PLANIFICADOR')
+        
 class Dashboard(View): 
+    @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         
@@ -612,7 +614,7 @@ def pantalla_carga(request):
 
 #     return render(request, 'pedidos.html', context)
 
-@require_role('ADMINISTRADOR','PLANIFICADOR')  
+@require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
 @login_required
 def pedidos(request):
     
@@ -680,7 +682,7 @@ def pedidos(request):
     
     return render(request, 'pedidos.html', context)
 
-@require_role('ADMINISTRADOR','PLANIFICADOR')  
+@require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
 @login_required
 def gantt_view(request):
     
@@ -997,7 +999,7 @@ def obtener_ids_pedidos(request):
     ids_pedidos = Pedido.objects.values_list('id', flat=True)
     return JsonResponse({'ids_pedidos': list(ids_pedidos)})
 
-@require_role('ADMINISTRADOR','PLANIFICADOR')  
+@require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
 @login_required
 def descargar_excel(request, nombre_archivo):
     # Obtén la ruta completa del archivo Excel en la carpeta 'media'
