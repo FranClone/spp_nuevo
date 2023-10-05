@@ -80,7 +80,7 @@
             </form>
         </div>
     </div>
-    <div class="form-container-productos" style="width:150;">
+    <div class="form-container-productos" style="width:200vh;">
        
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
@@ -99,6 +99,7 @@
                    <th class="detalle-pedido-t">Est</th>
                    <th class="detalle-pedido-t">term</th>
                    <th class="detalle-pedido-t">Calidad</th>
+                   <th class="detalle-pedido-t">Cpo</th>
                 </tr>
                 {% for form in detalle_pedido_formset %}
                 <tr>
@@ -113,6 +114,8 @@
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
                     <td>{{ form.calidad }}</td>
+                    <td>{{ form.cpo }}</td>
+                    {{ form.errors }}
                 </tr>
             </table>
                 <table class="form-table">
@@ -182,8 +185,8 @@
             </tr>
         </table>
       {% endfor %}
-            <button type="submit" name="crear" class="red-button">Crear</button>    
-            <button class="form-close-x" onclick="closePopup()">x</button>
+            <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" type="submit" name="crear" class="red-button">Crear</button>    
+            <button  class="form-close-x" onclick="closePopup()">x</button>
         </form>
     </div>
    
