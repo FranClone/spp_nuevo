@@ -204,7 +204,7 @@ table tr {
     border-right: 1px solid black;
     border-collapse: collapse;
     font-size: 16px;
-    background-color: rgb(123, 123, 123);
+    background-color: rgba(235, 0, 0, 0.822); 
     line-height: 30px;
     text-align: center;
     color: white; 
@@ -809,8 +809,8 @@ table tr {
 
 
 .detalle-pedido-t{
-    background-color: rgba(142, 142, 142, 0.705); 
-    color: Black; 
+    background-color: rgba(235, 0, 0, 0.822); 
+    color: white; 
     width: 30vh; 
     height:3vh;
     font-size: 13px; 
@@ -820,7 +820,7 @@ table tr {
 }
 .a{
     width: 30vh; 
-    background-color: rgba(110, 110, 110, 0.705); 
+    background-color: rgba(235, 0, 0, 0.822); 
 }
 .right-align {
     text-align: right;
