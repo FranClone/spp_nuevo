@@ -127,7 +127,7 @@ def execute_code(request, archivo1, archivo2):
     return JsonResponse(results)
 
 
-@login_required
+
 def importar(request):
     alert_message = None  # Inicialmente, no hay mensaje de alerta
     success = False  # Inicialmente, no se considera éxito
@@ -149,7 +149,7 @@ def importar(request):
 
         return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
         
-@login_required
+
 def process_uploaded_file(xlsfile):
     success = False
     error_message = None
@@ -620,69 +620,60 @@ def pantalla_carga(request):
 @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
 @login_required
 def pedidos(request):
-    
     pedidos = Pedido.objects.all()
-
-    # Initialize forms
-    pedido_form = ActualizarPedidoForm()
-    detalle_pedido_form = DetallePedidoForm()
-    factura_form = FacturaForm()
-    empaque_form = EmpaqueForm()
-
     DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
-    detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
-    
+
     if request.method == 'POST':
-        if 'editar' in request.POST:
-            pass
-        elif 'eliminar' in request.POST:
-            pass
-        elif 'crear' in request.POST:
-            # Handle Pedido form
-            pedido_form = ActualizarPedidoForm(request.POST)
-            
-            if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
-                # Save Pedido instance without committing to the database
-                pedido_instance = pedido_form.save(commit=False)
+        pedido_form = ActualizarPedidoForm(request.POST)
+        detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido')
 
-                # Handle DetallePedido formset
-                detalle_pedido_formset = DetallePedidoFormSet(request.POST, instance=pedido_instance)
+        if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
+            with transaction.atomic():
+                pedido_instance = pedido_form.save()
 
-                if detalle_pedido_formset.is_valid():
-                    with transaction.atomic():  # Ensure both saves are atomic
-                        pedido_instance.save()
-                        detalle_pedido_formset.save()
+                # Extract Factura data from the first form in the formset
+                primera_form = detalle_pedido_formset.forms[0]
+                factura_data = {
+                    'FSC': primera_form.cleaned_data.get('FSC'),
+                    'esp_fact': primera_form.cleaned_data.get('esp_fact'),
+                    'anc_fact': primera_form.cleaned_data.get('anc_fact'),
+                    'lar_fact': primera_form.cleaned_data.get('lar_fact'),
+                }
+                factura_instance = Factura(**factura_data)
+                factura_instance.save()
+                empaque_data = {
+                    'pqte': primera_form.cleaned_data.get('pqte'),
+                    'tipo_empaque': primera_form.cleaned_data.get('tipo_empaque'),
+                    'alto_paquete': primera_form.cleaned_data.get('alto_paquete'),
+                    'int_paquete': primera_form.cleaned_data.get('int_paquete'),
+                    'anc_paquete': primera_form.cleaned_data.get('anc_paquete'),
+                }   
+                empaque_instance = Empaque(**empaque_data)
+                empaque_instance.save()           
+                # Create and save a new Factura instance with the extracted data
 
-                    # Create Factura instance
-                    factura_form = FacturaForm(request.POST)
-                    if factura_form.is_valid():
-                        factura_instance = factura_form.save()
-                    else:
-                        print("Factura Form Errors:", factura_form.errors)
-                        # Handle errors in the factura_form
 
-                    # Create Empaque instance
-                    empaque_form = EmpaqueForm(request.POST)
-                    if empaque_form.is_valid():
-                        empaque_instance = empaque_form.save()
-                    else:
-                        print("Empaque Form Errors:", empaque_form.errors)
-                        # Handle errors in the empaque_form
-                else:
-                    print("DetallePedido Formset Errors:", detalle_pedido_formset.errors)
-                    # Handle errors in the detalle_pedido_formset
-            else:
-                print("Pedido Form Errors:", pedido_form.errors)
-                # Handle errors in the pedido_form
+                # Loop through DetallePedido forms in the formset
+                for detalle_pedido_form in detalle_pedido_formset:
+                    detalle_pedido_instance = detalle_pedido_form.save(commit=False)
+                    detalle_pedido_instance.pedido = pedido_instance
+                    detalle_pedido_instance.factura = factura_instance
+                    detalle_pedido_instance.empaque = empaque_instance
+                    detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega  # Set fecha_entrega based on the associated Pedido
+                    detalle_pedido_instance.save()
+
+            return redirect('home')
+
+    else:
+        pedido_form = ActualizarPedidoForm()
+        detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
 
     context = {
         'pedido_form': pedido_form,
         'detalle_pedido_formset': detalle_pedido_formset,
-        'factura_form': factura_form,
-        'empaque_form': empaque_form,
-        'pedidos': pedidos
+        'pedidos': pedidos,  # Agrega los pedidos al contexto
     }
-    
+
     return render(request, 'pedidos.html', context)
 
 @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])

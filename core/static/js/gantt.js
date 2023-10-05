@@ -267,7 +267,7 @@ class Gantt {
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Producto </h2>
                     ${html} <!-- Insert the generated table here -->
-                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
                 </div>
             `;
              // boton para el agregar folio
@@ -343,7 +343,7 @@ class Gantt {
                 <div class="popup-content" id="popup">
                     <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Pedido ${productoData[0]}</h2>
                     ${html} <!-- Insert the generated table here -->
-                    <button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
+                    <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
                 </div>
             `;
 
@@ -393,7 +393,7 @@ class Gantt {
                 <div class="popup-item">
                     <strong>Producto asociado patrón:</strong> <span>${productoData[44]}</span>
                 </div>
-                <button class="close-button">Cerrar</button>
+                <button class="close-button" >Cerrar</button>
             </div>
         `;
         }
