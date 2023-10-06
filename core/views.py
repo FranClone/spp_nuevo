@@ -944,12 +944,39 @@ def producto_editar(request,id):
 #     data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
 #     if request.method == 'POST':
 #         formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
-#         if formulario.is_valid():
+#         if formulario.is_valid():linea_editar
 #             formulario.save()
 #             return redirect('pedidos')
 #         else:
 #             print("error")
 #     return render(request, 'pedidoseditar.html', data)
+@require_role('ADMINISTRADOR')  
+@login_required
+def linea_editar(request,id):
+    prod= Linea.objects.get(id=id)
+    data = {'form': CrearLineaForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = CrearLineaForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_linea')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_lineaeditar.html', data)
+
+@require_role('ADMINISTRADOR')  
+@login_required
+def rollizo_editar(request,id):
+    prod= Rollizo.objects.get(id=id)
+    data = {'form': CrearRollizoForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = CrearRollizoForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_rollizo')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_rollizoeditar.html', data)
 
 @require_role('ADMINISTRADOR')  
 @login_required
