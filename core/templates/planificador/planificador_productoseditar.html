@@ -22,56 +22,56 @@
         <form method="post" action="{% url 'producto_editar' id %}"  id="carga-form">
             {% csrf_token %}
             <table class="form-table">
-        <tr>
-            <td>{{ form.codigo.label_tag }}</td>
-            <td>{{ form.nombre.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.codigo }}</td>
-            <td>{{ form.nombre }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.descripcion.label_tag }}</td>
-            <td>{{ form.largo.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.descripcion }}</td>
-            <td>{{ form.largo }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.ancho.label_tag }}</td>
-            <td>{{ form.alto.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.ancho }}</td>
-            <td>{{ form.alto }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.demanda.label_tag }}</td>
-            <td>{{ form.inventario_inicial.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.demanda }}</td>
-            <td>{{ form.inventario_inicial }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.valor_inventario.label_tag }}</td>
-            <td>{{ form.costo_almacenamiento.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.valor_inventario }}</td>
-            <td>{{ form.costo_almacenamiento }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.volumen_obtenido.label_tag }}</td>
-            <td>{{ form.inventario_final.label_tag }}</td>
-        </tr>
-        <tr>
-            <td>{{ form.volumen_obtenido }}</td>
-            <td>{{ form.inventario_final }}</td>
-        </tr>
-       
-    </table>
+                <tr>
+                    <th>{{ form.orden_producto.label_tag }}</th>
+                    <th>{{ form.nombre.label_tag }}</th>
+                    <th>{{ form.descripcion.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.orden_producto }}</td>
+                    <td>{{ form.nombre }}</td>
+                    <td>{{ form.descripcion }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.largo.label_tag }}</th>
+                    <th>{{ form.alto.label_tag }}</th>
+                    <th>{{ form.ancho.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.largo }}</td>
+                    <td>{{ form.alto }}</td>
+                    <td>{{ form.ancho }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.inventario_inicial.label_tag }}</th>
+                    <th>{{ form.valor_inventario.label_tag }}</th>
+                    <th>{{ form.costo_almacenamiento.label_tag }}</th>
+             
+                </tr>
+                <tr>
+                    <td>{{ form.inventario_inicial }}</td>
+                    <td>{{ form.valor_inventario }}</td>
+                    <td>{{ form.costo_almacenamiento }}</td>
+                </tr>
+
+                <tr>  
+                    <th>{{ form.nombre_rollizo.label_tag }}</th>
+                    <th>{{ form.inventario_final.label_tag }}</th>   
+                </tr>
+                <tr>
+                    <td>{{ form.nombre_rollizo }}</td>
+                    <td>{{ form.inventario_final }}</td>              
+                </tr>
+                <tr>                  
+                    <th>{{ form.linea.label_tag }}</th>
+                    <th>{{ form.patron_corte.label_tag }}</th> 
+                </tr>
+                <tr>   
+                    <td>{{ form.linea }}</td>
+                    <td>{{ form.patron_corte }}</td>
+                </tr>
+
+            </table>
     <button type="submit" name="guardar" class="red-button">Guardar</button>
     <button type="button" class="red-button">
         <a href="{% url 'plan_productos' %}">Cancelar</a>

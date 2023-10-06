@@ -154,7 +154,6 @@ a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
     display: none;
-    width: 40%;
     text-align: left;
     font-family: Arial, sans-serif;
 }
@@ -289,3 +288,25 @@ a {
     height: 30px;
 }
 
+.detalle-pedido{
+    background-color: rgba(194, 194, 194, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px; 
+    text-align: center;
+    border-right: 1px solid black;
+}
+
+
+
+.detalle-pedido-t{
+    background-color: rgba(142, 142, 142, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    height:3vh;
+    font-size: 13px; 
+    border-width: 1px;
+    text-align: center;
+
+}

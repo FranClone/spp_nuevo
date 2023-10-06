@@ -26,4 +26,4 @@ class PatronCorte(models.Model):
         self.save()
 
     def __str__(self):
-        return f'Patrón de corte {self.codigo}: {self.rendimiento} %'
+        return f'id {self.codigo}: {self.rendimiento} %'

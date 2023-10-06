@@ -12,7 +12,7 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
 from . import views
-from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
+from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa,cliente_editar,empresa_editar
 from django.urls import path
 
 urlpatterns = [
@@ -56,8 +56,10 @@ urlpatterns = [
     path('planificador_rollizo/eliminarpatron/<int:id>',eliminar_rollizo, name = "eliminar_rollizo"),
     path('admin_cliente/',cliente, name = "admin_cliente"),
     path('admin_cliente/eliminarcliente/<int:id>',eliminar_cliente, name = "eliminar_cliente"),
+    path('admin_cliente/admin_clienteeditar/<int:id>',cliente_editar, name = "cliente_editar"),
     path('admin_empresa/',empresa, name = "admin_empresa"),
-    path('admin_cliente/eliminarempresa/<int:id>',eliminar_empresa, name = "eliminar_empresa"),
+    path('admin_empresa/eliminarempresa/<int:id>',eliminar_empresa, name = "eliminar_empresa"),
+    path('admin_empresa/admin_empresaeditar/<int:id>',empresa_editar, name = "empresa_editar"),
     path('execute_code/<str:archivo1>/<str:archivo2>/', views.execute_code, name='execute_code'),  
 
 
