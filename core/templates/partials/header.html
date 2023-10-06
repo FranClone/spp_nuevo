@@ -14,10 +14,10 @@
     </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
+        {% if 'BETECH' not in request.user.roles %}
         <li class="nav-item">
           <a class="nav-link active" aria-current="page" href="{% url 'dashboard' %}">Dashboard</a>
         </li>
-        {% if 'BETECH' not in request.user.roles %}
         <li>
             <a class="nav-link"  href="{% url 'home' %}" > Producción</a>
             <ul role="menu" class="menu-vertical">
@@ -27,10 +27,11 @@
             </ul>
         </li>
         {% endif %} 
+        {% if 'PLANIFICADOR' not in request.user.roles %}
         <li>
           <a class="nav-link" href="#">Mantenedores</a>
           <ul class="menu-vertical">
-            {% if 'BETECH' not in request.user.roles %}
+            {% if 'BETECH'  not in request.user.roles %}
             <li><a class="nav-link" href="{% url 'plan_productos' %}">Productos</a></li>
             <li><a class="nav-link" href="{% url 'plan_productos_terminados' %}">Productos Terminados</a></li>
             <li><a class="nav-link" href="{% url 'plan_patrones_corte' %}">Patrones de Corte</a></li>
@@ -49,7 +50,8 @@
               </ul>
             </li>
           </ul>
-        </li>   
+        </li>  
+        {% endif %}  
         {% if 'BETECH' not in request.user.roles %}
         <li class="nav-item">
           <a class="nav-link" href="#">Reportes</a>

@@ -223,7 +223,7 @@ class CrearLineaForm(forms.ModelForm):
             'nombre_linea',
             'descripcion_linea',
             'empresa',
-            'usuario_crea'       
+            'usuario_crea'
         ]
         
         
@@ -276,6 +276,7 @@ class DetallePedidoForm(forms.ModelForm):
     piezas =  forms.FloatField( min_value=0)
     volumen_producto =  forms.FloatField( min_value=0)
     mbf =  forms.FloatField( min_value=0)
+
     class Meta:
         model = DetallePedido
         fields = [
@@ -295,6 +296,7 @@ class DetallePedidoForm(forms.ModelForm):
             'marca',
             'puerto_destino',
             'programa',
+            'cpo'
             #
 
         ]
@@ -302,6 +304,36 @@ class DetallePedidoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    def save(self, commit=True):
+        instance = super().save(commit=False)
+        producto = self.cleaned_data.get('producto')
+        print(producto)
+        if producto:
+
+            # Access the id of the related Producto
+            producto_id = producto.id
+            print(producto_id)
+            instance.detalle_producto = producto.nombre  # Fill detalle_producto with product name
+
+        if self.instance.pedido:  # Check if there's an associated Pedido
+            instance.fecha_entrega = self.instance.pedido.fecha_entrega  
+        cantidad_piezas = self.cleaned_data.get('piezas')
+        if cantidad_piezas is not None:
+            instance.cantidad_piezas = cantidad_piezas
+        else:
+            instance.cantidad_piezas = 0  # Or handle it based on your requirements
+
+        # Calculate and set piezas_x_cpo
+        cpo = self.cleaned_data.get('cpo')
+        if cpo is not None:
+            instance.piezas_x_cpo = instance.cantidad_piezas * cpo
+        else:
+            instance.piezas_x_cpo = 0  # Or handle it based on your requirements
+
+
+        if commit:
+            instance.save()        
+        return instance
 
 class ActualizarPedidoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):

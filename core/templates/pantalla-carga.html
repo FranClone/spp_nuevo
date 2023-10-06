@@ -51,10 +51,15 @@
     window.onload = function() {
         updateLoadingText();
     };
-
+    var rol = "{{ request.user.roles }}";
     setTimeout(function() {
+        if (rol == 'BETECH') {
+            window.location.href = "{% url 'admin_empresa' %}";
+        } else {
             window.location.href = "{% url 'dashboard' %}";
-        }, 5000);
+        }
+    }, 5000);
+
 
     </script>
 </head>

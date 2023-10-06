@@ -12,6 +12,9 @@
     <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.3.1/decimal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
     <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
@@ -80,11 +83,11 @@
             </form>
         </div>
     </div>
-    <div class="form-container-productos" style="width:150;">
+    <div class="form-container-productos" style="width:200vh;">
        
         <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-            <table class="form-table" >
+            <table class="form-table">
                 <th>Detalle Pedido</th>
                 {{ detalle_pedido_formset.management_form }}
                 <tr>
@@ -99,6 +102,7 @@
                    <th class="detalle-pedido-t">Est</th>
                    <th class="detalle-pedido-t">term</th>
                    <th class="detalle-pedido-t">Calidad</th>
+                   <th class="detalle-pedido-t">Cpo</th>
                 </tr>
                 {% for form in detalle_pedido_formset %}
                 <tr>
@@ -113,6 +117,8 @@
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
                     <td>{{ form.calidad }}</td>
+                    <td>{{ form.cpo }}</td>
+                    {{ form.errors }}
                 </tr>
             </table>
                 <table class="form-table">
@@ -182,8 +188,8 @@
             </tr>
         </table>
       {% endfor %}
-            <button type="submit" name="crear" class="red-button">Crear</button>    
-            <button class="form-close-x" onclick="closePopup()">x</button>
+            <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" type="submit" name="crear" class="red-button">Crear</button>    
+            <button  class="form-close-x" onclick="closePopup()">x</button>
         </form>
     </div>
    
@@ -197,7 +203,6 @@
             <span id="titulofecha">{{ titulofecha }}</span>
         </div>
         <div id="gantt">
-            
             <script>
                 const tasksData = {{ tasks|safe }};
             </script>
@@ -384,6 +389,12 @@ $(document).ready(function() {
                 console.error(error);
             }
         });
+    });
+});
+$(document).ready(function() {
+    $('#gantt').DataTable({
+        "paging": true, // Habilita la paginación
+        "pageLength": 10 // Número de filas por página (puedes cambiar este valor)
     });
 });
 </script>
