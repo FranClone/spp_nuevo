@@ -146,9 +146,9 @@
                             <td>{{ producto.largo }}</td>                        
                             <td>
                                 
-                                <button class="btn block" onclick="openPopup('{{ producto.codigo }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
-                                '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento}},
-                                , '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}' ,'{{producto.patron_corte}} ,'{{producto.linea}}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                <button class="btn block" onclick="openPopup('{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
+                                '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento}}'
+                                , '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}' ,'{{producto.patron_corte}}' ,'{{producto.linea}}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
                             <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>      
                         </td>

@@ -1,0 +1,57 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-mantenedor.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <title>SPP - Productos</title>
+    
+</head>
+<body>
+    {% include "partials/header.html" %}
+    <!--Este es el contenedor del formulario productos-->
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'linea_editar' id  %}"  id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+                <tr>
+                    <th>{{ form.nombre_linea.label_tag }}</th>
+                    <th>{{ form.descripcion_linea.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.nombre_linea }}</td>
+                    <td>{{ form.descripcion_linea }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.empresa.label_tag }}</th>
+                    <th>{{ form.usuario_crea.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.empresa }}</td>
+                    <td>{{ form.usuario_crea }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.producto_asociado}}</td>
+                    <td class="form-check text-left">{{ form.utilizado}}</td>
+                    
+                </tr>
+       
+    </table>
+    <button type="submit" name="guardar" class="red-button">Guardar</button>
+    <button type="button" class="red-button">
+        <a href="{% url 'plan_linea' %}">Cancelar</a>
+    </button>
+        </form>
+        
+
+    </div>
+
+</body>
+</html>

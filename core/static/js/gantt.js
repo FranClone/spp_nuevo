@@ -8,7 +8,7 @@ class Gantt {
     }
 
     PedidoTable() {
-        var html = '<table style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
+        var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center; height:3vh;">Fecha carga</th>';
