@@ -69,8 +69,6 @@ except Exception as ex:
 
 
 #TEST ALGORITMO 
-
-
 def solver_betech(archivo1, archivo2):
     try:
         archivo1 = os.path.join(settings.MEDIA_ROOT, "LineaDelgado.csv")
@@ -1168,3 +1166,31 @@ def asignar_folio_pedido(request):
 
     return render(request, 'aviso.html')  # Renderiza la página HTML de formulario
 '''
+@require_role('ADMINISTRADOR')  
+@login_required
+def cliente_editar(request,id):
+    cliente= Cliente.objects.get(id=id)
+    data = {'form': CrearClienteForm(instance=cliente),'id':id}
+    if request.method == 'POST':
+        formulario = CrearClienteForm(data = request.POST, instance=cliente)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('admin_cliente')
+        else:
+            print("error")
+    return render(request, 'admin/admin_clienteeditar.html', data)
+
+
+@require_role('BETECH')  
+@login_required
+def empresa_editar(request,id):
+    empresa= Empresa.objects.get(rut_empresa=id)
+    data = {'form': CrearEmpresaForm(instance=empresa),'rut_empresa':id}
+    if request.method == 'POST':
+        formulario = CrearEmpresaForm(data = request.POST, instance=empresa)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('admin_empresa')
+        else:
+            print("error")
+    return render(request, 'admin/admin_empresaeditar.html', data)

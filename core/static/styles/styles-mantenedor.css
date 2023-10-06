@@ -154,7 +154,6 @@ a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
     display: none;
-    width: 50%;
     text-align: left;
     font-family: Arial, sans-serif;
 }
@@ -289,13 +288,7 @@ a {
 }
 
 
-.detalle-pedido-t{
-    background-color: rgba(235, 0, 0, 0.822); 
-    color: white; 
-    width: 30vh; 
-    height:3vh;
-    font-size: 13px; 
-    border-width: 1px;
-    text-align: center;
 
-}
+
+
+
