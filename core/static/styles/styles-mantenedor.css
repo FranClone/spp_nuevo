@@ -95,7 +95,6 @@ form select {
     width: 100%;
     margin-bottom: 10px;
 }
-
 .toggle-carga-button {
     background-color: white;
     border: 1px solid black;
@@ -154,6 +153,7 @@ a {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
     z-index: 9999;
     display: none;
+    width: fit-content;
     text-align: left;
     font-family: Arial, sans-serif;
 }
@@ -296,8 +296,16 @@ a {
 }
 
 
+.detalle-pedido{
+    background-color: rgba(194, 194, 194, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px; 
+    text-align: center;
+    border-right: 1px solid black;
 
-
+}
 
 .detalle-pedido-t{
     background-color: rgba(235, 0, 0, 0.822); 
@@ -309,12 +317,19 @@ a {
     text-align: center;
 
 }
-.detalle-pedido{
-    background-color: rgba(194, 194, 194, 0.705); 
-    color: Black; 
-    width: 30vh; 
-    font-size: 13px; 
-    border-width: 1px; 
-    text-align: center;
-    border-right: 1px solid black;
+
+.popup-content {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    border: 2px solid black;
+    z-index: 9999;
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    width: fit-content;
+    
 }
+
+

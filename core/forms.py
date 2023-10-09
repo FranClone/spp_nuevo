@@ -168,36 +168,6 @@ class CrearProductoForm(forms.ModelForm):
         ]
 
 
-# class DetallePedidoForm(forms.ModelForm):
-
-#     class Meta:
-#         model = DetallePedido
-#         fields = [
-#             'producto',
-#             'item',
-#             'detalle_producto',
-#             'alto_producto',
-#             'ancho_producto',
-#             'largo_producto',
-#             'volumen_producto',
-#             #'fecha_entrega',
-#             'estado_pedido_linea',
-#             'cantidad_piezas',
-#             'cantidad_trozos',
-#             'piezas_xpaquete',
-#             'piezas_xtrozo',
-#             'paquetes_solicitados',
-#             'volumen_obtenido',
-#             'paquetes_saldo',
-#             'grado_urgencia'
-#             # Add other fields here
-#         ]
-        
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         # Set the widget for the producto field to a Select widget
-#         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'id'))
-#         #self.fields['producto'].widget = forms.SelectMultiple(choices=Producto.objects.values_list('id', 'id'))
 
 class CrearRollizoForm(forms.ModelForm):
     exclude = ['fecha_crea']
@@ -274,12 +244,14 @@ class DetallePedidoForm(forms.ModelForm):
     ancho_producto =  forms.FloatField( min_value=0)
     largo_producto =  forms.FloatField( min_value=0)
     piezas =  forms.FloatField( min_value=0)
-    volumen_producto =  forms.FloatField( min_value=0)
-    mbf =  forms.FloatField( min_value=0)
-
+    volumen_producto =  forms.DecimalField(max_digits=10,min_value=0, decimal_places=3)
+    mbf =  forms.DecimalField(max_digits=10,min_value=0, decimal_places=3)
+    id = forms.IntegerField(widget=forms.HiddenInput())
     class Meta:
         model = DetallePedido
+
         fields = [
+       
             'item',
             'mercado',
             'producto',
@@ -300,10 +272,11 @@ class DetallePedidoForm(forms.ModelForm):
             #
 
         ]
-        
+      
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    
     def save(self, commit=True):
         instance = super().save(commit=False)
         producto = self.cleaned_data.get('producto')
@@ -336,21 +309,32 @@ class DetallePedidoForm(forms.ModelForm):
         return instance
 
 class ActualizarPedidoForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-         super().__init__(*args, **kwargs)
-         self.fields['fecha_entrega'].widget = forms.widgets.DateInput(
-             attrs={
-                 'type': 'date', 'placeholder': 'YYYY-MM-DD (DOB)',
-                 'class': 'form-control'
-             }
-         )
+    fecha_entrega = forms.DateField(
+        widget=forms.DateInput(
+            format='%d/%m/%Y',
+            attrs={
+                'autocomplete': 'on',  # Desactiva el autocompletado del navegador
+                'placeholder': 'dd/mm/yyyy',  # Formato de marcador de posición para la fecha
+                'type': 'date',  # Utiliza el widget de fecha HTML5
+            }
+        )
+    )
+    fecha_produccion = forms.DateField(
+        widget=forms.DateInput(
+            format='%d/%m/%Y',
+            attrs={
+                'autocomplete': 'on',
+                'placeholder': 'dd/mm/yyyy',
+                'type': 'date',
+            }
+        )
+    )
 
-         self.fields['fecha_produccion'].widget = forms.widgets.DateInput(
-             attrs={
-                 'type': 'date', 'placeholder': 'YYYY-MM-DD (DOB)',
-                 'class': 'form-control'
-             }
-         )
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha_entrega'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_produccion'].widget.attrs.update({'class': 'form-control'})
+
 
     class Meta:
          model = Pedido

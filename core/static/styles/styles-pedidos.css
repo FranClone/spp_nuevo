@@ -73,6 +73,19 @@ form select {
 }
 
 .form-container-productos form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    background-color: rgba(243, 240, 240, 0.95);
+    border: 1px solid black;
+    border-radius: 6px;
+    padding: 10px;
+}
+
+.form-container-productos form {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -300,4 +313,25 @@ a {
 
 }
 
+.detalle-pedido{
+    background-color: rgba(194, 194, 194, 0.705); 
+    color: Black; 
+    width: 30vh; 
+    font-size: 13px; 
+    border-width: 1px; 
+    text-align: center;
+    border-right: 1px solid black;
+}
 
+
+
+.detalle-pedido-t{
+    background-color: rgba(235, 0, 0, 0.822); 
+    color: white; 
+    width: 30vh; 
+    height:3vh;
+    font-size: 13px; 
+    border-width: 1px;
+    text-align: center;
+
+}
