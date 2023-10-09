@@ -69,8 +69,6 @@ except Exception as ex:
 
 
 #TEST ALGORITMO 
-
-
 def solver_betech(archivo1, archivo2):
     try:
         archivo1 = os.path.join(settings.MEDIA_ROOT, "LineaDelgado.csv")
@@ -877,12 +875,39 @@ def producto_editar(request,id):
 #     data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
 #     if request.method == 'POST':
 #         formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
-#         if formulario.is_valid():
+#         if formulario.is_valid():linea_editar
 #             formulario.save()
 #             return redirect('pedidos')
 #         else:
 #             print("error")
 #     return render(request, 'pedidoseditar.html', data)
+@require_role('ADMINISTRADOR')  
+@login_required
+def linea_editar(request,id):
+    prod= Linea.objects.get(id=id)
+    data = {'form': CrearLineaForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = CrearLineaForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_linea')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_lineaeditar.html', data)
+
+@require_role('ADMINISTRADOR')  
+@login_required
+def rollizo_editar(request,id):
+    prod= Rollizo.objects.get(id=id)
+    data = {'form': CrearRollizoForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = CrearRollizoForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_rollizo')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_rollizoeditar.html', data)
 
 @require_role('ADMINISTRADOR')  
 @login_required
@@ -1139,3 +1164,31 @@ def asignar_folio_pedido(request):
 
     return render(request, 'aviso.html')  # Renderiza la página HTML de formulario
 '''
+@require_role('ADMINISTRADOR')  
+@login_required
+def cliente_editar(request,id):
+    cliente= Cliente.objects.get(id=id)
+    data = {'form': CrearClienteForm(instance=cliente),'id':id}
+    if request.method == 'POST':
+        formulario = CrearClienteForm(data = request.POST, instance=cliente)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('admin_cliente')
+        else:
+            print("error")
+    return render(request, 'admin/admin_clienteeditar.html', data)
+
+
+@require_role('BETECH')  
+@login_required
+def empresa_editar(request,id):
+    empresa= Empresa.objects.get(rut_empresa=id)
+    data = {'form': CrearEmpresaForm(instance=empresa),'rut_empresa':id}
+    if request.method == 'POST':
+        formulario = CrearEmpresaForm(data = request.POST, instance=empresa)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('admin_empresa')
+        else:
+            print("error")
+    return render(request, 'admin/admin_empresaeditar.html', data)

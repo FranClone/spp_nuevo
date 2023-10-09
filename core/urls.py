@@ -12,7 +12,9 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
 from . import views
-from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
+
+from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa,linea_editar,rollizo_editar,cliente_editar,empresa_editar
+
 from django.urls import path
 from django.contrib.auth.decorators import login_required
 urlpatterns = [
@@ -48,6 +50,7 @@ urlpatterns = [
     path('pedidos/editarpedido/<int:id>', login_required(pedido_editar), name="pedido_editar"),
     path('importar/', login_required(importar), name="importar"),
     # url para desplegar el bar chart vertical
+
     path('dashboard/', login_required(Dashboard.as_view()), name="dashboard"),
     path('descargar-excel/<str:nombre_archivo>/', login_required(descargar_excel), name='descargar_excel'),
     path('planificador_linea/', login_required(linea), name="plan_linea"),
@@ -59,6 +62,11 @@ urlpatterns = [
     path('admin_empresa/', login_required(empresa), name="admin_empresa"),
     path('admin_cliente/eliminarempresa/<int:id>', login_required(eliminar_empresa), name="eliminar_empresa"),
     path('execute_code/<str:archivo1>/<str:archivo2>/', login_required(views.execute_code), name='execute_code'),
+    path('planificador_linea/editarlinea/<int:id>', login_required(linea_editar), name = "linea_editar")
+    path('planificador_rollizo/editarrollizo/<int:id>', login_required(rollizo_editar), name = "rollizo_editar"),
+    path('admin_cliente/admin_clienteeditar/<int:id>',login_required(cliente_editar), name = "cliente_editar"),
+    path('admin_empresa/admin_empresaeditar/<int:id>',login_required(empresa_editar), name = "empresa_editar"),
+
 
 
 

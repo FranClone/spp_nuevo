@@ -94,25 +94,12 @@ $(document).ready(function() {
 
 
 
-function openPopup(orden_producto, nombre, descripcion, largo, ancho, alto, inventario_inicial, valor_inventario, almacenamiento, nombre_rollizo, inventario_final,linea,patrones_de_corte) {
-    // Set the data in the popup
-    document.getElementById('popupOrden_producto').innerText = orden_producto;
-    document.getElementById('popupNombre').innerText = nombre;
+function openPopup(lineaNombre, descripcion, fecha) {
+
+    document.getElementById('popupLinea').innerText = lineaNombre; 
     document.getElementById('popupDescripcion').innerText = descripcion;
-    document.getElementById('popupLargo').innerText = largo;
-    document.getElementById('popupAncho').innerText = ancho;
-    document.getElementById('popupAlto').innerText = alto;
-    document.getElementById('popupInventario_inicial').innerText = inventario_inicial;
-    document.getElementById('popupValor_inventario').innerText = valor_inventario;
-    document.getElementById('popupAlmacenamiento').innerText = almacenamiento;
-    document.getElementById('popupNombre_rollizo').innerText = nombre_rollizo;
-    document.getElementById('popupInventario_final').innerText = inventario_final;
-    document.getElementById('popupLinea').innerText = linea;
-    document.getElementById('popupPatron_corte').innerText = patrones_de_corte;
-    console.log("IDs de patrones de corte relacionados:", patrones_de_corte);
-
-
-    document.getElementById('popupOverlay').style.display = 'flex';
+    document.getElementById('popupFecha').innerText = fecha; 
+    document.getElementById('popupOverlay').style.display = 'block';
     document.getElementById('popup').style.display = 'block';
 }
 

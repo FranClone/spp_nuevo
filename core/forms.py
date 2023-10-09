@@ -193,7 +193,7 @@ class CrearLineaForm(forms.ModelForm):
             'nombre_linea',
             'descripcion_linea',
             'empresa',
-            'usuario_crea'       
+            'usuario_crea'
         ]
         
         
