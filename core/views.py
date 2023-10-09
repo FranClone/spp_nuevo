@@ -325,6 +325,7 @@ def get_empresas(request):
 
 class Index(View): 
     """Esta clase define la vista Index"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         context={
 
@@ -403,7 +404,9 @@ class Logout(View):
         return redirect('login')
 
 class Mantenedor(View): 
+    
     """Esta clase define la vista de Mantenedor"""
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         context={
 
@@ -412,6 +415,7 @@ class Mantenedor(View):
         return render(request, 'mantenedor.html', context)
 
 class Register(View):
+    @method_decorator(login_required)
     def get(self, request):
         form = CustomUserCreationForm()
         return render(request, 'register.html', {'form': form})
@@ -454,9 +458,10 @@ class Plan_Productos(View):
 
 
 
-@method_decorator(login_required, name='dispatch')
+#@method_decorator(login_required, name='dispatch')
 @method_decorator(require_role(['ADMINISTRADOR', 'PLANIFICADOR']), name='dispatch')        
 class Dashboard(View): 
+    @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
         return render(request, 'dashboard.html')
 
@@ -552,70 +557,6 @@ def pantalla_carga(request):
     rol = request.user.roles
     return render(request, 'pantalla-carga.html',{'rol': rol})
 
-#Form pedido y detalle pedido
-# def pedidos(request):
-#     pedidos = Pedido.objects.all()
-#     DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
-#     detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
-#     if request.method == 'POST':
-#         if 'editar' in request.POST:
-#             pass
-#         elif 'eliminar' in request.POST:
-#             pass
-#         elif 'crear' in request.POST:
-#             # Handle Pedido form
-#             pedido_form = ActualizarPedidoForm(request.POST)
-            
-#             if pedido_form.is_valid():
-#                 # Save the Pedido instance
-#                 pedido_instance = pedido_form.save()
-                
-#                 # Create a formset with the Pedido instance
-#                 DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
-#                 detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido', instance=pedido_instance)
-                
-#                 if detalle_pedido_formset.is_valid():
-                
-#                     for form in detalle_pedido_formset:
-#                         # Get the Producto instance from the form data
-#                         producto_instance   = form.cleaned_data.get('producto')
-#                         producto_code = producto_instance.id
-#                         producto_id = int(producto_code)
-#                         print(producto_id)
-#                         try:
-#                             producto = Producto.objects.get(id=producto_id)
-#                         except Producto.DoesNotExist:
-#                             producto = None
-
-#                         if producto is not None:
-#                             # Set the Producto for this DetallePedido
-#                             form.instance.producto = producto
-#                     detalle_pedido_formset.save()
-#                     print(f"Producto with id {producto_id} does not exist.")
-#                         # detalle_pedido_form.producto = producto
-#                         # detalle_pedido_form.save()
-                    
-#                     print("Formset cleaned data:", detalle_pedido_formset.cleaned_data)
-#                     return redirect('pedidos')
-#                 else:
-#                     print("Pedido Form Errors:", pedido_form.errors)
-#                     print("Detalle Pedido Formset Errors:")
-#                     for form in detalle_pedido_formset:
-#                         print(form.errors)
-#             else:
-#                 print("Pedido Form Errors:", pedido_form.errors)
-#         else:
-#             pedido_form = ActualizarPedidoForm()
-#     else:
-#         pedido_form = ActualizarPedidoForm()
-
-#     context = {
-#         'pedido_form': pedido_form,
-#         'detalle_pedido_formset': detalle_pedido_formset,
-#         'pedidos': pedidos
-#     }
-
-#     return render(request, 'pedidos.html', context)
 
 @require_role(['ADMINISTRADOR', 'PLANIFICADOR'])
 @login_required
@@ -672,6 +613,7 @@ def pedidos(request):
         'pedido_form': pedido_form,
         'detalle_pedido_formset': detalle_pedido_formset,
         'pedidos': pedidos,  # Agrega los pedidos al contexto
+    
     }
 
     return render(request, 'pedidos.html', context)
@@ -946,31 +888,87 @@ def producto_editar(request,id):
 @login_required
 def pedido_editar(request, id):
     prod = Pedido.objects.get(id=id)
-    
-    # Create a formset for DetallePedido related to the Pedido instance
-    DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=1, can_delete=True)
-    
+    DetallePedidoFormSet = inlineformset_factory(Pedido, DetallePedido, form=DetallePedidoForm, extra=0, can_delete=True)
+
+    detalle_pedido = DetallePedido.objects.filter(pedido=prod).first()
+    factura = None
+    paquete = None
+
+    if detalle_pedido:
+        factura = detalle_pedido.factura
+        paquete = detalle_pedido.empaque
+        detalle_pedido_id = detalle_pedido.id
+
+    data = {}
+
     if request.method == 'POST':
         pedido_form = ActualizarPedidoForm(request.POST, instance=prod)
-        detalle_pedido_formset = DetallePedidoFormSet(request.POST, instance=prod)
-        
+        detalle_pedido_formset = DetallePedidoFormSet(request.POST, instance=prod, prefix=f'detalle_pedido_{detalle_pedido_id}')
+
         if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
             pedido_form.save()
-            detalle_pedido_formset.save()
+
+            # Obtener la instancia de Factura y Empaque existentes o crear una nueva si no existen
+            if factura:
+                factura_form = detalle_pedido_formset.forms[0]  # El primer formulario en el formset
+                factura_data = {
+                    'FSC': factura_form.cleaned_data.get('FSC'),
+                    'esp_fact': factura_form.cleaned_data.get('esp_fact'),
+                    'anc_fact': factura_form.cleaned_data.get('anc_fact'),
+                    'lar_fact': factura_form.cleaned_data.get('lar_fact'),
+                }
+                for field, value in factura_data.items():
+                    setattr(factura, field, value)
+                factura.save()
+            if paquete:
+                paquete_form = detalle_pedido_formset.forms[0]  # El primer formulario en el formset
+                empaque_data = {
+                    'pqte': paquete_form.cleaned_data.get('pqte'),
+                    'tipo_empaque': paquete_form.cleaned_data.get('tipo_empaque'),
+                    'alto_paquete': paquete_form.cleaned_data.get('alto_paquete'),
+                    'int_paquete': paquete_form.cleaned_data.get('int_paquete'),
+                    'anc_paquete': paquete_form.cleaned_data.get('anc_paquete'),
+                }
+                for field, value in empaque_data.items():
+                    setattr(paquete, field, value)
+                paquete.save()
+
+            for detalle_pedido_form in detalle_pedido_formset:
+                detalle_pedido_instance = detalle_pedido_form.save(commit=False)
+                detalle_pedido_instance.factura = factura
+                detalle_pedido_instance.empaque = paquete
+                detalle_pedido_instance.save()
+
             return redirect('pedidos')
         else:
-            print("Error in forms")
+            print("Error in forms:", detalle_pedido_formset.errors)
+
     else:
         pedido_form = ActualizarPedidoForm(instance=prod)
-        detalle_pedido_formset = DetallePedidoFormSet(instance=prod)
-    
-    data = {
-        'form': pedido_form,
-        'detalle_pedido_formset': detalle_pedido_formset,
-        'id': id
-    }
-    
+        detalle_pedido_formset = DetallePedidoFormSet(instance=prod, prefix=f'detalle_pedido_{detalle_pedido_id}')
+
+        for form in detalle_pedido_formset:
+            if factura:
+                form.fields['FSC'].initial = factura.FSC
+                form.fields['esp_fact'].initial = factura.esp_fact
+                form.fields['anc_fact'].initial = factura.anc_fact
+                form.fields['lar_fact'].initial = factura.lar_fact
+            if paquete:
+                form.fields['pqte'].initial = paquete.pqte
+                form.fields['tipo_empaque'].initial = paquete.tipo_empaque
+                form.fields['alto_paquete'].initial = paquete.alto_paquete
+                form.fields['int_paquete'].initial = paquete.int_paquete
+                form.fields['anc_paquete'].initial = paquete.anc_paquete
+
+    data['pedido_form'] = pedido_form
+    data['detalle_pedido_formset'] = detalle_pedido_formset
+    data['factura'] = factura
+    data['paquete'] = paquete
+    data['id'] = id
+    data['detalle_pedido_id'] = detalle_pedido_id
+
     return render(request, 'pedidoseditar.html', data)
+
 
 @require_role('ADMINISTRADOR')  
 @login_required
