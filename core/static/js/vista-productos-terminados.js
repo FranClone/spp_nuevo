@@ -98,7 +98,7 @@ function openPopup(codigo, nombre, grosor, ancho, largo) {
     document.getElementById('popupGrosor').innerText = grosor;
     document.getElementById('popupAncho').innerText = ancho;
     document.getElementById('popupLargo').innerText = largo;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 

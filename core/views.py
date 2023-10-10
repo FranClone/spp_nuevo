@@ -1125,7 +1125,7 @@ def empresa(request):
     }
     return render(request, 'admin/admin_empresa.html', context)
 
-@require_role('BETECH') 
+@require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_cliente(request,id):
     cliente=Cliente.objects.get(id=id)
@@ -1193,4 +1193,8 @@ def empresa_editar(request,id):
         else:
             print("error")
     return render(request, 'admin/admin_empresaeditar.html', data)
+
+class Custom404View(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, '404.html', status=404)
 

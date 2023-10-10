@@ -897,3 +897,48 @@ canvas {
 .ul{
     padding-left: 1rem;
 }
+
+.error-container {
+    width: 20%;
+    height: 60%;
+    background: #000;
+    color: #fff;
+    top: 50%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%);
+    box-sizing: border-box;
+    border: 3px solid white;
+    border-radius: 15px;
+    padding: 70px 30px;
+}
+.error-container h1 {
+    margin: 0;
+    padding: 0 0 20px;
+    text-align: center;
+    font-size: 22px;
+}
+
+.error-container p {
+    margin: 10;
+    padding: 0 0 20px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 22px;
+    line-height: 26px;
+    color: darkgrey;
+}
+
+.error-container a {
+    color: #c91717;
+    font-size: 24px;
+}
+
+.error-container .avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    position: absolute;
+    top: -50px;
+    left: calc(50% - 50px);
+}

@@ -1,7 +1,6 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -13,8 +12,9 @@
     <script src="{% static 'js/vista-productos.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
-    
+
 </head>
+
 <body>
     {% include "partials/header.html" %}
     <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
@@ -22,14 +22,14 @@
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
-            <div class="filters-container" >
+            <div class="filters-container">
                 <label for="filter-by">Filtrar por:</label>
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
                 </select>
                 <div>
-                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                    <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
                 </div>
                 <select name="filter-option" class="filter-select">
                     <option value="partial">Parcial</option>
@@ -40,16 +40,22 @@
                 <input type="checkbox" id="advanced-search" name="advanced-search">
                 <div id="advanced-search-options" style="display: none;">
                     <label for="filter-length">Largo:</label>
-                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-width">Ancho:</label>
-                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-thickness">Grosor:</label>
-                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
@@ -87,7 +93,7 @@
                     <th>{{ form.inventario_inicial.label_tag }}</th>
                     <th>{{ form.valor_inventario.label_tag }}</th>
                     <th>{{ form.costo_almacenamiento.label_tag }}</th>
-             
+
                 </tr>
                 <tr>
                     <td>{{ form.inventario_inicial }}</td>
@@ -95,35 +101,35 @@
                     <td>{{ form.costo_almacenamiento }}</td>
                 </tr>
 
-                <tr>  
+                <tr>
                     <th>{{ form.nombre_rollizo.label_tag }}</th>
-                    <th>{{ form.inventario_final.label_tag }}</th>   
+                    <th>{{ form.inventario_final.label_tag }}</th>
                 </tr>
                 <tr>
                     <td>{{ form.nombre_rollizo }}</td>
-                    <td>{{ form.inventario_final }}</td>              
+                    <td>{{ form.inventario_final }}</td>
                 </tr>
-                <tr>                  
+                <tr>
                     <th>{{ form.linea.label_tag }}</th>
-                    <th>{{ form.patron_corte.label_tag }}</th> 
+                    <th>{{ form.patron_corte.label_tag }}</th>
                 </tr>
-                <tr>   
+                <tr>
                     <td>{{ form.linea }}</td>
                     <td>{{ form.patron_corte }}</td>
                 </tr>
 
             </table>
-            
+
             <button type="submit" name="crear" class="red-button">Crear</button>
             <button type="button" id="cancelar" class="form-close-x">x</button>
         </form>
-        
+
     </div>
     <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
-        <div class="table-responsive">            
+        <div class="table-responsive">
             <h1 class="encabezado-pedidos">Productos</h1>
-            
+
             <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
@@ -133,34 +139,34 @@
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
                     {% for producto in productos %}
-                        <tr>
-                            <td>{{ producto.orden_producto }}</td>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.alto }}</td>
-                            <td>{{ producto.ancho }}</td>
-                            <td>{{ producto.largo }}</td>                        
-                            <td>
-                            
+                    <tr>
+                        <td>{{ producto.orden_producto }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.alto }}</td>
+                        <td>{{ producto.ancho }}</td>
+                        <td>{{ producto.largo }}</td>
+                        <td>
+
 
                             <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
                             '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento }}',
-                            '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                                
-                            <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
-                            <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>      
+                            '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')">
+                            <i class="fa-regular fa-clipboard fa-xl"></i></button>
+                            <a href="editarproducto/{{producto.id}}"
+                                class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
-                        </tr>
+                    </tr>
 
                     {% empty %}
                     </tr>
-                        <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
                     <tr>
-                    {% endfor %}
+                        {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No hay datos para los filtros ingresados.</p>
@@ -169,91 +175,89 @@
     </div>
     <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
     <div class="popup-overlay" id="popupOverlay">
-    <div class="popup-content" id="popup">
-        <h2>Detalles del producto</h2>
-        <table class="popup-table">
-            <tr>
-                <th class="detalle-pedido-t"><strong>Código</strong></th>
-                <th class="detalle-pedido-t"><strong>Nombre</strong></th>
-                <th class="detalle-pedido-t"><strong>Descripcion</strong></th>
-                <th class="detalle-pedido-t"><strong>Largo</strong></th>
-                <th class="detalle-pedido-t"><strong>Alto</strong></th>
-                <th class="detalle-pedido-t"><strong>Ancho</strong></th>
-                <th class="detalle-pedido-t"><strong>Inventario Inicial</strong></th>
-                <th class="detalle-pedido-t"><strong>Valor inventario</strong></th>
-                <th class="detalle-pedido-t"><strong>Costo almacenamiento</strong></th>
-                <th class="detalle-pedido-t"><strong>Rollizo</strong></th>
-                <th class="detalle-pedido-t"><strong>Inventario final</strong></th>
-                <th class="detalle-pedido-t"><strong>Linea</strong></th>
-                <th class="detalle-pedido-t"><strong>Patron Corte</strong></th>
+        <div class="popup-content" id="popup">
+            <h2>Detalles del producto</h2>
+            <table class="popup-table">
+                <tr>
+                    <th class="detalle-pedido-t"><strong>Código</strong></th>
+                    <th class="detalle-pedido-t"><strong>Nombre</strong></th>
+                    <th class="detalle-pedido-t"><strong>Descripcion</strong></th>
+                    <th class="detalle-pedido-t"><strong>Largo</strong></th>
+                    <th class="detalle-pedido-t"><strong>Alto</strong></th>
+                    <th class="detalle-pedido-t"><strong>Ancho</strong></th>
+                    <th class="detalle-pedido-t"><strong>Inventario Inicial</strong></th>
+                    <th class="detalle-pedido-t"><strong>Valor inventario</strong></th>
+                    <th class="detalle-pedido-t"><strong>Costo almacenamiento</strong></th>
+                    <th class="detalle-pedido-t"><strong>Rollizo</strong></th>
+                    <th class="detalle-pedido-t"><strong>Inventario final</strong></th>
+                    <th class="detalle-pedido-t"><strong>Linea</strong></th>
+                    <th class="detalle-pedido-t"><strong>Patron Corte</strong></th>
 
-            </tr>
-            <tr>
-                <td class="detalle-pedido"><span id="popupOrden_producto"></span></td>
-                <td class="detalle-pedido"><span id="popupNombre"></span></td>
-                <td class="detalle-pedido"><span id="popupDescripcion"></span></td>
-                <td class="detalle-pedido"><span id="popupLargo"></span></td>
-                <td class="detalle-pedido"><span id="popupAncho"></span></td>
-                <td class="detalle-pedido"><span id="popupAlto"></span></td>
-                <td class="detalle-pedido"><span id="popupInventario_inicial"></span></td>
-                <td class="detalle-pedido"><span id="popupValor_inventario"></span></td>
-                <td class="detalle-pedido"><span id="popupAlmacenamiento"></span></td>
-                <td class="detalle-pedido"><span id="popupNombre_rollizo"></span></td>
-                <td class="detalle-pedido"><span id="popupInventario_final"></span></td>
-                <td class="detalle-pedido"><span id="popupLinea"></span></td>
-                <td class="detalle-pedido"><span id="popupPatron_corte"></span></td>
-            </tr>
-        </table>
-        <button class="close-button" onclick="closePopup()">Cerrar</button>
+                </tr>
+                <tr>
+                    <td class="detalle-pedido"><span id="popupOrden_producto"></span></td>
+                    <td class="detalle-pedido"><span id="popupNombre"></span></td>
+                    <td class="detalle-pedido"><span id="popupDescripcion"></span></td>
+                    <td class="detalle-pedido"><span id="popupLargo"></span></td>
+                    <td class="detalle-pedido"><span id="popupAncho"></span></td>
+                    <td class="detalle-pedido"><span id="popupAlto"></span></td>
+                    <td class="detalle-pedido"><span id="popupInventario_inicial"></span></td>
+                    <td class="detalle-pedido"><span id="popupValor_inventario"></span></td>
+                    <td class="detalle-pedido"><span id="popupAlmacenamiento"></span></td>
+                    <td class="detalle-pedido"><span id="popupNombre_rollizo"></span></td>
+                    <td class="detalle-pedido"><span id="popupInventario_final"></span></td>
+                    <td class="detalle-pedido"><span id="popupLinea"></span></td>
+                    <td class="detalle-pedido"><span id="popupPatron_corte"></span></td>
+                </tr>
+            </table>
+            <button class="close-button" onclick="closePopup()">Cerrar</button>
+        </div>
     </div>
-</div>
-    <script>
-        var toggleFilterButton = document.querySelector('.filter-section .filter-button');
-        var filterForm = document.querySelector('.filter-section .filter-form');
-        var isFilterVisible = false; // Variable de estado para el filtro
+<script>
+    var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+    var filterForm = document.querySelector('.filter-section .filter-form');
+    var isFilterVisible = false; // Variable de estado para el filtro
 
-        toggleFilterButton.addEventListener('click', function() {
-            if (isFilterVisible) {
-                filterForm.style.display = 'none';
-                toggleFilterButton.innerText = 'Filtrar';
-                isFilterVisible = false;
-            } else {
-                filterForm.style.display = 'block';
-                toggleFilterButton.innerText = 'Ocultar filtro';
-                isFilterVisible = true;
-            }
-        });
-    </script>
-    <script>
-        const toggleButton = document.getElementById("toggle-carga-button");
-        const cargaForm = document.querySelector(".form-container-productos form");
+    toggleFilterButton.addEventListener('click', function () {
+        if (isFilterVisible) {
+            filterForm.style.display = 'none';
+            toggleFilterButton.innerText = 'Filtrar';
+            isFilterVisible = false;
+        } else {
+            filterForm.style.display = 'block';
+            toggleFilterButton.innerText = 'Ocultar filtro';
+            isFilterVisible = true;
+        }
+    });
+</script>
+<script>
+    const toggleButton = document.getElementById("toggle-carga-button");
+    const cargaForm = document.querySelector(".form-container-productos form");
 
-        let isFormVisible = false;
+    let isFormVisible = false;
 
-        toggleButton.addEventListener("click", function() {
-            if (!isFormVisible) {
-                const buttonRect = toggleButton.getBoundingClientRect();
-                const buttonBottom = buttonRect.bottom;
-                cargaForm.style.display = "block";
-                isFormVisible = true;
-            } else {
-                cargaForm.style.display = "none";
-                isFormVisible = false;
-            }
+    toggleButton.addEventListener("click", function () {
+        if (!isFormVisible) {
+            const buttonRect = toggleButton.getBoundingClientRect();
+            const buttonBottom = buttonRect.bottom;
+            cargaForm.style.display = "block";
+            isFormVisible = true;
+        } else {
+            cargaForm.style.display = "none";
+            isFormVisible = false;
+        }
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const botonCancelar = document.getElementById('cancelar');
+        const formulario = document.getElementById('carga-form');
+            botonCancelar.addEventListener('click', function () {
+            formulario.style.display = 'none';
         });
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const botonCancelar = document.getElementById('cancelar');
-            const formulario = document.getElementById('carga-form');
-            
-            botonCancelar.addEventListener('click', function() {
-                formulario.style.display = 'none';
-            });
-        });
-    </script>
+    });
+</script>
 
 </body>
-</html>
 
-   
+</html>

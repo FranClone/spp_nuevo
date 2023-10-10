@@ -99,7 +99,7 @@ function openPopup(lineaNombre, descripcion, fecha) {
     document.getElementById('popupLinea').innerText = lineaNombre; 
     document.getElementById('popupDescripcion').innerText = descripcion;
     document.getElementById('popupFecha').innerText = fecha; 
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 
