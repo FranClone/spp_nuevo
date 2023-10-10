@@ -500,6 +500,15 @@ def producto(request):
                 print("Formulario válido")  # Mensaje de depuración
                 nuevo_producto = form.save()
                 print("Producto guardado en la base de datos con ID:", nuevo_producto.id)  # Mensaje de depuración
+                
+                # Obtén los patrones de corte seleccionados en el formulario
+                patrones_de_corte = request.POST.getlist('patron_corte')
+                
+                # Agrega los patrones de corte al producto
+                for patron_id in patrones_de_corte:
+                    patron_corte = PatronCorte.objects.get(pk=patron_id)
+                    nuevo_producto.patron_corte.add(patron_corte)
+                
                 return redirect('plan_productos')
             else:
                 print("Formulario inválido")  # Mensaje de depuración
@@ -511,6 +520,7 @@ def producto(request):
         'productos': productos
     }
     return render(request, 'planificador/planificador_productos.html', context)
+
 
 @require_role('ADMINISTRADOR')  
 @login_required
@@ -878,7 +888,7 @@ def gantt_view(request):
 @login_required
 def eliminar_materia_prima(request,id):
     materia_prima=MateriaPrima.objects.get(id=id)
-    materia_prima.delete()
+    materia_prima.eliminar()
 
     return redirect('plan_materia_prima')
 
@@ -886,7 +896,7 @@ def eliminar_materia_prima(request,id):
 @login_required
 def eliminar_pedido(request,id):
     pedido=Pedido.objects.get(id=id)
-    pedido.delete()
+    pedido.eliminar()
 
     return redirect('pedidos')
 
@@ -894,7 +904,7 @@ def eliminar_pedido(request,id):
 @login_required
 def eliminar_patron(request,id):
     patron=PatronCorte.objects.get(id=id)
-    patron.delete()
+    patron.eliminar()
 
     return redirect('plan_patrones_corte')
 
@@ -902,15 +912,14 @@ def eliminar_patron(request,id):
 @login_required
 def eliminar_producto(request,id):
     producto=Producto.objects.get(id=id)
-    producto.delete()
-
+    producto.eliminar()
     return redirect('plan_productos')
 
 @require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_producto_terminado(request,id):
     producto_terminado=ProductoTerminado.objects.get(id=id)
-    producto_terminado.delete()
+    producto_terminado.eliminar()
 
     return redirect('plan_productos_terminados')
 
@@ -1077,14 +1086,14 @@ def rollizo(request):
 @login_required
 def eliminar_rollizo(request,id):
     rollizo=Rollizo.objects.get(id=id)
-    rollizo.delete()
+    rollizo.eliminar()
     return redirect('plan_rollizo')
 
 @require_role('ADMINISTRADOR')  
 @login_required
 def eliminar_linea(request,id):
     linea=Linea.objects.get(id=id)
-    linea.delete()
+    linea.eliminar()
     return redirect('plan_linea')
 
 @require_role('ADMINISTRADOR')  
@@ -1126,18 +1135,18 @@ def empresa(request):
     }
     return render(request, 'admin/admin_empresa.html', context)
 
-@require_role('BETECH') 
+@require_role('ADMINISTRADOR') 
 @login_required
 def eliminar_cliente(request,id):
     cliente=Cliente.objects.get(id=id)
-    cliente.delete()
+    cliente.eliminar()
     return redirect('admin_cliente')
 
 @require_role('BETECH') 
 @login_required
 def eliminar_empresa(request,id):
-    empresa=Empresa.objects.get(id=id)
-    empresa.delete()
+    empresa=Empresa.objects.get(rut_empresa=id)
+    empresa.eliminar()
     return redirect('admin_empresa')
 
 

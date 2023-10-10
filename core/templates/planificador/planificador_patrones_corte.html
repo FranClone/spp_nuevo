@@ -95,8 +95,10 @@
                         
                     </tr>
                 </table>
-                <button type="submit" name="crear" class="red-button">Crear</button>
-                <button type="button" id="cancelar" class="form-close-x">x</button>
+                <div class="button-container">
+                    <button type="submit" name="crear" class="red-button-g">Crear</button>
+                    <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+                </div>
         </form>
 
     </div>
@@ -117,6 +119,7 @@
                 </thead>
                 <tbody>
                     {% for patron in patrones_corte %}
+                        {% if not patron.eliminado %}
                         <tr>
                             <td>{{ patron.codigo }}</td>
                             <td>{{ patron.producto_asociado }}</td>
@@ -135,6 +138,7 @@
 
                             </td>
                         </tr>
+                    {% endif %}
                     {% empty %}
                         <tr>
                             <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>

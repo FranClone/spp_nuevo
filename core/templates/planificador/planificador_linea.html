@@ -79,8 +79,10 @@
                 </tr>
             </table>
             
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
         </form>
         
     </div>
@@ -100,6 +102,7 @@
                 </thead>
                 <tbody>
                     {% for linea in lineas %}
+                        {% if not linea.eliminado %}
                         <tr>
                             <td>{{ linea.nombre_linea }}</td>
                             <td>{{ linea.descripcion_linea }}</td>
@@ -111,6 +114,7 @@
                             <a href="editarlinea/{{linea.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
                         </td>
                         </tr>
+                        {% endif %}
 
                     {% empty %}
                     </tr>
