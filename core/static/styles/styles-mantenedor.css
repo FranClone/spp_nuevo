@@ -79,7 +79,7 @@ form select {
 .form-container-productos form {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
+    justify-content: right;
     align-items: center;
 }
 
@@ -251,13 +251,20 @@ a {
     /* Incluye el ancho del borde y el relleno en el ancho total */
 }
 
-.red-button {
-    display: block;
-    margin: 0 auto;
+
+.button-container {
+    display: flex;
+    justify-content: flex-end; /* Alinea los botones a la derecha */
+    margin-top: 10px; /* Agrega margen superior si es necesario */
+}
+  
+.red-button-g, .red-button-c {
     background-color: red;
     color: white;
     border: 1px solid white;
     border-radius: 5px;
+    margin-left: 10px; /* Agrega espacio entre los botones si es necesario */
+    /* Otros estilos de botón si es necesario */
 }
 
 /* Style contenedor MultiSelect */
@@ -291,6 +298,7 @@ a {
 .detalle-pedido{
     background-color: rgba(194, 194, 194, 0.705); 
     color: Black; 
+
     width: 30vh; 
     font-size: 13px; 
     border-width: 1px; 
@@ -299,17 +307,23 @@ a {
 
 }
 
+
+    font-size: 13px; 
+    border-width: 1px; 
+    text-align: center;
+    border-right: 1px solid black;
+}
+
+
+
 .detalle-pedido-t{
     background-color: rgba(235, 0, 0, 0.822); 
     color: white; 
-    width: 30vh; 
-    height:3vh;
     font-size: 13px; 
     border-width: 1px;
     text-align: center;
 
 }
-
 
 
 

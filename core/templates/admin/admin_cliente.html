@@ -103,8 +103,12 @@
                 </tr>
             </table>
 
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
+
         </form>
 
     </div>
@@ -128,23 +132,28 @@
                 </thead>
                 <tbody>
                     {% for cliente in clientes %}
-                    <tr>
-                        <td>{{ cliente.rut_cliente }}</td>
-                        <td>{{ cliente.nombre_cliente }}</td>
-                        <td>{{ cliente.correo_cliente }}</td>
-                        <td>{{ cliente.ciudad }}</td>
-                        <td>{{ cliente.telefono }}</td>
-                        <td>{{ cliente.mercado }}</td>
-                        <td>{{ cliente.puerto_destino }}</td>
 
-                        <td>
-                            <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
+                        {% if not cliente.eliminado %}
+                        <tr>
+                            <td>{{ cliente.rut_cliente }}</td>
+                            <td>{{ cliente.nombre_cliente }}</td>
+                            <td>{{ cliente.correo_cliente }}</td>
+                            <td>{{ cliente.ciudad }}</td>
+                            <td>{{ cliente.telefono }}</td>
+                            <td>{{ cliente.mercado }}</td>
+                            <td>{{ cliente.puerto_destino }}</td>
+                        
+                            <td>                                            
+                                <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
+
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarcliente/{{cliente.id}}" class="fas fa-trash-alt fa-xl"></a>
                             <a href="admin_clienteeditar/{{cliente.id}}"
                                 class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
-                    </tr>
+
+                        </tr>
+                        {% endif %}
 
                     {% empty %}
                     </tr>

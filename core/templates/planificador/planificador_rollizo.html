@@ -95,8 +95,10 @@
                 </tr>
             </table>
             
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
         </form>
         
     </div>
@@ -118,6 +120,7 @@
                 </thead>
                 <tbody>
                     {% for rollizo in rollizos %}
+                        {% if not rollizo.eliminado %}
                         <tr>
                             <td>{{ rollizo.nombre_rollizo }}</td>
                             <td>{{ rollizo.linea }}</td>
@@ -132,7 +135,7 @@
                             <a href="editarrollizo/{{rollizo.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>  
                         </td>
                         </tr>
-
+                        {% endif %}
                     {% empty %}
                     </tr>
                         <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>

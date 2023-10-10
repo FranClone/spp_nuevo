@@ -118,10 +118,11 @@
                     <td>{{ form.patron_corte }}</td>
                 </tr>
 
-            </table>
-
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            </table>         
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
         </form>
 
     </div>
@@ -139,40 +140,40 @@
                         <th>Ancho</th>
                         <th>Largo</th>
                         <th>Detalles</th>
-
                     </tr>
                 </thead>
                 <tbody>
                     {% for producto in productos %}
-                    <tr>
-                        <td>{{ producto.orden_producto }}</td>
-                        <td>{{ producto.nombre }}</td>
-                        <td>{{ producto.alto }}</td>
-                        <td>{{ producto.ancho }}</td>
-                        <td>{{ producto.largo }}</td>
-                        <td>
 
+                        {% if not producto.eliminado %}
+                        <tr>
+                            <td>{{ producto.orden_producto }}</td>
+                            <td>{{ producto.nombre }}</td>
+                            <td>{{ producto.alto }}</td>
+                            <td>{{ producto.ancho }}</td>
+                            <td>{{ producto.largo }}</td>                        
+                            <td>
+                                <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
+                                '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento }}',
+                                '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
+                                <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
+                                <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>      
+                            </td>
+                        </tr>
+                        {% endif %}
+                        {% empty %}
+                        <tr>
+                            <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                        </tr>
+                    {% endfor %}
 
-                            <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
-                            '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento }}',
-                            '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')">
-                            <i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="editarproducto/{{producto.id}}"
-                                class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
-                        </td>
-                    </tr>
-
-                    {% empty %}
-                    </tr>
-                    <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
-                    <tr>
-                        {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No hay datos para los filtros ingresados.</p>
         </div>
         <br><br>
     </div>
+    
     <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">

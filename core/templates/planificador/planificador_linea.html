@@ -87,8 +87,12 @@
                 </tr>
             </table>
 
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
+
         </form>
 
     </div>
@@ -108,18 +112,23 @@
                 </thead>
                 <tbody>
                     {% for linea in lineas %}
-                    <tr>
-                        <td>{{ linea.nombre_linea }}</td>
-                        <td>{{ linea.descripcion_linea }}</td>
-                        <td>{{ linea.fecha_crea }}</td>
-                        <td>
-                            <button class="btn block"
-                                onclick="openPopup('{{ linea.nombre_linea }}' ,'{{ linea.descripcion_linea }}','{{ linea.fecha_crea }}')">
+
+                        {% if not linea.eliminado %}
+                        <tr>
+                            <td>{{ linea.nombre_linea }}</td>
+                            <td>{{ linea.descripcion_linea }}</td>
+                            <td>{{ linea.fecha_crea }}</td>                       
+                            <td>
+                                <button class="btn block" onclick="openPopup('{{ linea.nombre_linea }}' ,'{{ linea.descripcion_linea }}','{{ linea.fecha_crea }}')">
+
                                 <i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarlinea/{{linea.id}}" class="fas fa-trash-alt fa-xl"></a>
                             <a href="editarlinea/{{linea.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
-                    </tr>
+
+                        </tr>
+                        {% endif %}
+
 
                     {% empty %}
                     </tr>

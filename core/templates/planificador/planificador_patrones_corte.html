@@ -57,49 +57,52 @@
             {% csrf_token %}
             <table class="form-table">
                 <tr>
-                    <td>{{ form.codigo.label_tag }}</td>
-                    <td>{{ form.nombre.label_tag }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.codigo }}</td>
-                    <td>{{ form.nombre }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.descripcion.label_tag}}</td>
-                    <td>{{ form.rollizo.label_tag}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.descripcion}}</td>
-                    <td>{{ form.rollizo}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.rendimiento.label_tag}}</td>
-                    <td>{{ form.velocidad_linea.label_tag}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.rendimiento}}</td>
-                    <td>{{ form.velocidad_linea}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.setup_time.label_tag}}</td>
-                    <td>{{ form.lead_time.label_tag}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.setup_time}}</td>
-                    <td>{{ form.lead_time}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.producto_asociado.label_tag}}</td>
-                    <td>{{ form.utilizado.label_tag}}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.producto_asociado}}</td>
-                    <td class="form-check text-left">{{ form.utilizado}}</td>
 
-                </tr>
-            </table>
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+                        <td>{{ form.codigo.label_tag }}</td>
+                        <td>{{ form.nombre.label_tag }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.codigo }}</td>
+                        <td>{{ form.nombre }}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.descripcion.label_tag}}</td>
+                        <td>{{ form.rollizo.label_tag}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.descripcion}}</td>
+                        <td>{{ form.rollizo}}</td>
+                    </tr> 
+                    <tr>
+                        <td>{{ form.rendimiento.label_tag}}</td>
+                        <td>{{ form.velocidad_linea.label_tag}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.rendimiento}}</td>
+                        <td>{{ form.velocidad_linea}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.setup_time.label_tag}}</td>
+                        <td>{{ form.lead_time.label_tag}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.setup_time}}</td>
+                        <td>{{ form.lead_time}}</td>
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto_asociado.label_tag}}</td>
+                        <td>{{ form.utilizado.label_tag}}</td>   
+                    </tr>
+                    <tr>
+                        <td>{{ form.producto_asociado}}</td>
+                        <td class="form-check text-left">{{ form.utilizado}}</td>
+                        
+                    </tr>
+                </table>
+                <div class="button-container">
+                    <button type="submit" name="crear" class="red-button-g">Crear</button>
+                    <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+                </div>
         </form>
 
     </div>
@@ -120,15 +123,17 @@
                 </thead>
                 <tbody>
                     {% for patron in patrones_corte %}
-                    <tr>
-                        <td>{{ patron.codigo }}</td>
-                        <td>{{ patron.producto_asociado }}</td>
-                        <td>{{ patron.rollizo }}</td>
-                        <td>{{ patron.rendimiento}}</td>
-                        <td>
-                            <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
-                            <button class="btn block"
-                                onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
+
+                        {% if not patron.eliminado %}
+                        <tr>
+                            <td>{{ patron.codigo }}</td>
+                            <td>{{ patron.producto_asociado }}</td>
+                            <td>{{ patron.rollizo }}</td> 
+                            <td>{{ patron.rendimiento}}</td>
+                            <td>  
+                                <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
+                                <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
+
                                 '{{ patron.producto_asociado }}','{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}', 
                                 '{{patron.velocidad_linea}}','{{patron.setup_time}}','{{patron.lead_time}}','{{patron.utilizado}}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i>
@@ -138,8 +143,9 @@
                             <a href="editarpatroncorte/{{patron.id}}"
                                 class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
 
-                        </td>
-                    </tr>
+                            </td>
+                        </tr>
+                    {% endif %}
                     {% empty %}
                     <tr>
                         <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>

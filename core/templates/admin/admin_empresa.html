@@ -58,8 +58,10 @@
                         placeholder="Valor máximo">
                     <br>
                 </div>
-                <button type="submit" class="filter-button">Buscar</button>
-                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
             </div>
         </form>
     </div>
@@ -113,8 +115,10 @@
             </table>
 
 
-            <button type="submit" name="crear" class="red-button">Crear</button>
-            <button type="button" id="cancelar" class="form-close-x">x</button>
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
         </form>
 
     </div>
@@ -137,6 +141,7 @@
                 </thead>
                 <tbody>
                     {% for empresa in empresas %}
+                        {% if not empresa.eliminado %}
                     <tr>
                         <td>{{ empresa.rut_empresa}}</td>
                         <td>{{ empresa.nombre_empresa}}</td>
@@ -158,8 +163,9 @@
                             '{{ empresa.telefono }}', 
                             )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarempresa/{{empresa.rut_empresa}}" class="fas fa-trash-alt fa-xl"></a>
-                            <a href="admin_empresaeditar/{{empresa.rut_empresa}}"
-                                class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
+
+                            <a href="admin_empresaeditar/{{empresa.rut_empresa}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
+                        {% endif %}
 
                         </td>
                     </tr>
