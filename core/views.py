@@ -1116,6 +1116,7 @@ def empresa(request):
             form = CrearEmpresaForm(request.POST)
             if form.is_valid():
                 nueva_empresa = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_empresa.id)
                 return redirect('admin_empresa')
     
     context = {
@@ -1192,3 +1193,4 @@ def empresa_editar(request,id):
         else:
             print("error")
     return render(request, 'admin/admin_empresaeditar.html', data)
+
