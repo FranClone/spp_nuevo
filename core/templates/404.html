@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SPP - Página no encontrada</title>
+    {% load static %}
+    {% include "partials/resources.html" %}
+
+    <!-- Favicon -->
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+
+    <!-- Estilos CSS -->
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+</head>
+
+<body>
+    <div class="error-container">
+        <img src='{% static "img/logo_betech.png" %}' class="avatar" alt="Avatar Image">
+        <h1>Error 404 - Página no encontrada</h1>
+        <p>La página que buscas no pudo ser encontrada en nuestro sitio.</p>
+        <p>Por favor, verifica la URL o regresa a <a href="/">la página principal</a>.</p>
+    </div>
+</body>
+
+</html>

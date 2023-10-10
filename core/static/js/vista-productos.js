@@ -112,7 +112,7 @@ function openPopup(orden_producto, nombre, descripcion, largo, ancho, alto, inve
     console.log("IDs de patrones de corte relacionados:", patrones_de_corte);
 
 
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 

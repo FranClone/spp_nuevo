@@ -92,20 +92,20 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(orden_pedido, cliente, nombre, fecha_produccion,fecha_entrega, productos, cantidad, prioridad, linea_produccion, comentario) {
-    document.getElementById('popupCodigo').innerText = orden_pedido;
-    document.getElementById('popupCliente').innerText = cliente;
-    document.getElementById('popupNombre').innerText = nombre;
-    document.getElementById('popupFecha').innerText = fecha_entrega;
-    document.getElementById('popupFechainicio').innerText = fecha_produccion;
-    document.getElementById('popupProducto').innerText = productos;
-    document.getElementById('popupCantidad').innerText = cantidad;
-    document.getElementById('popupPrioridad').innerText = prioridad;
-    document.getElementById('popupLinea').innerText = linea_produccion;
+function openPopup(
+    
+    fecha_produccion, nombre,comentario,version,prioridad
+  ) {
+   // document.getElementById('popupCodigo').innerText = orden_interna;
+    document.getElementById('popupfechap').innerText = fecha_produccion;
+    document.getElementById('popupProducto').innerText = nombre;
     document.getElementById('popupComentario').innerText = comentario;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupVersion').innerText = version;
+    document.getElementById('popupPrioridad').innerText = prioridad;
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
-}
+  }
+  
 
 function closePopup() {
     document.getElementById('popupOverlay').style.display = 'none';

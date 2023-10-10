@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -27,268 +28,297 @@
 <body>
     {% include "partials/header.html" %}
     <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
-        <!--Sección de filtrado-->
-        <div class="filter-section">
-            <button class="filter-button">Filtrar</button>
-            
-            <form class="filter-form" style="display: none;">
-                <div class="filters-container" >
-                    <label for="filter-by">Filtrar por:</label>
-                    <select id="filter-by" name="filter-by" class="filter-select">
-                        <option value="nombre">Nombre del producto</option>
-                        <option value="codigo">Código del producto</option>
-                    </select>
-                    <div>
+    <!--Sección de filtrado-->
+    <div class="filter-section">
+        <button class="filter-button">Filtrar</button>
+
+        <form class="filter-form" style="display: none;">
+            <div class="filters-container">
+                <label for="filter-by">Filtrar por:</label>
+                <select id="filter-by" name="filter-by" class="filter-select">
+                    <option value="nombre">Nombre del producto</option>
+                    <option value="codigo">Código del producto</option>
+                </select>
+                <div>
                     <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
-                    </div>
-                    <select name="filter-option" class="filter-select">
-                        <option value="partial">Parcial</option>
-                        <option value="exact">Exacto</option>
-                    </select>
-                    <br>
-                    <label for="advanced-search">Búsqueda avanzada:</label>
-                    <input type="checkbox" id="advanced-search" name="advanced-search">
-                    <div id="advanced-search-options" style="display: none;">
-                        <label for="filter-length">Largo:</label>
-                        <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                        <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
-                        <br>
-                        <label for="filter-width">Ancho:</label>
-                        <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                        <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
-                        <br>
-                        <label for="filter-thickness">Grosor:</label>
-                        <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                        <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
-                        <br>
-                    </div>
-                    <button type="submit" class="filter-button">Buscar</button>
-                    <button type="button" class="clear-filter-button">Cancelar</button>
                 </div>
-            </form>
-        </div>
-        <!--Sección formulario desplegable mediante botón "Carga Manual"-->
-        <div class="form-container-productos">
-            <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
-                {% csrf_token %}
-        
-                <table class="form-table">
-                    <!-- Add Pedido fields -->
-                    {{ detalle_pedido_formset.management_form }}
-                    <tr>
-                        <th>{{ pedido_form.cliente.label_tag }}</th>
-                        <th>{{ pedido_form.orden_pedido.label_tag }}</th>
-                        <th>{{ pedido_form.fecha_produccion.label_tag }}</th>
-                        <th>{{ pedido_form.fecha_entrega.label_tag }}</th>
-                    </tr>
-                    <tr>
-                        <td>{{ pedido_form.cliente }}</td>
-                        <td>{{ pedido_form.orden_pedido }}</td>
-                        <td>{{ pedido_form.fecha_produccion }}</td>              
-                        <td>{{ pedido_form.fecha_entrega }}</td>
-                   
-                    </tr>
-                
-                    <tr>
-                        <th>{{ pedido_form.prioridad.label_tag }}</th>
-                        <th>{{ pedido_form.estado.label_tag }}</th>
-                        <th>{{ pedido_form.version.label_tag }}</th>
-                    </tr>
-                    <tr>
-                        <td>{{ pedido_form.prioridad }}</td>
-                        <td>{{ pedido_form.estado }}</td>
-                        <td>{{ pedido_form.version }}</td>
-                    </tr>
-                    {% for detalle_form in detalle_pedido_formset %}
-                    
-                    <tr>
-                        <th>{{ pedido_form.comentario.label_tag }}</td>
-                        <th>{{ detalle_form.detalle_producto.label_tag }}</th>
-                        <th>{{ detalle_form.producto.label_tag }}</th>
-                        <th>{{ detalle_form.ancho_producto.label_tag }}</th>
-                    </tr>   
-                     <tr>
-                        <td>{{ pedido_form.comentario }}</td>
-                        <td>{{ detalle_form.detalle_producto }}</td>
-                        <td>{{ detalle_form.producto }}</td>
-                        <td>{{ detalle_form.ancho_producto }}</td>
-                       
-                    </tr>
-                  
-                    <tr>
-                        <th>{{ detalle_form.largo_producto.label_tag }}</th>
-                        <th>{{ detalle_form.alto_producto.label_tag }}</th>
-                        <th>{{ detalle_form.volumen_producto.label_tag }}</th>                    
-                        <th>{{ detalle_form.estado_pedido_linea.label_tag }}</th>
-                      
-                    </tr>
-                    <tr>
-                        <td>{{ detalle_form.largo_producto }}</td>
-                        <td>{{ detalle_form.alto_producto }}</td>
-                        <td>{{ detalle_form.volumen_producto }}</td>                 
-                        <td>{{ detalle_form.estado_pedido_linea }}</td>
-                    </tr>
-                     <tr>
-                        <th>{{ detalle_form.cantidad_piezas.label_tag }}</th>
-                        <th>{{ detalle_form.cantidad_trozos.label_tag }}</th>
-                        <th>{{ detalle_form.piezas_xpaquete.label_tag }}</th>
-                        <th>{{ detalle_form.piezas_xtrozo.label_tag }}</th>
-                    </tr>
-                    <tr>
-                        <td>{{ detalle_form.cantidad_piezas }}</td>
-                        <td>{{ detalle_form.cantidad_trozos }}</td>
-                        <td>{{ detalle_form.piezas_xpaquete }}</td>
-                        <td>{{ detalle_form.piezas_xtrozo }}</td>
-                    </tr> 
-                    <tr>
-                        <th>{{ detalle_form.paquetes_solicitados.label_tag }}</th>
-                        <th>{{ detalle_form.volumen_obtenido.label_tag }}</th>
-                        <th>{{ detalle_form.paquetes_saldo.label_tag }}</th>
-                        <th>{{ detalle_form.grado_urgencia.label_tag }}</th>
-                    </tr>
-                    <tr>
-                        <td>{{ detalle_form.paquetes_solicitados }}</td>
-                        <td>{{ detalle_form.volumen_obtenido }}</td>
-                        <td>{{ detalle_form.paquetes_saldo }}</td>
-                        <td>{{ detalle_form.grado_urgencia }}</td>
-                    </tr> 
-         
-                    <!-- Add other DetallePedido fields here -->
-                    {% endfor %}
-                    <!-- Add a button to submit the form -->
-                </table>
-                <button type="submit" name="crear" class="red-button">Crear</button>
+                <select name="filter-option" class="filter-select">
+                    <option value="partial">Parcial</option>
+                    <option value="exact">Exacto</option>
+                </select>
+                <br>
+                <label for="advanced-search">Búsqueda avanzada:</label>
+                <input type="checkbox" id="advanced-search" name="advanced-search">
+                <div id="advanced-search-options" style="display: none;">
+                    <label for="filter-length">Largo:</label>
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input"
+                        placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-width">Ancho:</label>
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input"
+                        placeholder="Valor máximo">
+                    <br>
+                    <label for="filter-thickness">Grosor:</label>
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input"
+                        placeholder="Valor máximo">
+                    <br>
+                </div>
+                <button type="submit" class="filter-button">Buscar</button>
+                <button type="button" class="clear-filter-button">Cancelar</button>
+            </div>
+        </form>
+    </div>
+    <!--Sección formulario desplegable mediante botón "Carga Manual"-->
+    <div class="form-container-productos" style="">
+
+        <form method="post" action="{% url 'pedidos' %}" style="display: none; width:100vh;" id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+                <th>Detalle Pedido</th>
+                {{ detalle_pedido_formset.management_form }}
+                <tr>
+                    <th class="detalle-pedido-t">OP</th>
+                    <th class="detalle-pedido-t">Cliente</th>
+                    <th class="detalle-pedido-t">Mercado</th>
+                    <th class="detalle-pedido-t">ETA</th>
+                    <th class="detalle-pedido-t">Destino</th>
+                    <th class="detalle-pedido-t" style="width:20vh;">Programa</th>
+                    <th class="detalle-pedido-t">Item</th>
+                    <th class="detalle-pedido-t">Nombre producto</th>
+                    <th class="detalle-pedido-t">Est</th>
+                    <th class="detalle-pedido-t">term</th>
+                    <th class="detalle-pedido-t">Calidad</th>
+                    <th class="detalle-pedido-t">Cpo</th>
+                </tr>
+                {% for form in detalle_pedido_formset %}
+                <tr>
+                    <td>{{ pedido_form.orden_interna }}</td>
+                    <td>{{ pedido_form.cliente }}</td>
+                    <td>{{ form.mercado}}</td>
+                    <td>{{ pedido_form.fecha_entrega }}</td>
+                    <td>{{ form.puerto_destino }}</td>
+                    <td>{{ form.programa }}</td>
+                    <td>{{ form.item }}</td>
+                    <td>{{ form.producto }}</td>
+                    <td>{{ form.est }}</td>
+                    <td>{{ form.term }}</td>
+                    <td>{{ form.calidad }}</td>
+                    <td>{{ form.cpo }}</td>
+                    {{ form.errors }}
+                </tr>
+            </table>
+            <table class="form-table" style="margin-top:2vh;">
+
+                <tr>
+                    <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t">Pzas</th>
+                    <th class="detalle-pedido-t">M3</th>
+                    <th class="detalle-pedido-t ">Mbf</th>
+                    <th class="detalle-pedido-t ">Baño</th>
+                    <th class="detalle-pedido-t">Marca</th>
+                    <th class="detalle-pedido-t">Fecha Creacion</th>
+                    <th class="detalle-pedido-t">Comentario</th>
+                    <th class="detalle-pedido-t">Version</th>
+                    <th class="detalle-pedido-t">Estado</th>
+                </tr>
+
+                <tr>
+                    <td>{{ form.alto_producto }}</td>
+                    <td>{{ form.ancho_producto }}</td>
+                    <td>{{ form.largo_producto }}</td>
+                    <td>{{ form.piezas }}</td>
+                    <td>{{ form.volumen_producto }}</td>
+                    <td>{{ form.mbf }}</td>
+                    <td>{{ form.banio}}</td>
+                    <td>{{ form.marca}}</td>
+                    <td>{{ pedido_form.fecha_produccion }}</td>
+                    <td>{{ pedido_form.comentario }}</td>
+                    <td>{{ pedido_form.version }}</td>
+                    <td>{{ pedido_form.estado }}</td>
+
+                </tr>
+
+            </table>
+            <hr>
+            <table class="form-table">
+                <th>Detalle Factura</th>
+                <tr>
+                    <th class="detalle-pedido-t">FSC</th>
+                    <th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>
+                </tr>
+                <tr>
+                    <td>{{ form.FSC }}</td>
+                    <td>{{ form.esp_fact }}</td>
+                    <td>{{ form.anc_fact }}</td>
+                    <td>{{ form.lar_fact }}</td>
+                </tr>
+            </table>
+            <hr>
+            <table>
+                <th>Detalle Paquete</th>
+                <tr>
+                    <th class="detalle-pedido-t">Tipo Empaque</th>
+                    <th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>
+                    <th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>
+                    <th class="detalle-pedido-t">Int.paquete</th>
+                    <th class="detalle-pedido-t">Pqte</th>
+                </tr>
+                <tr>
+                    <td>{{ form.tipo_empaque }}</td>
+                    <td>{{ form.alto_paquete }}</td>
+                    <td>{{ form.anc_paquete }}</td>
+                    <td>{{ form.int_paquete }}</td>
+                    <td>{{ form.pqte }}</td>
+                </tr>
+            </table>
+
+          {% endfor %}
+                <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" type="submit" name="crear" class="red-button">Crear</button>    
                 <button type="button" id="cancelar" class="form-close-x">x</button>
             </form>
         </div>
 
-        <!--Tabla de pedidos-->
-        <div class="table-container">
-            <h1 class="encabezado-pedidos">Pedidos</h1>
-            <div class="table-responsive">
-                <table class="table w-100">
-                    <caption></caption>
-                    <thead class="thead-pedidos">
-                        <tr>
-                            <th>Código</th>
-                            <th>Cliente</th>
-                            <th>Fecha de entrega</th>
-                            <th>Estado del Pedido</th>
-                            <th>Detalles</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for pedido in pedidos %}
-                        <tr>
-                            <td>{{ pedido.orden_pedido }}</td>
-                            <td>{{ pedido.cliente }}</td>
-                            <td>{{ pedido.fecha_entrega }}</td>
-                            <td>{{ pedido.estado }}</td>
-                            <td>
-                                <button class="btn block" onclick="openPopup('{{ pedido.orden_pedido}}', '{{ pedido.cliente }}', '{{pedido.fecha_produccion}}','{{pedido.fecha_entrega }}','{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}','{{ pedido.cantidad }}','{{ pedido.prioridad }}','{{ pedido.linea_produccion }}','{{ pedido.comentario }}','{{ pedido.version }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                                <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl" ></a>
-                                <a href="editarpedido/{{pedido.id}}"class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
-                            </td>
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+    <!--Tabla de pedidos-->
+    <div class="table-container">
+        <h1 class="encabezado-pedidos">Pedidos</h1>
+        <div class="table-responsive">
+            <table class="table w-100">
+                <caption></caption>
+                <thead class="thead-pedidos">
+                    <tr>
+                        <th>Código</th>
+                        <th>Cliente</th>
+                        <th>Fecha de entrega</th>
+                        <th>Estado del Pedido</th>
+                        <th>Detalles</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for pedido in pedidos %}
+                    <tr>
+                        <td>{{ pedido.orden_interna }}</td>
+                        <td>{{ pedido.cliente }}</td>
+                        <td>{{ pedido.fecha_entrega }}</td>
+                        <td>{{ pedido.estado }}</td>
+                        <td>
+                            <button class="btn block" onclick="openPopup( 
+                                    '{{ pedido.fecha_produccion }}',
+                                    '{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}',
+                                    '{{ pedido.comentario }}', 
+                                    '{{ pedido.version }}',
+                                    '{{ pedido.prioridad }}')">
+                                    <i class="fa-regular fa-clip
 
-    <div class="popup-overlay" id="popupOverlay"></div>
-        <div class="popup" id="popup">
+                                )">
+                                    <i class="fa-regular fa-clipboard fa-xl"></i></button>
+                            <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl"></a>
+                            <a href="editarpedido/{{pedido.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content" id="popup">
             <h2>Detalles del producto</h2>
-            <div class="popup-item">
-                <strong>Código:</strong> <span id="popupCodigo"></span>
-            </div>
-        <div class="popup-item">
-            <strong>Cliente:</strong> <span id="popupCliente"></span>
-        </div>
-            <div class="popup-item">
-                <strong>Fecha de emision:</strong> <span id="popupFechainicio"></span>
-        </div>
-            <div class="popup-item">
-                <strong>Fecha de entrega:</strong> <span id="popupFecha"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Producto:</strong> <span id="popupProducto"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Cantidad:</strong> <span id="popupCantidad"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Prioridad:</strong> <span id="popupPrioridad"></span>
-        </div>
-        <div class="popup-item">
-            <strong>Linea produccion:</strong> <span id="popupLinea"></span>
-            </div>
-            <div class="popup-item">
-                <strong>Comentario:</strong> <span id="popupComentario"></span>
-            </div>
-            <button class="close-button" onclick="closePopup()">Cerrar</button>
-        </div>
-    
+            <table>
+                <tr>
+                    <th class="detalle-pedido-t">Fecha Creación</th>
+                    <th class="detalle-pedido-t">Producto</th>
+                    <th class="detalle-pedido-t">Comentario</th>
+                    <th class="detalle-pedido-t">Version</th>
+                    <th class="detalle-pedido-t">Prioridad</th>
 
+                </tr>
 
-<script>
-        var toggleFilterButton = document.querySelector('.filter-section .filter-button');
-        var filterForm = document.querySelector('.filter-section .filter-form');
-        var isFilterVisible = false; // Variable de estado para el filtro
+                
+            <tr>
+                <td><span id="popupfechap"></span></td>
+                <td><span id="popupProducto"></span></td>
+                <td><span id="popupComentario"></span></td>
+                <td><span style="float:right;" id="popupVersion"></span></td>
+                <td ><span id="popupPrioridad"></span></td>  
+            </tr>
+     
+        </table>
+ 
+            <button class="close-button" style="float:right;" onclick="closePopup()">Cerrar</button>
+        </div>
 
-        toggleFilterButton.addEventListener('click', function() {
-            if (isFilterVisible) {
-                filterForm.style.display = 'none';
-                toggleFilterButton.innerText = 'Filtrar';
-                isFilterVisible = false;
-            } else {
-                filterForm.style.display = 'block';
-                toggleFilterButton.innerText = 'Ocultar filtro';
-                isFilterVisible = true;
-            }
-        });
-    </script>
-    <script>
-        const toggleButton = document.getElementById("toggle-carga-button");
-        const cargaForm = document.querySelector(".form-container-productos form");
+    </div>
 
-        let isFormVisible = false;
+        <script>
+            var toggleFilterButton = document.querySelector('.filter-section .filter-button');
+            var filterForm = document.querySelector('.filter-section .filter-form');
+            var isFilterVisible = false; // Variable de estado para el filtro
 
-        toggleButton.addEventListener("click", function() {
-            if (!isFormVisible) {
-                const buttonRect = toggleButton.getBoundingClientRect();
-                const buttonBottom = buttonRect.bottom;
-                cargaForm.style.display = "block";
-                isFormVisible = true;
-            } else {
-                cargaForm.style.display = "none";
-                isFormVisible = false;
-            }
-        });
-    </script>
-    <script>
-        $(document).ready(function() {
-            $('.select2').select2({
-                multiple: true,
-                closeOnSelect: false,          
-                placeholder: 'Seleccione una opción'
+            toggleFilterButton.addEventListener('click', function () {
+                if (isFilterVisible) {
+                    filterForm.style.display = 'none';
+                    toggleFilterButton.innerText = 'Filtrar';
+                    isFilterVisible = false;
+                } else {
+                    filterForm.style.display = 'block';
+                    toggleFilterButton.innerText = 'Ocultar filtro';
+                    isFilterVisible = true;
+                }
             });
-                    // Handle padding when Select2 dropdown is opened
-            $('.select2').on('select2:open', function() {
-                $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
+        </script>
+        <script>
+            const toggleButton = document.getElementById("toggle-carga-button");
+            const cargaForm = document.querySelector(".form-container-productos form");
+
+            let isFormVisible = false;
+
+            toggleButton.addEventListener("click", function () {
+                if (!isFormVisible) {
+                    const buttonRect = toggleButton.getBoundingClientRect();
+                    const buttonBottom = buttonRect.bottom;
+                    cargaForm.style.display = "block";
+                    isFormVisible = true;
+                } else {
+                    cargaForm.style.display = "none";
+                    isFormVisible = false;
+                }
             });
-        });  
-    </script>
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const botonCancelar = document.getElementById('cancelar');
-            const formulario = document.getElementById('carga-form');
-            
-            botonCancelar.addEventListener('click', function() {
-                formulario.style.display = 'none';
+        </script>
+        <script>
+            $(document).ready(function () {
+                $('.select2').select2({
+                    multiple: true,
+                    closeOnSelect: false,
+                    placeholder: 'Seleccione una opción'
+                });
+                // Handle padding when Select2 dropdown is opened
+                $('.select2').on('select2:open', function () {
+                    $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
+                });
+            });  
+        </script>
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                const botonCancelar = document.getElementById('cancelar');
+                const formulario = document.getElementById('carga-form');
+
+                botonCancelar.addEventListener('click', function () {
+                    formulario.style.display = 'none';
+                });
             });
-        });
-    </script>
+        </script>
 
 
 </body>

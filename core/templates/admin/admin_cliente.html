@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -11,8 +12,9 @@
     <script src="{% static 'js/vista-cliente.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
-    
+
 </head>
+
 <body>
     {% include "partials/header.html" %}
     <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
@@ -20,14 +22,14 @@
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
-            <div class="filters-container" >
+            <div class="filters-container">
                 <label for="filter-by">Filtrar por:</label>
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
                 </select>
                 <div>
-                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                    <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
                 </div>
                 <select name="filter-option" class="filter-select">
                     <option value="partial">Parcial</option>
@@ -38,16 +40,22 @@
                 <input type="checkbox" id="advanced-search" name="advanced-search">
                 <div id="advanced-search-options" style="display: none;">
                     <label for="filter-length">Largo:</label>
-                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-width">Ancho:</label>
-                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-thickness">Grosor:</label>
-                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
@@ -94,19 +102,21 @@
                     <td>{{ form.puerto_destino }}</td>
                 </tr>
             </table>
+
             
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
             </div>
+
         </form>
-        
+
     </div>
     <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
-        <div class="table-responsive">            
+        <div class="table-responsive">
             <h1 class="encabezado-pedidos">Clientes</h1>
-            
+
             <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
@@ -117,11 +127,12 @@
                         <th>Telefono</th>
                         <th>Mercado</th>
                         <th>Destino</th>
-                        <th>Detalles</th>                
+                        <th>Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for cliente in clientes %}
+
                         {% if not cliente.eliminado %}
                         <tr>
                             <td>{{ cliente.rut_cliente }}</td>
@@ -134,17 +145,21 @@
                         
                             <td>                                            
                                 <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
+
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarcliente/{{cliente.id}}" class="fas fa-trash-alt fa-xl"></a>
-                            <a href="admin_clienteeditar/{{cliente.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
+                            <a href="admin_clienteeditar/{{cliente.id}}"
+                                class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
+
                         </tr>
                         {% endif %}
+
                     {% empty %}
                     </tr>
-                        <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
                     <tr>
-                    {% endfor %}
+                        {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No hay datos para los filtros ingresados.</p>
@@ -152,42 +167,42 @@
         <br><br>
     </div>
     <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
-    <div class="popup-overlay" id="popupOverlay"></div>
-    <div class="popup" id="popup">
-        <h2>Detalles del Cliente</h2>
-        <table class="popup-table">
-            <tr>
-                <th class="detalle-pedido-t"><strong>Rut</strong></th>
-                <th class="detalle-pedido-t"><strong>Nombre</strong></th>
-                <th class="detalle-pedido-t"><strong>Correo</strong></th>
-                <th class="detalle-pedido-t"><strong>Fecha Creacion</strong></th>
-                <th class="detalle-pedido-t"><strong>Creador del Usuario</strong></th>
-                <th class="detalle-pedido-t"><strong>Ciudad</strong></th>
-                <th class="detalle-pedido-t"><strong>Telefono</strong></th>
-                <th class="detalle-pedido-t"><strong>Mercado</strong></th>
-                <th class="detalle-pedido-t"><strong>Puerto Destino</strong></th>
-            </tr>
-            <tr>
-                <td class="detalle-pedido"><span id="popupRut_cliente"></span></td>
-                <td class="detalle-pedido"><span id="popupNombre_cliente"></span></td>
-                <td class="detalle-pedido"><span id="popupCorreo_cliente"></span></td>
-                <td class="detalle-pedido"><span id="popupFecha_crea"></span></td>
-                <td class="detalle-pedido"><span id="popupUsuario_crea"></span></td>
-                <td class="detalle-pedido"><span id="popupCiudad"></span></td>
-                <td class="detalle-pedido"><span id="popupTelefono"></span></td>
-                <td class="detalle-pedido"><span id="popupMercado"></span></td>
-                <td class="detalle-pedido"><span id="popupPuerto_destino"></span></td>
-            </tr>
-        </table>
-        <button class="close-button" onclick="closePopup()">Cerrar</button>
+    <div class="popup-overlay" id="popupOverlay">
+        <div class="popup-content" id="popup">
+            <h2>Detalles del Cliente</h2>
+            <table class="popup-table">
+                <tr>
+                    <th class="detalle-pedido-t"><strong>Rut</strong></th>
+                    <th class="detalle-pedido-t"><strong>Nombre</strong></th>
+                    <th class="detalle-pedido-t"><strong>Correo</strong></th>
+                    <th class="detalle-pedido-t"><strong>Fecha Creacion</strong></th>
+                    <th class="detalle-pedido-t"><strong>Creador del Usuario</strong></th>
+                    <th class="detalle-pedido-t"><strong>Ciudad</strong></th>
+                    <th class="detalle-pedido-t"><strong>Telefono</strong></th>
+                    <th class="detalle-pedido-t"><strong>Mercado</strong></th>
+                    <th class="detalle-pedido-t"><strong>Puerto Destino</strong></th>
+                </tr>
+                <tr>
+                    <td class="detalle-pedido"><span id="popupRut_cliente"></span></td>
+                    <td class="detalle-pedido"><span id="popupNombre_cliente"></span></td>
+                    <td class="detalle-pedido"><span id="popupCorreo_cliente"></span></td>
+                    <td class="detalle-pedido"><span id="popupFecha_crea"></span></td>
+                    <td class="detalle-pedido"><span id="popupUsuario_crea"></span></td>
+                    <td class="detalle-pedido"><span id="popupCiudad"></span></td>
+                    <td class="detalle-pedido"><span id="popupTelefono"></span></td>
+                    <td class="detalle-pedido"><span id="popupMercado"></span></td>
+                    <td class="detalle-pedido"><span id="popupPuerto_destino"></span></td>
+                </tr>
+            </table>
+            <button class="close-button" onclick="closePopup()">Cerrar</button>
+        </div>
     </div>
-   
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
         var isFilterVisible = false; // Variable de estado para el filtro
 
-        toggleFilterButton.addEventListener('click', function() {
+        toggleFilterButton.addEventListener('click', function () {
             if (isFilterVisible) {
                 filterForm.style.display = 'none';
                 toggleFilterButton.innerText = 'Filtrar';
@@ -205,7 +220,7 @@
 
         let isFormVisible = false;
 
-        toggleButton.addEventListener("click", function() {
+        toggleButton.addEventListener("click", function () {
             if (!isFormVisible) {
                 const buttonRect = toggleButton.getBoundingClientRect();
                 const buttonBottom = buttonRect.bottom;
@@ -218,16 +233,16 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const botonCancelar = document.getElementById('cancelar');
             const formulario = document.getElementById('carga-form');
-            
-            botonCancelar.addEventListener('click', function() {
+
+            botonCancelar.addEventListener('click', function () {
                 formulario.style.display = 'none';
             });
         });
     </script>
 
 </body>
+
 </html>
-   

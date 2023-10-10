@@ -27,101 +27,125 @@
         <div class="form-container-productos">
 
             <form method="post" action="{% url 'pedido_editar' id %}" id="carga-form">
-                {% csrf_token %}
-                
-                        <table class="form-table">
-                            <!-- Add Pedido fields -->
+                        {% csrf_token %}
+                        <table class="form-table" >
+                            <th>Detalle Pedido</th>
                             {{ detalle_pedido_formset.management_form }}
                             <tr>
-                                <th>{{ pedido_form.cliente.label_tag }}</th>
-                                <th>{{ pedido_form.orden_pedido.label_tag }}</th>
-                                <th>{{ pedido_form.fecha_produccion.label_tag }}</th>
-                                <th>{{ pedido_form.fecha_entrega.label_tag }}</th>
+                                <th class="detalle-pedido-t">OP</th>
+                                <th class="detalle-pedido-t">Cliente</th>
+                               <th class="detalle-pedido-t">Mercado</th>
+                               <th class="detalle-pedido-t">ETA</th>
+                               <th class="detalle-pedido-t">Destino</th>
+                               <th class="detalle-pedido-t" style="width:20vh;" >Programa</th>
+                                <th class="detalle-pedido-t">Item</th>
+                                <th class="detalle-pedido-t">Nombre producto</th>
+                               <th class="detalle-pedido-t">Est</th>
+                               <th class="detalle-pedido-t">term</th>
+                               <th class="detalle-pedido-t">Calidad</th>
+                               <th class="detalle-pedido-t">Cpo</th>
                             </tr>
+                            {% for detalle in detalle_pedido_formset %}
+                            <input type="hidden" name="{{ detalle.prefix }}-id" value="{{ detalle.instance.id }}">
+
+                            <input type="hidden" name="{{ detalle.prefix }}-factura" value="{{ factura.id }}">
+                            <input type="hidden" name="{{ detalle.prefix }}-empaque" value="{{ paquete.id }}">
+                            <!-- Otros campos relacionados -->
                             <tr>
+                                <td>{{ pedido_form.orden_interna }}</td>
                                 <td>{{ pedido_form.cliente }}</td>
-                                <td>{{ pedido_form.orden_pedido }}</td>
-                                <td>{{ pedido_form.fecha_produccion }}</td>              
+                                <td>{{ detalle.mercado}}</td>              
                                 <td>{{ pedido_form.fecha_entrega }}</td>
+                                <td>{{ detalle.puerto_destino }}</td>
+                                <td>{{ detalle.programa }}</td>
+                                <td>{{ detalle.item }}</td>              
+                                <td>{{ detalle.producto }}</td>
+                                <td>{{ detalle.est }}</td>
+                                <td>{{ detalle.term }}</td>
+                                <td>{{ detalle.calidad }}</td>
+                                <td>{{ detalle.cpo }}</td>
+                                {{ form.errors }}
+                            </tr>
+                            
+                        </table>
+                            <table class="form-table" style="margin-top:2vh;">
+            
+                            <tr>
+                               <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
+                               <th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>
+                               <th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>
+                               <th class="detalle-pedido-t">Pzas</th>
+                               <th class="detalle-pedido-t">M3</th>
+                               <th class="detalle-pedido-t ">Mbf</th>
+                                <th class="detalle-pedido-t ">Baño</th>
+                               <th class="detalle-pedido-t">Marca</th>
+                               <th class="detalle-pedido-t">Fecha Creacion</th>
+                               <th class="detalle-pedido-t">Comentario</th>
+                               <th class="detalle-pedido-t">Version</th>
+                               <th class="detalle-pedido-t">Estado</th>
+                            </tr>
+                   
+                            <tr>              
+                                <td>{{ detalle.alto_producto }}</td>
+                                <td>{{ detalle.ancho_producto }}</td>
+                                <td>{{ detalle.largo_producto }}</td>
+                                <td>{{ detalle.piezas }}</td>
+                                <td>{{ detalle.volumen_producto }}</td>
+                                <td>{{ detalle.mbf }}</td>
+                                <td>{{ detalle.banio}}</td>
+                                <td>{{ detalle.marca}}</td>
+                                <td>{{ pedido_form.fecha_produccion }}</td>
+                                <td>{{ pedido_form.comentario }}</td>
+                                <td>{{ pedido_form.version }}</td>
+                                <td>{{ pedido_form.estado }}</td>
                            
                             </tr>
                         
-                            <tr>
-                                <th>{{ pedido_form.prioridad.label_tag }}</th>
-                                <th>{{ pedido_form.estado.label_tag }}</th>
-                                <th>{{ pedido_form.version.label_tag }}</th>
-                            </tr>
-                            <tr>
-                                <td>{{ pedido_form.prioridad }}</td>
-                                <td>{{ pedido_form.estado }}</td>
-                                <td>{{ pedido_form.version }}</td>
-                            </tr>
-                            {% for detalle_form in detalle_pedido_formset %}
-                            
-                            <tr>
-                                <th>{{ pedido_form.comentario.label_tag }}</td>
-                                <th>{{ detalle_form.detalle_producto.label_tag }}</th>
-                                <th>{{ detalle_form.producto.label_tag }}</th>
-                                <th>{{ detalle_form.ancho_producto.label_tag }}</th>
-                            </tr>   
-                             <tr>
-                                <td>{{ pedido_form.comentario }}</td>
-                                <td>{{ detalle_form.detalle_producto }}</td>
-                                <td>{{ detalle_form.producto }}</td>
-                                <td>{{ detalle_form.ancho_producto }}</td>
-                               
-                            </tr>
-                          
-                            <tr>
-                                <th>{{ detalle_form.largo_producto.label_tag }}</th>
-                                <th>{{ detalle_form.alto_producto.label_tag }}</th>
-                                <th>{{ detalle_form.volumen_producto.label_tag }}</th>                    
-                                <th>{{ detalle_form.estado_pedido_linea.label_tag }}</th>
-                              
-                            </tr>
-                            <tr>
-                                <td>{{ detalle_form.largo_producto }}</td>
-                                <td>{{ detalle_form.alto_producto }}</td>
-                                <td>{{ detalle_form.volumen_producto }}</td>                 
-                                <td>{{ detalle_form.estado_pedido_linea }}</td>
-                            </tr>
-                             <tr>
-                                <th>{{ detalle_form.cantidad_piezas.label_tag }}</th>
-                                <th>{{ detalle_form.cantidad_trozos.label_tag }}</th>
-                                <th>{{ detalle_form.piezas_xpaquete.label_tag }}</th>
-                                <th>{{ detalle_form.piezas_xtrozo.label_tag }}</th>
-                            </tr>
-                            <tr>
-                                <td>{{ detalle_form.cantidad_piezas }}</td>
-                                <td>{{ detalle_form.cantidad_trozos }}</td>
-                                <td>{{ detalle_form.piezas_xpaquete }}</td>
-                                <td>{{ detalle_form.piezas_xtrozo }}</td>
-                            </tr> 
-                            <tr>
-                                <th>{{ detalle_form.paquetes_solicitados.label_tag }}</th>
-                                <th>{{ detalle_form.volumen_obtenido.label_tag }}</th>
-                                <th>{{ detalle_form.paquetes_saldo.label_tag }}</th>
-                                <th>{{ detalle_form.grado_urgencia.label_tag }}</th>
-                            </tr>
-                            <tr>
-                                <td>{{ detalle_form.paquetes_solicitados }}</td>
-                                <td>{{ detalle_form.volumen_obtenido }}</td>
-                                <td>{{ detalle_form.paquetes_saldo }}</td>
-                                <td>{{ detalle_form.grado_urgencia }}</td>
-                            </tr> 
-                 
-                            <!-- Add other DetallePedido fields here -->
-                            {% endfor %}
-                            <!-- Add a button to submit the form -->
-
-                </table>
-                <button type="submit" name="Editar" class="red-button">Editar</button>
-                <button type="button" class="red-button">
-                    <a href="{% url 'pedidos' %}">Cancelar</a>
-                </button>
-            </form>
-
-        </div>
+                        </table>
+                        <hr>
+                         <table class="form-table">
+                           <th>Detalle Factura</th>
+                        <tr>
+                            <th class="detalle-pedido-t" >FSC</th>
+                            <th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>
+                            <th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>
+                            <th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>
+                        </tr>       
+                        <tr>
+                            <td>{{ detalle.FSC }}</td>
+                            <td>{{ detalle.esp_fact }}</td>
+                            <td>{{ detalle.anc_fact }}</td>
+                            <td>{{ detalle.lar_fact }}</td>
+                        </tr>
+                    </table>
+                    <hr>
+                    <table>
+                        <th>Detalle Paquete</th>
+                        <tr>
+                            <th class="detalle-pedido-t">Tipo Empaque</th>
+                            <th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>
+                            <th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>
+                            <th class="detalle-pedido-t">Int.paquete</th>
+                            <th class="detalle-pedido-t">Pqte</th>
+                        </tr>
+                        <tr>
+                            <td>{{ detalle.tipo_empaque }}</td>
+                            <td>{{ detalle.alto_paquete }}</td>
+                            <td>{{ detalle.anc_paquete }}</td>
+                            <td>{{ detalle.int_paquete }}</td>
+                            <td>{{ detalle.pqte }}</td>
+                        </tr>
+                    </table>
+                  {% endfor %}
+            
+                        <button type="submit" name="Editar" class="red-button" style="margin-top: 2vh;background-color: red; color: white; width:6%; border: 1px solid white;">Editar</button>
+                        <button type="button" class="red-button">
+                            <a href="{% url 'pedidos' %}">Cancelar</a>
+                        </button>
+     
+                    </form>
+        
+                </div>
         
 </body>
 <script>
