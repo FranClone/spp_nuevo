@@ -45,7 +45,7 @@ class DetallePedido(models.Model):
     piezas = models.FloatField(validators=[MinValueValidator(0)], null=True)
     cpo = models.FloatField(validators=[MinValueValidator(0)], null=True)
     piezas_x_cpo = models.FloatField(validators=[MinValueValidator(0)], null=True)
-    est = models.CharField(max_length=40, null=True, blank=False)
+    est = models.CharField(max_length=40, null=True, blank=False) 
     separador = models.IntegerField(validators=[MinValueValidator(0)], null=True)
     nota =models.CharField(max_length=200, null=True) 
     diametro = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)

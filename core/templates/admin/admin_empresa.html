@@ -69,6 +69,7 @@
         <form method="post" action="{% url 'admin_empresa' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
+                
                 <tr>
                     <th>{{ form.rut_empresa.label_tag }}</th>
                     <td>{{ form.rut_empresa }}</td>

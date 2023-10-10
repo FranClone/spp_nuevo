@@ -176,7 +176,7 @@
             </table>
           {% endfor %}
                 <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" type="submit" name="crear" class="red-button">Crear</button>    
-                <button  class="form-close-x" onclick="closePopup()">x</button>
+                <button type="button" id="cancelar" class="form-close-x">x</button>
             </form>
         </div>
 
@@ -206,9 +206,9 @@
                                 <button class="btn block" onclick="openPopup( 
                                     '{{ pedido.fecha_produccion }}',
                                     '{% for producto in pedido.producto.all %}{{ producto.nombre }}{% if not forloop.last %}, {% endif %}{% endfor %}',
-                                    '{{ pedido.prioridad }}',
-                                    '{{ pedido.comentario }}',
-                                    '{{ pedido.version }}')">
+                                    '{{ pedido.comentario }}', 
+                                    '{{ pedido.version }}',
+                                    '{{ pedido.prioridad }}')">
                                     <i class="fa-regular fa-clip
                                 )">
                                 <i class="fa-regular fa-clipboard fa-xl"></i></button>
@@ -224,7 +224,7 @@
 
     <div class="popup-content" id="popupOverlay"></div>
         <div class="popup" id="popup">
-            <h2>Detalles del producto</h2>
+            <h2>Detalles del pedido</h2>
             <table>
             <tr>
             <th class="detalle-pedido-t">Fecha Creación</th>
@@ -239,7 +239,7 @@
                 <td><span id="popupfechap"></span></td>
                 <td><span id="popupProducto"></span></td>
                 <td><span id="popupComentario"></span></td>
-                <td><span id="popupVersion"></span></td>
+                <td><span style="float:right;" id="popupVersion"></span></td>
                 <td ><span id="popupPrioridad"></span></td>  
             </tr>
      
