@@ -1116,6 +1116,7 @@ def empresa(request):
             form = CrearEmpresaForm(request.POST)
             if form.is_valid():
                 nueva_empresa = form.save()
+                print("Producto guardado en la base de datos con ID:", nueva_empresa.id)
                 return redirect('admin_empresa')
     
     context = {
@@ -1196,3 +1197,4 @@ def empresa_editar(request,id):
 class Custom404View(View):
     def get(self, request, *args, **kwargs):
         return render(request, '404.html', status=404)
+

@@ -213,6 +213,21 @@ class CrearClienteForm(forms.ModelForm):
         ]
         
 class CrearEmpresaForm(forms.ModelForm):
+    fecha_vigencia = forms.DateField(
+        widget=forms.DateInput(
+            format='%d/%m/%Y',
+            attrs={
+                'autocomplete': 'on',  # Desactiva el autocompletado del navegador
+                'placeholder': 'dd/mm/yyyy',  # Formato de marcador de posición para la fecha
+                'type': 'date',  # Utiliza el widget de fecha HTML5
+            }
+        )
+    )
+
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha_vigencia'].widget.attrs.update({'class': 'form-control'})
     exclude = ['fecha_crea']
     class Meta:
         model = Empresa
@@ -229,6 +244,8 @@ class CrearEmpresaForm(forms.ModelForm):
                  'productos',
                  'cliente',
         ]
+
+ 
 
 class DetallePedidoForm(forms.ModelForm):
     pqte = forms.IntegerField(min_value=0)  # Adjust the field type and options as needed
