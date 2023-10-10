@@ -104,7 +104,7 @@ function openPopup(numero_buzon, nombre, alto, ancho, largo, conicidad, almacena
     document.getElementById('popupInventario_inicial').textContent = inventario_inicial;
     document.getElementById('popupVolumen_procesado').textContent = volumen_procesado;
     document.getElementById('popupInventario_final').textContent = inventario_final;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 

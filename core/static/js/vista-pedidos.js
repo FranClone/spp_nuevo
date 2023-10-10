@@ -102,7 +102,7 @@ function openPopup(
     document.getElementById('popupComentario').innerText = comentario;
     document.getElementById('popupVersion').innerText = version;
     document.getElementById('popupPrioridad').innerText = prioridad;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
   }
   

@@ -106,7 +106,7 @@ function openPopup(rut_cliente,nombre_cliente,correo_cliente,fecha_crea,usuario_
     document.getElementById('popupMercado').innerText = mercado;
     document.getElementById('popupPuerto_destino').innerText = puerto_destino;
     
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 

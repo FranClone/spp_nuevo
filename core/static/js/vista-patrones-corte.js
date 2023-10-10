@@ -87,7 +87,7 @@ function openPopup(codigo, nombre, producto_asociado,rollizo, descripcion,rendim
     document.getElementById('popupPCorteSetupTime').innerText = setup_time;
     document.getElementById('popupPCorteLeadTime').innerText = lead_time;
     document.getElementById('popupPCorteUtilizado').innerText = utilizado;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
     

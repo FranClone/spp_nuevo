@@ -103,7 +103,7 @@ function openPopup(nombre, largo, descripcion_rollizo, diametro, usuario_crea,fe
     document.getElementById('popupFecha_crea').innerText = fecha_crea;
     document.getElementById('popupClase').innerText = clase_diametrica;
     document.getElementById('popupLinea').innerText = linea;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 

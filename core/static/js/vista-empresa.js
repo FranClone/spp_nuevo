@@ -105,7 +105,7 @@ function openPopup(rut_empresa, nombre_empresa, correo_empresa, estado_empresa, 
     document.getElementById('popupFantasia').innerText = nombre_fantasia;
     document.getElementById('popupCiudad').innerText = ciudad;
     document.getElementById('popupTelefono').innerText = telefono;
-    document.getElementById('popupOverlay').style.display = 'block';
+    document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
 
