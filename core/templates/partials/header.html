@@ -22,8 +22,11 @@
             <a class="nav-link"  href="{% url 'home' %}" > Producción</a>
             <ul role="menu" class="menu-vertical">
               <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
-              <li><a href="#" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
-              <li><a href="#" class="nav-link" id="showProductosButton">Planificar Producción</a></li>
+              <li><a href="{% url 'home' %}" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
+                <li><a class="nav-link" id="showProductosButton">Planificar Producción</a></li>
+                  <li><a class="nav-link"id="showPlanButton">Plan vigente</a></li>
+
+              </li>
             </ul>
         </li>
         {% endif %} 
@@ -77,10 +80,11 @@
       const gantt = new Gantt(tasksData);
       const showPedidosButton = document.getElementById("showPedidosButton");
       const showProductosButton = document.getElementById("showProductosButton");
+      const showPlanButton = document.getElementById("showPlanButton");
       const titulo = document.getElementById("titulo");
   
       // Verifica si los elementos existen antes de adjuntar manejadores de eventos
-      if (showPedidosButton && showProductosButton && titulo) {
+      if (showPedidosButton && showProductosButton && showPlanButton && titulo) {
         // Inicialmente, muestra la tabla de "Pedidos JCE"
         gantt.showPedidosTable();
         titulo.textContent = "Pedidos JCE";
@@ -93,6 +97,11 @@
         showProductosButton.onclick = function () {
           gantt.showProductosTable();
           titulo.textContent = "Productos JCE";
+        };
+
+        showPlanButton.onclick = function () {
+          gantt.showPlanTable();
+          titulo.textContent = "Plan Vigente JCE";
         };
       }
     });
