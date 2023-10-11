@@ -28,15 +28,6 @@
 </head>
 <body>
     {% include "partials/header.html" %}
-    {% if alert_message %}
-    <div class="popup2" id="popup2">
-        <div class="popup2-content">
-            <h2>Aviso</h2>
-            <p>{{ alert_message }}</p>
-            <button class="popup2-close-button" id="popup2-close-button">Cerrar</button>
-        </div>
-    </div>
-{% endif %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
         <div class="popup-content-pedidos">
             {% comment %} Revisar si estos comentarios son necesarios {% endcomment %}
