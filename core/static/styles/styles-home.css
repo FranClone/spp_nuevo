@@ -848,60 +848,6 @@ table tr {
     display: flex;
     flex-direction: column;
 }
-
-/* Estilos para el contenido del popup */
-.popup2-content {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #6d6c6c;
-    padding: 20px;
-    text-align: center;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 10px;
-    font-size: 22px;
-}
-
-.popup2-title {
-    font-size: 24px;
-    margin-bottom: 15px;
-    text-align: center;
-    color: #fff;
-}
-
-/* Estilos para el botón "Continuar" */
-.popup2-continue {
-    background: #007BFF;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    font-size: 20px;
-    cursor: pointer;
-    margin-top: 10px;
-    text-align: center;
-}
-
-.popup2-content p {
-    text-align: center;
-    color: #ffffff;
-    /* Gris */
-}
-
-.popup2-close-button {
-    background: #ff0000;
-    /* Color de fondo rojo */
-    color: #fff;
-    /* Texto blanco */
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    margin-top: 10px;
-}
 .button-container {
     display: flex;
     justify-content: space-between;
