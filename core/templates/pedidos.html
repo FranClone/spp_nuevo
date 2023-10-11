@@ -208,11 +208,13 @@
                 </thead>
                 <tbody>
                     {% for pedido in pedidos %}
+                        {% if not pedido.eliminado %}
                     <tr>
                         <td>{{ pedido.orden_interna }}</td>
                         <td>{{ pedido.cliente }}</td>
                         <td>{{ pedido.fecha_entrega }}</td>
                         <td>{{ pedido.estado }}</td>
+
                         <td>
                             <button class="btn block" onclick="openPopup( 
                                     '{{ pedido.fecha_produccion }}',
@@ -228,6 +230,7 @@
                             <a href="editarpedido/{{pedido.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
                     </tr>
+                    {% endif %}
                     {% endfor %}
                 </tbody>
             </table>
@@ -237,7 +240,7 @@
 
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2>Detalles del producto</h2>
+            <h2  style="text-align: center;">Detalles del Pedido</h2>
             <table>
                 <tr>
                     <th class="detalle-pedido-t">Fecha Creación</th>
@@ -250,11 +253,11 @@
 
                 
             <tr>
-                <td><span id="popupfechap"></span></td>
-                <td><span id="popupProducto"></span></td>
-                <td><span id="popupComentario"></span></td>
-                <td><span style="float:right;" id="popupVersion"></span></td>
-                <td ><span id="popupPrioridad"></span></td>  
+                <td class="detalle-pedido"><span id="popupfechap"></span></td>
+                <td class="detalle-pedido"><span id="popupProducto"></span></td>
+                <td class="detalle-pedido"><span id="popupComentario"></span></td>
+                <td class="detalle-pedido"><span style="float:right;" id="popupVersion"></span></td>
+                <td class="detalle-pedido"><span id="popupPrioridad"></span></td>  
             </tr>
      
         </table>

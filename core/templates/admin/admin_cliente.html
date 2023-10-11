@@ -121,8 +121,8 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Rut</th>
-                        <th>Nombre</th>
-                        <th>Correo</th>
+                        <th class"tabla-cliente">Nombre</th>
+                        <th class"tabla-cliente">Correo</th>
                         <th>Ciudad</th>
                         <th>Telefono</th>
                         <th>Mercado</th>
@@ -143,7 +143,7 @@
                             <td>{{ cliente.mercado }}</td>
                             <td>{{ cliente.puerto_destino }}</td>
                         
-                            <td>                                            
+                        <td>                                            
                                 <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
 
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
@@ -169,7 +169,7 @@
     <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2>Detalles del Cliente</h2>
+            <h2 style="text-align: center;">Detalles del Cliente</h2>
             <table class="popup-table">
                 <tr>
                     <th class="detalle-pedido-t"><strong>Rut</strong></th>
