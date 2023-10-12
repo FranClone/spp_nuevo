@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    {% include "partials/resources.html" %}
+    <link rel="icon" href="{% static 'img/logo_betech.png' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'styles/styles-mantenedor.css' %}">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
+    <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
+    <script src="{% static 'js/vista-productos.js' %}"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <title>SPP - Stock</title>
+
+</head>
+
+<body>
+    {% include "partials/header.html" %}
+    <!--Este es el contenedor del formulario productos-->
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'stock_editar' id  %}" id="carga-form">
+            {% csrf_token %}
+            <table class="form-table">
+            <tr>
+                <th>{{ form.cantidad_m3.label_tag }}</th>
+                <th>{{ form.usuario_crea.label_tag }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.cantidad_m3 }}</td>
+                <td>{{ form.usuario_crea }}</td>
+            </tr>
+            <tr>
+                <th>{{ form.bodega.label_tag }}</th>
+                <th>{{ form.producto.label_tag }}</th>
+            </tr>
+            <tr>
+                <td>{{ form.bodega }}</td>
+                <td>{{ form.producto }}</td>
+            </tr>
+
+            </table>
+      
+            <div class="button-container">
+                <button type="submit" name="guardar" class="red-button-g">Guardar</button>
+                <button type="button" class="red-button-c">
+                <a href="{% url 'plan_stock' %}">Cancelar</a>
+                </button>
+            </div>
+        </form>
+
+
+    </div>
+
+</body>
+
+</html>
+

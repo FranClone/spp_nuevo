@@ -36,10 +36,10 @@
             {% if 'BETECH'  not in request.user.roles %}
             <li><a class="nav-link" href="{% url 'pedidos' %}">Pedidos</a></li>
             <li><a class="nav-link" href="{% url 'plan_productos' %}">Productos</a></li>
-            <li><a class="nav-link" href="{% url 'plan_productos_terminados' %}">Productos Terminados</a></li>
             <li><a class="nav-link" href="{% url 'plan_patrones_corte' %}">Patrones de Corte</a></li>
             <li><a class="nav-link" href="{% url 'plan_rollizo' %}">Rollizo</a></li>
             <li><a class="nav-link" href="{% url 'plan_linea' %}">Linea</a></li>
+            <li><a class="nav-link" href="{% url 'plan_stock' %}">Stock</a></li>
             {% endif %}  
             <li class="nav-item">
               <a class="nav-link" href="#" id="admin-trigger">Administración</a>

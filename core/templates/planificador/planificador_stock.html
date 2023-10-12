@@ -9,14 +9,16 @@
     <link rel="stylesheet" href="{% static 'styles/styles-mantenedor.css' %}">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
-    <script src="{% static 'js/vista-productos-terminados.js' %}"></script>
+    <script src="{% static 'js/vista-stock.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
-    <title>SPP - Productos Terminados</title>
+    <title>SPP - Productos</title>
 
 </head>
 
 <body>
     {% include "partials/header.html" %}
+    <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
+    <!--Esta es la seccion de filtro-->
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
@@ -62,80 +64,113 @@
         </form>
     </div>
 
-
-    <!--
-
+    <!--Este es el contenedor del formulario productos-->
     <div class="form-container-productos">
-        <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
-        <form method="post" action="{% url 'plan_productos_terminados' %}" style="display: none;" id="carga-form">
+        <form method="post" action="{% url 'plan_stock' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit" name="crear">Crear</button>
+            <table class="form-table">
+                <tr>
+                    <th>{{ form.cantidad_m3.label_tag }}</th>
+                    <th>{{ form.usuario_crea.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.cantidad_m3 }}</td>
+                    <td>{{ form.usuario_crea }}</td>
+                </tr>
+                <tr>
+                    <th>{{ form.bodega_id.label_tag }}</th>
+                    <th>{{ form.producto_id.label_tag }}</th>
+                </tr>
+                <tr>
+                    <td>{{ form.bodega }}</td>
+                    <td>{{ form.producto }}</td>
+                </tr>
+            </table>
+
+            
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
+
         </form>
+
     </div>
-
--->
-
+    <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
         <div class="table-responsive">
-            <table id="productos-terminados-table" class="table w-100">
-                <br>
-                <h1 class="encabezado-pedidos">Productos Terminados</h1>
+            <h1 class="encabezado-pedidos">Stock de productos</h1>
+
+            <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
-                        <th>Codigo</th>
-                        <th>Nombre</th>
-                        <th>Grosor</th>
-                        <th>Ancho</th>
-                        <th>Largo</th>
-                        <th>Cantidad</th>
-                        <th>Acciones</th>
+                        <th>id</th>
+                        <th>cantidad_m3</th>
+                        <th>fecha_crea</th>
+                        <th>usuario_crea</th>
+                        <th>Detalles</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {% for productoterminado in productos_terminados %}
-                    <tr>
-                        <td>{{productoterminado.codigo}}</td>
-                        <td>{{productoterminado.nombre}}</td>
-                        <td>{{productoterminado.grosor}}</td>
-                        <td>{{productoterminado.ancho}}</td>
-                        <td>{{productoterminado.largo}}</td>
-                        <td>{{productoterminado.cantidad_producida}}</td>
-                        <td>
-                            <button class="btn block"
-                                onclick="openPopup('{{ row.codigo }}', '{{ row.nombre_bodega }}', '{{ row.nombre_empresa }}', '{{ row.descripcion_bodega }}')"><i
-                                    class="fa-regular fa-clipboard fa-bounce fa-xl"></i></button>
-                            <a href="eliminarproducto_terminado/{{productoterminado.id}}"
-                                class="fas fa-trash-alt fa-bounce fa-xl"></a>
+                    {% for stock in stocks %}
+
+                 
+                        <tr>
+                            <td>{{ stock.id }}</td>      
+                            <td>{{ stock.cantidad_m3 }}</td>   
+                            <td>{{ stock.fecha_crea }}</td>      
+                            <td>{{ stock.usuario_crea }}</td>                       
+                            <td>
+                                <button class="btn block" onclick="openPopup('{{ stock.id }}','{{ stock.cantidad_m3 }}','{{ stock.fecha_crea }}','{{ stock.usuario_crea }}'
+                                ,'{{ stock.producto }}','{{ stock.bodega }}')">
+                                <i class="fa-regular fa-clipboard fa-xl"></i></button>
+                            <!--<a href="eliminarstock/{{stock.id}}" class="fas fa-trash-alt fa-xl"></a>-->
+                            <a href="editarstock/{{stock.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
+
+                        </tr>
+               
+
+
+                    {% empty %}
                     </tr>
-                    {% endfor %}
+                    <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <tr>
+                        {% endfor %}
                 </tbody>
             </table>
+            <p class="no-data-message">No hay datos para los filtros ingresados.</p>
         </div>
         <br><br>
     </div>
+    <!--Esta es la ventana emergente en donde se muestran los detalles de productos-->
+
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2>Detalles del producto</h2>
-            <div class="popup-item">
-                <strong>Código:</strong> <span id="popupCodigo"></span>
-            </div>
-            <div class="popup-item">
-                <strong>Nombre:</strong> <span id="popupNombre"></span>
-            </div>
-            <div class="popup-item">
-                <strong>Grosor:</strong> <span id="popupGrosor"></span>
-            </div>
-            <div class="popup-item">
-                <strong>Ancho:</strong> <span id="popupAncho"></span>
-            </div>
-            <div class="popup-item">
-                <strong>Largo:</strong> <span id="popupLargo"></span>
-            </div>
+            <h2  style="text-align: center;">Detalles de la stock</h2>
+            <table>
+                <tr>
+                    <td class="detalle-pedido-t"><strong>Id:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Cantidad_m3:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Fecha de creacion:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Usuario creador:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Producto:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Bodega:</strong></td>
+
+                </tr>
+                <tr>
+                    <td class="detalle-pedido"><span id="popupId"></span></td>
+                    <td class="detalle-pedido"><span id="popupCantidad"></span></td>
+                    <td class="detalle-pedido"><span id="popupFecha"></span></td>
+                    <td class="detalle-pedido"><span id="popupUser"></span></td>
+                    <td class="detalle-pedido"><span id="popupBodega"></span></td>
+                    <td class="detalle-pedido"><span id="popupProducto"></span></td>
+                </tr>
+            </table>
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
     </div>
+
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
@@ -171,6 +206,17 @@
             }
         });
     </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const botonCancelar = document.getElementById('cancelar');
+            const formulario = document.getElementById('carga-form');
+
+            botonCancelar.addEventListener('click', function () {
+                formulario.style.display = 'none';
+            });
+        });
+    </script>
+
 </body>
 
 </html>

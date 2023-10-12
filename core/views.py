@@ -14,7 +14,7 @@ from django.conf import settings
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm, CrearProductoForm, ProductoTerminadoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
+from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm,StockForm, CrearProductoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
@@ -24,7 +24,7 @@ from .modelos.detalle_pedido import DetallePedido
 from .modelos.cliente import Cliente
 from .modelos.empresa import Empresa
 from .modelos.materia_prima import MateriaPrima
-from .modelos.productos_terminados import ProductoTerminado
+from .modelos.stock_producto import StockProducto
 from django.forms import inlineformset_factory
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.factura import Factura
@@ -425,23 +425,6 @@ class Register(View):
             return redirect('login')
         return render(request, 'register.html', {'form': form})
 
-
-@method_decorator(login_required, name='dispatch')
-@method_decorator(require_role(['ADMINISTRADOR', 'PLANIFICADOR']), name='dispatch')
-class ProductosTerminados(View):
-    def get(self, request, *args, **kwargs):
-        productos_terminados = ProductoTerminado.objects.all()
-        form = ProductoTerminadoForm()
-        return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
-    
-    def post(self, request, *args, **kwargs):
-        form = ProductoTerminadoForm(request.POST)
-        if form.is_valid():
-            form.save()
-            return redirect('plan_productos_terminados')
-        
-        productos_terminados = ProductoTerminado.objects.all()
-        return render(request, 'planificador/planificador_productos_terminados.html', {'productos_terminados': productos_terminados, 'form': form})
 
 
 class Plan_Patrones_Corte(View):
@@ -859,14 +842,6 @@ def eliminar_producto(request,id):
 
 @require_role('ADMINISTRADOR')  
 @login_required
-def eliminar_producto_terminado(request,id):
-    producto_terminado=ProductoTerminado.objects.get(id=id)
-    producto_terminado.eliminar()
-
-    return redirect('plan_productos_terminados')
-
-@require_role('ADMINISTRADOR')  
-@login_required
 def producto_editar(request,id):
     prod= Producto.objects.get(id=id)
     data = {'form': CrearProductoForm(instance=prod),'id':id}
@@ -879,17 +854,7 @@ def producto_editar(request,id):
             print("error")
     return render(request, 'planificador/planificador_productoseditar.html', data)
     
-# def pedido_editar(request,id):
-#     prod= Pedido.objects.get(id=id)
-#     data = {'form': ActualizarPedidoForm(instance=prod),'id':id}
-#     if request.method == 'POST':
-#         formulario = ActualizarPedidoForm(data = request.POST, instance=prod)
-#         if formulario.is_valid():linea_editar
-#             formulario.save()
-#             return redirect('pedidos')
-#         else:
-#             print("error")
-#     return render(request, 'pedidoseditar.html', data)
+
 @require_role('ADMINISTRADOR')  
 @login_required
 def linea_editar(request,id):
@@ -1208,3 +1173,36 @@ class Custom404View(View):
     def get(self, request, *args, **kwargs):
         return render(request, '404.html', status=404)
 
+@require_role('ADMINISTRADOR')  
+@login_required
+def stock(request):
+    stocks = StockProducto.objects.all()
+    form = StockForm()
+
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            form = StockForm(request.POST)
+            if form.is_valid():
+                nuevo_stock = form.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
+                return redirect('plan_stock')
+    
+    context = {
+        'form': form,
+        'stocks': stocks
+    }
+    return render(request, 'planificador/planificador_stock.html', context)
+
+@require_role('ADMINISTRADOR')  
+@login_required
+def stock_editar(request,id):
+    prod= StockProducto.objects.get(id=id)
+    data = {'form': StockForm(instance=prod),'id':id}
+    if request.method == 'POST':
+        formulario = StockForm(data = request.POST, instance=prod)
+        if formulario.is_valid():
+            formulario.save()
+            return redirect('plan_stock')
+        else:
+            print("error")
+    return render(request, 'planificador/planificador_stockeditar.html', data)

@@ -92,15 +92,19 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(codigo, nombre, grosor, ancho, largo) {
-    document.getElementById('popupCodigo').innerText = codigo;
-    document.getElementById('popupNombre').innerText = nombre;
-    document.getElementById('popupGrosor').innerText = grosor;
-    document.getElementById('popupAncho').innerText = ancho;
-    document.getElementById('popupLargo').innerText = largo;
+function openPopup(id,cantidad_m3,fecha_crea,usuario_crea,bodega,producto) {
+
+    document.getElementById('popupId').innerText = id; 
+    document.getElementById('popupCantidad').innerText = cantidad_m3; 
+    document.getElementById('popupFecha').innerText = fecha_crea; 
+    document.getElementById('popupUser').innerText = usuario_crea; 
+    document.getElementById('popupBodega').innerText = bodega; 
+    document.getElementById('popupProducto').innerText = producto; 
     document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }
+
+
 
 function closePopup() {
     document.getElementById('popupOverlay').style.display = 'none';
@@ -112,3 +116,10 @@ $(document).ready(function() {
 
     });
 });
+
+
+
+
+
+
+  

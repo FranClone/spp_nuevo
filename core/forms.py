@@ -11,6 +11,7 @@ from .modelos.linea import Linea
 from .modelos.cliente import Cliente
 from .modelos.factura import Factura
 from .modelos.empaque import Empaque
+from .modelos.stock_producto import StockProducto
 from .modelos.productos_terminados import ProductoTerminado
 from .modelos.detalle_pedido import DetallePedido
 from django.forms import inlineformset_factory
@@ -390,5 +391,10 @@ class ProductoTerminadoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto terminado"""
     class Meta:
         model = ProductoTerminado
-        fields = ['codigo', 'nombre', 'grosor', 'ancho', 'largo', 'clase_diametrica', 'patron_corte', 'cantidad_producida', 'fecha_produccion']
+        fields = '__all__'
 
+class StockForm(forms.ModelForm):
+    exclude = ['fecha_crea']
+    class Meta:
+        model = StockProducto
+        fields = '__all__'
