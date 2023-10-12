@@ -7,12 +7,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.urls import path
 from .views import Administracion, Bar_chart, Carga_sv, Lista_pedidos, Login, Logout, Mantenedor, Pedidos, Register, DownloadExcel
-from .views import ProductosTerminados, Dashboard 
+from .views import Dashboard 
 from .views import producto, materia_prima, patron_corte, pedidos, eliminar_materia_prima, gantt_view, pantalla_carga
-from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido ,patron_editar
-from .views import eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido, materia_editar
+from .views import eliminar_patron, eliminar_producto, eliminar_pedido ,patron_editar
+from .views import eliminar_patron, eliminar_producto, eliminar_pedido, materia_editar
 from . import views
-from .views import execute_code, eliminar_patron, eliminar_producto,eliminar_producto_terminado, eliminar_pedido,producto_editar,pedido_editar, obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa,linea_editar,rollizo_editar,cliente_editar,empresa_editar,Custom404View
+from .views import execute_code, eliminar_patron, eliminar_producto, eliminar_pedido,producto_editar,pedido_editar
+from .views import obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
+from .views import linea_editar,rollizo_editar,cliente_editar,empresa_editar,Custom404View, stock, stock_editar
 from django.conf.urls import handler404
 
 from django.urls import path
@@ -37,15 +39,17 @@ urlpatterns = [
     # path('asignar_folio_pedido/', asignar_folio_pedido, name = "asignar_folio_pedido"),
 
     # urls del menu desplegable del navbar
-    path('planificador_productos_terminados/', login_required(ProductosTerminados.as_view()), name="plan_productos_terminados"),
     path('plan_materia_prima/', login_required(materia_prima), name="plan_materia_prima"),
     path('planificador_patrones_corte/', login_required(patron_corte), name="plan_patrones_corte"),
     path('planificador_productos/', login_required(producto), name="plan_productos"),
+    path('planificador_stock/', login_required(stock), name="plan_stock"),
     path('plan_materia_prima/eliminarmateria/<int:id>', login_required(eliminar_materia_prima), name='eliminar_materia'),
     path('planificador_patrones_corte/eliminarpatron/<int:id>', login_required(eliminar_patron), name='eliminar_patron'),
     path('planificador_productos/eliminarproducto/<int:id>', login_required(eliminar_producto), name='eliminar_producto'),
-    path('planificador_productos_terminados/eliminarproducto_terminado/<int:id>', login_required(eliminar_producto_terminado), name='eliminar_producto_terminado'),
     path('planificador_patrones_corte/editarpatroncorte/<int:id>', login_required(patron_editar), name="patron_editar"),
+
+    path('planificador_stock/editarstock/<int:id>', login_required(stock_editar), name="stock_editar"),
+
     path('plan_materia_prima/editarmateria/<int:id>', login_required(materia_editar), name="materia_editar"),
     path('obtener-ids-pedidos/', login_required(obtener_ids_pedidos), name='obtener_ids_pedidos'),
     path('planificador_productos/editarproducto/<int:id>', login_required(producto_editar), name="producto_editar"),
