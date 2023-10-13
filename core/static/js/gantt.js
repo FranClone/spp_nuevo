@@ -34,10 +34,12 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Producto</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Produccion</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
+
 
 
         // Copiar el encabezado de la primera tabla
@@ -107,17 +109,12 @@ class Gantt {
 
                 bodyHtml += '<tr>';
 
-                // Agregar el valor de task[7] en la primera columna
-                bodyHtml += `<td>${task[0]}</td>`;
 
-                // Agregar el nombre del producto en la segunda columna
-                bodyHtml += `<td>${product}</td>`;
-
-                bodyHtml += `<td>${task[3]}</td>`;
-                bodyHtml += `<td>${task[2]}</td>`;
-
-
-
+                bodyHtml += `<td>${product}</td>`;/*Nombre del Producto*/
+                bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo*/
+                bodyHtml += `<td class="right-align">${task[23].toLocaleString()}</td>`;/*Ancho*/
+                bodyHtml += `<td class="right-align">${task[22].toLocaleString()}</td>`;/*Alto*/
+                bodyHtml += `<td class="right-align">${task[25]}</td>`;/*M3*/
 
 
                 for (let k = 0; k < daysBefore; k++) {
@@ -125,8 +122,7 @@ class Gantt {
                 }
 
                 bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[15]}; border: 1px solid #000;">
-                    <span>${task[5]}%</span>
-                    <a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">U ${task[6]}</a>
+                    <a class="popup-link" data-pedido-id="${j}" data-popup-type="producto">Pqtes.solicitados ${task[54]}</a>
                 </td>`;
 
                 for (let k = 0; k < daysAfter; k++) {
