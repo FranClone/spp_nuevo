@@ -39,14 +39,12 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
-
-
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Cantidad a producir</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
         // Copiar el encabezado de la primera tabla
         const selectedPeriod = document.querySelector('select[name="periodos"]').value;
         const isDiarioSelected = selectedPeriod === "diario";
-        const isSemanalSelected = selectedPeriod === "semanal";
-        const isMensualSelected = selectedPeriod === "mensual";
 
         if (isDiarioSelected) {
             var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
@@ -56,27 +54,7 @@ class Gantt {
                 html += '<th style="color: white; width: 70vh; font-size: 13px;">' + this.formatDate(actual, "diario") + '</th>';
                 actual.setDate(actual.getDate() + 1);
             }
-        } else if (isSemanalSelected) {
-            var diffWeeks = this.diffInWeeks(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffWeeks; i++) {
-                const startOfWeek = new Date(actual);
-                const endOfWeek = new Date(actual);
-                endOfWeek.setDate(startOfWeek.getDate() + 6);
-
-                html += '<th>' + this.formatDate(startOfWeek, "semanal", endOfWeek) + '</th>';
-                actual.setDate(startOfWeek.getDate() + 7);
-            }
-        } else if (isMensualSelected) {
-            var diffMonths = this.diffInMonths(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
-
-            for (let i = 0; i < diffMonths; i++) {
-                actual.setMonth(actual.getMonth() + 1);
-                html += '<th>' + this.formatDate(actual, "mensual") + '</th>';
-            }
-        }
+        } 
 
         html += '</tr></thead><tbody>';
 
@@ -115,20 +93,39 @@ class Gantt {
                 bodyHtml += `<td class="right-align">${task[23].toLocaleString()}</td>`;/*Ancho*/
                 bodyHtml += `<td class="right-align">${task[22].toLocaleString()}</td>`;/*Alto*/
                 bodyHtml += `<td class="right-align">${task[25]}</td>`;/*M3*/
+                bodyHtml += `<td class="right-align">${task[54]}</td>`;/*candidad*/
+                bodyHtml += `<td class="left-align"><a class="popup-link" data-pedido-id="${j}" data-popup-type="producto">Ver detalles</a></td>`;/*Detalle*/
+                
 
-
-                for (let k = 0; k < daysBefore; k++) {
-                    bodyHtml += '<td ></td>';
+                let target = task[54];
+                let sum = 0;
+                let randomNumbers = [];
+                
+                while (sum < target) {
+                    let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
+                    sum += randomNumber;
+                    randomNumbers.push(randomNumber);
+                    if (sum >= target) {
+                        break;
+                    }
                 }
+                
 
-                bodyHtml += `<td class="event-cell" colspan="${dateDiff}" style="background-color: ${task[15]}; border: 1px solid #000;">
-                    <a class="popup-link" data-pedido-id="${j}" data-popup-type="producto">Pqtes.solicitados ${task[54]}</a>
-                </td>`;
-
+        
+                for (let k = 0; k < dateDiff; k++) {
+                    if (k < randomNumbers.length) {
+                        bodyHtml += `<td class="event-cell" style="background-color: ${task[15]}; border: 1px solid #000;">
+                            <a>Pqtes.solicitado: ${randomNumbers[k]}</a>
+                        </td>`;
+                    } else {
+                        bodyHtml += `<td></td>`;
+                    }
+                }
+                                
                 for (let k = 0; k < daysAfter; k++) {
                     bodyHtml += '<td></td>';
                 }
-
+                
                 bodyHtml += '</tr>';
                 
             }
