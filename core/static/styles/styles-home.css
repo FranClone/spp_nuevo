@@ -61,15 +61,15 @@ table tr {
 }
 
 .carga-button-top {
-    background-color: rgba(255, 0, 0, 0.705);
+    background-color: red;
     color: white;
-    border-radius: 3px;
+    border-radius: 0.375rem;
     padding: 10px;
     border: 1px solid white;
     float: left;
-    margin-top: 1%;
+    margin-top: 1vh;
     margin-left: 1%;
-    margin-right: 1%;
+ 
 }
 
 .carga-button-bot {
@@ -705,8 +705,7 @@ table tr {
     width: 15%;
 
 }
-
-
+ 
 .btn-group {
     margin-top: 1vh;
     background-color: red;
