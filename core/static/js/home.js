@@ -163,15 +163,5 @@ $(document).ready(function () {
         }
     });
 });
-$(document).ready(function() {
-    $('#gantt').DataTable({
-        "paging": true, // Habilita la paginación
-        "pageLength": 10 // Número de filas por página (puedes cambiar este valor)
-    });
-});
 
-$('#tabla-container').html(tabla); // Suponiendo que tengas un contenedor con el id "tabla-container"
-$('#miTabla').DataTable({
-    "paging": true, // Habilita la paginación
-    "pageLength": 10 // Número de filas por página (puedes cambiar este valor)
-});
+

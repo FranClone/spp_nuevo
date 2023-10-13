@@ -700,20 +700,17 @@ table tr {
 .dropdown-toggle {
     background-color: red;
     color: white;
-    min-width: 80px;
-    max-width: 100px;
-    width: 15%;
-
+    min-width: max-content;
+    max-width: min-content;
+    margin-right: 15px;
+    margin-bottom: 15px;
 }
  
 .btn-group {
     margin-top: 1vh;
-    background-color: red;
-    color: white;
-    min-width: 80px;
-    max-width: 100px;
-    width: 15%;
-
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /*
