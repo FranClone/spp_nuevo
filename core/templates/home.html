@@ -208,8 +208,8 @@
 
                 <div class="container-b">
                 <ul class="dropdown-menu" role="menu">
-                    <button id="materiaprima">Materia Prima</button>
-                    <button id="produccion">Produccion</button>
+                    <button id="materiaprima" onclick="showPopupmateria()">Materia Prima</button>
+                    <button id="produccion" onclick="showPopupproduccion()">Produccion</button>
                     <button id="agregarpedido" onclick="showPopupimport()">Agregar Pedidos</button>
                 </ul>
                 </div>
@@ -240,6 +240,66 @@
 
     </div>
 
+        <!-- Popup Container Materia prima -->
+        
+        <div class="form-container-productos">
+            <form method="post" action="{% url 'actualizar_stock_rollizo' %}" id="popupContainermateria" style="display: none;">
+                {% csrf_token %}
+                <hr>
+                <table class="form-table">
+                    <h2 class="bold-heading">Ingresar Stock materia prima</h2>
+                    <tr>
+                        <th class="detalle-pedido-t">Bodega</th>
+                        <th class="detalle-pedido-t">Rollizo</th>
+                       <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                       <th class="detalle-pedido-t">Creado por:</th>
+                    </tr>
+                    <tr>
+                        <td>{{ formStockRollizo.bodega }}</td>
+                        <td>{{ formStockRollizo.rollizo }}</td>
+                        <td>{{ formStockRollizo.cantidad}}</td>              
+                        <td>{{ formStockRollizo.usuario_crea }}</td>
+                    </tr>
+                </table>
+      
+                <div class="button-container">
+                    <button type="submit" name="crear" class="red-button-g">Crear</button>
+                    <button class="red-button-c" onclick="closePopupmateria()">Cerrar</button>
+                </div>
+            </form>
+        </div>
+
+    <div class="form-container-productos">
+        {% comment %} {% endcomment %}
+        <!-- Popup Container Productos Terminado -->
+        
+    <div class="form-container-productos" style="width:200vh;">
+            <form method="POST"  action="{% url 'stock' %}" id="popupContainerproduccion"  style="display: none;">
+                {% csrf_token %}
+                <hr>
+                <table class="form-table">
+                    <h2 class="bold-heading">Actualizar Producción</h2>
+                    <tr>
+                        <th class="detalle-pedido-t">Bodega</th>
+                        <th class="detalle-pedido-t">Producto</th>
+                       <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                       <th class="detalle-pedido-t">Creado por:</th>
+                    </tr>
+                    <tr>
+                        <td>{{ formstockterminado.bodega }}</td>
+                        <td>{{ formstockterminado.producto }}</td>
+                        <td>{{ formstockterminado.cantidad_m3}}</td>              
+                        <td>{{ formstockterminado.usuario_crea }}</td>
+                    </tr>
+                </table>
+    
+                <div  class="button-container">
+                    <button  type="submit" name="crear" class="red-button-g">Crear</button>    
+                    <button class="red-button-c" onclick="closePopupproduccion()">Cancelar</button>
+                </div> 
+            </form>
+        </div>
+   
 {% comment %} popup ALGORINTO {% endcomment %}
 <div id="popupContainertest" style="width:30%; height:70%;" class="popup">
     <!-- Add your popup content here -->

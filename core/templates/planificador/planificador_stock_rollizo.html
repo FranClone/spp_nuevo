@@ -117,7 +117,6 @@
                         <th>Largo</th>
                         <th>Fecha Creacion</th>
                         <th style="width:10vh;" >Costo:<br>USD/CBM</th>  
-                        <th style="width:10vh;" >Stock:<br>M3</th>  
                         <th>Detalles</th> 
                                                 
                     </tr>
@@ -132,8 +131,7 @@
                             <td>{{ rollizo.diametro }}</td>
                             <td>{{ rollizo.largo }}</td>
                             <td>{{ rollizo.fecha_crea }}</td>  
-                            <td>1,23 </td>   
-                            <td>{{rollizo.stockrollizo_set.first.cantidad }}</td>       
+                            <td>1,23 </td>        
                             
                             <td>
                                 <button class="btn block" onclick="openPopup('{{ rollizo.nombre_rollizo }}', '{{ rollizo.largo }}','{{ rollizo.descripcion_rollizo }}','{{ rollizo.diametro }}'
