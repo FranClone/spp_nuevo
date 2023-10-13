@@ -14,7 +14,7 @@ from django.conf import settings
 from django.views.generic import View, CreateView
 from django.http import JsonResponse, FileResponse, Http404
 #from asignaciones.models import UserProfile
-from .forms import CustomUserCreationForm, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm,StockForm, CrearProductoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
+from .forms import CustomUserCreationForm,ActualizarStockRollizo, DetallePedidoForm,LoginForm, ActualizarMateriaPrimaForm,StockForm, CrearProductoForm ,CrearPatronCorteForm, ActualizarPedidoForm, CrearLineaForm, CrearRollizoForm, CrearClienteForm, CrearEmpresaForm
 from .modelos.patron_corte import PatronCorte
 from .modelos.producto import Producto
 from .modelos.pedidos import Pedido
@@ -29,6 +29,7 @@ from django.forms import inlineformset_factory
 from .modelos.detalle_pedido import DetallePedido
 from .modelos.factura import Factura
 from .modelos.empaque import Empaque
+from .modelos.stock_rollizo import StockRollizo
 from .modelos.resources import PedidoResource
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -801,12 +802,16 @@ def gantt_view(request):
                 ]
 
                 tasks.append(tasks_pedido)
-
+    formStockRollizo = ActualizarStockRollizo()
+    formstockterminado = StockForm()
     context = {
     'tasks': tasks,
     'pedido_form': pedido_form,  # Include the pedido_form in the context
-    'detalle_pedido_formset': detalle_pedido_formset,  # Include the detalle_pedido_formset in the context
+    'detalle_pedido_formset': detalle_pedido_formset, 
+    'formStockRollizo':formStockRollizo,
+    'formstockterminado':formstockterminado # Include the detalle_pedido_formset in the context
     }
+    print("hola")
     return render(request, 'home.html', context)
 
 @require_role('ADMINISTRADOR')  
@@ -1172,23 +1177,45 @@ def empresa_editar(request,id):
 class Custom404View(View):
     def get(self, request, *args, **kwargs):
         return render(request, '404.html', status=404)
+    
+@require_role('ADMINISTRADOR')  
+@login_required
+def actualizar_stock_rollizo(request):
+    stocks = StockRollizo.objects.all()
+    formStockRollizo = ActualizarStockRollizo()
+    if request.method == 'POST':
+        if 'crear' in request.POST:
+            formStockRollizo = ActualizarStockRollizo(request.POST)
+            if formStockRollizo.is_valid():
+                nuevo_stock = formStockRollizo.save()
+                print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
+                return redirect('home')
+    else:
+        formStockRollizo = ActualizarStockRollizo()
+    context = {
+        'formStockRollizo': formStockRollizo,
+        'stocks': stocks
+    }
+    print("chao")
+    return render(request, 'home.html', context)
 
 @require_role('ADMINISTRADOR')  
 @login_required
 def stock(request):
     stocks = StockProducto.objects.all()
-    form = StockForm()
+    formstockterminado = StockForm()
 
     if request.method == 'POST':
         if 'crear' in request.POST:
-            form = StockForm(request.POST)
-            if form.is_valid():
-                nuevo_stock = form.save()
+            formstockterminado = StockForm(request.POST)
+  
+            if formstockterminado.is_valid():
+                nuevo_stock = formstockterminado.save()
                 print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
                 return redirect('plan_stock')
     
     context = {
-        'form': form,
+        'form': formstockterminado,
         'stocks': stocks
     }
     return render(request, 'planificador/planificador_stock.html', context)

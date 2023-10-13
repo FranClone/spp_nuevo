@@ -14,7 +14,7 @@ from .views import eliminar_patron, eliminar_producto, eliminar_pedido, materia_
 from . import views
 from .views import execute_code, eliminar_patron, eliminar_producto, eliminar_pedido,producto_editar,pedido_editar
 from .views import obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
-from .views import linea_editar,rollizo_editar,cliente_editar,empresa_editar,Custom404View, stock, stock_editar
+from .views import linea_editar,rollizo_editar,cliente_editar,empresa_editar,Custom404View, stock, stock_editar, actualizar_stock_rollizo
 from django.conf.urls import handler404
 
 from django.urls import path
@@ -55,6 +55,8 @@ urlpatterns = [
     path('planificador_productos/editarproducto/<int:id>', login_required(producto_editar), name="producto_editar"),
     path('pedidos/editarpedido/<int:id>', login_required(pedido_editar), name="pedido_editar"),
     path('importar/', login_required(importar), name="importar"),
+    path('home/actualizar', login_required(actualizar_stock_rollizo), name="actualizar_stock_rollizo"),
+    path('stock/', login_required(stock), name="stock"),
     # url para desplegar el bar chart vertical
 
     path('dashboard/', login_required(Dashboard.as_view()), name="dashboard"),

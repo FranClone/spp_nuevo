@@ -687,7 +687,34 @@ function closePopupimport() {
     const popupOverlay = document.getElementById('popupContainer');
     popupOverlay.style.display = 'none';
 }
+//Popup para Actualizar materia prima
+function showPopupmateria() {
+    const popupOverlay = document.getElementById('popupContainermateria');
+    if (popupContainermateria.style.display === 'none') {
+        popupContainermateria.style.display = 'block';
+    } else {
+        popupContainermateria.style.display = 'none';
+    }
+}
 
+function closePopupmateria() {
+    var popup = document.getElementById("popupContainermateria");
+    popup.style.display = "none";
+}
+//Popup para Actualizar stock producto terminado
+function showPopupproduccion() {
+    const popupOverlay = document.getElementById('popupContainerproduccion');
+    if (popupContainerproduccion.style.display === 'none') {
+        popupContainerproduccion.style.display = 'block';
+    } else {
+        popupContainerproduccion.style.display = 'none';
+    }
+}
+
+function closePopupproduccion() {
+    var popup = document.getElementById("popupContainerproduccion");
+    popup.style.display = "none";
+}
 // Función para cerrar el popup
 function closePopup() {
     var popup = document.getElementById("carga-form");

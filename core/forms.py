@@ -13,6 +13,7 @@ from .modelos.factura import Factura
 from .modelos.empaque import Empaque
 from .modelos.stock_producto import StockProducto
 from .modelos.productos_terminados import ProductoTerminado
+from .modelos.stock_rollizo import StockRollizo
 from .modelos.detalle_pedido import DetallePedido
 from django.forms import inlineformset_factory
 from django.utils.translation import gettext_lazy as _
@@ -407,9 +408,24 @@ class ProductoTerminadoForm(forms.ModelForm):
 
 class StockForm(forms.ModelForm):
     exclude = ['fecha_crea']
+    
     class Meta:
         model = StockProducto
         fields = '__all__'
+
+
+class ActualizarStockRollizo(forms.ModelForm):
+    exclude = ['fecha_crea']
+    
+    class Meta:
+        
+        model = StockRollizo
+        fields = ['rollizo',
+                  'cantidad',
+                  'usuario_crea',
+                  'bodega'] 
+#Preguntar
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
+

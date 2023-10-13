@@ -107,7 +107,9 @@
                         <th>Nombre</th>
                         <th>Descripcion</th>
                         <th>Fecha_crea</th>
+                        <th>Velocidad <br>M3/HR </th>
                         <th>Detalles</th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -117,7 +119,8 @@
                         <tr>
                             <td>{{ linea.nombre_linea }}</td>
                             <td>{{ linea.descripcion_linea }}</td>
-                            <td>{{ linea.fecha_crea }}</td>                       
+                            <td>{{ linea.fecha_crea }}</td>    
+                            <td>45</td>                      
                             <td>
                                 <button class="btn block" onclick="openPopup('{{ linea.nombre_linea }}' ,'{{ linea.descripcion_linea }}','{{ linea.fecha_crea }}')">
 
