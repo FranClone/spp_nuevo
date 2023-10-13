@@ -166,9 +166,13 @@ class CrearProductoForm(forms.ModelForm):
             'nombre_rollizo',
             'inventario_final',
             'patron_corte',
-            'linea'
+            'linea',
         ]
-
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['linea'].queryset = Linea.objects.filter(eliminado=False)
+        self.fields['nombre_rollizo'].queryset = Rollizo.objects.filter(eliminado=False)
+        self.fields['patron_corte'].queryset = PatronCorte.objects.filter(eliminado=False)
 
 
 class CrearRollizoForm(forms.ModelForm):
@@ -185,7 +189,9 @@ class CrearRollizoForm(forms.ModelForm):
             'clase_diametrica'
         ]
         
-        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['linea'].queryset = Linea.objects.filter(eliminado=False)
 
 class CrearLineaForm(forms.ModelForm):
     exclude = ['fecha_crea']
@@ -197,7 +203,9 @@ class CrearLineaForm(forms.ModelForm):
             'empresa',
             'usuario_crea'
         ]
-        
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['empresa'].queryset = Empresa.objects.filter(eliminado=False)
         
 class CrearClienteForm(forms.ModelForm):
     exclude = ['fecha_crea']
@@ -295,7 +303,8 @@ class DetallePedidoForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    
+        self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
+
     def save(self, commit=True):
         instance = super().save(commit=False)
         producto = self.cleaned_data.get('producto')
@@ -367,6 +376,9 @@ class ActualizarPedidoForm(forms.ModelForm):
              'estado',
              'version'
          ]
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cliente'].queryset = Cliente.objects.filter(eliminado=False)
 
 DetallePedidoFormSet = inlineformset_factory(
     Pedido,  # Parent model
@@ -412,3 +424,8 @@ class ActualizarStockRollizo(forms.ModelForm):
                   'cantidad',
                   'usuario_crea',
                   'bodega'] 
+#Preguntar
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
+

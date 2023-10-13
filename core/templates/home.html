@@ -8,14 +8,12 @@
     <link rel="stylesheet" href="{% static 'styles/styles-home.css' %}">
     <script src="{% static 'js/home.js' %}"></script>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/decimal.js@10.3.1/decimal.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.4/js/jquery.dataTables.min.js"></script>
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.1/css/jquery.dataTables.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.11.1/js/jquery.dataTables.js"></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -80,6 +78,12 @@
         </div>
     </div>
 
+
+    <select name="periodos" id="toggle-lineas-button" class="carga-button-top" style="display: none;">
+        <option value="diario">Diario</option>
+        <option value="mensual">Mensual</option>
+        <option value="semanal">Semanal</option>
+    </select>
 
 
 
@@ -403,19 +407,6 @@
 
 </script>
 {% comment %}  {% endcomment %}
-<script>
-    $(document).ready(function() {
-        $('.select2').select2({
-            multiple: true,
-            closeOnSelect: false,          
-            placeholder: 'Seleccione una opción'
-        });
-                // Handle padding when Select2 dropdown is opened
-        $('.select2').on('select2:open', function() {
-            $(this).closest('td').find('.select2-dropdown').css('padding', 'px'); // Apply default padding
-        });
-    });
-</script>
 
 <script>
     $(document).ready(function() {
@@ -472,24 +463,12 @@ $(document).ready(function() {
         });
     });
 });
-$(document).ready(function() {
-    $('#gantt').DataTable({
-        "paging": true, // Habilita la paginación
-        "pageLength": 10 // Número de filas por página (puedes cambiar este valor)
-    });
-});
 </script>
 
 <script>
 $(document).ready(function() {
     $("#showPlanButton").click(function() {
         $("#btnGroup").show();
-    });
-});
-
-$(document).ready(function() {
-    $("#showPlanButton").click(function() {
-        $("#toggle-lineas-button").show();
     });
 });
 

@@ -69,6 +69,8 @@
         <form method="post" action="{% url 'plan_productos' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
+
+
                 <tr>
                     <th>{{ form.orden_producto.label_tag }}</th>
                     <th>{{ form.nombre.label_tag }}</th>
@@ -114,10 +116,9 @@
                     <th>{{ form.patron_corte.label_tag }}</th>
                 </tr>
                 <tr>
-                    <td>{{ form.linea }}</td>
-                    <td>{{ form.patron_corte }}</td>
+                        <td>{{ form.linea }}</td>
+                        <td>{{ form.patron_corte }}</td>
                 </tr>
-
             </table>         
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
