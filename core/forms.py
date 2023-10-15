@@ -424,8 +424,5 @@ class ActualizarStockRollizo(forms.ModelForm):
                   'cantidad',
                   'usuario_crea',
                   'bodega'] 
-#Preguntar
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
+
 
