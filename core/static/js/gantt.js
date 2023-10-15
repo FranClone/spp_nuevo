@@ -33,7 +33,7 @@ class Gantt {
 
 
     PlanTable() {
-        var html = '<table class="second-table"><thead><tr>';
+        var html = '<table class="event-table second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
