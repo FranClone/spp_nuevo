@@ -217,6 +217,7 @@ table tr {
     padding: 6px;
     line-height: 15px;
     border-left: 1px solid black;
+    border-right: 1px solid black;
 }
 
 /*configurar lineas dentro de la tabla (ultima columnas)*/
@@ -237,8 +238,19 @@ table tr {
     border-left: none;
 }
 
+.has-paquetes {
+    background-color: #79ac75; /* Cambia el color de fondo a amarillo para celdas con paquetes solicitados */
+}
+
+.event-table {
+    border-collapse: collapse;
+    width: 100%;
+    
+}
+
 #gantt table tr td.event-cell:last-child {
-    border-right: 1.5px solid rgba(255, 255, 255, 0.801);
+    border-right: 1px solid black;
+    border-left: 1px solid black;
 }
 
 #gantt table tr td.event-cell span {
