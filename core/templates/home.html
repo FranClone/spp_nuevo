@@ -204,20 +204,6 @@
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
         <div class="title-container">       
-            <div class="btn-group" id="btnGroup" style="display: none;">
-                <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                        data-toggle="dropdown">
-                  Actualizar <span class="caret"></span>
-                </button>
-
-                <div class="container-b">
-                <ul class="dropdown-menu" role="menu">
-                    <button id="materiaprima" onclick="showPopupmateria()">Materia Prima</button>
-                    <button id="produccion" onclick="showPopupproduccion()">Produccion</button>
-                    <button id="agregarpedido" onclick="showPopupimport()">Agregar Pedidos</button>
-                </ul>
-                </div>
-            </div>
             <select name="periodos" id="toggle-lineas-button" class="carga-button-top" style="display: none;">
                 <option value="diario">Diario</option>
                 <option value="mensual">Mensual</option>
@@ -231,6 +217,21 @@
             <script>
                 const tasksData = {{ tasks|safe }};
             </script>
+        </div>
+
+        <div class="btn-group" id="btnGroup" style="display: none;">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
+                    data-toggle="dropdown">
+              Actualizar <span class="caret"></span>
+            </button>
+
+            <div class="container-b">
+            <ul class="dropdown-menu" role="menu">
+                <button id="materiaprima" onclick="showPopupmateria()">Materia Prima</button>
+                <button id="produccion" onclick="showPopupproduccion()">Produccion</button>
+                <button id="agregarpedido" onclick="showPopupimport()">Agregar Pedidos</button>
+            </ul>
+            </div>
         </div>
         
     </div>
