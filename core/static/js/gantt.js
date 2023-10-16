@@ -38,69 +38,55 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Cantidad a producir</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
-        // Copiar el encabezado de la primera tabla
-        const selectedPeriod = document.querySelector('select[name="periodos"]').value;
-        const isDiarioSelected = selectedPeriod === "diario";
+            // Obtén la fecha actual
+        const currentDate = new Date();
 
-        if (isDiarioSelected) {
-            var diffDays = this.diffInDays(this.maxDate, this.minDate) + 1;
-            const actual = new Date(this.minDate);
+        // Calcula la fecha 10 días después
+        const tenDaysLater = new Date(currentDate);
+        tenDaysLater.setDate(currentDate.getDate() + 10);
 
-            for (let i = 0; i < diffDays; i++) {
-                html += '<th style="color: white; width: 70vh; font-size: 13px;">' + this.formatDate(actual, "diario") + '</th>';
-                actual.setDate(actual.getDate() + 1);
-            }
-        } 
+        // Agrega las fechas al encabezado
+        for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
+        const formattedDate = this.formatDate(date, "diario");
+        html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
+        }
+
 
         html += '</tr></thead><tbody>';
 
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
+        
+        const groupedRows = {};
 
-        // Itera sobre cada producto y crea una fila por producto
-        for (let i = 0; i < this.filteredTasks.length; i++) {
+        // Iterar sobre cada producto y crear una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++ ) {
             var task = this.filteredTasks[i];
-
-            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[7][j]; // Obtiene el nombre del producto
-                var dMin = new Date(task[3]);
-                var dMax = new Date(task[2]);
-
-                // Calcular la diferencia en días entre dMin y dMax
-                var dateDiff = this.diffInDays(dMax, dMin);
-
-                var daysBefore = this.diffInDays(this.minDate, dMin);
-                var daysAfter = this.diffInDays(dMax, this.maxDate);
-
-                // Ensure that daysBefore is at least 0 (minimum start date constraint)
-                daysBefore = Math.max(daysBefore, 0);
-
-                // Ensure that daysAfter is at least 0 (maximum end date constraint)
-                daysAfter = Math.max(daysAfter, 0);
-
-                console.log('Fecha de inicio (dMin):', dMin);
-                console.log('Fecha de finalización (dMax):', dMax);
-
-                bodyHtml += '<tr>';
-
-
-                bodyHtml += `<td>${product}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo*/
-                bodyHtml += `<td class="right-align">${task[23].toLocaleString()}</td>`;/*Ancho*/
-                bodyHtml += `<td class="right-align">${task[22].toLocaleString()}</td>`;/*Alto*/
-                bodyHtml += `<td class="right-align">${task[25]}</td>`;/*M3*/
-                bodyHtml += `<td class="right-align">${task[54]}</td>`;/*candidad*/
-                bodyHtml += `<td class="left-align"><a class="popup-link" data-pedido-id="${j}" data-popup-type="producto">Ver detalles</a></td>`;/*Detalle*/
-                
-
+        
+            for (let j = 0; j < task[7].length; j++) {
+                var product = task[7][j]; // Obtener el nombre del producto
+                var key = `${product}_${task[24]}_${task[23]}_${task[22]}`; // Crear una clave única para agrupar
+        
+                if (!groupedRows[key]) {
+                    groupedRows[key] = {
+                        product: product,
+                        largo: task[24],
+                        ancho: task[23],
+                        alto: task[22],
+                        cantidad: 0,
+                        detalles: [],
+                        fechaInicio: new Date(task[3]),
+                        fechaFin: new Date(task[2]),
+                    };
+                }
+        
                 let target = task[54];
                 let sum = 0;
                 let randomNumbers = [];
-                
+        
                 while (sum < target) {
                     let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                     sum += randomNumber;
@@ -109,34 +95,65 @@ class Gantt {
                         break;
                     }
                 }
-                
-
         
-                for (let k = 0; k < dateDiff; k++) {
-                    if (k < randomNumbers.length) {
-                        bodyHtml += `<td class="event-cell" style="background-color: ${task[15]}; border: 1px solid #000;">
-                            <a>Pqtes.solicitado: ${randomNumbers[k]}</a>
-                        </td>`;
-                    } else {
-                        bodyHtml += `<td></td>`;
-                    }
-                }
-                                
-                for (let k = 0; k < daysAfter; k++) {
-                    bodyHtml += '<td></td>';
-                }
-                
-                bodyHtml += '</tr>';
-                
+                groupedRows[key].cantidad += parseInt(task[54], 10); // Convierte la cantidad en número y suma
+                groupedRows[key].detalles.push({
+                    color: task[15],
+                    randomNumbers: randomNumbers,
+                });
             }
         }
+        
+        // Ahora, puedes iterar sobre las filas agrupadas y construir la tabla final
+        for (let key in groupedRows) {
+            let row = groupedRows[key];
+            var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
+            dateDiff = Math.min(dateDiff, 11);
+            console.log("dateDiff:", dateDiff);
+        
+            bodyHtml += '<tr>';
+            bodyHtml += `<td>${row.product}</td>`;
+            bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.cantidad}</td>`; // Muestra la cantidad acumulada como número
+            bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto">Ver detalles</a></td>`;
+            let paquetesPorDia = new Array(dateDiff).fill(0);
 
+            // Distribuir los paquetes en los días
+            for (let i = 0; i < row.detalles.length; i++) {
+                let detalle = row.detalles[i];
+                for (let l = 0; l < detalle.randomNumbers.length; l++) {
+                    let diaAleatorio = Math.floor(Math.random() * dateDiff);
+                    paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
+                }
+            }
+        
+            // Agregar las celdas para los paquetes solicitados por día
+            for (let k = 0; k < paquetesPorDia.length; k++) {
+                bodyHtml += '<td class="event-cell">';
+        
+                if (paquetesPorDia[k] > 0) {
+                    bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
+                }
+        
+                bodyHtml += '</td>';
+            }
+        
+            bodyHtml += '</tr>';
+        }
+        
+        // Resto del código...
+        
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
-
+        
         html += '</tbody></table>';
-        return html;
-    }
+        return html;}
+        
+        
+        
+
 
     PedidoTable() {
         var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
@@ -527,8 +544,6 @@ class Gantt {
                 </div>
             `;
 
-            
-        
         
         
         }

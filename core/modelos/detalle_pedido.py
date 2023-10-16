@@ -13,6 +13,7 @@ class DetallePedido(models.Model):
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
     factura = models.ForeignKey('Factura', on_delete=models.CASCADE, verbose_name='Factura')
     empaque = models.ForeignKey('Empaque', on_delete=models.CASCADE, verbose_name='Empaque')
+    producto_key = models.CharField(max_length=300, null=True)
     item = models.CharField(max_length=20, null=True, blank=False)
     folio =  models.CharField(max_length=20, null=True, blank=False)
     detalle_producto = models.CharField(max_length=300,null=True)
@@ -50,6 +51,11 @@ class DetallePedido(models.Model):
     nota =models.CharField(max_length=200, null=True) 
     diametro = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
     largo_trozo = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
+    
+    def save(self, *args, **kwargs):
+        # Calcula la concatenación de atributos
+        self.producto_key = f"{self.producto}-{self.largo_producto}-{self.alto_producto}-{self.ancho_producto}"
+        super().save(*args, **kwargs)
     class Meta:
         db_table = 'DETALLE_PEDIDO'
         

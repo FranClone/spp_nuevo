@@ -142,7 +142,7 @@ class Migration(migrations.Migration):
                 ('fecha_crea', models.DateField(auto_now_add=True)),
                 ('usuario_crea', models.CharField(blank=True, max_length=20, null=True)),
                 ('bodega', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.bodega', verbose_name='Bodega')),
-                ('producto', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.producto', verbose_name='Producto')),
+                ('detalle', models.ForeignKey('DetallePedido', on_delete=models.CASCADE, verbose_name='DetallePedido'))
             ],
             options={
                 'db_table': 'STOCK_PRODUCTO',
