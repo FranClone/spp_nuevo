@@ -511,3 +511,4 @@ class ActualizarStockRollizo(forms.ModelForm):
                   'cantidad',
                   'usuario_crea',
                   'bodega'] 
+

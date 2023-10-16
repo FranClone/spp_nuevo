@@ -30,8 +30,10 @@ class Gantt {
         return Math.ceil(diffTime / oneWeek);
     }
 
+
+
     PlanTable() {
-        var html = '<table class="second-table"><thead><tr>';
+        var html = '<table class="event-table second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
@@ -131,27 +133,31 @@ class Gantt {
         
             // Agregar las celdas para los paquetes solicitados por día
             for (let k = 0; k < paquetesPorDia.length; k++) {
-                bodyHtml += '<td class="event-cell">';
-        
+
+                bodyHtml += '<td class="event-cell';
+            
+                if (paquetesPorDia[k] > 0) {
+                    bodyHtml += ' has-paquetes';
+                }
+            
+                bodyHtml += '">';
+                
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
                 }
-        
+                
                 bodyHtml += '</td>';
             }
-        
+            
             bodyHtml += '</tr>';
+            
         }
-        
-        // Resto del código...
         
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
         
         html += '</tbody></table>';
         return html;}
-        
-        
         
 
 
@@ -191,8 +197,8 @@ class Gantt {
                 const fechaISO2 = task[2];/*ETA*/
                 const fechaISO3 = task[3];/*Fecha Creacion*/
                 const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
-                const fechaFormateada2 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
-                const fechaFormateada3 = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha Creacion*/
+                const fechaFormateada2 = new Date(fechaISO2).toLocaleDateString('es-ES');/*ETA*/
+                const fechaFormateada3 = new Date(fechaISO3).toLocaleDateString('es-ES');/*Fecha Creacion*/
 
                 bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
                 bodyHtml += `<td class="right-align">${task[0]}</td>`;/*OP Orden Interna*/
