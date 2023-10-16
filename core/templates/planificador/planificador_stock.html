@@ -66,24 +66,21 @@
 
     <!--Este es el contenedor del formulario productos-->
     <div class="form-container-productos">
-        <form method="post" action="{% url 'plan_stock' %}" style="display: none;" id="carga-form">
+        <form method="post" action="{% url 'stock' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
+                <h2 class="bold-heading">Actualizar Producción</h2>
                 <tr>
-                    <th>{{ form.cantidad_m3.label_tag }}</th>
-                    <th>{{ form.usuario_crea.label_tag }}</th>
-                </tr>
-                <tr>
-                    <td>{{ form.cantidad_m3 }}</td>
-                    <td>{{ form.usuario_crea }}</td>
-                </tr>
-                <tr>
-                    <th>{{ form.bodega_id.label_tag }}</th>
-                    <th>{{ form.producto_id.label_tag }}</th>
+                    <th class="detalle-pedido-t">Bodega</th>
+                    <th class="detalle-pedido-t">Producto</th>
+                   <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                   <th class="detalle-pedido-t">Creado por:</th>
                 </tr>
                 <tr>
                     <td>{{ form.bodega }}</td>
-                    <td>{{ form.producto }}</td>
+                    <td>{{ form.producto_key }}</td>
+                    <td>{{ form.cantidad_m3}}</td>              
+                    <td>{{ form.usuario_crea }}</td>
                 </tr>
             </table>
 
@@ -105,9 +102,10 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>id</th>
-                        <th>cantidad_m3</th>
-                        <th>fecha_crea</th>
-                        <th>usuario_crea</th>
+                        <th>Producto key</th>
+                        <th>Cantidad <br> M3</th>
+                        <th>Fecha de Creación</th>
+                        <th>Creado por</th>
                         <th>Detalles</th>
                     </tr>
                 </thead>
@@ -116,7 +114,8 @@
 
                  
                         <tr>
-                            <td>{{ stock.id }}</td>      
+                            <td>{{ stock.id }}</td>     
+                            <td>{{ stock.producto_key }}</td>  
                             <td>{{ stock.cantidad_m3 }}</td>   
                             <td>{{ stock.fecha_crea }}</td>      
                             <td>{{ stock.usuario_crea }}</td>                       
@@ -151,9 +150,9 @@
             <table>
                 <tr>
                     <td class="detalle-pedido-t"><strong>Id:</strong></td>
-                    <td class="detalle-pedido-t"><strong>Cantidad_m3:</strong></td>
-                    <td class="detalle-pedido-t"><strong>Fecha de creacion:</strong></td>
-                    <td class="detalle-pedido-t"><strong>Usuario creador:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Cantidad <br>M3:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Fecha de Creación:</strong></td>
+                    <td class="detalle-pedido-t"><strong>Creado por:</strong></td>
                     <td class="detalle-pedido-t"><strong>Producto:</strong></td>
                     <td class="detalle-pedido-t"><strong>Bodega:</strong></td>
 

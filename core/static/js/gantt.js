@@ -133,6 +133,7 @@ class Gantt {
         
             // Agregar las celdas para los paquetes solicitados por día
             for (let k = 0; k < paquetesPorDia.length; k++) {
+
                 bodyHtml += '<td class="event-cell';
             
                 if (paquetesPorDia[k] > 0) {
@@ -158,9 +159,7 @@ class Gantt {
         html += '</tbody></table>';
         return html;}
         
-        
 
-    
 
     PedidoTable() {
         var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
@@ -551,8 +550,6 @@ class Gantt {
                 </div>
             `;
 
-            
-        
         
         
         }

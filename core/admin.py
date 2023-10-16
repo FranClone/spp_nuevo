@@ -915,37 +915,37 @@ class StockProductoEmpresaFilter(admin.SimpleListFilter):
         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
 
-class StockProductoAdmin(admin.ModelAdmin):
-    list_display = ('producto', 'cantidad_m3', 'bodega')
-    readonly_fields = ('usuario_crea',)
+# class StockProductoAdmin(admin.ModelAdmin):
+#     list_display = ('producto', 'cantidad_m3', 'bodega')
+#     readonly_fields = ('usuario_crea',)
     
-    def get_list_filter(self, request):
-        if request.user.is_superuser:
-            return (StockProductoEmpresaFilter, 'bodega__nombre_bodega')
-        else:
-            return (BodegaFilter,)
+#     def get_list_filter(self, request):
+#         if request.user.is_superuser:
+#             return (StockProductoEmpresaFilter, 'bodega__nombre_bodega')
+#         else:
+#             return (BodegaFilter,)
         
-    # devuelve los sólo los stock de bodega pertenecientes a la empresa
-    def get_queryset(self, request):
-        queryset = super().get_queryset(request)
-        if request.user.is_superuser:
-            # Superusuarios pueden ver todos los stock de bodega
-            return queryset
-        else:
-            # Obtener la empresa del usuario actual
-            empresa = request.user.empresa
-            # Filtrar los stock de bodega por la empresa del usuario actual
-            return queryset.filter(bodega__empresa=empresa)
+#     # devuelve los sólo los stock de bodega pertenecientes a la empresa
+#     def get_queryset(self, request):
+#         queryset = super().get_queryset(request)
+#         if request.user.is_superuser:
+#             # Superusuarios pueden ver todos los stock de bodega
+#             return queryset
+#         else:
+#             # Obtener la empresa del usuario actual
+#             empresa = request.user.empresa
+#             # Filtrar los stock de bodega por la empresa del usuario actual
+#             return queryset.filter(bodega__empresa=empresa)
         
-    def get_fieldsets(self, request, obj=None):
-        if obj or request.user.is_superuser:
-            # Superusuarios pueden editar todos los campos
-            return super().get_fieldsets(request, obj)
-        else:
-            # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
-            return (
-                (None, {'fields': ('bodega', 'producto', 'cantidad_m3')}),
-            )    
+#     def get_fieldsets(self, request, obj=None):
+#         if obj or request.user.is_superuser:
+#             # Superusuarios pueden editar todos los campos
+#             return super().get_fieldsets(request, obj)
+#         else:
+#             # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
+#             return (
+#                 (None, {'fields': ('bodega', 'producto', 'cantidad_m3')}),
+#             )    
     
     # filtra las claves foráneas para que sólo sean las de la empresa    
     def formfield_for_foreignkey(self, db_field, request, **kwargs):
@@ -1211,7 +1211,7 @@ admin.site.register(Periodo, PeriodoAdmin)
 admin.site.register(ProductoCorte, ProductoCorteAdmin)
 admin.site.register(Rollizo, RollizoAdmin)
 # admin.site.register(RollizoLargo, RollizoLargoAdmin)
-admin.site.register(StockProducto, StockProductoAdmin)
+#admin.site.register(StockProducto, StockProductoAdmin)
 admin.site.register(StockRollizo, StockRollizoAdmin)
 admin.site.register(TiempoCambio, TiempoCambioAdmin)
 admin.site.register(TipoPeriodo, TipoPeriodoAdmin)
