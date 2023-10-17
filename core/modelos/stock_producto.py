@@ -5,7 +5,7 @@ from django.db import models
 #Costo de almacenacimiento de PT X CBM CI
 class StockProducto(models.Model):
     bodega = models.ForeignKey('Bodega', on_delete=models.CASCADE, verbose_name='Bodega')
-    detalle = models.ForeignKey('DetallePedido', on_delete=models.CASCADE, verbose_name='DetallePedido')
+    producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
     #producto_key = models.CharField(max_length=300, null=True)
     cantidad_m3 = models.FloatField(null=True)
     fecha_crea = models.DateField(auto_now_add=True)

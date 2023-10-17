@@ -301,56 +301,7 @@ class ProductoTerminadoForm(forms.ModelForm):
         model = ProductoTerminado
         fields = '__all__'
 
-# class StockForm(forms.ModelForm):
-#     exclude = ['fecha_crea']
 
-#     class Meta:
-#         model = StockProducto
-#         fields = '__all__'
-
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-
-#         # Obtén las opciones desde DetallePedido y conviértelas en una lista de tuplas (id, producto_key)
-#         choices = DetallePedido.objects.values_list('id', 'producto_key')
-
-#         # Asigna las opciones al campo 'producto_key'
-#         self.fields['producto_key'].widget = forms.Select(choices=choices)
-#         self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
-    
-#     def clean(self):
-#         cleaned_data = super().clean()
-#         detalle_pedido_id = cleaned_data.get('producto_key')  # Obtén el ID del DetallePedido seleccionado
-#         cantidad_a_agregar = cleaned_data.get('cantidad_m3')
-#         bodega = cleaned_data.get('bodega')
-#         print(detalle_pedido_id)
-#         print(bodega)
-#         if not bodega:
-#             raise forms.ValidationError("Debe seleccionar una bodega válida.")
-        
-#         # Obtén el DetallePedido correspondiente
-#         detalle_pedido = DetallePedido.objects.get(id=detalle_pedido_id)
-#         producto_key = detalle_pedido.producto_key
-#         bodega_id = bodega.id
-#         print(detalle_pedido)
-#         print("producto key",producto_key)
-#         print("bodega",bodega)
-#         # Verifica si ya existe un registro en StockProducto con el mismo producto_key y el mismo id de bodega
-#         stock_existente = StockProducto.objects.filter(producto_key=producto_key, bodega_id=bodega_id).first()
-        
-#         if stock_existente:
-#             # Si existe, suma la cantidad a agregar a la cantidad existente
-#             stock_existente.cantidad_m3 += cantidad_a_agregar
-#             stock_existente.save()
-#             cleaned_data['cantidad_m3'] = stock_existente.cantidad_m3
-#         else:
-#             # Si no existe, simplemente usa la cantidad a agregar
-#             cleaned_data['cantidad_m3'] = cantidad_a_agregar
-
-#             # Además, crea un nuevo registro en StockProducto en la bodega especificada
-#             StockProducto.objects.create(producto_key=producto_key, bodega=bodega, cantidad_m3=cantidad_a_agregar, detalle=detalle_pedido)
-
-#         return cleaned_data
 class StockForm(forms.ModelForm):
     exclude = ['fecha_crea']
 
@@ -358,40 +309,97 @@ class StockForm(forms.ModelForm):
         model = StockProducto
         fields = '__all__'
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
 
-        # Obtén las opciones desde DetallePedido y conviértelas en una lista de tuplas (id, producto_key)
-        productos_unicos = DetallePedido.objects.values('producto_key').distinct()
-        choices = [(detalle['producto_key'], detalle['producto_key']) for detalle in productos_unicos]
 
-        # Asigna las opciones al campo 'producto_key'
-        self.fields['producto_key'].widget = forms.Select(choices=choices)
-        self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
+    #     # Obtén las opciones desde DetallePedido y conviértelas en una lista de tuplas (id, producto_key)
+    #     choices = DetallePedido.objects.values_list('id', 'producto_key')
 
-    def clean(self):
-        cleaned_data = super().clean()
-        detalle_pedido_id = cleaned_data.get('producto_key')
-        cantidad_a_agregar = cleaned_data.get('cantidad_m3')
-        bodega = cleaned_data.get('bodega')
+    #     # Asigna las opciones al campo 'producto_key'
+    #     self.fields['producto_key'].widget = forms.Select(choices=choices)
+    #     self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
 
-        if not bodega:
-            raise forms.ValidationError("Debe seleccionar una bodega válida.")
 
-        bodega_id = bodega.id  # Accede a la propiedad 'id' del objeto Bodega
-        print(bodega_id)
-        # Verifica si ya existe un registro en StockProducto con el mismo producto_key y el mismo id de bodega
-        stock_existente = StockProducto.objects.filter(producto_key=detalle_pedido_id, bodega_id=bodega_id).first()
+      #  self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
 
-        if stock_existente:
-            
-                # Si existe, suma la cantidad a agregar a la cantidad existente
-            stock_existente.cantidad_m3 += cantidad_a_agregar
-            cleaned_data['cantidad_m3'] = stock_existente.cantidad_m3            
-            print("Actualizado stock existente")
-              
+    
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     detalle_pedido_id = cleaned_data.get('producto_key')  # Obtén el ID del DetallePedido seleccionado
+    #     cantidad_a_agregar = cleaned_data.get('cantidad_m3')
+    #     bodega = cleaned_data.get('bodega')
+    #     print(detalle_pedido_id)
+    #     print(bodega)
+    #     if not bodega:
+    #         raise forms.ValidationError("Debe seleccionar una bodega válida.")
+        
+    #     # Obtén el DetallePedido correspondiente
+    #     detalle_pedido = DetallePedido.objects.get(id=detalle_pedido_id)
+    #     producto_key = detalle_pedido.producto_key
+    #     bodega_id = bodega.id
+    #     print(detalle_pedido)
+    #     print("producto key",producto_key)
+    #     print("bodega",bodega)
+    #     # Verifica si ya existe un registro en StockProducto con el mismo producto_key y el mismo id de bodega
+    #     stock_existente = StockProducto.objects.filter(producto_key=producto_key, bodega_id=bodega_id).first()
+        
+    #     if stock_existente:
+    #         # Si existe, suma la cantidad a agregar a la cantidad existente
+    #         stock_existente.cantidad_m3 += cantidad_a_agregar
+    #         stock_existente.save()
+    #         cleaned_data['cantidad_m3'] = stock_existente.cantidad_m3
+    #     else:
+    #         # Si no existe, simplemente usa la cantidad a agregar
+    #         cleaned_data['cantidad_m3'] = cantidad_a_agregar
 
-            print("cread1")
+    #         # Además, crea un nuevo registro en StockProducto en la bodega especificada
+    #         StockProducto.objects.create(producto_key=producto_key, bodega=bodega, cantidad_m3=cantidad_a_agregar, detalle=detalle_pedido)
+
+    #     return cleaned_data
+
+
+# class StockForm(forms.ModelForm):
+# exclude = ['fecha_crea']
+
+# class Meta:
+# model = StockProducto
+# fields = '__all__'
+
+# def __init__(self, *args, **kwargs):
+# super().__init__(*args, **kwargs)
+
+# # Obtén las opciones desde DetallePedido y conviértelas en una lista de tuplas (id, producto_key)
+# productos_unicos = DetallePedido.objects.values('producto_key').distinct()
+# choices = [(detalle['producto_key'], detalle['producto_key']) for detalle in productos_unicos]
+
+# # Asigna las opciones al campo 'producto_key'
+# self.fields['producto_key'].widget = forms.Select(choices=choices)
+# self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
+
+# def clean(self):
+# cleaned_data = super().clean()
+# detalle_pedido_id = cleaned_data.get('producto_key')
+# cantidad_a_agregar = cleaned_data.get('cantidad_m3')
+# bodega = cleaned_data.get('bodega')
+
+# if not bodega:
+# raise forms.ValidationError("Debe seleccionar una bodega válida.")
+
+# bodega_id = bodega.id  # Accede a la propiedad 'id' del objeto Bodega
+# print(bodega_id)
+# # Verifica si ya existe un registro en StockProducto con el mismo producto_key y el mismo id de bodega
+# stock_existente = StockProducto.objects.filter(producto_key=detalle_pedido_id, bodega_id=bodega_id).first()
+
+# if stock_existente:
+
+#     # Si existe, suma la cantidad a agregar a la cantidad existente
+# stock_existente.cantidad_m3 += cantidad_a_agregar
+# cleaned_data['cantidad_m3'] = stock_existente.cantidad_m3            
+# print("Actualizado stock existente")
+    
+
+# print("cread1")
     
 
 class ActualizarStockRollizo(forms.ModelForm):

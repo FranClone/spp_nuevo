@@ -81,12 +81,7 @@ class Migration(migrations.Migration):
             name='costo_almacenamiento',
             field=models.FloatField(max_length=10, null=True),
         ),
-        migrations.AddField(
-            model_name='stockproducto',
-            name='detalle',
-            field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='core.detallepedido', verbose_name='DetallePedido'),
-            preserve_default=False,
-        ),
+
         migrations.AddField(
             model_name='stockproducto',
             name='valor_inventario',

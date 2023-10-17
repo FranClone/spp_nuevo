@@ -646,9 +646,6 @@ def gantt_view(request):
         pedido_id = pedido.id
         if productos.exists():
             for producto in productos:
-                largo = [producto.largo for producto in pedido.producto.all()]
-                ancho = [producto.ancho for producto in pedido.producto.all()]
-                alto = [producto.alto for producto in pedido.producto.all()]
                 productos_name = [producto.nombre]
                 producto_codigo = [producto.orden_producto]
                 porcentaje_progreso = random.randint(10, 100)
@@ -658,8 +655,6 @@ def gantt_view(request):
                 color_p = prioridad_colores.get(pedido.prioridad, '#4287f5')
                 descripcion = producto.descripcion
                 inventario_inicial = producto.inventario_inicial
-                valor_inventario = producto.valor_inventario
-                costo_almacenamiento = producto.costo_almacenamiento
                 nombre_rollizo = producto.nombre_rollizo.nombre_rollizo if producto.nombre_rollizo else "N/A"
                 patron_corte = [pc.nombre for pc in producto.patron_corte.all()] if producto.patron_corte.exists() else ["N/A"]
                 detalle_pedido = DetallePedido.objects.get(pedido=pedido, producto=producto)
@@ -711,7 +706,7 @@ def gantt_view(request):
                     nombre_patron = patron_corte_data.nombre
                     descripcion_patron = patron_corte_data.descripcion
                     rendimiento_patron = patron_corte_data.rendimiento
-                    
+
                     utilizado_patron = str(patron_corte_data.utilizado)
 
                   #  producto_asociado_patron = patron_corte_data.producto_asociado
@@ -736,66 +731,57 @@ def gantt_view(request):
                     productos_name,  # 7
                     pedido.prioridad,  # 8
                     producto_codigo,  #9 
-                    largo, #10
-                    ancho, # 11
-                    alto, # 12
-                    nombre_linea, # 13
-                    color,  # 14
-                    color_p,  # 15
-                    descripcion,# 16
-                    inventario_inicial,# 17
-                    valor_inventario,# 18   
-                    costo_almacenamiento,# 19
-                    nombre_rollizo,# 20
-                    patron_corte,# 21
-                    alto_producto,  # 22
-                    ancho_producto,  # 23
-                    largo_producto,  # 24
-                    volumen_producto,  # 25
-                    estado,  # 26
-                    grado_urgencia,  # 27
-                    cantidad_piezas,  # 28
-                    cantidad_trozos,  # 29
-                    piezas_xpaquete,  #30
-                    piezas_xtrozo,  # 31
-                    paquetes_solicitados,  # 32
-                    volumen_obtenido,  # 33
-                    paquetes_saldo, # 34
-                    diametro_rollizo, # 35
-                    codigo_patron,  # 36
-                    nombre_patron,  # 37
-                    descripcion_patron,  # 38
-                    rendimiento_patron,  # 39
-                     # 40
-                      # 41
-                      # 42
-                    utilizado_patron,  # 43
-                      # 44
-                    item, #45
-                    folio, #46
-                    mercado, #47
-                    destino, #48
-                    largo_rollizo, #49
-                    FSC,  # 50
-                    esp_fact,  # 51
-                    anc_fact,  # 52
-                    lar_fact,  # 53
-                    pqte,  # 54
-                    tipo_empaque,  # 55
-                    alto_paquete,  # 56
-                    int_paquete,  # 57    
-                    term,  # 58
-                    calidad,  # 59
-                    mbf,  # 60
-                    banio,  # 61
-                    marca,  # 62
-                    programa,  # 63
-                    piezas,  # 64
-                    cpo,  # 65
-                    piezas_x_cpo,  # 66
-                    anc_paquete, # 67
-                    est, # 68
-                    pedido_id, #69
+                    nombre_linea, #10
+                    color, #11
+                    color_p, #12
+                    descripcion, #13
+                    inventario_inicial, #14
+                    nombre_rollizo, #15
+                    patron_corte, #16
+                    alto_producto, #17
+                    ancho_producto, #18
+                    largo_producto, #19
+                    volumen_producto, #20
+                    estado, #21
+                    grado_urgencia, #22
+                    cantidad_piezas, #23
+                    cantidad_trozos, #24
+                    piezas_xpaquete, #25
+                    piezas_xtrozo, #26
+                    paquetes_solicitados, #27
+                    volumen_obtenido, #28
+                    paquetes_saldo, #29
+                    diametro_rollizo, #30
+                    codigo_patron, #31
+                    nombre_patron, #32
+                    descripcion_patron, #33
+                    rendimiento_patron, #34
+                    utilizado_patron, #35
+                    item, #36
+                    folio, #37
+                    mercado, #38
+                    destino, #39
+                    largo_rollizo, #40
+                    FSC, #41
+                    esp_fact, #42
+                    anc_fact, #43
+                    lar_fact, #44
+                    pqte, #45
+                    tipo_empaque, #46
+                    alto_paquete, #47
+                    int_paquete, #48
+                    term, #49
+                    calidad, #50
+                    mbf, #51
+                    banio, #52
+                    marca, #53
+                    programa, #54
+                    piezas, #55
+                    cpo, #56
+                    piezas_x_cpo, #57
+                    anc_paquete, #58
+                    est, #59
+                    pedido_id, #60
                 ]
 
                 tasks.append(tasks_pedido)

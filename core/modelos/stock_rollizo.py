@@ -3,7 +3,7 @@ from django.db import models
 #Inventario de Materias Primas (rollizo), al inicio de produccion (luego de ser clasificados en buzones) IIR
 class StockRollizo(models.Model):
     rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
-    cantidad = models.FloatField()
+    cantidad = models.FloatField()#m3
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
     bodega = models.ForeignKey('Bodega', on_delete=models.CASCADE, verbose_name='Bodega')
