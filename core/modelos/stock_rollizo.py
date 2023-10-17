@@ -1,6 +1,6 @@
 from django.db import models
 
-
+#Inventario de Materias Primas (rollizo), al inicio de produccion (luego de ser clasificados en buzones) IIR
 class StockRollizo(models.Model):
     rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
     cantidad = models.FloatField()

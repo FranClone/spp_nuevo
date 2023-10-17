@@ -6,15 +6,18 @@
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
-
+from django.core.validators import MinValueValidator    
 
 class CostoRollizo(models.Model):
-    nombre_costo = models.CharField(max_length=200)
-    valor_m3 = models.FloatField()
+    #*Costos de procesos por M3 por Rollizo X Linea CR
+    rollizo = models.ForeignKey('rollizo', on_delete=models.CASCADE, verbose_name='rollizo')
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
+    nombre_costo = models.CharField(null=True,max_length=200)
+    valor_m3 = models.FloatField(null=True,validators=[MinValueValidator(0)]) # Costo usd/m3
     fecha_crea = models.DateField(auto_now_add=True)
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
-    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
+
 
     class Meta:
         db_table = 'COSTO_ROLLIZO'

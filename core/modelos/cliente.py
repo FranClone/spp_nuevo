@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from ..validators import validate_rut
 
 class Cliente(models.Model):
+    empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, db_column='rut_empresa')
     rut_cliente = models.CharField(max_length=20)
     nombre_cliente = models.CharField(max_length=100, verbose_name='Cliente')
     correo_cliente = models.CharField(max_length=300, blank=True, null=True)
