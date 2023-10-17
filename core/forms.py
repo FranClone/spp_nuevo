@@ -141,29 +141,12 @@ class CrearPatronCorteForm(forms.ModelForm):
  
 class CrearProductoForm(forms.ModelForm):
     """Esta clase permite crear un nuevo producto"""
-    alto = forms.FloatField(min_value=0)
-    ancho = forms.FloatField(min_value=0)
-    largo = forms.FloatField(min_value=0)
     inventario_inicial = forms.FloatField(min_value=0)
     inventario_final = forms.FloatField(min_value=0)
     
     class Meta:
         model = Producto
-        fields = [
-            'orden_producto',
-            'nombre',
-            'descripcion',
-            'largo',
-            'ancho',
-            'alto',
-            'inventario_inicial',
-           # 'valor_inventario',
-           # 'costo_almacenamiento',
-            'nombre_rollizo',
-            'inventario_final',
-            'patron_corte',
-            'linea',
-        ]
+        fields = '__all__'
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['linea'].queryset = Linea.objects.filter(eliminado=False)
@@ -413,11 +396,7 @@ class StockForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
-        # Obtén las opciones desde DetallePedido y conviértelas en una lista de tuplas (id, producto_key)
-        choices = DetallePedido.objects.values_list('id', 'producto_key')
 
-        # Asigna las opciones al campo 'producto_key'
-        self.fields['producto_key'].widget = forms.Select(choices=choices)
         self.fields['bodega'].widget = forms.Select(choices=Bodega.objects.values_list('id', 'nombre_bodega'))
     
     def clean(self):
