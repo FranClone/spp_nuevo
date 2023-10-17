@@ -13,7 +13,7 @@ from .modelos.abastecimiento_rollizo import AbastecimientoRollizo
 from .modelos.bodega import Bodega
 from .modelos.calidad_producto import CalidadProducto
 from .modelos.cliente import Cliente
-from .modelos.cliente_empresa import ClienteEmpresa
+#from .modelos.cliente_empresa import ClienteEmpresa
 from .modelos.costo_rollizo import CostoRollizo
 from .modelos.costo_sobre_tiempo import CostoSobreTiempo
 from .modelos.detalle_pedido import DetallePedido
@@ -26,7 +26,7 @@ from .modelos.pedidos import Pedido
 from .modelos.periodo import Periodo
 from .modelos.producto import Producto
 from .modelos.producto_corte import ProductoCorte
-from .modelos.productos_empresa import ProductosEmpresa
+#from .modelos.productos_empresa import ProductosEmpresa
 from .modelos.rollizo import Rollizo
 from .modelos.stock_producto import StockProducto
 from .modelos.stock_rollizo import StockRollizo
@@ -233,21 +233,21 @@ class ClienteForm(forms.ModelForm):
         model = Cliente
         fields = '__all__'
 
-class ClienteAdmin(admin.ModelAdmin):
+# class ClienteAdmin(admin.ModelAdmin):
 
-    form = ClienteForm
-    list_display = ('id', 'nombre_cliente')
-    readonly_fields = ('usuario_crea',)
+#     form = ClienteForm
+#     list_display = ('id', 'nombre_cliente')
+#     readonly_fields = ('usuario_crea',)
 
-    def save_model(self, request, obj, form, change):
-        obj.usuario_crea = request.user.rut
-        obj.save()
-        if not request.user.is_superuser:
-            empresa = request.user.empresa
-            cliente_empresa = ClienteEmpresa.objects.filter(cliente=obj, empresa=empresa).first()
-            if not cliente_empresa:
-                cliente_empresa = ClienteEmpresa(cliente=obj, empresa=empresa)
-                cliente_empresa.save()
+#     def save_model(self, request, obj, form, change):
+#         obj.usuario_crea = request.user.rut
+#         obj.save()
+#         if not request.user.is_superuser:
+#             empresa = request.user.empresa
+#             cliente_empresa = ClienteEmpresa.objects.filter(cliente=obj, empresa=empresa).first()
+#             if not cliente_empresa:
+#                 cliente_empresa = ClienteEmpresa(cliente=obj, empresa=empresa)
+#                 cliente_empresa.save()
 
     # devuelve sólo los clientes pertenecientes a la empresa
     def get_queryset(self, request):
@@ -379,23 +379,23 @@ class CostoSobreTiempoAdmin(admin.ModelAdmin):
             obj.empresa = request.user.empresa
         obj.save()
 
-class ProductoInline(admin.TabularInline):
-    model = Empresa.productos.through
-    extra = 1
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super().get_readonly_fields(request, obj=obj)
-        else:
-            return [f.name for f in self.model._meta.fields]
+# class ProductoInline(admin.TabularInline):
+#     model = Empresa.productos.through
+#     extra = 1
+#     def get_readonly_fields(self, request, obj=None):
+#         if request.user.is_superuser:
+#             return super().get_readonly_fields(request, obj=obj)
+#         else:
+#             return [f.name for f in self.model._meta.fields]
 
-class ClienteInline(admin.TabularInline):
-    model = Empresa.cliente.through
-    extra = 1
-    def get_readonly_fields(self, request, obj=None):
-        if request.user.is_superuser:
-            return super().get_readonly_fields(request, obj=obj)
-        else:
-            return [f.name for f in self.model._meta.fields]
+# class ClienteInline(admin.TabularInline):
+#     model = Empresa.cliente.through
+#     extra = 1
+#     def get_readonly_fields(self, request, obj=None):
+#         if request.user.is_superuser:
+#             return super().get_readonly_fields(request, obj=obj)
+#         else:
+#             return [f.name for f in self.model._meta.fields]
 
 class EstadoEmpresaFilter(admin.SimpleListFilter):
     #Este filtro, reemplaza los 0s y 1s de estado por Activo e Inactivo
@@ -430,7 +430,7 @@ class EmpresaAdmin(admin.ModelAdmin):
         # Verificar si el usuario es un superusuario
         return request.user.is_superuser
     form = EmpresaForm
-    inlines = (ProductoInline, ClienteInline)
+    #inlines = (ProductoInline, ClienteInline)
     def save_model(self, request, obj, form, change):
         obj.usuario_crea = request.user.rut
         obj.save()
@@ -760,9 +760,9 @@ class ProductoCorteAdmin(admin.ModelAdmin):
         obj.usuario_crea = request.user.rut
         obj.save()
 
-class ProductosEmpresaAdmin(admin.ModelAdmin):
-    list_display = ('empresa', 'producto')
-    list_filter = ('empresa__nombre_empresa', 'producto__nombre_producto')
+# class ProductosEmpresaAdmin(admin.ModelAdmin):
+#     list_display = ('empresa', 'producto')
+#     list_filter = ('empresa__nombre_empresa', 'producto__nombre_producto')
 
 class LineaFilter(admin.SimpleListFilter):
     title = 'Linea'
@@ -791,7 +791,7 @@ class LineaFilter(admin.SimpleListFilter):
 #         return [(empresa.rut_empresa, empresa.nombre_empresa) for empresa in empresas]
 
 class RollizoAdmin(admin.ModelAdmin):
-    list_display = ('nombre_rollizo', 'descripcion_rollizo', 'linea')
+    list_display = ('nombre_rollizo', 'descripcion_rollizo')
     readonly_fields = ('usuario_crea',)
 
     #Cambia los campos que se muestran
@@ -802,7 +802,7 @@ class RollizoAdmin(admin.ModelAdmin):
         else:
             # Usuarios no superusuarios solo pueden ver los campos bodega y descripcion_bodega
             return (
-                (None, {'fields': ('nombre_rollizo', 'descripcion_rollizo', 'linea', 'diametro', 'clase_diametrica')
+                (None, {'fields': ('nombre_rollizo', 'descripcion_rollizo',  'diametro', 'clase_diametrica')
 }),
             )
 
@@ -1200,7 +1200,7 @@ class UserProfileAdmin(UserAdmin):
 admin.site.register(AbastecimientoRollizo, AbastecimientoRollizoAdmin)
 admin.site.register(Bodega, BodegaAdmin)
 admin.site.register(CalidadProducto, CalidadProductoAdmin)
-admin.site.register(Cliente, ClienteAdmin)
+#admin.site.register(Cliente, ClienteAdmin)
 admin.site.register(CostoRollizo, CostoRollizoAdmin)
 admin.site.register(CostoSobreTiempo, CostoSobreTiempoAdmin)
 admin.site.register(Empresa, EmpresaAdmin)

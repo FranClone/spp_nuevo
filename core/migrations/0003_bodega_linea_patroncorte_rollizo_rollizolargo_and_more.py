@@ -134,20 +134,7 @@ class Migration(migrations.Migration):
                 'db_table': 'STOCK_ROLLIZO',
             },
         ),
-        migrations.CreateModel(
-            name='StockProducto',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('cantidad_m3', models.FloatField()),
-                ('fecha_crea', models.DateField(auto_now_add=True)),
-                ('usuario_crea', models.CharField(blank=True, max_length=20, null=True)),
-                ('bodega', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.bodega', verbose_name='Bodega')),
-                ('detalle', models.ForeignKey('DetallePedido', on_delete=models.CASCADE, verbose_name='DetallePedido'))
-            ],
-            options={
-                'db_table': 'STOCK_PRODUCTO',
-            },
-        ),
+
         migrations.AddField(
             model_name='rollizo',
             name='rollizo_largo',
@@ -245,6 +232,20 @@ class Migration(migrations.Migration):
             options={
                 'db_table': 'ABASTECIMIENTO_ROLLIZO',
                 'ordering': ['id_abastecimiento'],
+            },
+        ),
+                migrations.CreateModel(
+            name='StockProducto',
+            fields=[
+                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('cantidad_m3', models.FloatField()),
+                ('fecha_crea', models.DateField(auto_now_add=True)),
+                ('usuario_crea', models.CharField(blank=True, max_length=20, null=True)),
+                ('bodega', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='core.bodega', verbose_name='Bodega')),
+                ('detalle', models.ForeignKey('DetallePedido', on_delete=models.CASCADE, verbose_name='DetallePedido'))
+            ],
+            options={
+                'db_table': 'STOCK_PRODUCTO',
             },
         ),
     ]

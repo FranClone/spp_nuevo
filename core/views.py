@@ -30,7 +30,7 @@ from .modelos.detalle_pedido import DetallePedido
 from .modelos.factura import Factura
 from .modelos.empaque import Empaque
 from .modelos.stock_rollizo import StockRollizo
-from .modelos.resources import PedidoResource
+
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -56,7 +56,7 @@ from django.db import IntegrityError
 from mip import Model,maximize,CBC,BINARY,xsum
 from django.http import JsonResponse
 from .roles import require_role
-from .forms import ActualizarPedidoForm, DetallePedidoForm, FacturaForm, EmpaqueForm
+from .forms import ActualizarPedidoForm, DetallePedidoForm
 from django.db import transaction
 
 #
@@ -713,15 +713,17 @@ def gantt_view(request):
                     rendimiento_patron = patron_corte_data.rendimiento
                     
                     utilizado_patron = str(patron_corte_data.utilizado)
-                    
+
+                  #  producto_asociado_patron = patron_corte_data.producto_asociado
+
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
-                    
 
+                  #  producto_asociado_patron = "N/A"
 
                 tasks_pedido = [
                     pedido.orden_interna,

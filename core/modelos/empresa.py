@@ -3,6 +3,7 @@ from django.core.exceptions import ValidationError
 from ..validators import validate_rut
 
 class Empresa(models.Model):
+    
     rut_empresa = models.CharField(primary_key=True, max_length=20)
     nombre_empresa = models.CharField(max_length=100, verbose_name='Empresa')
     correo_empresa = models.CharField(max_length=300, blank=True, null=True)
@@ -13,8 +14,8 @@ class Empresa(models.Model):
     nombre_fantasia = models.CharField(max_length=100, blank=True, null=True)
     ciudad = models.CharField(max_length=100, blank=True, null=True)
     telefono = models.IntegerField(blank=True, null=True)
-    productos = models.ManyToManyField('Producto', through='productosempresa')
-    cliente = models.ManyToManyField('Cliente', through='clienteempresa')
+    #productos = models.ManyToManyField('Producto', through='productosempresa')
+    #cliente = models.ManyToManyField('Cliente', through='clienteempresa')
     eliminado = models.BooleanField(default=False)
     
     def eliminar(self):
