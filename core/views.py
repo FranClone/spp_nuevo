@@ -706,16 +706,19 @@ def gantt_view(request):
                     nombre_patron = patron_corte_data.nombre
                     descripcion_patron = patron_corte_data.descripcion
                     rendimiento_patron = patron_corte_data.rendimiento
+
                     utilizado_patron = str(patron_corte_data.utilizado)
+
                   #  producto_asociado_patron = patron_corte_data.producto_asociado
+
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
-                  #  producto_asociado_patron = "N/A"
 
+                  #  producto_asociado_patron = "N/A"
 
                 tasks_pedido = [
                     pedido.orden_interna,

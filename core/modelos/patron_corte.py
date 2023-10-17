@@ -12,6 +12,7 @@ class PatronCorte(models.Model):
     descripcion = models.CharField(max_length=20, null=True, blank=False)
     rendimiento = models.FloatField(max_length=5, null=True,validators=[MinValueValidator(0)]) #RE
    #patron corte:estrategia para realizar cortes >Utilizado:descartado en la planificacion o utilizado
+
     utilizado = models.BooleanField()
     eliminado = models.BooleanField(default=False)
 

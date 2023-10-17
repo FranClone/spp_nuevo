@@ -125,17 +125,15 @@ class CrearPatronCorteForm(forms.ModelForm):
     """Esta clase permite crear un nuevo patrón de corte"""
     ##Validaciones 
     rendimiento = forms.FloatField(min_value=0,max_value=2000)
-
     class Meta:
         model = PatronCorte
         fields = [
             'codigo',
             'nombre',
             'descripcion',
-            'rollizo',
+            'rollizo_id',
             'rendimiento',
             'utilizado',
-
         ]
 
  
