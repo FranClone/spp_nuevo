@@ -224,7 +224,7 @@
                                     '{{ pedido.prioridad }}')">
                                     <i class="fa-regular fa-clip">
                                     <i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="eliminarpedido/{{pedido.id}}" class="fas fa-trash-alt fa-xl"></a>
+                                    <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ pedido.id }}')"></i>
                             <a href="editarpedido/{{pedido.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
                     </tr>
@@ -264,7 +264,15 @@
         </div>
 
     </div>
-
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p></div></br>
+            <div>
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>    
         <script>
             var toggleFilterButton = document.querySelector('.filter-section .filter-button');
             var filterForm = document.querySelector('.filter-section .filter-form');
@@ -324,7 +332,35 @@
             });
         </script>
 
+        <script>
+            // Seleccionar elementos del DOM
+            const popupEliminar = document.getElementById('popupeliminar');
+            const btnCancelar = document.getElementById('btnCancelar');
+            const mensaje = document.getElementById('mensaje');
+            const btnConfirmar = document.getElementById('btnConfirmar');
 
+            let pedidoId = null;
+
+            // Función para abrir el popup de eliminación
+            function openEliminarPopup(id) {
+                pedidoId = id;
+                mensaje.textContent = `¿Estás seguro de borrar el código del pedido: ${pedidoId}?`;
+                // Actualiza el href del enlace "Confirmar"
+                popupEliminar.style.display = 'flex';
+            }
+
+            // Event listeners para los botones del popup
+            btnCancelar.addEventListener('click', () => {
+                popupEliminar.style.display = 'none';
+            });
+
+            btnConfirmar.addEventListener('click', () => {
+                if (pedidoId) {
+                    window.location.href = `eliminarpedido/${pedidoId}`;
+                }
+            });
+
+        </script>
 </body>
 
 </html>
