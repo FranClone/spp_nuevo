@@ -20,9 +20,5 @@ class Migration(migrations.Migration):
             name='codigo_patron',
             field=models.CharField(default='', max_length=20, unique=True),
         ),
-        migrations.AlterField(
-            model_name='patroncorte',
-            name='producto_asociado',
-            field=models.CharField(default='', max_length=20),
-        ),
+
     ]
