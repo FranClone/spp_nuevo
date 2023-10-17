@@ -8,16 +8,13 @@ class PatronCorte(models.Model):
     codigo = models.CharField(max_length=20, unique=True, null=False, blank=False, default='')
     nombre = models.CharField(max_length=20, null=False, blank=False)
     descripcion = models.CharField(max_length=20, null=False, blank=False)
-    rollizo = models.CharField(max_length=10)
+    rollizo_id = models.CharField(max_length=10)
     rendimiento = models.FloatField(max_length=5)
-    velocidad_linea = models.FloatField()
-    setup_time = models.FloatField()
-    lead_time = models.FloatField()
+
 
     # Salidas
     #patron corte:estrategia para realizar cortes >Utilizado:descartado en la planificacion o utilizado
     utilizado = models.BooleanField()
-    producto_asociado = models.CharField(max_length=20, null=False, blank=False, default='')
     eliminado = models.BooleanField(default=False)
     
     def eliminar(self):
