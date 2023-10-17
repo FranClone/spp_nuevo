@@ -711,22 +711,19 @@ def gantt_view(request):
                     nombre_patron = patron_corte_data.nombre
                     descripcion_patron = patron_corte_data.descripcion
                     rendimiento_patron = patron_corte_data.rendimiento
-                    velocidad_linea_patron = patron_corte_data.velocidad_linea
-                    setup_time_patron = patron_corte_data.setup_time
-                    lead_time_patron = patron_corte_data.lead_time
+                    
                     utilizado_patron = str(patron_corte_data.utilizado)
+
                   #  producto_asociado_patron = patron_corte_data.producto_asociado
+
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
-                    velocidad_linea_patron = "N/A"
-                    setup_time_patron = "N/A"
-                    lead_time_patron = "N/A"
                     utilizado_patron = "N/A"
-                  #  producto_asociado_patron = "N/A"
 
+                  #  producto_asociado_patron = "N/A"
 
                 tasks_pedido = [
                     pedido.orden_interna,
@@ -769,11 +766,11 @@ def gantt_view(request):
                     nombre_patron,  # 37
                     descripcion_patron,  # 38
                     rendimiento_patron,  # 39
-                    velocidad_linea_patron,  # 40
-                    setup_time_patron,  # 41
-                    lead_time_patron,  # 42
+                     # 40
+                      # 41
+                      # 42
                     utilizado_patron,  # 43
-              #      producto_asociado_patron,  # 44
+                      # 44
                     item, #45
                     folio, #46
                     mercado, #47
