@@ -88,9 +88,9 @@
 
 
 
-    <div class="form-container-productos" style="width:200vh;">
+    <div class="form-container-productos" >
        
-        <form method="post" action="{% url 'pedidos' %}" style="display: none;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:100vh;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
                 <th>Detalle Pedido</th>
@@ -284,7 +284,6 @@
                     </tr>
                     <tr>
                         <td>{{ formstockterminado.bodega }}</td>
-                        <td>{{ formstockterminado.producto_key }}</td>
                         <td>{{ formstockterminado.cantidad_m3}}</td>              
                         <td>{{ formstockterminado.usuario_crea }}</td>
                     </tr>

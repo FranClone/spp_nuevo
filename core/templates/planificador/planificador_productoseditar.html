@@ -33,44 +33,35 @@
                     <td>{{ form.descripcion }}</td>
                 </tr>
                 <tr>
-                    <th>{{ form.largo.label_tag }}</th>
-                    <th>{{ form.alto.label_tag }}</th>
-                    <th>{{ form.ancho.label_tag }}</th>
-                </tr>
-                <tr>
-                    <td>{{ form.largo }}</td>
-                    <td>{{ form.alto }}</td>
-                    <td>{{ form.ancho }}</td>
-                </tr>
-                <tr>
                     <th>Inventario Inicial:</th>
-                    <th>Valor Inventario:</th>
-                    <th>Costo Almacenamiento:</th>
-             
+                    <th>Nombre empresa:</th>
+                    <th>{{ form.nombre_rollizo.label_tag }}</th>       
                 </tr>
                 <tr>
-                    <td>{{ form.inventario_inicial }}</td>
-                    <td>{{ form.valor_inventario }}</td>
-                    <td>{{ form.costo_almacenamiento }}</td>
-                </tr>
-
-                <tr>  
-                    <th>{{ form.nombre_rollizo.label_tag }}</th>
-                    <th>Inventario Final:</th>   
-                </tr>
-                <tr>
+                    <td>{{ form.inventario_inicial }}</td>  
+                    <td>{{ form.empresa }}</td>       
                     <td>{{ form.nombre_rollizo }}</td>
-                    <td>{{ form.inventario_final }}</td>              
                 </tr>
-                <tr>                  
+                <tr>
+                    
+                    <th>Inventario Final:</th>
                     <th>Línea:</th>
-                    <th>Patrón de Corte:</th> 
                 </tr>
-                <tr>   
+                <tr>
+                    
+                    <td>{{ form.inventario_final }}</td>
                     <td>{{ form.linea }}</td>
-                    <td>{{ form.patron_corte }}</td>
                 </tr>
-
+                <tr>
+                    
+                    <th>Patrón de Corte</th>
+                    <th>{{ form.medida.label_tag }}</th>
+                </tr>
+                <tr>
+                        
+                        <td>{{ form.patron_corte }}</td>
+                        <td>{{ form.medida }}</td>    
+                </tr>
             </table>
             <div class="button-container">
                 <button type="submit" name="guardar" class="red-button-g">Guardar</button>

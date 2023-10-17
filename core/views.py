@@ -30,6 +30,8 @@ from .modelos.detalle_pedido import DetallePedido
 from .modelos.factura import Factura
 from .modelos.empaque import Empaque
 from .modelos.stock_rollizo import StockRollizo
+from .modelos.medida import Medida
+from .models import Usuario
 
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -135,7 +137,7 @@ def importar(request):
         # Verifica si el archivo 'xlsfile' está presente en 'request.FILES'
         if 'xlsfile' in request.FILES:
             xlsfile = request.FILES['xlsfile']
-            result = process_uploaded_file(xlsfile)
+            result = process_uploaded_file(request,xlsfile)
             if result.get('success'):
                 # Importación exitosa, muestra un mensaje de éxito
                 success = True
@@ -149,7 +151,7 @@ def importar(request):
         return render(request, 'aviso.html', {'alert_message': alert_message, 'success': success})
         
 
-def process_uploaded_file(xlsfile):
+def process_uploaded_file(request,xlsfile):
     success = False
     error_message = None
     if not xlsfile:
@@ -158,7 +160,17 @@ def process_uploaded_file(xlsfile):
         try:
             # Cargar el archivo Excel en un DataFrame de pandas
             df = pd.read_excel(xlsfile)
-
+            # #Obtener la empresa, a la que pertenece el usuario que carga el pedido para agregarlo al producto nuevo    
+            # nombre_empresa = request.user.empresa
+            # print(nombre_empresa)
+            # empresa = Empresa.objects.get(nombre_empresa=nombre_empresa)
+            # rut_empresa_usuario = empresa.rut_empresa 
+            # print(rut_empresa_usuario)
+            # #Obtener el id de rollizo de los productos ya agregados
+            # productos_existentes = Producto.objects.all().values('nombre', 'nombre_rollizo_id', 'linea_id')
+            # id_rollizos_existentes = {producto['nombre']: producto['nombre_rollizo_id'] for producto in productos_existentes}
+            # #Obtener el id de linea de los productos ya agregados
+            # id_lineas_existentes = {producto['nombre']: producto['linea_id'] for producto in productos_existentes}
             with transaction.atomic():
                 # Use a transaction to ensure data integrity
 
@@ -197,8 +209,53 @@ def process_uploaded_file(xlsfile):
                         )
                         empaque.save()
                         for producto_nombre in productos_list:
-                            producto = Producto.objects.get(nombre=producto_nombre)
-                            producto = Producto.objects.get(nombre=producto_nombre)
+                            try:
+                                producto = Producto.objects.get(nombre=producto_nombre)
+
+                                # Verificar si se han proporcionado medidas diferentes a las que ya existen
+                                alto = row['alto']
+                                ancho = row['ancho']
+                                largo = row['largo']
+                                # Buscar o crear la medida
+                                medida, _ = Medida.objects.get_or_create(
+                                    alto_producto=alto,
+                                    ancho_producto=ancho,
+                                    largo_producto=largo,
+                                )
+                                # Asociar la medida con el producto
+                                if medida not in producto.medida.all():
+                                    producto.medida.add(medida)
+                            except Producto.DoesNotExist:
+                                print(f"El producto {producto_nombre} no existe en la base de datos.")
+                            # if producto_nombre in id_rollizos_existentes and id_lineas_existentes:
+                            #     id_rollizo = id_rollizos_existentes[producto_nombre]
+                            #     id_linea = id_lineas_existentes[producto_nombre]
+                            #     print("id rollizo encontrado>", id_rollizo,id_linea)
+                            # else:
+                            #     id_rollizo = 1 
+                            #     id_linea=1# Aquí debes definir el valor adecuado
+
+                            # Busca el producto por nombre
+                            # producto, created = Producto.objects.get_or_create(nombre=producto_nombre, empresa_id=rut_empresa_usuario, nombre_rollizo_id=id_rollizo, linea_id=id_linea, inventario_inicial=0, inventario_final=0)
+
+                            # Verifica si se han proporcionado medidas diferentes a las que ya existen
+                            # alto = row['alto']
+                            # ancho = row['ancho']
+                            # largo = row['largo']
+                            # medida, _ = Medida.objects.get_or_create(
+                            #     alto_producto=alto,
+                            #     ancho_producto=ancho,
+                            #     largo_producto=largo,
+                            # )
+                            # if created:
+                            #     # Asocia la medida con el nuevo producto si se ha creado
+                            #     producto.medida.add(medida)
+                            #     print(producto, "creado")
+                            # else:
+                            #     # Comprueba si la medida existe en el producto y si no, la asocia
+                            #     if medida not in producto.medida.all():
+                            #         producto.medida.add(medida)
+                            #         print(producto, medida, "asociado")
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
@@ -706,16 +763,19 @@ def gantt_view(request):
                     nombre_patron = patron_corte_data.nombre
                     descripcion_patron = patron_corte_data.descripcion
                     rendimiento_patron = patron_corte_data.rendimiento
+
                     utilizado_patron = str(patron_corte_data.utilizado)
+
                   #  producto_asociado_patron = patron_corte_data.producto_asociado
+
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
-                  #  producto_asociado_patron = "N/A"
 
+                  #  producto_asociado_patron = "N/A"
 
                 tasks_pedido = [
                     pedido.orden_interna,

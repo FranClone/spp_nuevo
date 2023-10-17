@@ -75,28 +75,11 @@
                     </tr> 
                     <tr>
                         <td>{{ form.rendimiento.label_tag}}</td>
-                        <td>{{ form.velocidad_linea.label_tag}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.rendimiento}}</td>
-                        <td>{{ form.velocidad_linea}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.setup_time.label_tag}}</td>
-                        <td>{{ form.lead_time.label_tag}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.setup_time}}</td>
-                        <td>{{ form.lead_time}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.producto_asociado.label_tag}}</td>
                         <td>{{ form.utilizado.label_tag}}</td>   
                     </tr>
                     <tr>
-                        <td>{{ form.producto_asociado}}</td>
+                        <td>{{ form.rendimiento}}</td>
                         <td class="form-check text-left">{{ form.utilizado}}</td>
-                        
                     </tr>
                 </table>
                 <div class="button-container">
@@ -115,7 +98,6 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Código de Patrón</th>
-                        <th>Producto asociado</th>
                         <th>Clase Diamétrica</th>
                         <th>Rendimiento</th>
                         <th>Detalles</th>
@@ -127,15 +109,13 @@
                         {% if not patron.eliminado %}
                         <tr>
                             <td>{{ patron.codigo }}</td>
-                            <td>{{ patron.producto_asociado }}</td>
                             <td>{{ patron.rollizo }}</td> 
                             <td>{{ patron.rendimiento}}</td>
                             <td>  
                                 <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
                                 <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
 
-                                '{{ patron.producto_asociado }}','{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}', 
-                                '{{patron.velocidad_linea}}','{{patron.setup_time}}','{{patron.lead_time}}','{{patron.utilizado}}')">
+                                '{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}','{{patron.utilizado}}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i>
                             </button>
 
@@ -166,19 +146,12 @@
 
                     <td class="detalle-pedido-t"><strong>Nombre Patrón:</strong></td>
 
-                    <td class="detalle-pedido-t"><strong>Producto Asociado:</strong></td>
-
                     <td class="detalle-pedido-t"><strong>Clase Diamétrica (Rollizo):</strong></td>
 
                     <td class="detalle-pedido-t"><strong>Descripción:</strong></td>
 
                     <td class="detalle-pedido-t"><strong>Corte Rendimiento:</strong></td>
 
-                    <td class="detalle-pedido-t"><strong>Velocidad Línea:</strong></td>
-
-                    <td class="detalle-pedido-t"><strong>Setup Time:</strong></td>
-
-                    <td class="detalle-pedido-t"><strong>Lead Time:</strong></td>
 
                     <td class="detalle-pedido-t"><strong>Utilizado:</strong></td>
 
@@ -186,13 +159,9 @@
                 <tr>
                     <td class="detalle-pedido"><span id="popupCodigo"></span></td>
                     <td class="detalle-pedido"><span id="popupNombre"></span></td>
-                    <td class="detalle-pedido"><span id="popupProductoAsociado"></span></td>
                     <td class="detalle-pedido"><span id="popupRollizo"></span></td>
                     <td class="detalle-pedido"><span id="popupPCorteDescripcion"></span></td>
                     <td class="detalle-pedido"><span id="popupPCorteRendimiento"></span></td>
-                    <td class="detalle-pedido"><span id="popupPCorteVelocidadLinea"></span></td>
-                    <td class="detalle-pedido"><span id="popupPCorteSetupTime"></span></td>
-                    <td class="detalle-pedido"><span id="popupPCorteLeadTime"></span></td>
                     <td class="detalle-pedido"><span id="popupPCorteUtilizado"></span></td>
                 </tr>
             </table>
