@@ -219,20 +219,12 @@
             </script>
         </div>
 
-        <div class="btn-group" id="btnGroup" style="display: none;">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown"
-                    data-toggle="dropdown">
-              Actualizar <span class="caret"></span>
-            </button>
-
-            <div class="container-b">
-            <ul class="dropdown-menu" role="menu">
-                <button id="materiaprima" onclick="showPopupmateria()">Materia Prima</button>
-                <button id="produccion" onclick="showPopupproduccion()">Produccion</button>
-                <button id="agregarpedido" onclick="showPopupimport()">Agregar Pedidos</button>
-            </ul>
-            </div>
+        <div class="button-container" id="btnGroup" style="display: none;">
+            <button class="red-button-a" onclick="showPopupmateria()">Materia Prima</button>
+            <button class="red-button-a" onclick="showPopupproduccion()">Produccion</button>
+            <button class="red-button-a" onclick="showPopupimport()">Agregar Pedidos</button>
         </div>
+
         
     </div>
 
@@ -267,7 +259,7 @@
                     </tr>
                 </table>
       
-                <div class="button-container">
+                <div class="button-container"  >
                     <button type="submit" name="crear" class="red-button-g">Crear</button>
                     <button class="red-button-c" onclick="closePopupmateria()">Cerrar</button>
                 </div>

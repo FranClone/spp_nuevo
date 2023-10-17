@@ -175,6 +175,7 @@ table tr {
     padding: 0 10px;
     overflow: auto;
     min-height: 27vh;
+    position: relative;
 }
 
 .text-center {
@@ -197,7 +198,7 @@ table tr {
 
 #gantt table {
     background-image: linear-gradient(to right, transparent 1px, rgba(0, 0, 0, 0.1) 1px), linear-gradient(to bottom, transparent 1px, rgba(0, 0, 0, 0.1) 1px);
-    margin-bottom: 40px;
+    margin-bottom: 30px;
 }
 
 #gantt table tr th {
@@ -904,6 +905,17 @@ th.desc::after {
     border-radius: 5px;
     margin-left: 10px; 
 }
+
+.red-button-a {
+    background-color: red;
+    color: white;
+    border-radius: 6px;
+    padding: 4px 8px;
+    border: 2px solid white;
+    margin-left: 5px;
+    margin-bottom: 20px;
+}
+
 
 /*
 .popup-folio-container {
