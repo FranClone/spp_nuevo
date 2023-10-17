@@ -82,42 +82,34 @@
                     <td>{{ form.descripcion }}</td>
                 </tr>
                 <tr>
-                    <th>{{ form.largo.label_tag }}</th>
-                    <th>{{ form.alto.label_tag }}</th>
-                    <th>{{ form.ancho.label_tag }}</th>
-                </tr>
-                <tr>
-                    <td>{{ form.largo }}</td>
-                    <td>{{ form.alto }}</td>
-                    <td>{{ form.ancho }}</td>
-                </tr>
-                <tr>
                     <th>Inventario Inicial:</th>
-                    <th>Valor Inventario:</th>
-                    <th>Costo de Almacenamiento:</th>
-
+                    <th>Nombre empresa:</th>
+                    <th>{{ form.nombre_rollizo.label_tag }}</th>       
                 </tr>
                 <tr>
-                    <td>{{ form.inventario_inicial }}</td>
-                    <td>{{ form.valor_inventario }}</td>
-                    <td>{{ form.costo_almacenamiento }}</td>
-                </tr>
-
-                <tr>
-                    <th>{{ form.nombre_rollizo.label_tag }}</th>
-                    <th>Inventario Final:</th>
-                </tr>
-                <tr>
+                    <td>{{ form.inventario_inicial }}</td>  
+                    <td>{{ form.empresa }}</td>       
                     <td>{{ form.nombre_rollizo }}</td>
-                    <td>{{ form.inventario_final }}</td>
                 </tr>
                 <tr>
+                    
+                    <th>Inventario Final:</th>
                     <th>Línea:</th>
-                    <th>Patrón de Corte</th>
                 </tr>
                 <tr>
-                        <td>{{ form.linea }}</td>
+                    
+                    <td>{{ form.inventario_final }}</td>
+                    <td>{{ form.linea }}</td>
+                </tr>
+                <tr>
+                    
+                    <th>Patrón de Corte</th>
+                    <th>{{ form.medida.label_tag }}</th>
+                </tr>
+                <tr>
+                        
                         <td>{{ form.patron_corte }}</td>
+                        <td>{{ form.medida }}</td>    
                 </tr>
             </table>         
             <div class="button-container">
@@ -137,9 +129,6 @@
                     <tr>
                         <th>Código</th>
                         <th>Nombre</th>
-                        <th>Alto</th>
-                        <th>Ancho</th>
-                        <th>Largo</th>
                         <th>Detalles</th>
                     </tr>
                 </thead>
@@ -149,13 +138,10 @@
                         {% if not producto.eliminado %}
                         <tr>
                             <td>{{ producto.orden_producto }}</td>
-                            <td>{{ producto.nombre }}</td>
-                            <td>{{ producto.alto }}</td>
-                            <td>{{ producto.ancho }}</td>
-                            <td>{{ producto.largo }}</td>                        
+                            <td>{{ producto.nombre }}</td>                      
                             <td>
-                                <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}','{{ producto.alto }}', '{{ producto.ancho }}', 
-                                '{{ producto.largo }}','{{ producto.inventario_inicial }}','{{ producto.valor_inventario}}','{{ producto.costo_almacenamiento }}',
+                                <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}',
+                                '{{ producto.inventario_inicial }}',
                                 '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                                 <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
                                 <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>      
@@ -184,28 +170,17 @@
                     <th class="detalle-pedido-t"><strong>Código</strong></th>
                     <th class="detalle-pedido-t"><strong>Nombre</strong></th>
                     <th class="detalle-pedido-t"><strong>Descripción</strong></th>
-                    <th class="detalle-pedido-t"><strong>Largo</strong></th>
-                    <th class="detalle-pedido-t"><strong>Alto</strong></th>
-                    <th class="detalle-pedido-t"><strong>Ancho</strong></th>
                     <th class="detalle-pedido-t"><strong>Inventario Inicial</strong></th>
-                    <th class="detalle-pedido-t"><strong>Valor Inventario</strong></th>
-                    <th class="detalle-pedido-t"><strong>Costo de Almacenamiento</strong></th>
                     <th class="detalle-pedido-t"><strong>Rollizo</strong></th>
                     <th class="detalle-pedido-t"><strong>Inventario Final</strong></th>
                     <th class="detalle-pedido-t"><strong>Línea</strong></th>
                     <th class="detalle-pedido-t"><strong>Patrón de Corte</strong></th>
-
                 </tr>
                 <tr>
                     <td class="detalle-pedido"><span id="popupOrden_producto"></span></td>
                     <td class="detalle-pedido"><span id="popupNombre"></span></td>
                     <td class="detalle-pedido"><span id="popupDescripcion"></span></td>
-                    <td class="detalle-pedido"><span id="popupLargo"></span></td>
-                    <td class="detalle-pedido"><span id="popupAncho"></span></td>
-                    <td class="detalle-pedido"><span id="popupAlto"></span></td>
                     <td class="detalle-pedido"><span id="popupInventario_inicial"></span></td>
-                    <td class="detalle-pedido"><span id="popupValor_inventario"></span></td>
-                    <td class="detalle-pedido"><span id="popupAlmacenamiento"></span></td>
                     <td class="detalle-pedido"><span id="popupNombre_rollizo"></span></td>
                     <td class="detalle-pedido"><span id="popupInventario_final"></span></td>
                     <td class="detalle-pedido"><span id="popupLinea"></span></td>

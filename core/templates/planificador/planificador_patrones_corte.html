@@ -109,13 +109,13 @@
                         {% if not patron.eliminado %}
                         <tr>
                             <td>{{ patron.codigo }}</td>
-                            <td>{{ patron.rollizo_id }}</td> 
+                            <td>{{ patron.rollizo }}</td> 
                             <td>{{ patron.rendimiento}}</td>
                             <td>  
                                 <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
                                 <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
 
-                                '{{patron.rollizo_id}}','{{patron.descripcion}}','{{patron.rendimiento}}','{{patron.utilizado}}')">
+                                '{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}','{{patron.utilizado}}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i>
                             </button>
 
