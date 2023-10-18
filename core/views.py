@@ -1289,22 +1289,28 @@ def stock(request):
             if formstockterminado.is_valid():
                 print('formulario valido')
                 producto_id, medida_id = formstockterminado.cleaned_data['medidas'].split('-')
-                producto_medida = ProductoMedida.objects.get(producto_id=producto_id, medida_id=medida_id)
+                producto_id = int(producto_id)
+                medida_id = int(medida_id)
 
+                producto_medida = ProductoMedida.objects.get(producto_id=producto_id, medida_id=medida_id).id
+                producto_medida =int(producto_medida)
+                
                 print('medidas',producto_id,medida_id)
+                bodega=formstockterminado.cleaned_data['bodega']
                 cantidad_m3 = formstockterminado.cleaned_data['cantidad_m3']
                 usuario_crea = formstockterminado.cleaned_data['usuario_crea']
 
-
+                print('producto_medida:', producto_medida)
                 StockProducto.objects.create(
-                    producto_medida=ProductoMedida.objects.get(id=producto_medida),
+                    producto_medida_id=producto_medida,
+                    bodega=bodega,
                     cantidad_m3=cantidad_m3,
                     usuario_crea=usuario_crea,
         
                 )
 
-                nuevo_stock = formstockterminado.save()
-                print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
+                #nuevo_stock = formstockterminado.save()
+     
                 return redirect('plan_stock')
     
     context = {
