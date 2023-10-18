@@ -12,33 +12,19 @@ class DetallePedido(models.Model):
     #Demanda en m3  en verde D
     pedido = models.ForeignKey('Pedido', on_delete=models.CASCADE, verbose_name='Pedido')
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
-    factura = models.ForeignKey('Factura', on_delete=models.CASCADE, verbose_name='Factura')
-    empaque = models.ForeignKey('Empaque', on_delete=models.CASCADE, verbose_name='Empaque')
+    factura = models.ForeignKey('Factura', on_delete=models.CASCADE, verbose_name='Factura', null=True, blank=True)
+    empaque = models.ForeignKey('Empaque', on_delete=models.CASCADE, verbose_name='Empaque', null=True, blank=True)
     #Parametros
-    # producto_key = models.CharField(max_length=300, null=True)
     volumen_producto = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
     fecha_salida = models.DateField(null=True)
     #
     item = models.CharField(max_length=20, null=True, blank=False)
-    folio =  models.CharField(max_length=20, null=True, blank=False)
-    detalle_producto = models.CharField(max_length=300,null=True)
+    detalle_producto = models.CharField(max_length=300,null=True, blank=True)
     alto_producto = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
     ancho_producto = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
     largo_producto = models.FloatField(validators=[MinValueValidator(0)], null=True)
-    
-    fecha_entrega = models.DateField(null=True)
-    estado_pedido_linea = models.CharField(max_length=40, null=True, blank=False)
-    #estado_pedido_linea = models.BooleanField(blank=True, null=True)
-    grado_urgencia = models.CharField(max_length=100, null=True, blank=False)
-    #piezas x paquete * paquetes saldo
-    cantidad_piezas =  models.IntegerField(validators=[MinValueValidator(0)], null=True)
-     #piezas * piezas x trozo
-    cantidad_trozos =   models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    piezas_xpaquete =   models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    piezas_xtrozo =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    paquetes_solicitados =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    volumen_obtenido =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    paquetes_saldo = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
+    fecha_entrega = models.DateField(null=True, blank=True)
+    cantidad_piezas =  models.IntegerField(validators=[MinValueValidator(0)], null=True, blank=True)
     mercado = models.CharField(max_length=40, null=True, blank=False)
     puerto_destino = models.CharField(max_length=40, null=True, blank=False)
     #detalles extra de la orden de pedido pdf
@@ -50,13 +36,27 @@ class DetallePedido(models.Model):
     programa = models.CharField(max_length=40, null=True, blank=False)
     piezas = models.FloatField(validators=[MinValueValidator(0)], null=True)
     cpo = models.FloatField(validators=[MinValueValidator(0)], null=True)
-    piezas_x_cpo = models.FloatField(validators=[MinValueValidator(0)], null=True)
-    est = models.CharField(max_length=40, null=True, blank=False) 
-    separador = models.IntegerField(validators=[MinValueValidator(0)], null=True)
-    nota =models.CharField(max_length=200, null=True) 
-    diametro = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
-    largo_trozo = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
-    
+    est = models.CharField(max_length=40, null=True, blank=False)
+    # producto_key = models.CharField(max_length=300, null=True)
+    folio =  models.CharField(max_length=20, null=True, blank=True)
+
+    grado_urgencia = models.CharField(max_length=100, null=True, blank=True)
+    #piezas x paquete * paquetes saldo
+    #piezas * piezas x trozo
+    cantidad_trozos =   models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    piezas_xpaquete =   models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    piezas_xtrozo =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    paquetes_solicitados =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    volumen_obtenido =  models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    paquetes_saldo = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True, blank=True)
+    piezas_x_cpo = models.FloatField(validators=[MinValueValidator(0)], null=True, blank=True)
+    #separador = models.IntegerField(validators=[MinValueValidator(0)], null=True)
+    #nota =models.CharField(max_length=200, null=True) 
+    #diametro = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
+    #largo_trozo = models.DecimalField(max_digits=10,validators=[MinValueValidator(0)], decimal_places=3, null=True)
+    #estado_pedido_linea = models.CharField(max_length=40, null=True, blank=False)
+
+
     # def save(self, *args, **kwargs):
     #     # Calcula la concatenación de atributos
     #     self.producto_key = f"{self.producto}-{self.largo_producto}-{self.alto_producto}-{self.ancho_producto}"

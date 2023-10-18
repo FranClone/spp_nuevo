@@ -616,13 +616,29 @@ def pedidos(request):
     if request.method == 'POST':
         pedido_form = ActualizarPedidoForm(request.POST)
         detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido')
-
+        print("post pedido")
+        print("Before pedido_form validation")
+        if pedido_form.is_valid():
+            print("pedido_form is valid")
+        else:
+            print("pedido_form is NOT valid")
+            print(pedido_form.errors)
+        if detalle_pedido_formset.is_valid():
+            print("detalle_pedido_formset is valid")
+        else:
+            print("detalle_pedido_formset is NOT valid")
+            print(detalle_pedido_formset.errors)
+            
         if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
+            print("formulario valido")
             with transaction.atomic():
                 pedido_instance = pedido_form.save()
-
-                # Extract Factura data from the first form in the formset
+                producto_seleccionado = pedido_form.cleaned_data['producto']
+                # producto_elegido = pedido_form.cleaned_data.get('producto')
+                # pedido_instance.producto = producto_elegido
+                # pedido_instance.save()
                 primera_form = detalle_pedido_formset.forms[0]
+                print(primera_form)
                 factura_data = {
                     'FSC': primera_form.cleaned_data.get('FSC'),
                     'esp_fact': primera_form.cleaned_data.get('esp_fact'),
@@ -631,6 +647,7 @@ def pedidos(request):
                 }
                 factura_instance = Factura(**factura_data)
                 factura_instance.save()
+                print(factura_instance)
                 empaque_data = {
                     'pqte': primera_form.cleaned_data.get('pqte'),
                     'tipo_empaque': primera_form.cleaned_data.get('tipo_empaque'),
@@ -642,17 +659,29 @@ def pedidos(request):
                 empaque_instance.save()           
                 # Create and save a new Factura instance with the extracted data
 
-
+                print(empaque_instance)
+                print(f"Factura: {factura_instance}")
+                print(f"Empaque: {empaque_instance}")
+                print(f"Pedido: {pedido_instance}")
                 # Loop through DetallePedido forms in the formset
                 for detalle_pedido_form in detalle_pedido_formset:
                     detalle_pedido_instance = detalle_pedido_form.save(commit=False)
                     detalle_pedido_instance.pedido = pedido_instance
                     detalle_pedido_instance.factura = factura_instance
                     detalle_pedido_instance.empaque = empaque_instance
+                    detalle_pedido_instance.producto = producto_seleccionado
                     detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega  # Set fecha_entrega based on the associated Pedido
                     detalle_pedido_instance.save()
 
+
+
             return redirect('home')
+        else:
+            # Imprime los errores del formulario en la consola
+            for form in detalle_pedido_formset:
+                if form.errors:
+                    print(f"Errores en el formulario: {form.errors}")
+                    print(detalle_pedido_formset.errors)
 
     else:
         pedido_form = ActualizarPedidoForm()
