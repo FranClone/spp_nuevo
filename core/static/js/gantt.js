@@ -42,9 +42,11 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">IDS</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">ETA</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
+        
 
-            // Obtén la fecha actual
+        // Obtén la fecha actual
         const currentDate = new Date();
 
         // Calcula la fecha 10 días después
@@ -53,8 +55,8 @@ class Gantt {
 
         // Agrega las fechas al encabezado
         for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
-        const formattedDate = this.formatDate(date, "diario");
-        html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
+            const formattedDate = this.formatDate(date, "diario");
+            html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
         }
 
 
@@ -62,58 +64,68 @@ class Gantt {
 
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-        
+
         const groupedRows = {};
 
         // Iterar sobre cada producto y crear una fila por producto
-        for (let i = 0; i < this.filteredTasks.length; i++ ) {
+        for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-        
-            for (let j = 0; j < task[7].length; j++) {
-                var product = task[7][j]; // Obtener el nombre del producto
-                var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
-                console.log("task después del bucle:", i);
-            
-                if (!groupedRows[key]) {
-                    groupedRows[key] = {
-                        product: product,
-                        largo: task[19],
-                        ancho: task[18],
-                        alto: task[17],
-                        cantidad: 0,
-                        detalles: [],
-                        fechaInicio: new Date(task[3]),
-                        fechaFin: new Date(task[2]),
-                        ids: []
-                    };
-                }
-        
-                let target = task[45];
-                let sum = 0;
-                let randomNumbers = [];
-        
-                while (sum < target) {
-                    let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
-                    sum += randomNumber;
-                    randomNumbers.push(randomNumber);
-                    if (sum >= target) {
-                        break;
+            // Obtén la fecha de ETA del pedido
+            const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
+
+            // Obtén la fecha actual
+            const currentDate = new Date();
+
+            // Verifica si la fecha de ETA ya ha pasado
+            if (fechaETA >= currentDate) {
+                // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+                for (let j = 0; j < task[7].length; j++) {
+                    var product = task[7][j]; // Obtener el nombre del producto
+                    var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
+
+                    console.log("task después del bucle:", i);
+
+                    if (!groupedRows[key]) {
+                        groupedRows[key] = {
+                            product: product,
+                            largo: task[19],
+                            ancho: task[18],
+                            alto: task[17],
+                            cantidad: 0,
+                            detalles: [],
+                            fechaInicio: new Date(task[3]),
+                            fechaFin: new Date(task[2]),
+                            ids: []
+                        };
                     }
+
+                    let target = task[45];
+                    let sum = 0;
+                    let randomNumbers = [];
+
+                    while (sum < target) {
+                        let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
+                        sum += randomNumber;
+                        randomNumbers.push(randomNumber);
+                        if (sum >= target) {
+                            break;
+                        }
+                    }
+
+                    groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
+                    groupedRows[key].detalles.push({
+                        color: task[15],
+                        randomNumbers: randomNumbers,
+                        i: i,
+                    });
+
+                    groupedRows[key].ids.push(i);
                 }
-
-                groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
-                groupedRows[key].detalles.push({
-                    color: task[15],
-                    randomNumbers: randomNumbers,
-                    i: i,
-                });
-
-                groupedRows[key].ids.push(i);
             }
         }
 
 
-        
+
 
         // Ahora, puedes iterar sobre las filas agrupadas y construir la tabla final
         for (let key in groupedRows) {
@@ -122,9 +134,9 @@ class Gantt {
             var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
             dateDiff = Math.min(dateDiff, 11);
             console.log("dateDiff:", dateDiff);
-            
 
-        
+
+
             bodyHtml += '<tr>';
             bodyHtml += `<td>${row.product}</td>`;
             bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
@@ -132,10 +144,11 @@ class Gantt {
             bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.cantidad}</td>`; // Muestra la cantidad acumulada como número
             bodyHtml += `<td class="right-align">${ids}</td>`; // Muestra los valores de i
+            bodyHtml += `<td class="right-align">${formatDateToDDMMYYYY(row.fechaFin)}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(dateDiff).fill(0);
 
-            
+
             // Distribuir los paquetes en los días
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
@@ -144,36 +157,37 @@ class Gantt {
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-        
+
             // Agregar las celdas para los paquetes solicitados por día
             for (let k = 0; k < paquetesPorDia.length; k++) {
 
                 bodyHtml += '<td class="event-cell';
-            
+
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes';
-        
+
                 }
-            
+
                 bodyHtml += '">';
-                
+
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
                 }
-                
+
                 bodyHtml += '</td>';
             }
-            
+
             bodyHtml += '</tr>';
-            
+
         }
-        
+
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
-        
+
         html += '</tbody></table>';
-        return html;}
-        
+        return html;
+    }
+
 
 
     PedidoTable() {
@@ -197,14 +211,14 @@ class Gantt {
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
 
-    // Maintain a list of unique orden_pedido values
+        // Maintain a list of unique orden_pedido values
         var uniqueOrdenPedido = [];
 
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
-            
+
             // Check if orden_pedido already exists in the uniqueOrdenPedido list
             if (!uniqueOrdenPedido.includes(task[0])) {
 
@@ -226,7 +240,7 @@ class Gantt {
                 bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver...</a></td>`; /*Detalle*/
 
                 bodyHtml += '</tr>';
-                
+
                 // Add the orden_pedido to the uniqueOrdenPedido list
                 uniqueOrdenPedido.push(task[0]);
             }
@@ -236,7 +250,7 @@ class Gantt {
         html += bodyHtml;
 
         html += '</tbody></table>';
-        
+
         return html;
     }
 
@@ -281,10 +295,10 @@ class Gantt {
 
             }
 
-                bodyHtml += '</tr>';
-            
+            bodyHtml += '</tr>';
+
         }
-     
+
         // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
         return html;
@@ -312,15 +326,15 @@ class Gantt {
         // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-                bodyHtml += `<td class="right-align">${task[0]}</td>`;/*Nro Pedido*/
-                bodyHtml += `<td class="right-align">${task[35]}</td>`;/*Diametro*/
-                bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo Trozo*/
-                bodyHtml += `<td class="right-align">${task[28]}</td>`;/*Cantidad Piezas*/
-                bodyHtml += `<td class="left-align">${task[44]}</td>`;/*Producto Asociado*/
-                bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
+            bodyHtml += `<td class="right-align">${task[0]}</td>`;/*Nro Pedido*/
+            bodyHtml += `<td class="right-align">${task[35]}</td>`;/*Diametro*/
+            bodyHtml += `<td class="right-align">${task[24].toLocaleString()}</td>`;/*Largo Trozo*/
+            bodyHtml += `<td class="right-align">${task[28]}</td>`;/*Cantidad Piezas*/
+            bodyHtml += `<td class="left-align">${task[44]}</td>`;/*Producto Asociado*/
+            bodyHtml += `<td><a class="popup-link" data-pedido-id="${i}" data-popup-type="patron">Ver...</a></td>`;/*Detalle*/
 
-                bodyHtml += '</tr>';
-            
+            bodyHtml += '</tr>';
+
         }
 
         // Agrega el cuerpo de la tabla al encabezado
@@ -328,7 +342,7 @@ class Gantt {
 
         html += '</tbody></table>';
         return html;
-}
+    }
 
     showPedidosTable() {
         this.filteredTasks = this.tasks;
@@ -425,10 +439,10 @@ class Gantt {
         let productoData = this.tasks[pedidoIds]; // Cambio a let
         const self = this; // Store a reference to the current instance
 
-        
+
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoIds];
-        
+
             var html = '<table class="second-table"><thead><tr>';
             //html += '<th class="detalle-pedido-t">Folio</th>';
             html += '<th class="detalle-pedido-t">Op</th>';
@@ -447,14 +461,14 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Mbf</th>';
 
             html += '</tr></thead><tbody>';
-        
+
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
-                
-                if (task[0] === productoData[0]) { 
+
+                if (task[0] === productoData[0]) {
                     for (let j = 0; j < task[7].length; j++) {
                         console.log(task[7]);
-        
+
                         html += '<tr>';
                         html += `<tr data-pedido-id="${task[69]}">`; // Asegúrate de establecer el atributo data-producto-nombre aquí
                         // html += '<td class="detalle-pedido"><input type="checkbox" class="producto-checkbox"></td>'; // selecion de folio
@@ -472,15 +486,15 @@ class Gantt {
                         html += `<td class="detalle-pedido right-align">${task[55].toLocaleString()}</td>`; // Pzas
                         html += `<td class="detalle-pedido right-align">${task[20]}</td>`; // M3
                         html += `<td class="detalle-pedido right-align">${task[51]}</td>`; // Mbf
-        
+
                         html += '</tr>';
                     }
                 }
             }
-        
+
             // Close the table structure
             html += '</tbody></table>';
-        
+
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
@@ -489,14 +503,14 @@ class Gantt {
                     <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
                 </div>
             `;
-             // boton para el agregar folio
+            // boton para el agregar folio
             //<button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
-            
-        }else if (popupType === 'pedido') {
+
+        } else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
-        
+
             var html = '<table class="second-table"><thead><tr>';
-     
+
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
@@ -519,11 +533,11 @@ class Gantt {
             html += '<th class="detalle-pedido-t ">Mbf</th>';
             html += '<th class="detalle-pedido-t">Marca</th>';
             html += '</tr></thead><tbody>';
-            
+
             // Iterate through the filtered tasks and products
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
-                if (task[0] === productoData[0]) { 
+                if (task[0] === productoData[0]) {
                     for (let j = 0; j < task[7].length; j++) {
                         console.log(task[7]);
                         // Create a new row for each product
@@ -551,12 +565,13 @@ class Gantt {
                         html += `<td class="detalle-pedido left-align">${task[53]}</td>`; // Marca
                         html += '</tr>';
                     }
-            }}
-            
+                }
+            }
+
             // Close the table structure
             html += '</tbody></table>';
-      
-        
+
+
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
@@ -566,12 +581,12 @@ class Gantt {
                 </div>
             `;
 
-        
-        
+
+
         }
         else if (popupType === 'patron') {
-        productoData = this.tasks[pedidoId];
-        popup.innerHTML = `
+            productoData = this.tasks[pedidoId];
+            popup.innerHTML = `
             <div class="popup-content" id="popup">
                 <h2>Detalles</h2>
                 <div class="popup-item">
@@ -769,3 +784,10 @@ document.addEventListener('click', function (event) {
         console.log('Valores de i almacenados:', iValues);
     }
 });
+
+function formatDateToDDMMYYYY(date) {
+    const day = date.getDate();
+    const month = date.getMonth() + 1; // Los meses comienzan desde 0
+    const year = date.getFullYear();
+    return `${day.toString().padStart(2, '0')}/${month.toString().padStart(2, '0')}/${year}`;
+}
