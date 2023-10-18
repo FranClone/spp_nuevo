@@ -77,7 +77,7 @@
     <!--Sección formulario desplegable mediante botón "Carga Manual"-->
     <div class="form-container-productos" style="">
 
-        <form method="post" action="{% url 'pedidos' %}" style="display: none; width:100vh;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none; width:120vh;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
                 <th>Detalle Pedido</th>
@@ -101,11 +101,11 @@
                     <td>{{ pedido_form.orden_interna }}</td>
                     <td>{{ pedido_form.cliente }}</td>
                     <td>{{ form.mercado}}</td>
-                    <td>{{ pedido_form.fecha_entrega }}</td>
+                    <td>{{ form.fecha_entrega }}</td>
                     <td>{{ form.puerto_destino }}</td>
                     <td>{{ form.programa }}</td>
                     <td>{{ form.item }}</td>
-                    <td>{{ form.producto }}</td>
+                    <td>{{ pedido_form.producto }}</td>
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
                     <td>{{ form.calidad }}</td>

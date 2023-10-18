@@ -31,7 +31,7 @@ class Pedido(models.Model):
     orden_interna = models.CharField(max_length=20, null=False, blank=False)
     comentario = models.CharField(max_length=200, null=False, blank=False, default='Sin comentario')
     producto = models.ManyToManyField(Producto, through='DetallePedido')
-    prioridad = models.CharField(max_length=20,null=True, blank=False,choices=OPCION_PRIORIDAD, default='')
+    prioridad = models.CharField(max_length=20,null=True, blank=True,choices=OPCION_PRIORIDAD, default='')
     version = models.PositiveIntegerField(null=False, blank=False)
     #porcentaje_avance = models.FloatField(max_length=5)
     #cantidad_producida = models.PositiveIntegerField(null=False, blank=False)

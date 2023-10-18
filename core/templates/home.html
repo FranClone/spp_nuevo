@@ -90,11 +90,12 @@
 
     <div class="form-container-productos" >
        
-        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:100vh;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:120vh;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
-                <th>Detalle Pedido</th>
+                <th><span>Detalle Pedido</span></th>
                 {{ detalle_pedido_formset.management_form }}
+
                 <tr>
                     <th class="detalle-pedido-t">OP</th>
                     <th class="detalle-pedido-t">Cliente</th>
@@ -118,7 +119,7 @@
                     <td>{{ form.puerto_destino }}</td>
                     <td>{{ form.programa }}</td>
                     <td>{{ form.item }}</td>              
-                    <td>{{ form.producto }}</td>
+                    <td>{{ pedido_form.producto }}</td>
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
                     <td>{{ form.calidad }}</td>
@@ -292,6 +293,7 @@
                     </tr>
                     <tr>
                         <td>{{ formstockterminado.bodega }}</td>
+                        <td>{{ formstockterminado.producto}}</td>
                         <td>{{ formstockterminado.cantidad_m3}}</td>              
                         <td>{{ formstockterminado.usuario_crea }}</td>
                     </tr>
