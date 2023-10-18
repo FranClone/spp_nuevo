@@ -115,6 +115,7 @@ class Gantt {
 
 
         
+        
         // Ahora, puedes iterar sobre las filas agrupadas y construir la tabla final
         for (let key in groupedRows) {
             let row = groupedRows[key];
