@@ -12,6 +12,8 @@ from .modelos.cliente import Cliente
 from .modelos.factura import Factura
 from .modelos.empaque import Empaque
 from .modelos.stock_producto import StockProducto
+from .modelos.medida import Medida
+from .modelos.producto_medida import ProductoMedida
 from .modelos.productos_terminados import ProductoTerminado
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.detalle_pedido import DetallePedido
@@ -206,11 +208,11 @@ class DetallePedidoForm(forms.ModelForm):
                 ]
         fields = '__all__'
      
-    producto = forms.ModelChoiceField(
-        required=False,  # Hacerlo opcional
-        queryset=Producto.objects.filter(eliminado=False),
-        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    )
+    # producto = forms.ModelChoiceField(
+    #     required=False,  # Hacerlo opcional
+    #     queryset=Producto.objects.filter(eliminado=False),
+    #     widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    # )
 
     def save(self, commit=True):
         instance = super().save(commit=False)
@@ -266,11 +268,11 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
     )
-    producto = forms.ModelChoiceField(
-        required=False,
-        queryset=Producto.objects.filter(eliminado=False),
-        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    )
+    # producto = forms.ModelChoiceField(
+    #     required=False,
+    #     queryset=Producto.objects.filter(eliminado=False),
+    #     widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    # )
 
 
         # self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
@@ -312,14 +314,41 @@ class ProductoTerminadoForm(forms.ModelForm):
         model = ProductoTerminado
         fields = '__all__'
 
-
 class StockForm(forms.ModelForm):
-    exclude = ['fecha_crea']
-
+    producto = forms.ModelChoiceField(queryset=Producto.objects.all(),required=False)
+    medidas = forms.ChoiceField(choices=[], required=False, widget=forms.Select(attrs={'class': 'form-control'}))
     class Meta:
         model = StockProducto
-        fields = '__all__'
+        exclude = ['fecha_crea','valor_inventario','costo_almacenamiento']
+        fields = ['bodega','producto', "medidas",'cantidad_m3',  'usuario_crea']
 
+
+    def __init__(self, *args, **kwargs):
+        super(StockForm, self).__init__(*args, **kwargs)
+        self.fields['medidas'].choices = self.get_medidas_choices()
+
+    def get_medidas_choices(self):
+        choices = []
+        for producto in Producto.objects.all():
+            producto_id = producto.id
+            print('for producto',producto)
+            for medida in producto.medida.all():
+                print('for medida',medida)
+                choice = (f'{producto.id}-{medida.id}', f'{producto.nombre} ({medida.alto_producto}x{medida.ancho_producto}x{medida.largo_producto})')
+                choices.append(choice)
+        return choices
+
+    # producto_id = forms.ModelChoiceField(queryset=Producto.objects.all(), label="Producto ID")
+    # producto_medidas = forms.CharField(label="Medidas del Producto", required=False, widget=forms.TextInput(attrs={'readonly': True}))
+
+    # def __init__(self, *args, **kwargs):
+    #     super().__init__(*args, **kwargs)
+
+    #     self.fields['producto_id'].widget = forms.Select(attrs={'class': 'form-control'})
+
+    # def clean(self):
+    #     cleaned_data = super().clean()
+    #     return cleaned_data
     # def __init__(self, *args, **kwargs):
     #     super().__init__(*args, **kwargs)
 
