@@ -25,34 +25,32 @@
                 <tr>
                     <th>{{ form.rut_cliente.label_tag }}</th>
                     <th>{{ form.nombre_cliente.label_tag }}</th>
+                    <th>{{ form.correo_cliente.label_tag }}</th>
                 </tr>
                 <tr>
                     <td>{{ form.rut_cliente }}</td>
                     <td>{{ form.nombre_cliente }}</td>
-                </tr>
-                <tr>
-                    <th>{{ form.correo_cliente.label_tag }}</th>
-                    <th>{{ form.usuario_crea.label_tag }}</th>
-                </tr>
-                <tr>
                     <td>{{ form.correo_cliente }}</td>
-                    <td>{{ form.usuario_crea }}</td>
                 </tr>
                 <tr>
+                    <th>{{ form.usuario_crea.label_tag }}</th>
                     <th>{{ form.ciudad.label_tag }}</th>
                     <th>{{ form.telefono.label_tag }}</th>
                 </tr>
                 <tr>
+                    <td>{{ form.usuario_crea }}</td>
                     <td>{{ form.ciudad }}</td>
                     <td>{{ form.telefono }}</td>
                 </tr>
                 <tr>
                     <th>{{ form.mercado.label_tag }}</th>
                     <th>{{ form.puerto_destino.label_tag }}</th>
+                    <th>{{ form.empresa.label_tag }}</th>
                 </tr>
                 <tr>
                     <td>{{ form.mercado }}</td>
                     <td>{{ form.puerto_destino }}</td>
+                    <td>{{ form.empresa }}</td>    
                 </tr>
             </table>
     <button type="submit" name="guardar" class="red-button-g">Guardar</button>

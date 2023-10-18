@@ -140,7 +140,6 @@ class CrearRollizoForm(forms.ModelForm):
         
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['linea'].queryset = Linea.objects.filter(eliminado=False)
 
 class CrearLineaForm(forms.ModelForm):
     exclude = ['fecha_crea']

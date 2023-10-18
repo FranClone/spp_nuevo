@@ -72,27 +72,23 @@
                     <td>{{ form.descripcion_rollizo }}</td>
                 </tr>
                 <tr>
-                    <th>Línea:</th>
                     <th>Diámetro:</th>
-                </tr>
-                <tr>
-                    <td>{{ form.linea }}</td>
-                    <td>{{ form.diametro }}</td>
-                </tr>
-                <tr>
                     <th>{{ form.largo.label_tag }}</th>
-                    <th>Creado por: </th>
                 </tr>
                 <tr>
+                    <td>{{ form.diametro }}</td>
                     <td>{{ form.largo }}</td>
-                    <td>{{ form.usuario_crea }}</td>
                 </tr>
                 <tr>
+                    <th>Creado por: </th>
                     <th>Clase Diamétrica: </th>
                 </tr>
                 <tr>
+                    <td>{{ form.usuario_crea }}</td>
                     <td>{{ form.clase_diametrica }}</td>
                 </tr>
+                <tr>
+                    
             </table>
             
             <div class="button-container">
@@ -110,9 +106,7 @@
             <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
-                        <th>Empresa:</th>
                         <th>Nombre</th>
-                        <th>Línea</th>
                         <th>Diámetro</th>
                         <th>Largo</th>
                         <th>Fecha Creación</th>
@@ -126,9 +120,7 @@
                     {% for rollizo in rollizos %}
                         {% if not rollizo.eliminado %}
                         <tr>
-                            <td>{{ rollizo.linea.empresa.nombre_empresa }}</td>      
                             <td>{{ rollizo.nombre_rollizo }}</td>
-                            <td>{{ rollizo.linea }}</td>
                             <td>{{ rollizo.diametro }}</td>
                             <td>{{ rollizo.largo }}</td>
                             <td>{{ rollizo.fecha_crea }}</td>  
@@ -137,7 +129,7 @@
                             
                             <td>
                                 <button class="btn block" onclick="openPopup('{{ rollizo.nombre_rollizo }}', '{{ rollizo.largo }}','{{ rollizo.descripcion_rollizo }}','{{ rollizo.diametro }}'
-                                ,'{{ rollizo.usuario_crea }}','{{ rollizo.fecha_crea }}','{{ rollizo.clase_diametrica }}', '{{ rollizo.linea }}'
+                                ,'{{ rollizo.usuario_crea }}','{{ rollizo.fecha_crea }}','{{ rollizo.clase_diametrica }}'
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <a href="eliminarrollizo/{{rollizo.id}}" class="fas fa-trash-alt fa-xl"></a>
                             <a href="editarrollizo/{{rollizo.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>  
@@ -168,7 +160,6 @@
                     <td class="detalle-pedido-t"><strong>Creado por:</strong></td>
                     <td class="detalle-pedido-t"><strong>Fecha de Creación:</strong></td>
                     <td class="detalle-pedido-t"><strong>Clase diamétrica:</strong></td>
-                    <td class="detalle-pedido-t"><strong>Línea:</strong></td>
                     
                   
                 </tr>
@@ -180,7 +171,6 @@
                     <td class="detalle-pedido"><span id="popupUsuario"></span></td>
                     <td class="detalle-pedido"><span id="popupFecha_crea"></span></td>
                     <td class="detalle-pedido"><span id="popupClase"></span></td>
-                    <td class="detalle-pedido"><span id="popupLinea"></span></td>
                     
                  
                 </tr>
