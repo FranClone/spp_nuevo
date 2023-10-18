@@ -290,15 +290,17 @@
                         <th class="detalle-pedido-t">Producto</th>
                        <th class="detalle-pedido-t">Cantidad <br> M3</th>
                        <th class="detalle-pedido-t">Creado por:</th>
+    
                     </tr>
                     <tr>
                         <td>{{ formstockterminado.bodega }}</td>
-                        <td>{{ formstockterminado.producto}}</td>
-                        <td>{{ formstockterminado.cantidad_m3}}</td>              
+                        <td>{{ formstockterminado.medidas}}</td>
+                        <td>{{ formstockterminado.cantidad_m3}}</td>
                         <td>{{ formstockterminado.usuario_crea }}</td>
                     </tr>
                 </table>
-    
+                {{ formstockterminado.errors }}
+             
                 <div  class="button-container">
                     <button  type="submit" name="crear" class="red-button-g">Crear</button>    
                     <button class="red-button-c" onclick="closePopupproduccion()">Cancelar</button>
@@ -346,7 +348,11 @@
             <button type="button" class="popup-folio-button agregar-folio-button" id="cerrar-popup-button">Cerrar</button>
         </div>
     </form>
-</div>-->   
+</div>-->  
+
+
+
+
 <script src="{% static 'js/gantt.js' %}"></script>
 
 {% comment %} script test algoritmo popup {% endcomment %}

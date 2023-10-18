@@ -1,11 +1,11 @@
 from django.db import models
-
+from .producto_medida import ProductoMedida
 #Inventario ya producido del producto IIP
 #Valorización del Inventarioa VI
 #Costo de almacenacimiento de PT X CBM CI
 class StockProducto(models.Model):
     bodega = models.ForeignKey('Bodega', on_delete=models.CASCADE, verbose_name='Bodega')
-    producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
+    producto_medida = models.ForeignKey('ProductoMedida', on_delete=models.CASCADE)
     #producto_key = models.CharField(max_length=300, null=True)
     cantidad_m3 = models.FloatField(null=True)
     fecha_crea = models.DateField(auto_now_add=True)
@@ -16,4 +16,4 @@ class StockProducto(models.Model):
         db_table = 'STOCK_PRODUCTO'
         
     def __str__(self):
-        return f'Stock de {self.producto.nombre_producto} en {self.bodega.nombre_bodega} = {self.cantidad_m3}'
+        return f'Stock de  en {self.bodega.nombre_bodega} = {self.cantidad_m3}'

@@ -75,16 +75,18 @@
                     <th class="detalle-pedido-t">Producto</th>
                    <th class="detalle-pedido-t">Cantidad <br> M3</th>
                    <th class="detalle-pedido-t">Creado por:</th>
+
                 </tr>
                 <tr>
-                    <td>{{ form.bodega }}</td>
-                    <td>{{ form.producto_key }}</td>
-                    <td>{{ form.cantidad_m3}}</td>              
-                    <td>{{ form.usuario_crea }}</td>
+                    <td>{{ formstockterminado.bodega }}</td>
+                    <td>{{ formstockterminado.medidas}}</td>
+                    <td>{{ formstockterminado.cantidad_m3}}</td>
+                    <td>{{ formstockterminado.usuario_crea }}</td>
                 </tr>
             </table>
-
-            
+                {{ formstockterminado.errors }}
+                {{ formstockterminado.non_field_errors }}
+                
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>

@@ -22,6 +22,7 @@ from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
+
     path('administracion/', login_required(Administracion.as_view()), name="administracion"),
     path('bar_chart/', login_required(Bar_chart.as_view()), name="bar_chart"),
     path('carga_servidor/', login_required(Carga_sv.as_view()), name="carga_servidor"),
@@ -47,7 +48,6 @@ urlpatterns = [
     path('planificador_patrones_corte/eliminarpatron/<int:id>', login_required(eliminar_patron), name='eliminar_patron'),
     path('planificador_productos/eliminarproducto/<int:id>', login_required(eliminar_producto), name='eliminar_producto'),
     path('planificador_patrones_corte/editarpatroncorte/<int:id>', login_required(patron_editar), name="patron_editar"),
-
     path('planificador_stock/editarstock/<int:id>', login_required(stock_editar), name="stock_editar"),
 
     path('plan_materia_prima/editarmateria/<int:id>', login_required(materia_editar), name="materia_editar"),

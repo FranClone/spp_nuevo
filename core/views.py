@@ -31,6 +31,7 @@ from .modelos.factura import Factura
 from .modelos.empaque import Empaque
 from .modelos.stock_rollizo import StockRollizo
 from .modelos.medida import Medida
+from .modelos.producto_medida import ProductoMedida
 from .models import Usuario
 
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
@@ -1268,24 +1269,47 @@ def actualizar_stock_rollizo(request):
     print("chao")
     return render(request, 'home.html', context)
 
+
+
 @require_role('ADMINISTRADOR')  
 @login_required
 def stock(request):
     stocks = StockProducto.objects.all()
     formstockterminado = StockForm()
-
+    
     if request.method == 'POST':
         if 'crear' in request.POST:
             formstockterminado = StockForm(request.POST)
-  
+            print('crear')
             if formstockterminado.is_valid():
+                print("formstockterminado is valid")
+            else:
+                print("formstockterminado is NOT valid")
+                print(formstockterminado.errors)
+            if formstockterminado.is_valid():
+                print('formulario valido')
+                producto_id, medida_id = formstockterminado.cleaned_data['medidas'].split('-')
+                producto_medida = ProductoMedida.objects.get(producto_id=producto_id, medida_id=medida_id)
+
+                print('medidas',producto_id,medida_id)
+                cantidad_m3 = formstockterminado.cleaned_data['cantidad_m3']
+                usuario_crea = formstockterminado.cleaned_data['usuario_crea']
+
+
+                StockProducto.objects.create(
+                    producto_medida=ProductoMedida.objects.get(id=producto_medida),
+                    cantidad_m3=cantidad_m3,
+                    usuario_crea=usuario_crea,
+        
+                )
+
                 nuevo_stock = formstockterminado.save()
                 print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
                 return redirect('plan_stock')
     
     context = {
         'form': formstockterminado,
-        'stocks': stocks
+        'stocks': stocks,
     }
     return render(request, 'planificador/planificador_stock.html', context)
 

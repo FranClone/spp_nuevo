@@ -47,9 +47,5 @@ class Migration(migrations.Migration):
         migrations.DeleteModel(
             name='ProductosEmpresa',
         ),
-        migrations.AddField(
-            model_name='producto',
-            name='medida',
-            field=models.ManyToManyField(to='core.medida'),
-        ),
+
     ]
