@@ -82,8 +82,6 @@ class Gantt {
                     var product = task[7][j]; // Obtener el nombre del producto
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
 
-                    console.log("task después del bucle:", i);
-
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
                             product: product,
@@ -123,57 +121,74 @@ class Gantt {
             }
         }
 
+        let maxFechaLejanaPorFila = new Date(0); // Inicializar con una fecha muy antigua
+
+        for (let key in groupedRows) {
+            let row = groupedRows[key];
+            const ids = row.ids;
+        
+            for (let id of ids) {
+                const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
+                const currentDate = new Date(); // Obtén la fecha actual
+        
+                // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
+                const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
+        
+                if (dateDiff > maxFechaLejanaPorFila) {
+                    maxFechaLejanaPorFila = dateDiff;
+                }
+            }
+        
+            console.log(`Fecha más lejana a la fecha actual para ${key}: ${maxFechaLejanaPorFila}`);
+        }
+
 
 
         for (let key in groupedRows) {
             let row = groupedRows[key];
             const ids = row.ids.join(', ');
             var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
-            dateDiff = Math.min(dateDiff, 11);
+            maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
             console.log("dateDiff:", dateDiff);
-
+        
             bodyHtml += '<tr>';
             bodyHtml += `<td>${row.product}</td>`;
             bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.cantidad}</td>`; 
-            bodyHtml += `<td class="right-align"></td>`; 
+            bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
+            bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-            let paquetesPorDia = new Array(dateDiff).fill(0);
-
+            let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0); 
+        
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                    let diaAleatorio = Math.floor(Math.random() * dateDiff);
+                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila); // Usar maxFechaLejanaPorFila
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-
+        
             for (let k = 0; k < paquetesPorDia.length; k++) {
-
                 bodyHtml += '<td class="event-cell';
-
+        
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes';
-
                 }
-
+        
                 bodyHtml += '">';
-
+        
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
                 }
-
+        
                 bodyHtml += '</td>';
             }
-
+        
             bodyHtml += '</tr>';
-
         }
-
+        
         html += bodyHtml;
-
         html += '</tbody></table>';
         return html;
     }
