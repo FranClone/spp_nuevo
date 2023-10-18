@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 
 
-function openPopup(nombre, largo, descripcion_rollizo, diametro, usuario_crea,fecha_crea,clase_diametrica,linea) {
+function openPopup(nombre, largo, descripcion_rollizo, diametro, usuario_crea,fecha_crea,clase_diametrica) {
     document.getElementById('popupNombre').innerText = nombre;
     document.getElementById('popupDescripcion').innerText = descripcion_rollizo;
     document.getElementById('popupLargo').innerText = largo;
@@ -102,7 +102,6 @@ function openPopup(nombre, largo, descripcion_rollizo, diametro, usuario_crea,fe
     document.getElementById('popupUsuario').innerText = usuario_crea;
     document.getElementById('popupFecha_crea').innerText = fecha_crea;
     document.getElementById('popupClase').innerText = clase_diametrica;
-    document.getElementById('popupLinea').innerText = linea;
     document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }

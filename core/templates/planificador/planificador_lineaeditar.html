@@ -21,27 +21,28 @@
         <form method="post" action="{% url 'linea_editar' id  %}"  id="carga-form">
             {% csrf_token %}
             <table class="form-table">
-                <tr>
-                    <th>{{ form.nombre_linea.label_tag }}</th>
-                    <th>Descripción:</th>
-                </tr>
-                <tr>
-                    <td>{{ form.nombre_linea }}</td>
-                    <td>{{ form.descripcion_linea }}</td>
-                </tr>
-                <tr>
-                    <th>{{ form.empresa.label_tag }}</th>
-                    <th>Creado por:</th>
-                </tr>
-                <tr>
-                    <td>{{ form.empresa }}</td>
-                    <td>{{ form.usuario_crea }}</td>
-                </tr>
-                <tr>
-                    <td>{{ form.producto_asociado}}</td>
-                    <td class="form-check text-left">{{ form.utilizado}}</td>
-                    
-                </tr>
+                <table class="form-table">
+                    <tr>
+                        <th>{{ form.nombre_linea.label_tag }}</th>
+                        <th>Descripción:</th>
+                        <th>{{ form.empresa.label_tag }}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.nombre_linea }}</td>
+                        <td>{{ form.descripcion_linea }}</td>
+                        <td>{{ form.empresa }}</td>
+                    </tr>
+                    <tr>
+                        <th>Creado por:</th>
+                        <th>{{ form.patron.label_tag }}</th>
+                        <th>{{ form.velocidad.label_tag }}</th>
+                    </tr>
+                    <tr>
+                        <td>{{ form.usuario_crea }}</td>
+                        <td>{{ form.patron }}</td>
+                        <td>{{ form.velocidad }}</td>
+                    </tr>
+                </table>
        
     </table>
     <button type="submit" name="guardar" class="red-button-g">Guardar</button>
