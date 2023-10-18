@@ -41,6 +41,7 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">IDS</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
             // Obtén la fecha actual
@@ -71,7 +72,8 @@ class Gantt {
             for (let j = 0; j < task[7].length; j++) {
                 var product = task[7][j]; // Obtener el nombre del producto
                 var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
-        
+                console.log("task después del bucle:", i);
+            
                 if (!groupedRows[key]) {
                     groupedRows[key] = {
                         product: product,
@@ -82,6 +84,7 @@ class Gantt {
                         detalles: [],
                         fechaInicio: new Date(task[3]),
                         fechaFin: new Date(task[2]),
+                        ids: []
                     };
                 }
         
@@ -97,21 +100,30 @@ class Gantt {
                         break;
                     }
                 }
-        
+
+               
                 groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
                 groupedRows[key].detalles.push({
                     color: task[15],
                     randomNumbers: randomNumbers,
+                    i: i,
                 });
+
+                groupedRows[key].ids.push(i);
             }
         }
+
+
         
         // Ahora, puedes iterar sobre las filas agrupadas y construir la tabla final
         for (let key in groupedRows) {
             let row = groupedRows[key];
+            const ids = row.ids.join(', ');
             var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
             dateDiff = Math.min(dateDiff, 11);
             console.log("dateDiff:", dateDiff);
+            
+
         
             bodyHtml += '<tr>';
             bodyHtml += `<td>${row.product}</td>`;
@@ -119,9 +131,11 @@ class Gantt {
             bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.cantidad}</td>`; // Muestra la cantidad acumulada como número
-            bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto">Ver detalles</a></td>`;
+            bodyHtml += `<td class="right-align">${ids}</td>`; // Muestra los valores de i
+            bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(dateDiff).fill(0);
 
+            
             // Distribuir los paquetes en los días
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
@@ -138,6 +152,7 @@ class Gantt {
             
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes';
+        
                 }
             
                 bodyHtml += '">';
@@ -400,18 +415,19 @@ class Gantt {
         console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
         const pedidoId = parseInt(event.target.dataset.pedidoId); // Obtenemos el ID del pedido desde el atributo data-pedido-id
-        const productoId = event.target.dataset.productoId;
+        const pedidoIds = event.target.dataset.pedidoId.split(',').map(id => parseInt(id));
         const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup
         const popup = document.createElement('div');
         popup.className = 'popup-overlay';
         console.log('Pedido ID:', pedidoId);
+        console.log('Pedido IDs:', pedidoIds);
         let pedidoData = this.tasks[pedidoId]; // Cambio a let
-        let productoData = this.tasks[productoId]; // Cambio a let
+        let productoData = this.tasks[pedidoIds]; // Cambio a let
         const self = this; // Store a reference to the current instance
 
         
         if (popupType === 'producto') {
-            productoData = this.tasks[pedidoId];
+            productoData = this.tasks[pedidoIds];
         
             var html = '<table class="second-table"><thead><tr>';
             //html += '<th class="detalle-pedido-t">Folio</th>';
@@ -741,3 +757,15 @@ function closePopup() {
     var popup = document.getElementById("carga-form");
     popup.style.display = "none";
 }
+
+
+document.addEventListener('click', function (event) {
+    if (event.target && event.target.classList.contains('popup-link')) {
+        // Obtener el valor de 'i' desde el atributo de datos personalizado
+        const iValue = event.target.getAttribute('data-i');
+        console.log('Valor de i:', iValue);
+
+        // Obtener todos los valores de 'i' almacenados en el array 'iValues' y mostrarlos
+        console.log('Valores de i almacenados:', iValues);
+    }
+});
