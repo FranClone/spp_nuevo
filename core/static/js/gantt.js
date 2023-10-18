@@ -101,7 +101,6 @@ class Gantt {
                     }
                 }
 
-               
                 groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
                 groupedRows[key].detalles.push({
                     color: task[15],
@@ -115,7 +114,7 @@ class Gantt {
 
 
         
-        
+
         // Ahora, puedes iterar sobre las filas agrupadas y construir la tabla final
         for (let key in groupedRows) {
             let row = groupedRows[key];
