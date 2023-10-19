@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -23,7 +24,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SPP - Home</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.16.9/xlsx.full.min.js"></script>
+    <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script src="sweetalert2.all.min.js"></script>
 </head>
+
 <body>
     {% include "partials/header.html" %}
     <div id="welcome-popup" class="popup-overlay-pedidos">
@@ -37,7 +42,6 @@
 
         {% comment %} Sistema de filtro por atributo {% endcomment %}
     </div>
-    
     <!--Formulario para crear pedidos en la vista principal-->
     <div class="form-container-productos">
 
@@ -54,7 +58,7 @@
                         <a href="{% url 'descargar_excel' 'Plantilla_ejemplo.xlsx' %}" class="left-button">
                             <button type="button" class="carga-button-bot">Descargar Plantilla</button>
                         </a>
-                    
+
                         <div class="right-button">
                             <div class="custom-file-input">
                                 <input type="file" name="xlsfile" id="fileInput">
@@ -62,7 +66,7 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="button-row">
                         <span id="file-name-display" class="file-name">Ningún archivo seleccionado</span>
                         <button type="submit" class="subir" name="subir">Subir Archivo</button>
@@ -71,9 +75,10 @@
                 <!-- Close button without submitting the form -->
                 <h2 class="agregar">Agregar Pedido Manualmente</h2>
                 <div class="button-row">
-                        <button type="button" id="toggle-carga-button" class="carga-button-bot" onclick="toggleCargaForm()">Abrir Formulario</button>
-                        <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
-                    </div> 
+                    <button type="button" id="toggle-carga-button" class="carga-button-bot"
+                        onclick="toggleCargaForm()">Abrir Formulario</button>
+                    <button type="button" class="popup-close-pedidos" onclick="closePopupimport()">x</button>
+                </div>
             </form>
         </div>
     </div>
@@ -88,8 +93,8 @@
 
 
 
-    <div class="form-container-productos" >
-       
+    <div class="form-container-productos">
+
         <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:120vh;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
@@ -99,26 +104,26 @@
                 <tr>
                     <th class="detalle-pedido-t">OP</th>
                     <th class="detalle-pedido-t">Cliente</th>
-                   <th class="detalle-pedido-t">Mercado</th>
-                   <th class="detalle-pedido-t">ETA</th>
-                   <th class="detalle-pedido-t">Destino</th>
-                   <th class="detalle-pedido-t" style="width:20vh;" >Programa</th>
+                    <th class="detalle-pedido-t">Mercado</th>
+                    <th class="detalle-pedido-t">ETA</th>
+                    <th class="detalle-pedido-t">Destino</th>
+                    <th class="detalle-pedido-t" style="width:20vh;">Programa</th>
                     <th class="detalle-pedido-t">Item</th>
                     <th class="detalle-pedido-t">Nombre producto</th>
-                   <th class="detalle-pedido-t">Est</th>
-                   <th class="detalle-pedido-t">term</th>
-                   <th class="detalle-pedido-t">Calidad</th>
-                   <th class="detalle-pedido-t">Cpo</th>
+                    <th class="detalle-pedido-t">Est</th>
+                    <th class="detalle-pedido-t">term</th>
+                    <th class="detalle-pedido-t">Calidad</th>
+                    <th class="detalle-pedido-t">Cpo</th>
                 </tr>
                 {% for form in detalle_pedido_formset %}
                 <tr>
                     <td>{{ pedido_form.orden_interna }}</td>
                     <td>{{ pedido_form.cliente }}</td>
-                    <td>{{ form.mercado}}</td>              
+                    <td>{{ form.mercado}}</td>
                     <td>{{ pedido_form.fecha_entrega }}</td>
                     <td>{{ form.puerto_destino }}</td>
                     <td>{{ form.programa }}</td>
-                    <td>{{ form.item }}</td>              
+                    <td>{{ form.item }}</td>
                     <td>{{ pedido_form.producto }}</td>
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
@@ -127,24 +132,24 @@
                     {{ form.errors }}
                 </tr>
             </table>
-                <table class="form-table">
+            <table class="form-table">
 
                 <tr>
-                   <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
-                   <th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>
-                   <th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>
-                   <th class="detalle-pedido-t">Pzas</th>
-                   <th class="detalle-pedido-t">M3</th>
-                   <th class="detalle-pedido-t ">Mbf</th>
+                    <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>
+                    <th class="detalle-pedido-t">Pzas</th>
+                    <th class="detalle-pedido-t">M3</th>
+                    <th class="detalle-pedido-t ">Mbf</th>
                     <th class="detalle-pedido-t ">Baño</th>
-                   <th class="detalle-pedido-t">Marca</th>
-                   <th class="detalle-pedido-t">Fecha Creacion</th>
-                   <th class="detalle-pedido-t">Comentario</th>
-                   <th class="detalle-pedido-t">Version</th>
-                   <th class="detalle-pedido-t">Estado</th>
+                    <th class="detalle-pedido-t">Marca</th>
+                    <th class="detalle-pedido-t">Fecha Creacion</th>
+                    <th class="detalle-pedido-t">Comentario</th>
+                    <th class="detalle-pedido-t">Version</th>
+                    <th class="detalle-pedido-t">Estado</th>
                 </tr>
-       
-                <tr>              
+
+                <tr>
                     <td>{{ form.alto_producto }}</td>
                     <td>{{ form.ancho_producto }}</td>
                     <td>{{ form.largo_producto }}</td>
@@ -157,46 +162,46 @@
                     <td>{{ pedido_form.comentario }}</td>
                     <td>{{ pedido_form.version }}</td>
                     <td>{{ pedido_form.estado }}</td>
-               
+
                 </tr>
-            
+
             </table>
             <table class="form-table">
-               <th>Detalle Factura</th>
-            <tr>
-                <th class="detalle-pedido-t" >FSC</th>
-                <th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>
-                <th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>
-                <th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>
-            </tr>       
-            <tr>
-                <td>{{ form.FSC }}</td>
-                <td>{{ form.esp_fact }}</td>
-                <td>{{ form.anc_fact }}</td>
-                <td>{{ form.lar_fact }}</td>
-            </tr>
-        </table>
-    <table>
-            <th>Detalle Paquete</th>
-            <tr>
-                <th class="detalle-pedido-t">Tipo Empaque</th>
-                <th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>
-                <th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>
-                <th class="detalle-pedido-t">Int.paquete</th>
-                <th class="detalle-pedido-t">Pqte</th>
-            </tr>
-            <tr>
-                <td>{{ form.tipo_empaque }}</td>
-                <td>{{ form.alto_paquete }}</td>
-                <td>{{ form.anc_paquete }}</td>
-                <td>{{ form.int_paquete }}</td>
-                <td>{{ form.pqte }}</td>
-            </tr>
-        </table>
-      {% endfor %}
+                <th>Detalle Factura</th>
+                <tr>
+                    <th class="detalle-pedido-t">FSC</th>
+                    <th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>
+                    <th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>
+                </tr>
+                <tr>
+                    <td>{{ form.FSC }}</td>
+                    <td>{{ form.esp_fact }}</td>
+                    <td>{{ form.anc_fact }}</td>
+                    <td>{{ form.lar_fact }}</td>
+                </tr>
+            </table>
+            <table>
+                <th>Detalle Paquete</th>
+                <tr>
+                    <th class="detalle-pedido-t">Tipo Empaque</th>
+                    <th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>
+                    <th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>
+                    <th class="detalle-pedido-t">Int.paquete</th>
+                    <th class="detalle-pedido-t">Pqte</th>
+                </tr>
+                <tr>
+                    <td>{{ form.tipo_empaque }}</td>
+                    <td>{{ form.alto_paquete }}</td>
+                    <td>{{ form.anc_paquete }}</td>
+                    <td>{{ form.int_paquete }}</td>
+                    <td>{{ form.pqte }}</td>
+                </tr>
+            </table>
+            {% endfor %}
             <div class="button-container">
-                <button  type="submit" name="crear" class="red-button-g">Crear</button>    
-                <button   class="red-button-c" onclick="closePopup()">cerrar</button>
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button class="red-button-c" onclick="closePopup()">cerrar</button>
             </div>
         </form>
     </div>
@@ -204,7 +209,7 @@
 
     {% comment %} Mover estilo {% endcomment %}
     <div class="table-container">
-        <div class="title-container">       
+        <div class="title-container">
             <select name="periodos" id="toggle-lineas-button" class="carga-button-top" style="display: none;">
                 <option value="diario">Diario</option>
                 <option value="mensual">Mensual</option>
@@ -216,7 +221,7 @@
         </div>
         <div id="gantt">
             <script>
-                const tasksData = {{ tasks|safe }};
+                const tasksData = {{ tasks| safe }};
             </script>
         </div>
 
@@ -226,45 +231,46 @@
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupimport()">Agregar Pedidos</button>
         </div>
 
-        
+
     </div>
 
 
-        <!-- Popup Container Materia prima -->
-        
-        <div class="form-container-productos">
-            <form method="post" action="{% url 'actualizar_stock_rollizo' %}" id="popupContainermateria" style="display: none;">
-                {% csrf_token %}
-                <hr>
-                <table class="form-table">
-                    <h2 class="bold-heading">Ingresar Stock materia prima</h2>
-                    <tr>
-                        <th class="detalle-pedido-t">Bodega</th>
-                        <th class="detalle-pedido-t">Rollizo</th>
-                       <th class="detalle-pedido-t">Cantidad <br> M3</th>
-                       <th class="detalle-pedido-t">Creado por:</th>
-                    </tr>
-                    <tr>
-                        <td>{{ formStockRollizo.bodega }}</td>
-                        <td>{{ formStockRollizo.rollizo }}</td>
-                        <td>{{ formStockRollizo.cantidad}}</td>              
-                        <td>{{ formStockRollizo.usuario_crea }}</td>
-                    </tr>
-                </table>
-      
-                <div class="button-container"  >
-                    <button type="submit" name="crear" class="red-button-g">Crear</button>
-                    <button class="red-button-c" onclick="closePopupmateria()">Cerrar</button>
-                </div>
-            </form>
-        </div>
+    <!-- Popup Container Materia prima -->
+
+    <div class="form-container-productos">
+        <form method="post" action="{% url 'actualizar_stock_rollizo' %}" id="popupContainermateria"
+            style="display: none;">
+            {% csrf_token %}
+            <hr>
+            <table class="form-table">
+                <h2 class="bold-heading">Ingresar Stock materia prima</h2>
+                <tr>
+                    <th class="detalle-pedido-t">Bodega</th>
+                    <th class="detalle-pedido-t">Rollizo</th>
+                    <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                    <th class="detalle-pedido-t">Creado por:</th>
+                </tr>
+                <tr>
+                    <td>{{ formStockRollizo.bodega }}</td>
+                    <td>{{ formStockRollizo.rollizo }}</td>
+                    <td>{{ formStockRollizo.cantidad}}</td>
+                    <td>{{ formStockRollizo.usuario_crea }}</td>
+                </tr>
+            </table>
+
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button class="red-button-c" onclick="closePopupmateria()">Cerrar</button>
+            </div>
+        </form>
+    </div>
 
     <div class="form-container-productos">
         {% comment %} {% endcomment %}
         <!-- Popup Container Productos Terminado -->
-        
-    <div class="form-container-productos" style="width:200vh;">
-            <form method="POST"  action="{% url 'stock' %}" id="popupContainerproduccion"  style="display: none;">
+
+        <div class="form-container-productos" style="width:200vh;">
+            <form method="POST" action="{% url 'stock' %}" id="popupContainerproduccion" style="display: none;">
                 {% csrf_token %}
                 <hr>
                 <table class="form-table">
@@ -274,7 +280,6 @@
                         <th class="detalle-pedido-t">Producto</th>
                        <th class="detalle-pedido-t">Cantidad <br> M3</th>
                        <th class="detalle-pedido-t">Creado por:</th>
-    
                     </tr>
                     <tr>
                         <td>{{ formstockterminado.bodega }}</td>
@@ -283,44 +288,46 @@
                         <td>{{ formstockterminado.usuario_crea }}</td>
                     </tr>
                 </table>
+
                 {{ formstockterminado.errors }}
              
                 <div  class="button-container">
                     <button  type="submit" name="crear" class="red-button-g">Crear</button>    
+
                     <button class="red-button-c" onclick="closePopupproduccion()">Cancelar</button>
-                </div> 
+                </div>
             </form>
         </div>
-   
-{% comment %} popup ALGORINTO {% endcomment %}
-<div id="popupContainertest" style="width:30%; height:70%;" class="popup">
-    <!-- Add your popup content here -->
-    <span class="close" id="closePopupButton">&times;</span>
 
-    <table id="diameterTable" style="width:100%;">
-        <thead>
-            <tr>
-                <th>Diametro</th>
-            </tr>
-        </thead>
-        <tbody id="diameterBody">
-            <!-- Diameter results will be displayed here -->
-        </tbody>
-    </table>
+        {% comment %} popup ALGORINTO {% endcomment %}
+        <div id="popupContainertest" style="width:30%; height:70%;" class="popup">
+            <!-- Add your popup content here -->
+            <span class="close" id="closePopupButton">&times;</span>
 
-    <table id="selectedTable" style="width:100%;" > 
-        <thead>
-            <tr>
-                <th>Selected</th>
-            </tr>
-        </thead>
-        <tbody id="selectedBody">
-            <!-- Selected results will be displayed here -->
-        </tbody>
-    </table>
-</div>
+            <table id="diameterTable" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Diametro</th>
+                    </tr>
+                </thead>
+                <tbody id="diameterBody">
+                    <!-- Diameter results will be displayed here -->
+                </tbody>
+            </table>
 
-<!--action= asignar_folio_pedido
+            <table id="selectedTable" style="width:100%;">
+                <thead>
+                    <tr>
+                        <th>Selected</th>
+                    </tr>
+                </thead>
+                <tbody id="selectedBody">
+                    <!-- Selected results will be displayed here -->
+                </tbody>
+            </table>
+        </div>
+
+        <!--action= asignar_folio_pedido
 <div class="popup-folio-container" id="popup3">
     <form method="POST" class="formulario">
         {% csrf_token %}
