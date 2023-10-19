@@ -72,62 +72,6 @@ except Exception as ex:
     print(ex)
 
 
-#TEST ALGORITMO 
-def solver_betech(archivo1, archivo2):
-    try:
-        archivo1 = os.path.join(settings.MEDIA_ROOT, "LineaDelgado.csv")
-        archivo2 = os.path.join(settings.MEDIA_ROOT, "LineaGruesa.csv")
-
-        df_linea_delgada = pd.read_csv(archivo1, encoding="latin-1", sep=";")
-        df_linea_gruesa = pd.read_csv(archivo2, encoding="latin-1", sep=";")
-        columns_names = df_linea_delgada.columns.values
-
-        diametro = df_linea_delgada[df_linea_delgada.columns.values[18]]
-        print("****************************************")
-        print("LECTURA ARCHIVO LINEA GRUESA")
-        print("****************************************")
-        print(df_linea_gruesa.head())
-        
-        p = [10, 13, 18, 31, 7, 15]
-        w = [11, 15, 20, 35, 10, 33]
-        c, I = 47, range(len(w))
-        
-        m = Model('mochila', maximize, CBC)
-        x = [m.add_var(var_type=BINARY) for i in I]
-        m.objective = maximize(xsum(p[i] * x[i] for i in I))
-        m += xsum(w[i] * x[i] for i in I) <= c
-        m.optimize()
-        selected = [i for i in I if x[i].x >= 0.99]
-        print(diametro)
-        return diametro,selected   
-        # results = {
-        #     'diametro': diametro.tolist(),  # Convert to a list if it's a Pandas Series
-        #     'selected': selected
-        # }
-        
-        # return JsonResponse(results)
-    except Exception as e:
-        print(f"An error occurred: {str(e)}")
-        # Handle the error appropriately
- 
-        return None, None  # Return some default values o
-
-def execute_code(request, archivo1, archivo2):
-    # Call the solver_betech function to get results
-    diametro, selected = solver_betech(archivo1, archivo2)
-
-    # Convert the diametro Series to a list
-    diametro_list = diametro.tolist()
-    
-
-    # Create a dictionary with the results
-    results = {
-        'diametro': diametro_list,
-        'selected': selected
-    }
-
-    return JsonResponse(results)
-
 
 
 def importar(request):

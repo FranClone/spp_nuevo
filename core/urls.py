@@ -12,7 +12,7 @@ from .views import producto, materia_prima, patron_corte, pedidos, eliminar_mate
 from .views import eliminar_patron, eliminar_producto, eliminar_pedido ,patron_editar
 from .views import eliminar_patron, eliminar_producto, eliminar_pedido, materia_editar
 from . import views
-from .views import execute_code, eliminar_patron, eliminar_producto, eliminar_pedido,producto_editar,pedido_editar
+from .views import eliminar_patron, eliminar_producto, eliminar_pedido,producto_editar,pedido_editar
 from .views import obtener_ids_pedidos,importar, descargar_excel, linea, rollizo,eliminar_rollizo,eliminar_linea,cliente,empresa,eliminar_cliente,eliminar_empresa
 from .views import linea_editar,rollizo_editar,cliente_editar,empresa_editar,Custom404View, stock, stock_editar, actualizar_stock_rollizo
 from django.conf.urls import handler404
@@ -69,7 +69,6 @@ urlpatterns = [
     path('admin_cliente/eliminarcliente/<int:id>', login_required(eliminar_cliente), name="eliminar_cliente"),
     path('admin_empresa/', login_required(empresa), name="admin_empresa"),
     path('admin_empresa/eliminarempresa/<int:id>', login_required(eliminar_empresa), name="eliminar_empresa"),
-    path('execute_code/<str:archivo1>/<str:archivo2>/', login_required(views.execute_code), name='execute_code'),
     path('planificador_linea/editarlinea/<int:id>', login_required(linea_editar), name = "linea_editar"),
     path('planificador_rollizo/editarrollizo/<int:id>', login_required(rollizo_editar), name = "rollizo_editar"),
     path('admin_cliente/admin_clienteeditar/<int:id>',login_required(cliente_editar), name = "cliente_editar"),

@@ -264,7 +264,8 @@ a {
     border: 1px solid white;
     border-radius: 5px;
     margin-left: 10px; /* Agrega espacio entre los botones si es necesario */
-    /* Otros estilos de botón si es necesario */
+    padding: 0.5vh;
+    width: 5vh;
 }
 
 
