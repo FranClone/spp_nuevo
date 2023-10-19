@@ -43,7 +43,7 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
-        
+
 
         // Obtén la fecha actual
         const currentDate = new Date();
@@ -137,8 +137,8 @@ class Gantt {
             bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.cantidad}</td>`; 
-            bodyHtml += `<td class="right-align"></td>`; 
+            bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
+            bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(dateDiff).fill(0);
 
@@ -154,17 +154,14 @@ class Gantt {
 
                 bodyHtml += '<td class="event-cell';
 
+                
                 if (paquetesPorDia[k] > 0) {
-                    bodyHtml += ' has-paquetes';
-
-                }
-
-                bodyHtml += '">';
-
-                if (paquetesPorDia[k] > 0) {
+                    bodyHtml += ' has-paquetes">';
                     bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
+                    bodyHtml += `<i id="miBoton" class="fa-sharp fa-solid fa-circle-exclamation"></i>`;
+                } else {
+                    bodyHtml += '"></td>';
                 }
-
                 bodyHtml += '</td>';
             }
 
@@ -175,6 +172,19 @@ class Gantt {
         html += bodyHtml;
 
         html += '</tbody></table>';
+        document.body.addEventListener('click', function (event) {
+            if (event.target.id === 'miBoton') {
+                // Muestra una alerta personalizada usando SweetAlert2 cuando se hace clic en el botón
+                Swal.fire({
+                    title: '¡Bien hecho!',
+                    text: '¡Hiciste clic en el botón!',
+                    icon: 'warning',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#4CAF50'
+                });
+            }
+        });
+        
         return html;
     }
 
