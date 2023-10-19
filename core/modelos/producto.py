@@ -8,7 +8,10 @@ class Producto(models.Model):
     nombre_rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
     patron_corte = models.ManyToManyField(PatronCorte)  
-    medida = models.ManyToManyField(Medida)  
+    medida = models.ManyToManyField(
+        Medida,
+        through='ProductoMedida') # Campos para enlazar con el modelo intermedio
+    
     # Entradas
     orden_producto = models.CharField(max_length=20, unique=True, null=False, blank=False)
     nombre = models.CharField(max_length=20, null=False, blank=False)

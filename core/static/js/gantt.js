@@ -34,14 +34,21 @@ class Gantt {
 
     PlanTable() {
         var html = '<table class="event-table second-table"><thead><tr>';
-
-        // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+        html += '<tr>'
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3">Escuadrias</th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3"></th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="11">Paquetes a Producir</th>';
+        html += '</tr>'
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
+        
+        // Continuar con los demás encabezados
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
 
@@ -82,8 +89,6 @@ class Gantt {
                     var product = task[7][j]; // Obtener el nombre del producto
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
 
-                    console.log("task después del bucle:", i);
-
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
                             product: product,
@@ -91,6 +96,7 @@ class Gantt {
                             ancho: task[18],
                             alto: task[17],
                             cantidad: 0,
+                            cantidadm3: 0,
                             detalles: [],
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
@@ -110,8 +116,10 @@ class Gantt {
                             break;
                         }
                     }
+                    // Función para redondear un número a tres decimales si es necesario
 
                     groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
+                    groupedRows[key].cantidadm3 += parseFloat(task[20]);; // Convierte la cantidad en número y suma
                     groupedRows[key].detalles.push({
                         color: task[15],
                         randomNumbers: randomNumbers,
@@ -123,14 +131,39 @@ class Gantt {
             }
         }
 
+        let maxFechaLejanaPorFila = new Date(0); // Inicializar con una fecha muy antigua
+
+        for (let key in groupedRows) {
+            let row = groupedRows[key];
+            const ids = row.ids;
+        
+            for (let id of ids) {
+                const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
+                const currentDate = new Date(); // Obtén la fecha actual
+        
+                // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
+                const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
+        
+                if (dateDiff > maxFechaLejanaPorFila) {
+                    maxFechaLejanaPorFila = dateDiff;
+                }
+            }
+        
+            console.log(`Fecha más lejana a la fecha actual para ${key}: ${maxFechaLejanaPorFila}`);
+        }
+
 
 
         for (let key in groupedRows) {
             let row = groupedRows[key];
             const ids = row.ids.join(', ');
             var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
-            dateDiff = Math.min(dateDiff, 11);
+            maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
             console.log("dateDiff:", dateDiff);
+            function roundToThreeDecimals(number) {
+                const roundedNumber = Math.round(number * 1000) / 1000;
+                return roundedNumber;
+            }
 
             bodyHtml += '<tr>';
             bodyHtml += `<td>${row.product}</td>`;
@@ -139,38 +172,36 @@ class Gantt {
             bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
             bodyHtml += `<td class="right-align"></td>`;
+            bodyHtml += `<td class="right-align">${roundToThreeDecimals(row.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-            let paquetesPorDia = new Array(dateDiff).fill(0);
-
+            let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0); 
+        
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                    let diaAleatorio = Math.floor(Math.random() * dateDiff);
+                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila); // Usar maxFechaLejanaPorFila
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-
+        
             for (let k = 0; k < paquetesPorDia.length; k++) {
-
                 bodyHtml += '<td class="event-cell';
 
-                
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
-                    bodyHtml += `<a>Pqtes. solicitados: ${paquetesPorDia[k]}</a>`;
+                    bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
                     bodyHtml += `<i id="miBoton" class="fa-sharp fa-solid fa-circle-exclamation"></i>`;
                 } else {
                     bodyHtml += '"></td>';
                 }
+
                 bodyHtml += '</td>';
             }
-
+        
             bodyHtml += '</tr>';
-
         }
-
+        
         html += bodyHtml;
-
         html += '</tbody></table>';
         document.body.addEventListener('click', function (event) {
             if (event.target.id === 'miBoton') {
@@ -444,32 +475,38 @@ class Gantt {
             productoData = this.tasks[pedidoIds];
 
             var html = '<table class="second-table"><thead><tr>';
+            html += '<tr>'
+            html += '<th class="detalle-pedido-t" colspan="5" ></th>';
+            html += '<th class="detalle-pedido-t" colspan="3" >Paquete</th>';
+            html += '<th class="detalle-pedido-t" colspan="4" ></th>';
+            html += '</tr>'
             html += '<th class="detalle-pedido-t">Op</th>';
             html += '<th class="detalle-pedido-t">item</th>';
             html += '<th class="detalle-pedido-t">ETA</th>';
             html += `<td class="detalle-pedido-t">Pqte. Solicitados</td>`;
             html += `<td class="detalle-pedido-t">Pqte. Saldo</td>`;
-            html += '<th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t">Int.paquete</th>';
+            html += '<th class="detalle-pedido-t">Alto <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Ancho<br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Int</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Pzas</th>';
             html += '<th class="detalle-pedido-t">M3</th>';
             html += '<th class="detalle-pedido-t">Mbf</th>';
 
             html += '</tr></thead><tbody>';
-
+ 
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
 
                 for (let j = 0; j < pedidoIds.length; j++) {
                     if (i === pedidoIds[j]) {
                         console.log(task[7]);
-
+                        const fechaISO = task[2];/*ETA*/
+                        const fechaFormateada5 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
                         html += '<tr>';
                         html += `<td class="detalle-pedido right-align">${task[0]}</td>`; // Op
                         html += `<td class="detalle-pedido right-align">${task[36]}</td>`; // Item
-                        html += `<td class="detalle-pedido right-align">${task[2]}</td>`; // Fecha de Entrega
+                        html += `<td class="detalle-pedido right-align">${fechaFormateada5}</td>`; // Fecha de Entrega
                         html += `<td class="detalle-pedido right-align">${task[45].toLocaleString()}</td>`; // Pqte
                         html += `<td class="detalle-pedido right-align"></td>`; // Pqte.saldo (lo que llevan hecho)
                         html += `<td class="detalle-pedido right-align">${task[47].toLocaleString()}</td>`; // Alto.Paquete
@@ -477,21 +514,50 @@ class Gantt {
                         html += `<td class="detalle-pedido right-align">${task[48].toLocaleString()}</td>`; // Int.paquete
                         html += `<td class="detalle-pedido right-align">${task[46]}</td>`; // Tipo Empaque
                         html += `<td class="detalle-pedido right-align">${task[55].toLocaleString()}</td>`; // Pzas
-                        html += `<td class="detalle-pedido right-align">${task[20]}</td>`; // M3
-                        html += `<td class="detalle-pedido right-align">${task[51]}</td>`; // Mbf
+                        html += `<td class="detalle-pedido right-align">${task[20].toString().replace('.', ',')}</td>`; // M3
+                        html += `<td class="detalle-pedido right-align">${task[51].toString().replace('.', ',')}</td>`; // Mbf
 
                         html += '</tr>';
                     }
                 }
             }
+            // Calcular los totales
+            let totalPqteSolicitados = 0;
+            let totalM3 = 0;
+            let totalMbf = 0;
+            let totalPiezas = 0;
 
+            for (let j = 0; j < pedidoIds.length; j++) {
+                let i = pedidoIds[j];
+                let task = this.filteredTasks[i];
+                totalPqteSolicitados += parseInt(task[45], 10); // Convierte a número
+                totalM3 += parseFloat(task[20]); // Convierte a número de punto flotante
+                totalMbf += parseFloat(task[51]); // Convierte a número de punto flotante
+                totalPiezas += parseFloat(task[55]); // Convierte a número de punto flotante
+            }
+
+            // Agregar la fila de totales
+            html += '<tr>';
+            html += '<td class="detalle-pedido right-align"><b>Totales</b></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += `<td class="detalle-pedido right-align"><b>${totalPqteSolicitados.toLocaleString()}</b></td>`;
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += '<td class="detalle-pedido right-align"></td>';
+            html += `<td class="detalle-pedido right-align"><b>${totalPiezas.toLocaleString()}</b></td>`; // Pzas
+            html += `<td class="detalle-pedido right-align"><b>${totalM3.toLocaleString().replace('.', ',')}</b></td>`;
+            html += `<td class="detalle-pedido right-align"><b>${totalMbf.toLocaleString().replace('.', ',')}</b></td>`;
+            html += '</tr>';
             // Close the table structure
             html += '</tbody></table>';
 
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
-                    <h2 style="margin-bottom: 2vh; text-align: center;">Detalles de Producto </h2>
+                    <h2 style="margin-bottom: 2vh; text-align: center;">Plan de Producción ${task[7]} - ${task[19]}-${task[18]}-${task[17]} </h2>
                     ${html} <!-- Insert the generated table here -->
                     <button style="margin-top: 2vh; float:right; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button">Cerrar</button>
                 </div>
@@ -553,8 +619,8 @@ class Gantt {
                         html += `<td class="detalle-pedido right-align"  style="width:20vh;">${task[48]}</td>`; // Int.paquete
                         html += `<td class="detalle-pedido right-align">${task[55].toLocaleString()}</td>`; // Pzas
                         html += `<td class="detalle-pedido right-align">${task[45].toLocaleString()}</td>`; // Pqte
-                        html += `<td class="detalle-pedido right-align">${task[20]}</td>`; // M3
-                        html += `<td class="detalle-pedido right-align">${task[51]}</td>`; // Mbf
+                        html += `<td class="detalle-pedido right-align">${task[20].toString().replace('.', ',')}</td>`; // M3
+                        html += `<td class="detalle-pedido right-align">${task[51].toString().replace('.', ',')}</td>`; // Mbf
                         html += `<td class="detalle-pedido left-align">${task[53]}</td>`; // Marca
                         html += '</tr>';
                     }

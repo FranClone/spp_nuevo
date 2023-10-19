@@ -226,22 +226,14 @@
         </div>
 
         <div class="button-container" id="btnGroup" style="display: none;">
-            <button class="red-button-a" onclick="showPopupmateria()">Materia Prima</button>
-            <button class="red-button-a" onclick="showPopupproduccion()">Produccion</button>
-            <button class="red-button-a" onclick="showPopupimport()">Agregar Pedidos</button>
+            <button class="carga-button-bot" style="margin:10px;" onclick="showPopupmateria()">Materia Prima</button>
+            <button class="carga-button-bot" style="margin:10px;" onclick="showPopupproduccion()">Producción</button>
+            <button class="carga-button-bot" style="margin:10px;" onclick="showPopupimport()">Agregar Pedidos</button>
         </div>
 
 
     </div>
 
-    <div class="buttons-bot">
-
-        {% comment %} <button type="button" id="toggle-ejecutar-button" class="carga-button-bot"
-            onclick="/* showPopup() */hidePopup()   ">Ejecutar</button> {% endcomment %}
-
-        <button type="button" class="carga-button" id="openPopupButtontest">Algoritmo</button>
-
-    </div>
 
     <!-- Popup Container Materia prima -->
 
@@ -286,19 +278,22 @@
                     <tr>
                         <th class="detalle-pedido-t">Bodega</th>
                         <th class="detalle-pedido-t">Producto</th>
-                        <th class="detalle-pedido-t">Cantidad <br> M3</th>
-                        <th class="detalle-pedido-t">Creado por:</th>
+                       <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                       <th class="detalle-pedido-t">Creado por:</th>
                     </tr>
                     <tr>
                         <td>{{ formstockterminado.bodega }}</td>
-                        <td>{{ formstockterminado.producto}}</td>
+                        <td>{{ formstockterminado.medidas}}</td>
                         <td>{{ formstockterminado.cantidad_m3}}</td>
                         <td>{{ formstockterminado.usuario_crea }}</td>
                     </tr>
                 </table>
 
-                <div class="button-container">
-                    <button type="submit" name="crear" class="red-button-g">Crear</button>
+                {{ formstockterminado.errors }}
+             
+                <div  class="button-container">
+                    <button  type="submit" name="crear" class="red-button-g">Crear</button>    
+
                     <button class="red-button-c" onclick="closePopupproduccion()">Cancelar</button>
                 </div>
             </form>
@@ -344,160 +339,77 @@
             <button type="button" class="popup-folio-button agregar-folio-button" id="cerrar-popup-button">Cerrar</button>
         </div>
     </form>
-</div>-->
+</div>-->  
 
-        </script>
-        <script src="{% static 'js/gantt.js' %}"></script>
-        {% comment %} script test algoritmo popup {% endcomment %}
-        <script>
-            const openButton = document.getElementById("openPopupButtontest");
-            const closeButton = document.getElementById("closePopupButton");
-            const popupContainertest = document.getElementById("popupContainertest");
-            const diameterTable = document.getElementById("diameterTable");
-            const diameterBody = document.getElementById("diameterBody");
-            const selectedTable = document.getElementById("selectedTable");
-            const selectedBody = document.getElementById("selectedBody");
 
-            // Function to open the popup
-            openButton.addEventListener("click", function () {
-                // Show loading message while waiting for results
-                diameterBody.innerHTML = "<tr><td>Loading...</td></tr>";
-                selectedBody.innerHTML = "<tr><td>Loading...</td></tr>";
 
-                // Make an AJAX request to execute_code view
-                fetch("/execute_code/your-archivo1/your-archivo2/")
-                    .then(response => response.json())
-                    .then(data => {
-                        // Clear the loading messages
-                        diameterBody.innerHTML = "";
-                        selectedBody.innerHTML = "";
 
-                        // Populate the "Diameter" table with results
-                        for (let i = 0; i < data.diametro.length; i++) {
-                            const row = document.createElement("tr");
-                            const diameterCell = document.createElement("td");
-                            diameterCell.innerText = data.diametro[i];
-                            row.appendChild(diameterCell);
-                            diameterBody.appendChild(row);
-                        }
+<script src="{% static 'js/gantt.js' %}"></script>
 
-                        // Populate the "Selected" table with results
-                        for (let i = 0; i < data.selected.length; i++) {
-                            const row = document.createElement("tr");
-                            const selectedCell = document.createElement("td");
-                            selectedCell.innerText = data.selected[i];
-                            row.appendChild(selectedCell);
-                            selectedBody.appendChild(row);
-                        }
-                    })
-                    .catch(error => {
-                        console.error("An error occurred:", error);
-                        diameterBody.innerHTML = "<tr><td>An error occurred while fetching Diameter results.</td></tr>";
-                        selectedBody.innerHTML = "<tr><td>An error occurred while fetching Selected results.</td></tr>";
-                    });
 
-                // Show the popup
-                popupContainertest.style.display = "block";
+</script>
+{% comment %}  {% endcomment %}
+
+<script>
+    $(document).ready(function() {
+        // Escucha cambios en el input[type="file"]
+        $('input[type="file"]').change(function() {
+            var fileName = $(this).val().split('\\').pop(); // Obtén el nombre del archivo seleccionado
+            $('#file-name-display').text(fileName); // Muestra el nombre del archivo en el span
+        });
+    });
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+        const popup = document.getElementById("popup2");
+        const popupCloseButton = document.getElementById("popup2-close-button");
+
+        // Muestra el popup si alert_message tiene un valor
+        if (popup && popupCloseButton) {
+            popup.style.display = "block";
+            
+            
+            // Cierra el popup cuando se hace clic en el botón "Cerrar"
+            popupCloseButton.addEventListener("click", function () {
+                popup.style.display = "none";
             });
-
-            // Function to close the popup
-            closeButton.addEventListener("click", function () {
-                popupContainertest.style.display = "none";
-            });
-        </script>
-
-        </script>
-        {% comment %} {% endcomment %}
-
-        <script>
-            $(document).ready(function () {
-                // Escucha cambios en el input[type="file"]
-                $('input[type="file"]').change(function () {
-                    var fileName = $(this).val().split('\\').pop(); // Obtén el nombre del archivo seleccionado
-                    $('#file-name-display').text(fileName); // Muestra el nombre del archivo en el span
-                });
-            });
-        </script>
-        <script>
-            document.addEventListener("DOMContentLoaded", function () {
-                const popup = document.getElementById("popup2");
-                const popupCloseButton = document.getElementById("popup2-close-button");
-
-                // Muestra el popup si alert_message tiene un valor
-                if (popup && popupCloseButton) {
-                    popup.style.display = "block";
+        }
 
 
-                    // Cierra el popup cuando se hace clic en el botón "Cerrar"
-                    popupCloseButton.addEventListener("click", function () {
-                        popup.style.display = "none";
-                    });
-                }
+    });
+</script>
 
 
-            });
-        </script>
 
-        {% comment %} Ejecutar ALGORITMO DE TEST {% endcomment %}
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-            $(document).ready(function () {
-                $("#toggle-ejecutar-button").click(function () {
-                    // Specify the values for archivo1 and archivo2
-                    var archivo1Value = "LineaDelgado.csv";  // Update with the actual value
-                    var archivo2Value = "LineaGruesa.csv";   // Update with the actual value
+<script>
+$(document).ready(function() {
+    $("#showPlanButton").click(function() {
+        $("#btnGroup").show();
+    });
+});
 
-                    // Construct the URL for the execute_code view
-                    var url = `/execute_code/${archivo1Value}/${archivo2Value}/`;
+$(document).ready(function() {
+    $("#showProductosButton").click(function() {
+        $("#btnGroup").hide();
+    });
+});
 
-                    $.ajax({
-                        url: url,
-                        type: "GET",
-                        success: function (response) {
-                            // Handle the response from the server (if needed)
-                            console.log(response);
-                        },
-                        error: function (error) {
-                            // Handle any errors (if needed)
-                            console.error(error);
-                        }
-                    });
-                });
-            });
-        </script>
+$(document).ready(function() {
+    $("#showProductosButton").click(function() {
+        $("#toggle-lineas-button").hide();
+    });
+});
 
-        <script>
-            $(document).ready(function () {
-                $("#showPlanButton").click(function () {
-                    $("#btnGroup").show();
-                });
-            });
+$(document).ready(function() {
+    $("#showPedidosButton").click(function() {
+        $("#btnGroup").hide();
+    });
+});
 
-            $(document).ready(function () {
-                $("#showProductosButton").click(function () {
-                    $("#btnGroup").hide();
-                });
-            });
-
-            $(document).ready(function () {
-                $("#showProductosButton").click(function () {
-                    $("#toggle-lineas-button").hide();
-                });
-            });
-
-            $(document).ready(function () {
-                $("#showPedidosButton").click(function () {
-                    $("#btnGroup").hide();
-                });
-            });
-
-            $(document).ready(function () {
-                $("#showPedidosButton").click(function () {
-                    $("#toggle-lineas-button").hide();
-                });
-            });
-
-        </script>
-
-
+$(document).ready(function() {
+    $("#showPedidosButton").click(function() {
+        $("#toggle-lineas-button").hide();
+    });
+});
+</script>
 </html>
