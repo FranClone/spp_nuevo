@@ -34,12 +34,18 @@ class Gantt {
 
     PlanTable() {
         var html = '<table class="event-table second-table"><thead><tr>';
-
-        // Agregar dos columnas adicionales a la izquierda
-        html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+        html += '<tr>'
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3">Escuadrias</th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3"></th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="11">Paquetes a Producir</th>';
+        html += '</tr>'
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
+        
+        // Continuar con los demás encabezados
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
@@ -459,14 +465,19 @@ class Gantt {
             productoData = this.tasks[pedidoIds];
 
             var html = '<table class="second-table"><thead><tr>';
+            html += '<tr>'
+            html += '<th class="detalle-pedido-t" colspan="5" ></th>';
+            html += '<th class="detalle-pedido-t" colspan="3" >Paquete</th>';
+            html += '<th class="detalle-pedido-t" colspan="4" ></th>';
+            html += '</tr>'
             html += '<th class="detalle-pedido-t">Op</th>';
             html += '<th class="detalle-pedido-t">item</th>';
             html += '<th class="detalle-pedido-t">ETA</th>';
             html += `<td class="detalle-pedido-t">Pqte. Solicitados</td>`;
             html += `<td class="detalle-pedido-t">Pqte. Saldo</td>`;
-            html += '<th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t">Int.paquete</th>';
+            html += '<th class="detalle-pedido-t">Alto <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Ancho<br> (cm)</th>';
+            html += '<th class="detalle-pedido-t">Int</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Pzas</th>';
             html += '<th class="detalle-pedido-t">M3</th>';
