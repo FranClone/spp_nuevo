@@ -7,8 +7,7 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 from django.core.validators import MinValueValidator                                             
-from .producto import Producto    
-from .medida import Medida
+
 class ProductoMedida(models.Model):
     #Demanda en m3  en verde D
     producto = models.ForeignKey('Producto', on_delete=models.CASCADE, verbose_name='Producto')
