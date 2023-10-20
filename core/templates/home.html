@@ -217,7 +217,6 @@
             </select>
 
             <h4 id="titulo">Pedidos JCE</h4>
-            <span id="titulofecha">{{ titulofecha }}</span>
         </div>
         <div id="gantt">
             <script>
@@ -226,6 +225,7 @@
         </div>
 
         <div class="button-container" id="btnGroup" style="display: none;">
+            <button class="carga-button-bot" id="ejecutarBoton" style="margin:10px; display: none;">Ejecutar Algortimo</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupmateria()">Materia Prima</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupproduccion()">Producción</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupimport()">Agregar Pedidos</button>
@@ -411,5 +411,13 @@ $(document).ready(function() {
         $("#toggle-lineas-button").hide();
     });
 });
+
+</script>
+
+<script>
+    function showEjecutarBoton() {
+        const ejecutarBoton = document.getElementById("ejecutarBoton");
+        ejecutarBoton.style.display = "block";
+      }
 </script>
 </html>
