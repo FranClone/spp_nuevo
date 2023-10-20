@@ -186,7 +186,6 @@ class Gantt {
         
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
-
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
@@ -207,8 +206,8 @@ class Gantt {
             if (event.target.id === 'miBoton') {
                 // Muestra una alerta personalizada usando SweetAlert2 cuando se hace clic en el botón
                 Swal.fire({
-                    title: '¡Bien hecho!',
-                    text: '¡Hiciste clic en el botón!',
+                    title: `¡Quedan ${dateDiff} días!`,
+                    text: `El pedido estará por finalizar en ${dateDiff} días.`,
                     icon: 'warning',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#4CAF50'
@@ -845,3 +844,20 @@ document.addEventListener('click', function (event) {
         console.log('Valores de i almacenados:', iValues);
     }
 });
+
+function calcularDiasRestantes(fechaFinalizacion) {
+    // Obtén la fecha actual
+    const fechaActual = new Date();
+
+    // Convierte la fecha de finalización del pedido a un objeto de fecha
+    const fechaFinalizacionPedido = new Date(fechaFinalizacion);
+
+    // Calcula la diferencia en milisegundos entre las dos fechas
+    const diferenciaEnMs = fechaFinalizacionPedido - fechaActual;
+
+    // Convierte la diferencia de milisegundos a días
+    const diasRestantes = Math.ceil(diferenciaEnMs / (1000 * 60 * 60 * 24));
+
+    // Retorna la cantidad de días restantes
+    return diasRestantes;
+}
