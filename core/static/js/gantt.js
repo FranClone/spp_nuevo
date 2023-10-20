@@ -37,7 +37,7 @@ class Gantt {
         html += '<tr>'
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3">Escuadrias</th>';
-        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3"></th>';
+        html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="4"></th>';
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="11">Paquetes a Producir</th>';
         html += '</tr>'
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
