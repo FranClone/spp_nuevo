@@ -803,6 +803,7 @@ function showPopupmateria() {
     const popupOverlay = document.getElementById('popupContainermateria');
     if (popupContainermateria.style.display === 'none') {
         popupContainermateria.style.display = 'block';
+        showEjecutarBoton();
     } else {
         popupContainermateria.style.display = 'none';
     }
@@ -817,6 +818,7 @@ function showPopupproduccion() {
     const popupOverlay = document.getElementById('popupContainerproduccion');
     if (popupContainerproduccion.style.display === 'none') {
         popupContainerproduccion.style.display = 'block';
+        showEjecutarBoton();
     } else {
         popupContainerproduccion.style.display = 'none';
     }
