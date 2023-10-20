@@ -193,13 +193,13 @@ class Gantt {
                 } else {
                     bodyHtml += '"></td>';
                 }
-
+                console.log(`Hola AWS : ${paquetesPorDia}`);
                 bodyHtml += '</td>';
             }
         
             bodyHtml += '</tr>';
         }
-        
+      
         html += bodyHtml;
         html += '</tbody></table>';
         document.body.addEventListener('click', function (event) {
