@@ -222,10 +222,9 @@
                                     '{{ pedido.comentario }}', 
                                     '{{ pedido.version }}',
                                     '{{ pedido.prioridad }}')">
-                                    <i class="fa-regular fa-clip">
                                     <i class="fa-regular fa-clipboard fa-xl"></i></button>
                                     <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ pedido.id }}')"></i>
-                            <a href="editarpedido/{{pedido.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
+                                    <a href="editarpedido/{{pedido.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
                     </tr>
                     {% endif %}
@@ -266,8 +265,8 @@
     </div>
     <div class="popup" id="popupeliminar">
         <div class="popup-content-eliminar">
-            <p id="mensaje"></p></div></br>
-            <div>
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
                 <button id="btnCancelar">Cancelar</button>
                 <button id="btnConfirmar">Confirmar</button>
             </div>

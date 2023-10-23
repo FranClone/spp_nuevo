@@ -143,7 +143,8 @@
                                 <button class="btn block" onclick="openPopup('{{ producto.orden_producto }}', '{{ producto.nombre }}','{{ producto.descripcion}}',
                                 '{{ producto.inventario_inicial }}',
                                 '{{producto.nombre_rollizo}}' , '{{producto.inventario_final}}','{{producto.linea}}','{{ producto.patron_corte.all|join:", " }}')"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                                <a href="eliminarproducto/{{producto.id}}" class="fas fa-trash-alt fa-xl"></a>
+                                
+                                <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ producto.id }}')"></i>
                                 <a href="editarproducto/{{producto.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>      
                             </td>
                         </tr>
@@ -190,6 +191,15 @@
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
     </div>
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>    
 <script>
     var toggleFilterButton = document.querySelector('.filter-section .filter-button');
     var filterForm = document.querySelector('.filter-section .filter-form');
@@ -234,7 +244,35 @@
         });
     });
 </script>
+<script>
+// Seleccionar elementos del DOM
+const popupEliminar = document.getElementById('popupeliminar');
+const btnCancelar = document.getElementById('btnCancelar');
+const mensaje = document.getElementById('mensaje');
+const btnConfirmar = document.getElementById('btnConfirmar');
 
+let productoId = null; // Cambiado de pedidoId a productoId
+
+// Función para abrir el popup de eliminación
+function openEliminarPopup(id) {
+    productoId = id; // Cambiado de pedidoId a productoId
+    mensaje.textContent = `¿Estás seguro de borrar el producto con el ID: ${productoId}?`; 
+    // Actualiza el href del enlace "Confirmar"
+    popupEliminar.style.display = 'flex';
+}
+
+// Event listeners para los botones del popup
+btnCancelar.addEventListener('click', () => {
+    popupEliminar.style.display = 'none';
+});
+
+btnConfirmar.addEventListener('click', () => {
+    if (productoId) { // Cambiado de pedidoId a productoId
+        window.location.href = `eliminarproducto/${productoId}`;
+    }
+});
+
+</script>
 </body>
 
 </html>

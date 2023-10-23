@@ -58,34 +58,34 @@
             <table class="form-table">
                 <tr>
 
-                        <td>{{ form.codigo.label_tag }}</td>
-                        <td>{{ form.nombre.label_tag }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.codigo }}</td>
-                        <td>{{ form.nombre }}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.descripcion.label_tag}}</td>
-                        <td>{{ form.rollizo.label_tag}}</td>
-                    </tr>
-                    <tr>
-                        <td>{{ form.descripcion}}</td>
-                        <td>{{ form.rollizo}}</td>
-                    </tr> 
-                    <tr>
-                        <td>{{ form.rendimiento.label_tag}}</td>
-                        <td>{{ form.utilizado.label_tag}}</td>   
-                    </tr>
-                    <tr>
-                        <td>{{ form.rendimiento}}</td>
-                        <td class="form-check text-left">{{ form.utilizado}}</td>
-                    </tr>
-                </table>
-                <div class="button-container">
-                    <button type="submit" name="crear" class="red-button-g">Crear</button>
-                    <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
-                </div>
+                    <td>{{ form.codigo.label_tag }}</td>
+                    <td>{{ form.nombre.label_tag }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.codigo }}</td>
+                    <td>{{ form.nombre }}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.descripcion.label_tag}}</td>
+                    <td>{{ form.rollizo.label_tag}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.descripcion}}</td>
+                    <td>{{ form.rollizo}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.rendimiento.label_tag}}</td>
+                    <td>{{ form.utilizado.label_tag}}</td>
+                </tr>
+                <tr>
+                    <td>{{ form.rendimiento}}</td>
+                    <td class="form-check text-left">{{ form.utilizado}}</td>
+                </tr>
+            </table>
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+            </div>
         </form>
 
     </div>
@@ -106,25 +106,26 @@
                 <tbody>
                     {% for patron in patrones_corte %}
 
-                        {% if not patron.eliminado %}
-                        <tr>
-                            <td>{{ patron.codigo }}</td>
-                            <td>{{ patron.rollizo }}</td> 
-                            <td>{{ patron.rendimiento}}</td>
-                            <td>  
-                                <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
-                                <button class="btn block" onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
+                    {% if not patron.eliminado %}
+                    <tr>
+                        <td>{{ patron.codigo }}</td>
+                        <td>{{ patron.rollizo }}</td>
+                        <td>{{ patron.rendimiento}}</td>
+                        <td>
+                            <!--Botón para desplegar los desatalles de cada una de las filas de patron de corte-->
+                            <button class="btn block"
+                                onclick="openPopup('{{ patron.codigo }}', '{{ patron.nombre}}', 
 
                                 '{{patron.rollizo}}','{{patron.descripcion}}','{{patron.rendimiento}}','{{patron.utilizado}}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i>
                             </button>
 
-                            <a href="eliminarpatron/{{patron.id}}" class="fas fa-trash-alt fa-xl"></a>
+                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ patron.id }}')"></i>
                             <a href="editarpatroncorte/{{patron.id}}"
                                 class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
 
-                            </td>
-                        </tr>
+                        </td>
+                    </tr>
                     {% endif %}
                     {% empty %}
                     <tr>
@@ -139,7 +140,7 @@
     <!--Este es el contenedor del popup que muestra los detalles de patron de corte seleccionado-->
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2  style="text-align: center;">Detalles del Patron de Corte</h2>
+            <h2 style="text-align: center;">Detalles del Patron de Corte</h2>
             <table>
                 <tr>
                     <td class="detalle-pedido-t"><strong>Código Patrón:</strong></td>
@@ -166,6 +167,15 @@
                 </tr>
             </table>
             <button class="close-button" onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
         </div>
     </div>
     {% comment %}
@@ -213,8 +223,35 @@
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let patronId = null; // Cambiado de rollizoId a patronId
 
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            patronId = id; // Cambiado de rollizoId a patronId
+            mensaje.textContent = `¿Estás seguro de borrar el patron con el ID: ${patronId}?`; 
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (patronId) { // Cambiado de rollizoId a patronId
+                window.location.href = `eliminarpatron/${patronId}`; 
+            }
+        });
+
+    </script>
 </body>
 
 </html>

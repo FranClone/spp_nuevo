@@ -91,7 +91,7 @@
                 </tr>
             </table>
 
-            
+
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
@@ -113,28 +113,29 @@
                         <th>Fecha Creación</th>
                         <th>Velocidad <br>M3/HR </th>
                         <th>Detalles</th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
                     {% for linea in lineas %}
 
-                        {% if not linea.eliminado %}
-                        <tr>
-                            <td>{{ linea.nombre_linea }}</td>
-                            <td>{{ linea.descripcion_linea }}</td>
-                            <td>{{ linea.fecha_crea }}</td>    
-                            <td>{{ linea.velocidad }}</td>                    
-                            <td>
-                                <button class="btn block" onclick="openPopup('{{ linea.nombre_linea }}' ,'{{ linea.descripcion_linea }}','{{ linea.fecha_crea }}')">
+                    {% if not linea.eliminado %}
+                    <tr>
+                        <td>{{ linea.nombre_linea }}</td>
+                        <td>{{ linea.descripcion_linea }}</td>
+                        <td>{{ linea.fecha_crea }}</td>
+                        <td>{{ linea.velocidad }}</td>
+                        <td>
+                            <button class="btn block"
+                                onclick="openPopup('{{ linea.nombre_linea }}' ,'{{ linea.descripcion_linea }}','{{ linea.fecha_crea }}')">
 
                                 <i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="eliminarlinea/{{linea.id}}" class="fas fa-trash-alt fa-xl"></a>
-                            <a href="editarlinea/{{linea.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
+                                <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ linea.id }}')"></i>
+                                <a href="editarlinea/{{linea.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
 
-                        </tr>
-                        {% endif %}
+                    </tr>
+                    {% endif %}
 
 
                     {% empty %}
@@ -152,7 +153,7 @@
 
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2  style="text-align: center;">Detalles de la Linea</h2>
+            <h2 style="text-align: center;">Detalles de la Linea</h2>
             <table>
                 <tr>
                     <td class="detalle-pedido-t"><strong>Línea:</strong></td>
@@ -168,7 +169,15 @@
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
     </div>
-
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
@@ -214,7 +223,35 @@
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let lineaId = null; // Cambiado de patronId a lineaId
+
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            lineaId = id; // Cambiado de patronId a lineaId
+            mensaje.textContent = `¿Estás seguro de borrar la línea con el ID: ${lineaId}?`; // Cambiado de patronId a lineaId
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (lineaId) { // Cambiado de patronId a lineaId
+                window.location.href = `eliminarlinea/${lineaId}`; // Cambiado de eliminarpatron a eliminarlinea y de patronId a lineaId
+            }
+        });
+
+    </script>
 </body>
 
 </html>
