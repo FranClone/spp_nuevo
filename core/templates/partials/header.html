@@ -24,8 +24,10 @@
           <ul role="menu" class="menu-vertical">
             <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
             <li><a href="{% url 'home' %}" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
-            <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Planificar Producción</a></li>
-            <li><a class="nav-link" href="{% url 'home' %}#plan" id="showPlanButton">Plan vigente</a></li>
+            <li><a class="nav-link" id="showProductosButton">Planificar Producción</a></li>
+            <li><a class="nav-link" id="showPlanButton">Plan vigente</a></li>
+            <li><a class="nav-link" id="showPlanPedidosButton">Plan Pedidos</a></li>
+
 
           </ul>
         </li>
@@ -77,6 +79,7 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const gantt = new Gantt(tasksData);
+
       const titulo = document.getElementById("titulo");
     
       // Función para mostrar la tabla según el fragmento de URL
