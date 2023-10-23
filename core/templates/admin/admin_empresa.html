@@ -71,7 +71,7 @@
         <form method="post" action="{% url 'admin_empresa' %}" style="display: none;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
-                
+
                 <tr>
                     <th>{{ form.rut_empresa.label_tag }}</th>
                     <td>{{ form.rut_empresa }}</td>
@@ -141,7 +141,7 @@
                 </thead>
                 <tbody>
                     {% for empresa in empresas %}
-                        {% if not empresa.eliminado %}
+                    {% if not empresa.eliminado %}
                     <tr>
                         <td>{{ empresa.rut_empresa}}</td>
                         <td>{{ empresa.nombre_empresa}}</td>
@@ -162,10 +162,10 @@
                             '{{ empresa.ciudad }}',
                             '{{ empresa.telefono }}', 
                             )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="eliminarempresa/{{empresa.rut_empresa}}" class="fas fa-trash-alt fa-xl"></a>
-
-                            <a href="admin_empresaeditar/{{empresa.rut_empresa}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>
-                        {% endif %}
+                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ empresa.id }}')"></i>
+                            <a href="admin_empresaeditar/{{empresa.rut_empresa}}"
+                                class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
+                            {% endif %}
 
                         </td>
                     </tr>
@@ -214,6 +214,15 @@
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
     </div>
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>   
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
@@ -259,7 +268,35 @@
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let empresaId = null; // Cambiado de stockId a empresaId
+
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            empresaId = id; // Cambiado de stockId a empresaId
+            mensaje.textContent = `¿Estás seguro de borrar la empresa con ID: ${empresaId}?`; 
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (empresaId) { // Cambiado de stockId a empresaId
+                window.location.href = `eliminarempresa/${empresaId}`; 
+            }
+        });
+
+    </script>
 </body>
 
 </html>

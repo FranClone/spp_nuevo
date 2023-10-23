@@ -1,7 +1,6 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     {% load static %}
     {% include "partials/resources.html" %}
@@ -13,8 +12,9 @@
     <script src="{% static 'js/vista-rollizo.js' %}"></script>
     <script src="https://kit.fontawesome.com/c3469abfa1.js" crossorigin="anonymous"></script>
     <title>SPP - Productos</title>
-    
+
 </head>
+
 <body>
     {% include "partials/header.html" %}
     <button type="button" id="toggle-carga-button" class="carga-button">Carga Manual</button>
@@ -22,14 +22,14 @@
     <div class="filter-section">
         <button class="filter-button">Filtrar</button>
         <form class="filter-form" style="display: none;">
-            <div class="filters-container" >
+            <div class="filters-container">
                 <label for="filter-by">Filtrar por:</label>
                 <select id="filter-by" name="filter-by" class="filter-select">
                     <option value="nombre">Nombre del producto</option>
                     <option value="codigo">Código del producto</option>
                 </select>
                 <div>
-                <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
+                    <input type="text" name="filter-value" class="filter-input" placeholder="Valor del filtro">
                 </div>
                 <select name="filter-option" class="filter-select">
                     <option value="partial">Parcial</option>
@@ -40,16 +40,22 @@
                 <input type="checkbox" id="advanced-search" name="advanced-search">
                 <div id="advanced-search-options" style="display: none;">
                     <label for="filter-length">Largo:</label>
-                    <input type="number" id="filter-length" name="filter-length" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-length" name="filter-length" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-length-max" name="filter-length-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-width">Ancho:</label>
-                    <input type="number" id="filter-width" name="filter-width" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-width" name="filter-width" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-width-max" name="filter-width-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                     <label for="filter-thickness">Grosor:</label>
-                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input" placeholder="Valor mínimo">
-                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input" placeholder="Valor máximo">
+                    <input type="number" id="filter-thickness" name="filter-thickness" class="filter-input"
+                        placeholder="Valor mínimo">
+                    <input type="number" id="filter-thickness-max" name="filter-thickness-max" class="filter-input"
+                        placeholder="Valor máximo">
                     <br>
                 </div>
                 <button type="submit" class="filter-button">Buscar</button>
@@ -88,21 +94,21 @@
                     <td>{{ form.clase_diametrica }}</td>
                 </tr>
                 <tr>
-                    
+
             </table>
-            
+
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
             </div>
         </form>
-        
+
     </div>
     <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
-        <div class="table-responsive">            
+        <div class="table-responsive">
             <h1 class="encabezado-pedidos">Rollizos</h1>
-            
+
             <table class="table w-100">
                 <thead class="thead-pedidos">
                     <tr>
@@ -110,37 +116,37 @@
                         <th>Diámetro</th>
                         <th>Largo</th>
                         <th>Fecha Creación</th>
-                        <th style="width:10vh;" >Costo:<br>USD/CBM</th>  
-                        <th style="width:10vh;" >Stock:<br>M3</th>  
-                        <th>Detalles</th> 
-                                                
+                        <th style="width:10vh;">Costo:<br>USD/CBM</th>
+                        <th style="width:10vh;">Stock:<br>M3</th>
+                        <th>Detalles</th>
+
                     </tr>
                 </thead>
                 <tbody>
                     {% for rollizo in rollizos %}
-                        {% if not rollizo.eliminado %}
-                        <tr>
-                            <td>{{ rollizo.nombre_rollizo }}</td>
-                            <td>{{ rollizo.diametro }}</td>
-                            <td>{{ rollizo.largo }}</td>
-                            <td>{{ rollizo.fecha_crea }}</td>  
-                            <td>1,23 </td>   
-                            <td>{{rollizo.stockrollizo_set.first.cantidad }}</td>       
-                            
-                            <td>
-                                <button class="btn block" onclick="openPopup('{{ rollizo.nombre_rollizo }}', '{{ rollizo.largo }}','{{ rollizo.descripcion_rollizo }}','{{ rollizo.diametro }}'
+                    {% if not rollizo.eliminado %}
+                    <tr>
+                        <td>{{ rollizo.nombre_rollizo }}</td>
+                        <td>{{ rollizo.diametro }}</td>
+                        <td>{{ rollizo.largo }}</td>
+                        <td>{{ rollizo.fecha_crea }}</td>
+                        <td>1,23 </td>
+                        <td>{{rollizo.stockrollizo_set.first.cantidad }}</td>
+
+                        <td>
+                            <button class="btn block" onclick="openPopup('{{ rollizo.nombre_rollizo }}', '{{ rollizo.largo }}','{{ rollizo.descripcion_rollizo }}','{{ rollizo.diametro }}'
                                 ,'{{ rollizo.usuario_crea }}','{{ rollizo.fecha_crea }}','{{ rollizo.clase_diametrica }}'
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="eliminarrollizo/{{rollizo.id}}" class="fas fa-trash-alt fa-xl"></a>
-                            <a href="editarrollizo/{{rollizo.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl" ></a>  
+                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ rollizo.id }}')"></i>
+                            <a href="editarrollizo/{{rollizo.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
-                        </tr>
-                        {% endif %}
+                    </tr>
+                    {% endif %}
                     {% empty %}
                     </tr>
-                        <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
+                    <td colspan="5" class="no-data-message">No hay datos para los filtros ingresados.</td>
                     <tr>
-                    {% endfor %}
+                        {% endfor %}
                 </tbody>
             </table>
             <p class="no-data-message">No hay datos para los filtros ingresados.</p>
@@ -160,8 +166,8 @@
                     <td class="detalle-pedido-t"><strong>Creado por:</strong></td>
                     <td class="detalle-pedido-t"><strong>Fecha de Creación:</strong></td>
                     <td class="detalle-pedido-t"><strong>Clase diamétrica:</strong></td>
-                    
-                  
+
+
                 </tr>
                 <tr>
                     <td class="detalle-pedido"><span id="popupNombre"></span></td>
@@ -171,11 +177,20 @@
                     <td class="detalle-pedido"><span id="popupUsuario"></span></td>
                     <td class="detalle-pedido"><span id="popupFecha_crea"></span></td>
                     <td class="detalle-pedido"><span id="popupClase"></span></td>
-                    
-                 
+
+
                 </tr>
             </table>
             <button class="close-button" onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
         </div>
     </div>
     <script>
@@ -183,7 +198,7 @@
         var filterForm = document.querySelector('.filter-section .filter-form');
         var isFilterVisible = false; // Variable de estado para el filtro
 
-        toggleFilterButton.addEventListener('click', function() {
+        toggleFilterButton.addEventListener('click', function () {
             if (isFilterVisible) {
                 filterForm.style.display = 'none';
                 toggleFilterButton.innerText = 'Filtrar';
@@ -201,7 +216,7 @@
 
         let isFormVisible = false;
 
-        toggleButton.addEventListener("click", function() {
+        toggleButton.addEventListener("click", function () {
             if (!isFormVisible) {
                 const buttonRect = toggleButton.getBoundingClientRect();
                 const buttonBottom = buttonRect.bottom;
@@ -214,17 +229,44 @@
         });
     </script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             const botonCancelar = document.getElementById('cancelar');
             const formulario = document.getElementById('carga-form');
-            
-            botonCancelar.addEventListener('click', function() {
+
+            botonCancelar.addEventListener('click', function () {
                 formulario.style.display = 'none';
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let rollizoId = null; // Cambiado de productoId a rollizoId
+
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            rollizoId = id; // Cambiado de productoId a rollizoId
+            mensaje.textContent = `¿Estás seguro de borrar el rollizo con el ID: ${rollizoId}?`; 
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (rollizoId) { // Cambiado de productoId a rollizoId
+                window.location.href = `eliminarrollizo/${rollizoId}`; 
+            }
+        });
+
+    </script>
 </body>
-</html>
 
-   
+</html>

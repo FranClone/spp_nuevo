@@ -73,8 +73,8 @@
                 <tr>
                     <th class="detalle-pedido-t">Bodega</th>
                     <th class="detalle-pedido-t">Producto</th>
-                   <th class="detalle-pedido-t">Cantidad <br> M3</th>
-                   <th class="detalle-pedido-t">Creado por:</th>
+                    <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                    <th class="detalle-pedido-t">Creado por:</th>
 
                 </tr>
                 <tr>
@@ -84,9 +84,9 @@
                     <td>{{ formstockterminado.usuario_crea }}</td>
                 </tr>
             </table>
-                {{ formstockterminado.errors }}
-                {{ formstockterminado.non_field_errors }}
-                
+            {{ formstockterminado.errors }}
+            {{ formstockterminado.non_field_errors }}
+
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
@@ -114,23 +114,23 @@
                 <tbody>
                     {% for stock in stocks %}
 
-                 
-                        <tr>
-                            <td>{{ stock.id }}</td>     
-                            <td>{{ stock.producto_key }}</td>  
-                            <td>{{ stock.cantidad_m3 }}</td>   
-                            <td>{{ stock.fecha_crea }}</td>      
-                            <td>{{ stock.usuario_crea }}</td>                       
-                            <td>
-                                <button class="btn block" onclick="openPopup('{{ stock.id }}','{{ stock.cantidad_m3 }}','{{ stock.fecha_crea }}','{{ stock.usuario_crea }}'
+
+                    <tr>
+                        <td>{{ stock.id }}</td>
+                        <td>{{ stock.producto_key }}</td>
+                        <td>{{ stock.cantidad_m3 }}</td>
+                        <td>{{ stock.fecha_crea }}</td>
+                        <td>{{ stock.usuario_crea }}</td>
+                        <td>
+                            <button class="btn block" onclick="openPopup('{{ stock.id }}','{{ stock.cantidad_m3 }}','{{ stock.fecha_crea }}','{{ stock.usuario_crea }}'
                                 ,'{{ stock.producto_key }}','{{ stock.bodega }}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <!--<a href="eliminarstock/{{stock.id}}" class="fas fa-trash-alt fa-xl"></a>-->
+                            <!--<i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ stock.id }}')"></i>-->
                             <a href="editarstock/{{stock.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
 
-                        </tr>
-               
+                    </tr>
+
 
 
                     {% empty %}
@@ -148,7 +148,7 @@
 
     <div class="popup-overlay" id="popupOverlay">
         <div class="popup-content" id="popup">
-            <h2  style="text-align: center;">Detalles de la stock</h2>
+            <h2 style="text-align: center;">Detalles de la stock</h2>
             <table>
                 <tr>
                     <td class="detalle-pedido-t"><strong>Id:</strong></td>
@@ -171,7 +171,15 @@
             <button class="close-button" onclick="closePopup()">Cerrar</button>
         </div>
     </div>
-
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
+        </div>
+    </div>   
     <script>
         var toggleFilterButton = document.querySelector('.filter-section .filter-button');
         var filterForm = document.querySelector('.filter-section .filter-form');
@@ -217,7 +225,35 @@
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let stockId = null; // Cambiado de lineaId a stockId
+
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            stockId = id; // Cambiado de lineaId a stockId
+            mensaje.textContent = `¿Estás seguro de borrar el stock con ID de: ${stockId}?`; 
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (stockId) { // Cambiado de lineaId a stockId
+                window.location.href = `eliminarstock/${stockId}`; 
+            }
+        });
+
+    </script>
 </body>
 
 </html>

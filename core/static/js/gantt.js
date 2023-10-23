@@ -44,7 +44,7 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
-        
+
         // Continuar con los demás encabezados
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
@@ -136,22 +136,21 @@ class Gantt {
         for (let key in groupedRows) {
             let row = groupedRows[key];
             const ids = row.ids;
-        
+
             for (let id of ids) {
                 const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
                 const currentDate = new Date(); // Obtén la fecha actual
-        
+
                 // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
                 const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
-        
+
                 if (dateDiff > maxFechaLejanaPorFila) {
                     maxFechaLejanaPorFila = dateDiff;
                 }
             }
-        
+
             console.log(`Fecha más lejana a la fecha actual para ${key}: ${maxFechaLejanaPorFila}`);
         }
-
 
 
         for (let key in groupedRows) {
@@ -174,51 +173,50 @@ class Gantt {
             bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(row.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-            let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0); 
-        
+            let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
+
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila); // Usar maxFechaLejanaPorFila
+                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-        
+
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
-                    bodyHtml += `<i id="miBoton" class="fa-sharp fa-solid fa-circle-exclamation"></i>`;
+                    bodyHtml += `<i id="miBoton" class="fa-sharp fa-solid fa-circle-exclamation" data-datediff="${dateDiff}"></i>`;
                 } else {
                     bodyHtml += '"></td>';
                 }
 
                 bodyHtml += '</td>';
             }
-        
             bodyHtml += '</tr>';
         }
-        
-        html += bodyHtml;
-        html += '</tbody></table>';
+        // Move the event listener outside of the loop and access k in its scope
         document.body.addEventListener('click', function (event) {
             if (event.target.id === 'miBoton') {
-                // Muestra una alerta personalizada usando SweetAlert2 cuando se hace clic en el botón
+                const dateDiff = event.target.getAttribute('data-datediff');
                 Swal.fire({
                     title: `¡Quedan ${dateDiff} días!`,
-                    text: `El pedido estará por finalizar en ${dateDiff} días.`,
+                    text: `El pedido estará por finalizar`,
                     icon: 'warning',
                     confirmButtonText: 'OK',
                     confirmButtonColor: '#4CAF50'
                 });
             }
         });
-        
+
+        html += bodyHtml;
+        html += '</tbody></table>';
+
         return html;
+
     }
-
-
 
     PedidoTable() {
         var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
@@ -493,7 +491,7 @@ class Gantt {
             html += '<th class="detalle-pedido-t">Mbf</th>';
 
             html += '</tr></thead><tbody>';
- 
+
             for (let i = 0; i < this.filteredTasks.length; i++) {
                 var task = this.filteredTasks[i];
 
@@ -802,7 +800,6 @@ function showPopupmateria() {
     const popupOverlay = document.getElementById('popupContainermateria');
     if (popupContainermateria.style.display === 'none') {
         popupContainermateria.style.display = 'block';
-        showEjecutarBoton();
     } else {
         popupContainermateria.style.display = 'none';
     }
@@ -817,7 +814,6 @@ function showPopupproduccion() {
     const popupOverlay = document.getElementById('popupContainerproduccion');
     if (popupContainerproduccion.style.display === 'none') {
         popupContainerproduccion.style.display = 'block';
-        showEjecutarBoton();
     } else {
         popupContainerproduccion.style.display = 'none';
     }
