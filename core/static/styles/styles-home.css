@@ -234,9 +234,10 @@ table tr {
     color: white;
     font-size: 10px;
     text-align: left;
-    padding-left: 10px;
     border-radius: 1px;
     border-left: none;
+    height: 60px;
+    position: relative;
 }
 
 .has-paquetes {
@@ -975,3 +976,14 @@ th.desc::after {
     justify-content: center;
 }
 */
+#miBoton {
+    font-size: 18px;
+    color: #f5ae43; /* Color del ícono */
+    cursor: pointer;
+    display: flex;
+    justify-content: right;
+}
+
+#miBoton:hover {
+    color: #ff5e00; /* Cambia el color del ícono cuando el mouse está sobre él */
+}

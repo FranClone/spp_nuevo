@@ -288,14 +288,13 @@ class Gantt {
 
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
-
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
                 } else {
                     bodyHtml += '"></td>';
                 }
-
+                console.log(`Hola AWS : ${paquetesPorDia}`);
                 bodyHtml += '</td>';
             }
 
@@ -304,7 +303,6 @@ class Gantt {
 
         html += bodyHtml;
         html += '</tbody></table>';
-
         return html;
     }
 
@@ -940,3 +938,20 @@ document.addEventListener('click', function (event) {
         console.log('Valores de i almacenados:', iValues);
     }
 });
+
+function calcularDiasRestantes(fechaFinalizacion) {
+    // Obtén la fecha actual
+    const fechaActual = new Date();
+
+    // Convierte la fecha de finalización del pedido a un objeto de fecha
+    const fechaFinalizacionPedido = new Date(fechaFinalizacion);
+
+    // Calcula la diferencia en milisegundos entre las dos fechas
+    const diferenciaEnMs = fechaFinalizacionPedido - fechaActual;
+
+    // Convierte la diferencia de milisegundos a días
+    const diasRestantes = Math.ceil(diferenciaEnMs / (1000 * 60 * 60 * 24));
+
+    // Retorna la cantidad de días restantes
+    return diasRestantes;
+}
