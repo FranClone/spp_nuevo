@@ -26,6 +26,7 @@
             <li><a href="{% url 'home' %}" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
             <li><a class="nav-link" id="showProductosButton">Planificar Producción</a></li>
             <li><a class="nav-link" id="showPlanButton">Plan vigente</a></li>
+            <li><a class="nav-link" id="showPlanPedidosButton">Plan Pedidos</a></li>
 
           </ul>
         </li>
@@ -80,10 +81,11 @@
       const showPedidosButton = document.getElementById("showPedidosButton");
       const showProductosButton = document.getElementById("showProductosButton");
       const showPlanButton = document.getElementById("showPlanButton");
+      const showPlanPedidosButton = document.getElementById("showPlanPedidosButton");
       const titulo = document.getElementById("titulo");
 
       // Verifica si los elementos existen antes de adjuntar manejadores de eventos
-      if (showPedidosButton && showProductosButton && showPlanButton && titulo) {
+      if (showPedidosButton && showProductosButton && showPlanButton && showPlanPedidosButton && titulo) {
         // Inicialmente, muestra la tabla de "Pedidos JCE"
         gantt.showPedidosTable();
         titulo.textContent = "Pedidos JCE";
@@ -102,6 +104,12 @@
           gantt.showPlanTable();
           // Obtén la fecha de producción del elemento oculto
           titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
+        };
+
+        showPlanPedidosButton.onclick = function () {
+          gantt.showPlanPedidoTable();
+          // Obtén la fecha de producción del elemento oculto
+          titulo.textContent = "PLAN DE PEDIDOS ACTUAL JCE - 19/10/2023";
         };
       }
     });
