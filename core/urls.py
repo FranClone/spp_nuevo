@@ -28,6 +28,7 @@ urlpatterns = [
     path('carga_servidor/', login_required(Carga_sv.as_view()), name="carga_servidor"),
     path('download/', login_required(DownloadExcel.as_view()), name="download_file"),
     path('home/', login_required(gantt_view), name="home"),
+    path('home/planpedido', login_required(gantt_view), name="planpedido"),
     path('', Login.as_view(), name="login"),
     path('lista_pedidos/', login_required(Lista_pedidos.as_view()), name="lista_pedidos"),
     path('login/', Login.as_view(), name="login"),
