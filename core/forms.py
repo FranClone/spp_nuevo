@@ -208,19 +208,20 @@ class DetallePedidoForm(forms.ModelForm):
                 ]
         fields = '__all__'
      
-    # producto = forms.ModelChoiceField(
-    #     required=False,  # Hacerlo opcional
-    #     queryset=Producto.objects.filter(eliminado=False),
-    #     widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    # )
+    producto = forms.ModelChoiceField(
+        required=False,
+        queryset=Producto.objects.filter(eliminado=False),
+        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    )
+
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        # //producto = self.cleaned_data.get('producto')
+        # producto = self.cleaned_data.get('producto')
         # print(producto)
         # if producto:
 
-        #     # Access the id of the related Producto
+        #  # Access the id of the related Producto
         #     producto_id = producto.id
         #     print(producto_id)
         #     instance.detalle_producto = producto.nombre  # Fill detalle_producto with product name
@@ -229,6 +230,8 @@ class DetallePedidoForm(forms.ModelForm):
 
         if self.instance.pedido:  # Check if there's an associated Pedido
             instance.fecha_entrega = self.instance.pedido.fecha_entrega  
+            instance.fecha_entrega = self.instance.pedido.producto  
+           
         cantidad_piezas = self.cleaned_data.get('piezas')
         if cantidad_piezas is not None:
             instance.cantidad_piezas = cantidad_piezas
@@ -268,15 +271,12 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
     )
-    # producto = forms.ModelChoiceField(
-    #     required=False,
-    #     queryset=Producto.objects.filter(eliminado=False),
-    #     widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    # )
+    producto = forms.ModelChoiceField(
+        required=False,
+        queryset=Producto.objects.filter(eliminado=False),
+        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+    )
 
-
-        # self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-        # self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
 
     class Meta:
          model = Pedido

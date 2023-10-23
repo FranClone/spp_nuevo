@@ -28,6 +28,7 @@
             <li><a class="nav-link" id="showPlanButton">Plan vigente</a></li>
             <li><a class="nav-link" id="showPlanPedidosButton">Plan Pedidos</a></li>
 
+
           </ul>
         </li>
         {% endif %}
@@ -78,42 +79,39 @@
   <script>
     document.addEventListener("DOMContentLoaded", function () {
       const gantt = new Gantt(tasksData);
-      const showPedidosButton = document.getElementById("showPedidosButton");
-      const showProductosButton = document.getElementById("showProductosButton");
-      const showPlanButton = document.getElementById("showPlanButton");
-      const showPlanPedidosButton = document.getElementById("showPlanPedidosButton");
+
       const titulo = document.getElementById("titulo");
-
-      // Verifica si los elementos existen antes de adjuntar manejadores de eventos
-      if (showPedidosButton && showProductosButton && showPlanButton && showPlanPedidosButton && titulo) {
-        // Inicialmente, muestra la tabla de "Pedidos JCE"
-        gantt.showPedidosTable();
-        titulo.textContent = "Pedidos JCE";
-
-        showPedidosButton.onclick = function () {
-          gantt.showPedidosTable();
-          titulo.textContent = "Pedidos JCE";
-        };
-
-        showProductosButton.onclick = function () {
-          gantt.showProductosTable();
-          titulo.textContent = "Productos JCE";
-        };
-
-        showPlanButton.onclick = function () {
-          gantt.showPlanTable();
-          // Obtén la fecha de producción del elemento oculto
-          titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
-        };
-
-        showPlanPedidosButton.onclick = function () {
-          gantt.showPlanPedidoTable();
-          // Obtén la fecha de producción del elemento oculto
-          titulo.textContent = "PLAN DE PEDIDOS ACTUAL JCE - 19/10/2023";
-        };
+    
+      // Función para mostrar la tabla según el fragmento de URL
+      function mostrarTablaSegunFragmento() {
+        const fragmento = window.location.hash;
+        switch (fragmento) {
+          case "#pedidos":
+            gantt.showPedidosTable();
+            titulo.textContent = "Pedidos JCE";
+            break;
+          case "#productos":
+            gantt.showProductosTable();
+            titulo.textContent = "Productos JCE";
+            break;
+          case "#plan":
+            gantt.showPlanTable();
+            // Obtén la fecha de producción del elemento oculto
+            titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
+            break;
+          default:
+            // Fragmento de URL no reconocido, muestra una tabla predeterminada
+            gantt.showPedidosTable();
+            titulo.textContent = "Pedidos JCE";
+            break;
+        }
       }
+    
+      // Llama a la función al cargar la página y cuando cambia el fragmento de URL
+      mostrarTablaSegunFragmento();
+      window.addEventListener("hashchange", mostrarTablaSegunFragmento);
     });
-
+    
 
   </script>
 
