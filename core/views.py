@@ -438,6 +438,7 @@ class Plan_Patrones_Corte(View):
 class Plan_Productos(View):
     @method_decorator(login_required)
     def get(self, request, *args, **kwargs):
+    
         return render(request, 'planificador/planificador_productos.html')
 
 
@@ -564,15 +565,9 @@ def pedidos(request):
 
         if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
             with transaction.atomic():
-                pedido_instance = pedido_form.save(commit=False)
-                pedido_instance.save()  # Guarda el pedido en la base de datos
+                pedido_instance = pedido_form.save()
 
-                # Obtener el producto seleccionado
-                producto_seleccionado = pedido_form.cleaned_data['producto'].id
-                pedido_instance.producto.add(producto_seleccionado)
-                if producto_seleccionado:
-                    pedido_instance.producto.add(producto_seleccionado)
-                print(producto_seleccionado)
+                # Extract Factura data from the first form in the formset
                 primera_form = detalle_pedido_formset.forms[0]
                 factura_data = {
                     'FSC': primera_form.cleaned_data.get('FSC'),
@@ -582,34 +577,28 @@ def pedidos(request):
                 }
                 factura_instance = Factura(**factura_data)
                 factura_instance.save()
-
                 empaque_data = {
                     'pqte': primera_form.cleaned_data.get('pqte'),
                     'tipo_empaque': primera_form.cleaned_data.get('tipo_empaque'),
                     'alto_paquete': primera_form.cleaned_data.get('alto_paquete'),
                     'int_paquete': primera_form.cleaned_data.get('int_paquete'),
                     'anc_paquete': primera_form.cleaned_data.get('anc_paquete'),
-                }
+                }   
                 empaque_instance = Empaque(**empaque_data)
-                empaque_instance.save()
+                empaque_instance.save()           
+                # Create and save a new Factura instance with the extracted data
 
+
+                # Loop through DetallePedido forms in the formset
                 for detalle_pedido_form in detalle_pedido_formset:
                     detalle_pedido_instance = detalle_pedido_form.save(commit=False)
                     detalle_pedido_instance.pedido = pedido_instance
                     detalle_pedido_instance.factura = factura_instance
                     detalle_pedido_instance.empaque = empaque_instance
-                    detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega
-                    
+                    detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega  # Set fecha_entrega based on the associated Pedido
                     detalle_pedido_instance.save()
 
             return redirect('home')
-        else:
-            # Imprime los errores del formulario en la consola
-            for form in detalle_pedido_formset:
-                if form.errors:
-                    print(f"Errores en el formulario: {form.errors}")
-                    print(detalle_pedido_formset.errors)
-
 
     else:
         pedido_form = ActualizarPedidoForm()
@@ -618,7 +607,8 @@ def pedidos(request):
     context = {
         'pedido_form': pedido_form,
         'detalle_pedido_formset': detalle_pedido_formset,
-        'pedidos': pedidos,
+        'pedidos': pedidos,  # Agrega los pedidos al contexto
+    
     }
 
     return render(request, 'pedidos.html', context)
@@ -1237,7 +1227,7 @@ def stock(request):
 
                 #nuevo_stock = formstockterminado.save()
      
-                return redirect('plan_stock')
+                return redirect('planificador_stock')
     
     context = {
         'form': formstockterminado,
@@ -1254,7 +1244,7 @@ def stock_editar(request,id):
         formulario = StockForm(data = request.POST, instance=prod)
         if formulario.is_valid():
             formulario.save()
-            return redirect('plan_stock')
+            return redirect('planificador_stock')
         else:
             print("error")
     return render(request, 'planificador/planificador_stockeditar.html', data)
