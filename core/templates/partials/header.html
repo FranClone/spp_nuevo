@@ -24,10 +24,9 @@
           <ul role="menu" class="menu-vertical">
             <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
             <li><a href="{% url 'home' %}" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
-            <li><a class="nav-link" id="showProductosButton">Planificar Producción</a></li>
-            <li><a class="nav-link" id="showPlanButton">Plan vigente</a></li>
-            <li><a class="nav-link" id="showPlanPedidosButton">Plan Pedidos</a></li>
-
+            <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Planificar Producción</a></li>
+            <li><a class="nav-link" href="{% url 'home' %}#plan" id="showPlanButton">Plan vigente</a></li>
+            <li><a class="nav-link" href="{% url 'home' %}#planpedido" id="showPlanPedidosButton">Plan Pedidos</a></li>
 
           </ul>
         </li>
@@ -98,6 +97,11 @@
             gantt.showPlanTable();
             // Obtén la fecha de producción del elemento oculto
             titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
+            break;
+            case "#planpedido":
+            gantt.showPlanPedidoTable();
+            // Obtén la fecha de producción del elemento oculto
+            titulo.textContent = "PLAN DE PEDIDO ACTUAL JCE - 19/10/2023";
             break;
           default:
             // Fragmento de URL no reconocido, muestra una tabla predeterminada
