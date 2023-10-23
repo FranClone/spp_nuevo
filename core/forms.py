@@ -181,6 +181,7 @@ class CrearEmpresaForm(forms.ModelForm):
 
  
 
+
 class DetallePedidoForm(forms.ModelForm):
     pqte = forms.IntegerField(min_value=0)  # Adjust the field type and options as needed
     tipo_empaque = forms.CharField( max_length=50)
@@ -199,39 +200,49 @@ class DetallePedidoForm(forms.ModelForm):
     volumen_producto =  forms.DecimalField(max_digits=10,min_value=0, decimal_places=3)
     mbf =  forms.DecimalField(max_digits=10,min_value=0, decimal_places=3)
     id = forms.IntegerField(widget=forms.HiddenInput())
-
     class Meta:
         model = DetallePedido
-        exclude = [
-    
-                    'fecha_salida',
-                ]
-        fields = '__all__'
-     
-    producto = forms.ModelChoiceField(
-        required=False,
-        queryset=Producto.objects.filter(eliminado=False),
-        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    )
 
+        fields = [
+       
+            'item',
+            'mercado',
+            'producto',
+            'est',
+            'term',
+            'calidad',
+            'alto_producto',
+            'ancho_producto',
+            'largo_producto',
+            'piezas',
+            'volumen_producto',
+            'mbf',
+            'banio',
+            'marca',
+            'puerto_destino',
+            'programa',
+            #
+
+        ]
+      
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['producto'].widget = forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
+        self.fields['producto'].queryset = Producto.objects.filter(eliminado=False)
 
     def save(self, commit=True):
         instance = super().save(commit=False)
-        # producto = self.cleaned_data.get('producto')
-        # print(producto)
-        # if producto:
+        producto = self.cleaned_data.get('producto')
+        print(producto)
+        if producto:
 
-        #  # Access the id of the related Producto
-        #     producto_id = producto.id
-        #     print(producto_id)
-        #     instance.detalle_producto = producto.nombre  # Fill detalle_producto with product name
-        # if instance.pedido:
-        #     instance.pedido.producto.add(producto)
+            # Access the id of the related Producto
+            producto_id = producto.id
+            print(producto_id)
+            instance.detalle_producto = producto.nombre  # Fill detalle_producto with product name
 
         if self.instance.pedido:  # Check if there's an associated Pedido
             instance.fecha_entrega = self.instance.pedido.fecha_entrega  
-            instance.fecha_entrega = self.instance.pedido.producto  
-           
         cantidad_piezas = self.cleaned_data.get('piezas')
         if cantidad_piezas is not None:
             instance.cantidad_piezas = cantidad_piezas
@@ -249,7 +260,6 @@ class DetallePedidoForm(forms.ModelForm):
         if commit:
             instance.save()        
         return instance
-
 class ActualizarPedidoForm(forms.ModelForm):
     fecha_entrega = forms.DateField(
         widget=forms.DateInput(
@@ -271,21 +281,28 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
     )
-    producto = forms.ModelChoiceField(
-        required=False,
-        queryset=Producto.objects.filter(eliminado=False),
-        widget=forms.Select(choices=Producto.objects.values_list('id', 'nombre'))
-    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['fecha_entrega'].widget.attrs.update({'class': 'form-control'})
+        self.fields['fecha_produccion'].widget.attrs.update({'class': 'form-control'})
 
 
     class Meta:
          model = Pedido
-         fields = '__all__'
+         fields = [
+             'cliente',
+             'fecha_produccion',
+             'fecha_entrega',
+             'orden_interna',
+             'comentario',
+           #  'producto',
+             'estado',
+             'version'
+         ]
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['cliente'].queryset = Cliente.objects.filter(eliminado=False)
-        self.fields['fecha_entrega'].widget.attrs.update({'class': 'form-control'})
-        self.fields['fecha_produccion'].widget.attrs.update({'class': 'form-control'})
 
 DetallePedidoFormSet = inlineformset_factory(
     Pedido,  # Parent model
@@ -294,9 +311,7 @@ DetallePedidoFormSet = inlineformset_factory(
     extra=1,  # Number of empty forms to display
     can_delete=True,  # Allow formset to delete records
 )
-
-
-   
+  
 class EmpaqueForm(forms.ModelForm):
     class Meta:
         model = Empaque

@@ -65,36 +65,42 @@
     </div>
 
     <!--Este es el contenedor del formulario productos-->
-    <div class="form-container-productos">
-        <form method="post" action="{% url 'stock' %}" style="display: none;" id="carga-form">
-            {% csrf_token %}
-            <table class="form-table">
-                <h2 class="bold-heading">Actualizar Producción</h2>
-                <tr>
-                    <th class="detalle-pedido-t">Bodega</th>
-                    <th class="detalle-pedido-t">Producto</th>
-                    <th class="detalle-pedido-t">Cantidad <br> M3</th>
-                    <th class="detalle-pedido-t">Creado por:</th>
 
-                </tr>
-                <tr>
-                    <td>{{ formstockterminado.bodega }}</td>
-                    <td>{{ formstockterminado.medidas}}</td>
-                    <td>{{ formstockterminado.cantidad_m3}}</td>
-                    <td>{{ formstockterminado.usuario_crea }}</td>
-                </tr>
-            </table>
-            {{ formstockterminado.errors }}
-            {{ formstockterminado.non_field_errors }}
 
-            <div class="button-container">
-                <button type="submit" name="crear" class="red-button-g">Crear</button>
-                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
-            </div>
+        {% comment %} {% endcomment %}
+        <!-- Popup Container Productos Terminado -->
 
-        </form>
 
-    </div>
+        <div class="form-container-productos" style="width:200vh;">
+            <form method="POST" action="{% url 'stock' %}" style="display: none;" id="carga-form">
+                {% csrf_token %}
+                <hr>
+                <table class="form-table">
+                    <h2 class="bold-heading">Actualizar Producción</h2>
+                    <tr>
+                        <th class="detalle-pedido-t">Bodega</th>
+                        <th class="detalle-pedido-t">Producto</th>
+                       <th class="detalle-pedido-t">Cantidad <br> M3</th>
+                       <th class="detalle-pedido-t">Creado por:</th>
+                    </tr>
+               
+                    <tr>
+                        <td>{{ form.bodega }}</td>
+                        <td>{{ form.medidas}}</td>
+                        <td>{{ form.cantidad_m3}}</td>
+                        <td>{{ form.usuario_crea }}</td>
+                    </tr>
+                </table>
+
+                {{ formstockterminado.errors }}
+             
+               
+                <div class="button-container">
+                    <button type="submit" name="crear" class="red-button-g">Crear</button>
+                    <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+                </div>
+            </form>
+        </div>
     <!--Esta es la contenedor de la tabla productos-->
     <div class="table-container">
         <div class="table-responsive">
