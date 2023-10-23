@@ -265,7 +265,6 @@ class Gantt {
         }
 
 
-
         for (let key in groupedRows) {
             let row = groupedRows[key];
             const ids = row.ids.join(', ');
@@ -291,7 +290,7 @@ class Gantt {
             for (let i = 0; i < row.detalles.length; i++) {
                 let detalle = row.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila); // Usar maxFechaLejanaPorFila
+                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
@@ -316,7 +315,12 @@ class Gantt {
         return html;
     }
 
+        html += bodyHtml;
+        html += '</tbody></table>';
 
+        return html;
+
+    }
 
     PedidoTable() {
         var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
@@ -906,7 +910,6 @@ function showPopupmateria() {
     const popupOverlay = document.getElementById('popupContainermateria');
     if (popupContainermateria.style.display === 'none') {
         popupContainermateria.style.display = 'block';
-        showEjecutarBoton();
     } else {
         popupContainermateria.style.display = 'none';
     }
@@ -921,7 +924,6 @@ function showPopupproduccion() {
     const popupOverlay = document.getElementById('popupContainerproduccion');
     if (popupContainerproduccion.style.display === 'none') {
         popupContainerproduccion.style.display = 'block';
-        showEjecutarBoton();
     } else {
         popupContainerproduccion.style.display = 'none';
     }

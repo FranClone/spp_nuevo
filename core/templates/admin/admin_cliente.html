@@ -97,11 +97,11 @@
                 <tr>
                     <td>{{ form.mercado }}</td>
                     <td>{{ form.puerto_destino }}</td>
-                    <td>{{ form.empresa }}</td>    
+                    <td>{{ form.empresa }}</td>
                 </tr>
             </table>
 
-            
+
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
@@ -119,8 +119,8 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>Rut</th>
-                        <th class"tabla-cliente">Nombre</th>
-                        <th class"tabla-cliente">Correo</th>
+                        <th class="tabla-cliente">Nombre</th>
+                        <th class="tabla-cliente">Correo</th>
                         <th>Ciudad</th>
                         <th>Telefono</th>
                         <th>Mercado</th>
@@ -131,27 +131,28 @@
                 <tbody>
                     {% for cliente in clientes %}
 
-                        {% if not cliente.eliminado %}
-                        <tr>
-                            <td>{{ cliente.rut_cliente }}</td>
-                            <td>{{ cliente.nombre_cliente }}</td>
-                            <td>{{ cliente.correo_cliente }}</td>
-                            <td>{{ cliente.ciudad }}</td>
-                            <td>{{ cliente.telefono }}</td>
-                            <td>{{ cliente.mercado }}</td>
-                            <td>{{ cliente.puerto_destino }}</td>
-                        
-                        <td>                                            
-                                <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
+                    {% if not cliente.eliminado %}
+                    <tr>
+                        <td>{{ cliente.rut_cliente }}</td>
+                        <td>{{ cliente.nombre_cliente }}</td>
+                        <td>{{ cliente.correo_cliente }}</td>
+                        <td>{{ cliente.ciudad }}</td>
+                        <td>{{ cliente.telefono }}</td>
+                        <td>{{ cliente.mercado }}</td>
+                        <td>{{ cliente.puerto_destino }}</td>
+
+                        <td>
+                            <button class="btn block" onclick="openPopup('{{ cliente.rut_cliente }}', '{{ cliente.nombre_cliente  }}','{{ cliente.correo_cliente }}','{{ cliente.fecha_crea }}','{{ cliente.usuario_crea }}','{{ cliente.ciudad }}', '{{ cliente.telefono }}' , '{{ cliente.mercado }}' , '{{ cliente.puerto_destino }}' 
 
                                 )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <a href="eliminarcliente/{{cliente.id}}" class="fas fa-trash-alt fa-xl"></a>
+                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ cliente.id }}')"></i>
+
                             <a href="admin_clienteeditar/{{cliente.id}}"
                                 class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                         </td>
 
-                        </tr>
-                        {% endif %}
+                    </tr>
+                    {% endif %}
 
                     {% empty %}
                     </tr>
@@ -193,6 +194,15 @@
                 </tr>
             </table>
             <button class="close-button" onclick="closePopup()">Cerrar</button>
+        </div>
+    </div>
+    <div class="popup" id="popupeliminar">
+        <div class="popup-content-eliminar">
+            <p id="mensaje"></p>
+            <div class="button-container-eliminar">
+                <button id="btnCancelar">Cancelar</button>
+                <button id="btnConfirmar">Confirmar</button>
+            </div>
         </div>
     </div>
     <script>
@@ -240,7 +250,35 @@
             });
         });
     </script>
+    <script>
+        // Seleccionar elementos del DOM
+        const popupEliminar = document.getElementById('popupeliminar');
+        const btnCancelar = document.getElementById('btnCancelar');
+        const mensaje = document.getElementById('mensaje');
+        const btnConfirmar = document.getElementById('btnConfirmar');
 
+        let clienteId = null; // Cambiado de empresaId a clienteId
+
+        // Función para abrir el popup de eliminación
+        function openEliminarPopup(id) {
+            clienteId = id; // Cambiado de empresaId a clienteId
+            mensaje.textContent = `¿Estás seguro de borrar el cliente con ID: ${clienteId}?`; 
+            // Actualiza el href del enlace "Confirmar"
+            popupEliminar.style.display = 'flex';
+        }
+
+        // Event listeners para los botones del popup
+        btnCancelar.addEventListener('click', () => {
+            popupEliminar.style.display = 'none';
+        });
+
+        btnConfirmar.addEventListener('click', () => {
+            if (clienteId) { // Cambiado de empresaId a clienteId
+                window.location.href = `eliminarcliente/${clienteId}`; 
+            }
+        });
+
+    </script>
 </body>
 
 </html>
