@@ -315,12 +315,6 @@ class Gantt {
         return html;
     }
 
-        html += bodyHtml;
-        html += '</tbody></table>';
-
-        return html;
-
-    }
 
     PedidoTable() {
         var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
