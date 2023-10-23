@@ -30,6 +30,108 @@ class Gantt {
         return Math.ceil(diffTime / oneWeek);
     }
 
+    PlanPedidoTable() {
+        var html = '<table class="second-table"><thead><tr>';
+
+        // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Produccion</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalles</th>';
+
+
+        // Obtén la fecha actual
+        const currentDate = new Date();
+
+        // Calcula la fecha 10 días después
+        const tenDaysLater = new Date(currentDate);
+        tenDaysLater.setDate(currentDate.getDate() + 10);
+
+        // Agrega las fechas al encabezado
+        for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
+            const formattedDate = this.formatDate(date, "diario");
+            html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
+        }
+
+        html += '</tr></thead><tbody>';
+
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+
+        var uniqueOrdenPedido = [];
+
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+
+            if (!uniqueOrdenPedido.includes(task[0])) {
+
+                const fechaETA = new Date(task[2]);
+                const currentDate = new Date();
+
+                if (fechaETA >= currentDate) {
+
+
+                    const dMin = new Date(task[3]);
+                    const dMax = new Date(task[2]);
+
+                    // Calcular la diferencia en días entre dMin y dMax
+                    var dateDiff = this.diffInDays(dMax, dMin);
+
+                    var daysBefore = this.diffInDays(this.minDate, dMin);
+                    var daysAfter = this.diffInDays(dMax, this.maxDate);
+
+                    // Ensure that daysBefore is at least 0 (minimum start date constraint)
+                    daysBefore = Math.max(daysBefore, 0);
+
+                    // Ensure that daysAfter is at least 0 (maximum end date constraint)
+                    daysAfter = Math.max(daysAfter, 0);
+
+                    // Restar la fecha actual para ver cuántos días quedan
+                    const fechaActual = new Date(); // Obtener la fecha actual
+                    var diasRestantes = this.diffInDays(dMax, fechaActual);
+
+                    console.log('Fecha de inicio (dMin):', dMin);
+                    console.log('Fecha de finalización (dMax):', dMax);
+                    console.log('Días restantes:', diasRestantes);
+
+
+
+                    bodyHtml += '<tr>';
+
+                    // Agregar el valor de task[7] en la primera columna
+                    bodyHtml += `<td>${task[0]}</td>`;
+                    bodyHtml += `<td>${task[3]}</td>`;
+                    bodyHtml += `<td>${task[2]}</td>`;
+                    bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver detalles</a></td>`;
+
+
+                    for (let day = 0; day < 11; day++) {
+                        // Agregar lo que necesites para cada día, por ejemplo:
+                        bodyHtml += '<td class="event-cell';
+                        if (day < diasRestantes) {
+                            bodyHtml += ' has-paquetes">';
+                        } else {
+                            bodyHtml += '"></td>';
+                        }
+                    
+                        bodyHtml += '</td>';
+                    }
+
+                    bodyHtml += '</tr>';
+                    uniqueOrdenPedido.push(task[0]);
+                }
+            }
+        }
+
+
+
+        // Agrega el cuerpo de la tabla al encabezado
+        html += bodyHtml;
+
+        html += '</tbody></table>';
+        return html;
+    }
+
 
 
     PlanTable() {
@@ -50,45 +152,53 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
-
-
+        console.log('Cargando tabla');
+    
         // Obtén la fecha actual
         const currentDate = new Date();
-
+        console.log('Fecha actual:', currentDate);
+    
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
-
+        console.log('Fecha 10 días después:', tenDaysLater);
+    
         // Agrega las fechas al encabezado
         for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
             const formattedDate = this.formatDate(date, "diario");
+            console.log('Agregando fecha al encabezado:', formattedDate);
             html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
         }
-
-
+    
         html += '</tr></thead><tbody>';
-
+    
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-
+    
         const groupedRows = {};
-
+    
         // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
+            // Agrega un mensaje para rastrear el progreso
+            console.log('Procesando producto:', task[7]);
+    
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
-
+            console.log('Procesando eta:', fechaETA);
             // Obtén la fecha actual
             const currentDate = new Date();
-
+            console.log('Procesando currentdate:', currentDate);
             // Verifica si la fecha de ETA ya ha pasado
             if (fechaETA >= currentDate) {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
-                    var product = task[7][j]; // Obtener el nombre del producto
+                    var product = task[7][j];
+                    // Agrega un mensaje para rastrear el progreso
+                    console.log('Procesando producto 2:', product);
+    
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
-
+                    console.log('Procesando producto:', key);
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
                             product: product,
@@ -101,13 +211,16 @@ class Gantt {
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
                             ids: []
+                           
                         };
-                    }
-
+                    }      
+                     console.log(`Procesando detalles del producto: ${product}`);
+                     console.log(`Procesando detalles del producto: ${task[19]}`);
+                     console.log(`Procesando detalles del producto: ${task[18]}`);
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
-
+    
                     while (sum < target) {
                         let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                         sum += randomNumber;
@@ -116,16 +229,15 @@ class Gantt {
                             break;
                         }
                     }
-                    // Función para redondear un número a tres decimales si es necesario
-
-                    groupedRows[key].cantidad += parseInt(task[45], 10); // Convierte la cantidad en número y suma
-                    groupedRows[key].cantidadm3 += parseFloat(task[20]);; // Convierte la cantidad en número y suma
+    
+                    groupedRows[key].cantidad += parseInt(task[45], 10);
+                    groupedRows[key].cantidadm3 += parseFloat(task[20]);
                     groupedRows[key].detalles.push({
                         color: task[15],
                         randomNumbers: randomNumbers,
                         i: i,
                     });
-
+    
                     groupedRows[key].ids.push(i);
                 }
             }
@@ -188,28 +300,20 @@ class Gantt {
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
-                    bodyHtml += `<i id="miBoton" class="fa-sharp fa-solid fa-circle-exclamation" data-datediff="${dateDiff}"></i>`;
                 } else {
                     bodyHtml += '"></td>';
                 }
-
+                console.log(`Hola AWS : ${paquetesPorDia}`);
                 bodyHtml += '</td>';
             }
+
             bodyHtml += '</tr>';
         }
-        // Move the event listener outside of the loop and access k in its scope
-        document.body.addEventListener('click', function (event) {
-            if (event.target.id === 'miBoton') {
-                const dateDiff = event.target.getAttribute('data-datediff');
-                Swal.fire({
-                    title: `¡Quedan ${dateDiff} días!`,
-                    text: `El pedido estará por finalizar`,
-                    icon: 'warning',
-                    confirmButtonText: 'OK',
-                    confirmButtonColor: '#4CAF50'
-                });
-            }
-        });
+
+        html += bodyHtml;
+        html += '</tbody></table>';
+        return html;
+    }
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -377,6 +481,7 @@ class Gantt {
         document.getElementById('gantt').innerHTML = this.PedidoTable();
     }
 
+
     showProductosTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.ProductosTable();
@@ -391,6 +496,11 @@ class Gantt {
     showPlanTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PlanTable();
+    }
+
+    showPlanPedidoTable() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.PlanPedidoTable();
     }
 
 

@@ -561,29 +561,19 @@ def pedidos(request):
     if request.method == 'POST':
         pedido_form = ActualizarPedidoForm(request.POST)
         detalle_pedido_formset = DetallePedidoFormSet(request.POST, prefix='detalle_pedido')
-        print("post pedido")
-        print("Before pedido_form validation")
-        if pedido_form.is_valid():
-            print("pedido_form is valid")
-        else:
-            print("pedido_form is NOT valid")
-            print(pedido_form.errors)
-        if detalle_pedido_formset.is_valid():
-            print("detalle_pedido_formset is valid")
-        else:
-            print("detalle_pedido_formset is NOT valid")
-            print(detalle_pedido_formset.errors)
-            
+
         if pedido_form.is_valid() and detalle_pedido_formset.is_valid():
-            print("formulario valido")
             with transaction.atomic():
-                pedido_instance = pedido_form.save()
-                producto_seleccionado = pedido_form.cleaned_data['producto']
-                # producto_elegido = pedido_form.cleaned_data.get('producto')
-                # pedido_instance.producto = producto_elegido
-                # pedido_instance.save()
+                pedido_instance = pedido_form.save(commit=False)
+                pedido_instance.save()  # Guarda el pedido en la base de datos
+
+                # Obtener el producto seleccionado
+                producto_seleccionado = pedido_form.cleaned_data['producto'].id
+                pedido_instance.producto.add(producto_seleccionado)
+                if producto_seleccionado:
+                    pedido_instance.producto.add(producto_seleccionado)
+                print(producto_seleccionado)
                 primera_form = detalle_pedido_formset.forms[0]
-                print(primera_form)
                 factura_data = {
                     'FSC': primera_form.cleaned_data.get('FSC'),
                     'esp_fact': primera_form.cleaned_data.get('esp_fact'),
@@ -592,33 +582,25 @@ def pedidos(request):
                 }
                 factura_instance = Factura(**factura_data)
                 factura_instance.save()
-                print(factura_instance)
+
                 empaque_data = {
                     'pqte': primera_form.cleaned_data.get('pqte'),
                     'tipo_empaque': primera_form.cleaned_data.get('tipo_empaque'),
                     'alto_paquete': primera_form.cleaned_data.get('alto_paquete'),
                     'int_paquete': primera_form.cleaned_data.get('int_paquete'),
                     'anc_paquete': primera_form.cleaned_data.get('anc_paquete'),
-                }   
+                }
                 empaque_instance = Empaque(**empaque_data)
-                empaque_instance.save()           
-                # Create and save a new Factura instance with the extracted data
+                empaque_instance.save()
 
-                print(empaque_instance)
-                print(f"Factura: {factura_instance}")
-                print(f"Empaque: {empaque_instance}")
-                print(f"Pedido: {pedido_instance}")
-                # Loop through DetallePedido forms in the formset
                 for detalle_pedido_form in detalle_pedido_formset:
                     detalle_pedido_instance = detalle_pedido_form.save(commit=False)
                     detalle_pedido_instance.pedido = pedido_instance
                     detalle_pedido_instance.factura = factura_instance
                     detalle_pedido_instance.empaque = empaque_instance
-                    detalle_pedido_instance.producto = producto_seleccionado
-                    detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega  # Set fecha_entrega based on the associated Pedido
+                    detalle_pedido_instance.fecha_entrega = pedido_instance.fecha_entrega
+                    
                     detalle_pedido_instance.save()
-
-
 
             return redirect('home')
         else:
@@ -628,6 +610,7 @@ def pedidos(request):
                     print(f"Errores en el formulario: {form.errors}")
                     print(detalle_pedido_formset.errors)
 
+
     else:
         pedido_form = ActualizarPedidoForm()
         detalle_pedido_formset = DetallePedidoFormSet(prefix='detalle_pedido')
@@ -635,8 +618,7 @@ def pedidos(request):
     context = {
         'pedido_form': pedido_form,
         'detalle_pedido_formset': detalle_pedido_formset,
-        'pedidos': pedidos,  # Agrega los pedidos al contexto
-    
+        'pedidos': pedidos,
     }
 
     return render(request, 'pedidos.html', context)
@@ -719,18 +701,18 @@ def gantt_view(request):
                 piezas_x_cpo = detalle_pedido.piezas_x_cpo if detalle_pedido.piezas_x_cpo is not None else "N/A"
                 est = detalle_pedido.est if detalle_pedido.est is not None else "N/A"
                 largo_rollizo = producto.nombre_rollizo.largo or "N/A"
-                factura = Factura.objects.get(pk=detalle_pedido.factura.pk)
-                FSC = factura.FSC if factura.FSC is not None else "N/A"
-                esp_fact = factura.esp_fact if factura.esp_fact is not None else "N/A"
-                anc_fact = factura.anc_fact if factura.anc_fact is not None else "N/A"
-                lar_fact = factura.lar_fact if factura.lar_fact is not None else "N/A"
-                # Añade los atributos de Empaque
-                empaque = Empaque.objects.get(pk=detalle_pedido.empaque.pk)
-                pqte = empaque.pqte if empaque.pqte is not None else "N/A"
-                tipo_empaque = empaque.tipo_empaque if empaque.tipo_empaque is not None else "N/A"
-                alto_paquete = empaque.alto_paquete if empaque.alto_paquete is not None else "N/A"
-                int_paquete = empaque.int_paquete if empaque.int_paquete is not None else "N/A"
-                anc_paquete = empaque.anc_paquete if empaque.anc_paquete is not None else "N/A"
+                factura = Factura.objects.get(pk=detalle_pedido.factura.pk) if detalle_pedido.factura else None
+                FSC = factura.FSC if factura else "N/A"
+                esp_fact = factura.esp_fact if factura else "N/A"
+                anc_fact = factura.anc_fact if factura else "N/A"
+                lar_fact = factura.lar_fact if factura else "N/A"
+                #Añade los atributos de empaque
+                empaque = Empaque.objects.get(pk=detalle_pedido.empaque.pk) if detalle_pedido.empaque else None
+                pqte = empaque.pqte if empaque else "N/A"
+                tipo_empaque = empaque.tipo_empaque if empaque else "N/A"
+                alto_paquete = empaque.alto_paquete if empaque else "N/A"
+                int_paquete = empaque.int_paquete if empaque else "N/A"
+                anc_paquete = empaque.anc_paquete if empaque else "N/A"
                 try:
                     patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
                     codigo_patron = patron_corte_data.codigo
