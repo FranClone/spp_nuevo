@@ -47,7 +47,6 @@
                             </tr>
                             {% for detalle in detalle_pedido_formset %}
                             <input type="hidden" name="{{ detalle.prefix }}-id" value="{{ detalle.instance.id }}">
-
                             <input type="hidden" name="{{ detalle.prefix }}-factura" value="{{ factura.id }}">
                             <input type="hidden" name="{{ detalle.prefix }}-empaque" value="{{ paquete.id }}">
                             <!-- Otros campos relacionados -->
@@ -137,12 +136,10 @@
                         </tr>
                     </table>
                   {% endfor %}
-            
-                        <button type="submit" name="Editar" class="red-button" style="margin-top: 2vh;background-color: red; color: white; width:6%; border: 1px solid white;">Editar</button>
-                        <button type="button" class="red-button">
-                            <a href="{% url 'pedidos' %}">Cancelar</a>
-                        </button>
-     
+                        <div class="button-container">
+                            <button type="submit" name="Editar" class="red-button-g">Editar</button>
+                            <button type="button" class="red-button-c"><a href="{% url 'pedidos' %}">Cancelar</a></button>
+                        </div>
                     </form>
         
                 </div>
