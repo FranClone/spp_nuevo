@@ -75,13 +75,14 @@
         </form>
     </div>
     <!--Sección formulario desplegable mediante botón "Carga Manual"-->
-    <div class="form-container-productos" style="">
+    <div class="form-container-productos">
 
-        <form method="post" action="{% url 'pedidos' %}" style="display: none; width:120vh;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:120vh;" id="carga-form">
             {% csrf_token %}
             <table class="form-table">
-                <th>Detalle Pedido</th>
+                <th><span>Detalle Pedido</span></th>
                 {{ detalle_pedido_formset.management_form }}
+
                 <tr>
                     <th class="detalle-pedido-t">OP</th>
                     <th class="detalle-pedido-t">Cliente</th>
@@ -90,7 +91,7 @@
                     <th class="detalle-pedido-t">Destino</th>
                     <th class="detalle-pedido-t" style="width:20vh;">Programa</th>
                     <th class="detalle-pedido-t">Item</th>
-                    <th class="detalle-pedido-t">Nombre Producto</th>
+                    <th class="detalle-pedido-t">Nombre producto</th>
                     <th class="detalle-pedido-t">Est</th>
                     <th class="detalle-pedido-t">term</th>
                     <th class="detalle-pedido-t">Calidad</th>
@@ -101,11 +102,11 @@
                     <td>{{ pedido_form.orden_interna }}</td>
                     <td>{{ pedido_form.cliente }}</td>
                     <td>{{ form.mercado}}</td>
-                    <td>{{ form.fecha_entrega }}</td>
+                    <td>{{ pedido_form.fecha_entrega }}</td>
                     <td>{{ form.puerto_destino }}</td>
                     <td>{{ form.programa }}</td>
                     <td>{{ form.item }}</td>
-                    <td>{{ pedido_form.producto }}</td>
+                    <td >{{ form.producto }}</td>
                     <td>{{ form.est }}</td>
                     <td>{{ form.term }}</td>
                     <td>{{ form.calidad }}</td>
@@ -113,7 +114,7 @@
                     {{ form.errors }}
                 </tr>
             </table>
-            <table class="form-table" style="margin-top:2vh;">
+            <table class="form-table">
 
                 <tr>
                     <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
@@ -124,9 +125,9 @@
                     <th class="detalle-pedido-t ">Mbf</th>
                     <th class="detalle-pedido-t ">Baño</th>
                     <th class="detalle-pedido-t">Marca</th>
-                    <th class="detalle-pedido-t">Fecha Creación</th>
+                    <th class="detalle-pedido-t">Fecha Creacion</th>
                     <th class="detalle-pedido-t">Comentario</th>
-                    <th class="detalle-pedido-t">Versión</th>
+                    <th class="detalle-pedido-t">Version</th>
                     <th class="detalle-pedido-t">Estado</th>
                 </tr>
 
@@ -147,7 +148,6 @@
                 </tr>
 
             </table>
-            <hr>
             <table class="form-table">
                 <th>Detalle Factura</th>
                 <tr>
@@ -163,7 +163,6 @@
                     <td>{{ form.lar_fact }}</td>
                 </tr>
             </table>
-            <hr>
             <table>
                 <th>Detalle Paquete</th>
                 <tr>
@@ -181,15 +180,15 @@
                     <td>{{ form.pqte }}</td>
                 </tr>
             </table>
+            {% endfor %}
+            <div class="button-container">
+                <button type="submit" name="crear" class="red-button-g">Crear</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
 
-          {% endfor %}
-          
-          <div class="button-container">
-            <button type="submit" name="crear" class="red-button-g">Crear</button>
-            <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
             </div>
-            </form>
-        </div>
+        </form>
+    </div>
+    <br>
 
     <!--Tabla de pedidos-->
     <div class="table-container">

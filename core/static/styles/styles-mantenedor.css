@@ -329,8 +329,10 @@ a {
 
 
 .detalle-pedido-t{
-    background-color: rgba(235, 0, 0, 0.822); 
+    background-color: rgba(235, 0, 0, 0.822);
     color: white; 
+    width: 30vh; 
+    height:3vh;
     font-size: 13px; 
     border-width: 1px;
     text-align: center;
@@ -353,4 +355,7 @@ a {
     margin-top: 1%;
     margin-left: 1%;
     margin-right: 1%;
+}
+.tabla-detalles {
+    width: 80px;
 }

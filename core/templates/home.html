@@ -240,7 +240,6 @@
         <form method="post" action="{% url 'actualizar_stock_rollizo' %}" id="popupContainermateria"
             style="display: none;">
             {% csrf_token %}
-            <hr>
             <table class="form-table">
                 <h2 class="bold-heading">Ingresar Stock materia prima</h2>
                 <tr>
@@ -271,7 +270,6 @@
         <div class="form-container-productos" style="width:200vh;">
             <form method="POST" action="{% url 'stock' %}" id="popupContainerproduccion" style="display: none;">
                 {% csrf_token %}
-                <hr>
                 <table class="form-table">
                     <h2 class="bold-heading">Actualizar Producción</h2>
                     <tr>

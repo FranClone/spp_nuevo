@@ -70,9 +70,9 @@
             {% csrf_token %}
             <table class="form-table">
                 <tr>
-                    <th>{{ form.nombre_linea.label_tag }}</th>
-                    <th>Descripción:</th>
-                    <th>{{ form.empresa.label_tag }}</th>
+                    <th class="detalle-pedido-t">Linea:</th>
+                    <th class="detalle-pedido-t">Descripción:</th>
+                    <th class="detalle-pedido-t">Empresa:</th>
                 </tr>
                 <tr>
                     <td>{{ form.nombre_linea }}</td>
@@ -80,9 +80,9 @@
                     <td>{{ form.empresa }}</td>
                 </tr>
                 <tr>
-                    <th>Creado por:</th>
-                    <th>{{ form.patron.label_tag }}</th>
-                    <th>{{ form.velocidad.label_tag }}</th>
+                    <th class="detalle-pedido-t">Creado por:</th>
+                    <th class="detalle-pedido-t">Patron:</th>
+                    <th class="detalle-pedido-t">Velocidad:</th>
                 </tr>
                 <tr>
                     <td>{{ form.usuario_crea }}</td>
