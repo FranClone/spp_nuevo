@@ -257,17 +257,18 @@ a {
     justify-content: flex-end; /* Alinea los botones a la derecha */
     margin-top: 10px; /* Agrega margen superior si es necesario */
 }
-  
-.red-button-g, .red-button-c {
-    background-color: red;
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    margin-left: 10px; /* Agrega espacio entre los botones si es necesario */
-    padding: 0.5vh;
-    width: 5vh;
-}
 
+
+.red-button-g, .red-button-c {
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    border-radius: 6px;
+    padding: 13px 14px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    margin-bottom: 9px;
+    margin:10px;
+}
 
 .container-b {
     display: flex;
@@ -277,12 +278,14 @@ a {
 
 /* Estilos para los botones */
 .red-button-a {
-    background-color: red;
+    background-color: rgba(255, 0, 0, 0.705);
     color: white;
-    border: none;
-    cursor: pointer;
-    margin: 5px;
-    padding: 10px 20px;
+    border-radius: 6px;
+    padding: 13px 14px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    margin-bottom: 9px;
+    margin:10px;
 }
 
 /* Style contenedor MultiSelect */

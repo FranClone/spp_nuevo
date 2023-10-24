@@ -198,10 +198,12 @@
                 </tr>
             </table>
             {% endfor %}
+
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
                 <button class="red-button-c" onclick="closePopup()">cerrar</button>
             </div>
+            
         </form>
     </div>
     <br>
@@ -374,47 +376,5 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     });
-</script>
-
-
-
-<script>
-$(document).ready(function() {
-    $("#showPlanButton").click(function() {
-        $("#btnGroup").show();
-    });
-});
-
-$(document).ready(function() {
-    $("#showProductosButton").click(function() {
-        $("#btnGroup").hide();
-    });
-});
-
-$(document).ready(function() {
-    $("#showProductosButton").click(function() {
-        $("#toggle-lineas-button").hide();
-    });
-});
-
-$(document).ready(function() {
-    $("#showPedidosButton").click(function() {
-        $("#btnGroup").hide();
-    });
-});
-
-$(document).ready(function() {
-    $("#showPedidosButton").click(function() {
-        $("#toggle-lineas-button").hide();
-    });
-});
-
-</script>
-
-<script>
-    function showEjecutarBoton() {
-        const ejecutarBoton = document.getElementById("ejecutarBoton");
-        ejecutarBoton.style.display = "block";
-      }
 </script>
 </html>
