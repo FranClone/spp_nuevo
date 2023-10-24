@@ -70,24 +70,24 @@
             {% csrf_token %}
             <table class="form-table">
                 <tr>
-                    <th>{{ form.nombre_rollizo.label_tag }}</th>
-                    <th>Descripción Rollizo:</th>
+                    <th class="detalle-pedido-t">Nombre rollizo:</th>
+                    <th class="detalle-pedido-t">Descripción Rollizo:</th>
                 </tr>
                 <tr>
                     <td>{{ form.nombre_rollizo }}</td>
                     <td>{{ form.descripcion_rollizo }}</td>
                 </tr>
                 <tr>
-                    <th>Diámetro:</th>
-                    <th>{{ form.largo.label_tag }}</th>
+                    <th class="detalle-pedido-t">Diámetro:</th>
+                    <th class="detalle-pedido-t">Largo:</th>
                 </tr>
                 <tr>
                     <td>{{ form.diametro }}</td>
                     <td>{{ form.largo }}</td>
                 </tr>
                 <tr>
-                    <th>Creado por: </th>
-                    <th>Clase Diamétrica: </th>
+                    <th class="detalle-pedido-t">Creado por:</th>
+                    <th class="detalle-pedido-t">Clase Diamétrica:</th>
                 </tr>
                 <tr>
                     <td>{{ form.usuario_crea }}</td>

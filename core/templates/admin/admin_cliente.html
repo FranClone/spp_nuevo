@@ -70,9 +70,9 @@
             {% csrf_token %}
             <table class="form-table">
                 <tr>
-                    <th>{{ form.rut_cliente.label_tag }}</th>
-                    <th>{{ form.nombre_cliente.label_tag }}</th>
-                    <th>{{ form.correo_cliente.label_tag }}</th>
+                    <th class="detalle-pedido-t">Rut cliente</th>
+                    <th class="detalle-pedido-t">Cliente:</th>
+                    <th class="detalle-pedido-t">Correo cliente:</th>
                 </tr>
                 <tr>
                     <td>{{ form.rut_cliente }}</td>
@@ -80,9 +80,9 @@
                     <td>{{ form.correo_cliente }}</td>
                 </tr>
                 <tr>
-                    <th>{{ form.usuario_crea.label_tag }}</th>
-                    <th>{{ form.ciudad.label_tag }}</th>
-                    <th>{{ form.telefono.label_tag }}</th>
+                    <th class="detalle-pedido-t">Usuario crea:</th>
+                    <th class="detalle-pedido-t">Ciudad:</th>
+                    <th class="detalle-pedido-t">Telefono:</th>
                 </tr>
                 <tr>
                     <td>{{ form.usuario_crea }}</td>
@@ -90,9 +90,9 @@
                     <td>{{ form.telefono }}</td>
                 </tr>
                 <tr>
-                    <th>{{ form.mercado.label_tag }}</th>
-                    <th>{{ form.puerto_destino.label_tag }}</th>
-                    <th>{{ form.empresa.label_tag }}</th>
+                    <th class="detalle-pedido-t">Mercado:</th>
+                    <th class="detalle-pedido-t">Puerto destino:</th>
+                    <th class="detalle-pedido-t">Empresa:</th>
                 </tr>
                 <tr>
                     <td>{{ form.mercado }}</td>
@@ -125,7 +125,7 @@
                         <th>Telefono</th>
                         <th>Mercado</th>
                         <th>Destino</th>
-                        <th>Detalles</th>
+                        <th class="tabla-detalles">Detalles</th>
                     </tr>
                 </thead>
                 <tbody>

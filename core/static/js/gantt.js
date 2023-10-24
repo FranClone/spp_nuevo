@@ -152,21 +152,17 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
-        console.log('Cargando tabla');
     
         // Obtén la fecha actual
         const currentDate = new Date();
-        console.log('Fecha actual:', currentDate);
     
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
-        console.log('Fecha 10 días después:', tenDaysLater);
     
         // Agrega las fechas al encabezado
         for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
             const formattedDate = this.formatDate(date, "diario");
-            console.log('Agregando fecha al encabezado:', formattedDate);
             html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
         }
     
@@ -181,24 +177,18 @@ class Gantt {
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
             // Agrega un mensaje para rastrear el progreso
-            console.log('Procesando producto:', task[7]);
     
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
-            console.log('Procesando eta:', fechaETA);
             // Obtén la fecha actual
             const currentDate = new Date();
-            console.log('Procesando currentdate:', currentDate);
             // Verifica si la fecha de ETA ya ha pasado
             if (fechaETA >= currentDate) {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
                     var product = task[7][j];
-                    // Agrega un mensaje para rastrear el progreso
-                    console.log('Procesando producto 2:', product);
     
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
-                    console.log('Procesando producto:', key);
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
                             product: product,
@@ -214,9 +204,6 @@ class Gantt {
                            
                         };
                     }      
-                     console.log(`Procesando detalles del producto: ${product}`);
-                     console.log(`Procesando detalles del producto: ${task[19]}`);
-                     console.log(`Procesando detalles del producto: ${task[18]}`);
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
@@ -270,7 +257,6 @@ class Gantt {
             const ids = row.ids.join(', ');
             var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
             maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
-            console.log("dateDiff:", dateDiff);
             function roundToThreeDecimals(number) {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
@@ -303,7 +289,6 @@ class Gantt {
                 } else {
                     bodyHtml += '"></td>';
                 }
-                console.log(`Hola AWS : ${paquetesPorDia}`);
                 bodyHtml += '</td>';
             }
 
@@ -542,7 +527,6 @@ class Gantt {
 
 
     attachEventListeners() {
-        console.log('Attaching event listeners');
         const popupLinks = document.querySelectorAll('.popup-link');
         console.log('Popup links found:', popupLinks.length);
 
@@ -558,15 +542,12 @@ class Gantt {
 
 
     handlePopupClick(event) {
-        console.log('Popup link clicked');
         event.stopPropagation();// Evita que el evento se propague al contenedor principal
         const pedidoId = parseInt(event.target.dataset.pedidoId); // Obtenemos el ID del pedido desde el atributo data-pedido-id
         const pedidoIds = event.target.dataset.pedidoId.split(',').map(id => parseInt(id));
         const popupType = event.target.dataset.popupType; // Obtenemos el tipo de popup
         const popup = document.createElement('div');
         popup.className = 'popup-overlay';
-        console.log('Pedido ID:', pedidoId);
-        console.log('Pedido IDs:', pedidoIds);
         let pedidoData = this.tasks[pedidoId]; // Cambio a let
         let productoData = this.tasks[pedidoIds]; // Cambio a let
         const self = this; // Store a reference to the current instance
@@ -601,7 +582,6 @@ class Gantt {
 
                 for (let j = 0; j < pedidoIds.length; j++) {
                     if (i === pedidoIds[j]) {
-                        console.log(task[7]);
                         const fechaISO = task[2];/*ETA*/
                         const fechaFormateada5 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
                         html += '<tr>';
@@ -699,7 +679,6 @@ class Gantt {
                 var task = this.filteredTasks[i];
                 if (task[0] === productoData[0]) {
                     for (let j = 0; j < task[7].length; j++) {
-                        console.log(task[7]);
                         // Create a new row for each product
                         html += '<tr>';
                         html += `<td class="detalle-pedido right-align">${task[36]}</td>`; // Item
