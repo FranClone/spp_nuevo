@@ -34,9 +34,12 @@ class Gantt {
         var html = '<table class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Carga</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">OP</th>';
-        html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Produccion</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Mercado</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">ETA</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Destino</th>';
+        html += '<th style="color: white; width: 30vh; font-size: 13px;">Programa</th>';
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Detalles</th>';
 
 
@@ -97,13 +100,20 @@ class Gantt {
 
 
                     bodyHtml += '<tr>';
+                    const fechaISO = task[1];/*Fecha de carga*/
+                    const fechaISO2 = task[2];/*ETA*/
+                    const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
+                    const fechaFormateada2 = new Date(fechaISO2).toLocaleDateString('es-ES');/*ETA*/
+
 
                     // Agregar el valor de task[7] en la primera columna
-                    bodyHtml += `<td>${task[0]}</td>`;
-                    bodyHtml += `<td>${task[3]}</td>`;
-                    bodyHtml += `<td>${task[2]}</td>`;
-                    bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver detalles</a></td>`;
-
+                    bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
+                    bodyHtml += `<td class="right-align">${task[0]}</td>`;/*OP Orden Interna*/
+                    bodyHtml += `<td class="left-align">${task[38]}</td>`; /*Mercado*/
+                    bodyHtml += `<td style="text-align: center;">${fechaFormateada2}</td>`; /*ETA*/
+                    bodyHtml += `<td class="left-align">${task[39]}</td>`; /*Destino*/
+                    bodyHtml += `<td class="left-align">${task[54]}</td>`; /*Programa*/
+                    bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver...</a></td>`; /*Detalle*/
 
                     for (let day = 0; day < 11; day++) {
                         // Agregar lo que necesites para cada día, por ejemplo:
@@ -247,8 +257,6 @@ class Gantt {
                     maxFechaLejanaPorFila = dateDiff;
                 }
             }
-
-            console.log(`Fecha más lejana a la fecha actual para ${key}: ${maxFechaLejanaPorFila}`);
         }
 
 
@@ -366,54 +374,131 @@ class Gantt {
     }
 
     ProductosTable() {
-        var html = '<table style="margin-left: auto; margin-right: auto;"class="second-table"><thead><tr>';
-
-
-
-        // Agregar dos columnas adicionales a la izquierda
-
-
-        html += '<th style="color: white; width: 30vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+        var html = '<table class="event-table second-table"><thead><tr>';
+        html += '<tr>'
+        html += '<th style="color: white; font-size: 15px; text-align: center; height:3vh;"></th>';
+        html += '<th style="color: white; font-size: 15px; text-align: center; height:3vh;" colspan="3">Escuadrias</th>';
+        html += '<th style="color: white; font-size: 15px; text-align: center; height:3vh;" colspan="4"></th>';
+        html += '</tr>'
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes Solicitados</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">ETA</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalle</th>';
+
+        // Continuar con los demás encabezados
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes <br> Solicitados</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
         html += '</tr></thead><tbody>';
-
+    
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-
-        // Itera sobre cada producto y crea una fila por producto
+    
+        const groupedRows = {};
+    
+        // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
-            for (let j = 0; j < task[7].length; j++) { // Itera sobre la lista de productos en task[11]
-                var product = task[7][j]; // Obtiene el nombre del producto
-                const fechaISO = task[2];/*ETA*/
-                const fechaFormateada4 = new Date(fechaISO).toLocaleDateString('es-ES');/*ETA*/
-                bodyHtml += `<td class="left-align">${task[7]}</td>`;/*Nombre del Producto*/
-                bodyHtml += `<td class="right-align">${task[19].toLocaleString()}</td>`;/*Largo*/
-                bodyHtml += `<td class="right-align">${task[18].toLocaleString()}</td>`;/*Ancho*/
-                bodyHtml += `<td class="right-align">${task[17].toLocaleString()}</td>`;/*Alto*/
-                bodyHtml += `<td class="right-align">${task[45].toLocaleString()}</td>`;/*pqtes solicitados*/
-                bodyHtml += `<td class="right-align">${task[20]}</td>`;/*M3*/
-                bodyHtml += `<td style="text-align: center;">${fechaFormateada4}</td>`;/*ETA*/
-                bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="producto">Ver...</a></td>`;/*Detalle*/
-
-
+            // Agrega un mensaje para rastrear el progreso
+    
+            // Obtén la fecha de ETA del pedido
+            const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
+            // Obtén la fecha actual
+            const currentDate = new Date();
+            // Verifica si la fecha de ETA ya ha pasado
+            if (fechaETA >= currentDate) {
+                // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+                for (let j = 0; j < task[7].length; j++) {
+                    var product = task[7][j];
+    
+                    var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
+                    if (!groupedRows[key]) {
+                        groupedRows[key] = {
+                            product: product,
+                            largo: task[19],
+                            ancho: task[18],
+                            alto: task[17],
+                            cantidad: 0,
+                            cantidadm3: 0,
+                            detalles: [],
+                            fechaInicio: new Date(task[3]),
+                            fechaFin: new Date(task[2]),
+                            ids: []
+                           
+                        };
+                    }      
+                    let target = task[45];
+                    let sum = 0;
+                    let randomNumbers = [];
+    
+                    while (sum < target) {
+                        let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
+                        sum += randomNumber;
+                        randomNumbers.push(randomNumber);
+                        if (sum >= target) {
+                            break;
+                        }
+                    }
+    
+                    groupedRows[key].cantidad += parseInt(task[45], 10);
+                    groupedRows[key].cantidadm3 += parseFloat(task[20]);
+                    groupedRows[key].detalles.push({
+                        color: task[15],
+                        randomNumbers: randomNumbers,
+                        i: i,
+                    });
+    
+                    groupedRows[key].ids.push(i);
+                }
             }
-
-            bodyHtml += '</tr>';
-
         }
 
-        // Agrega el cuerpo de la tabla al encabezado
-        html += bodyHtml;
-        return html;
+        let maxFechaLejanaPorFila = new Date(0); // Inicializar con una fecha muy antigua
 
+        for (let key in groupedRows) {
+            let row = groupedRows[key];
+            const ids = row.ids;
+
+            for (let id of ids) {
+                const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
+                const currentDate = new Date(); // Obtén la fecha actual
+
+                // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
+                const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
+
+                if (dateDiff > maxFechaLejanaPorFila) {
+                    maxFechaLejanaPorFila = dateDiff;
+                }
+            }
+        }
+
+
+        for (let key in groupedRows) {
+            let row = groupedRows[key];
+            const ids = row.ids.join(', ');
+            var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
+            maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
+            function roundToThreeDecimals(number) {
+                const roundedNumber = Math.round(number * 1000) / 1000;
+                return roundedNumber;
+            }
+
+            bodyHtml += '<tr>';
+            bodyHtml += `<td>${row.product}</td>`;
+            bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
+            bodyHtml += `<td class="right-align">${roundToThreeDecimals(row.cantidadm3).toString().replace('.', ',')}</td>`;
+            bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
+
+            bodyHtml += '</tr>';
+        }
+
+        html += bodyHtml;
+        html += '</tbody></table>';
+        return html;
     }
 
     PatronTable() {
@@ -650,19 +735,24 @@ class Gantt {
             productoData = this.tasks[pedidoId];
 
             var html = '<table class="second-table"><thead><tr>';
-
+            html += '<tr>'
+            html += '<th class="detalle-pedido-t" colspan="6" ></th>';
+            html += '<th class="detalle-pedido-t" colspan="3" >Facturacion</th>';
+            html += '<th class="detalle-pedido-t" colspan="3" >Escuadrias</th>';
+            html += '<th class="detalle-pedido-t" colspan="9" ></th>';
+            html += '</tr>'
             html += '<th class="detalle-pedido-t">Item</th>';
             html += '<th class="detalle-pedido-t">Nombre producto</th>';
             html += '<th class="detalle-pedido-t">Est</th>';
             html += '<th class="detalle-pedido-t">term</th>';
             html += '<th class="detalle-pedido-t">Calidad</th>';
             html += '<th class="detalle-pedido-t" style="width:20vh;" >FSC</th>';
-            html += '<th class="detalle-pedido-t a">Esp.Fact <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Anc.Fact <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Lar.Fact <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Anc. Producc <br> (cm)</th>';
-            html += '<th class="detalle-pedido-t a">Lar. Producc <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Espesor <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Ancho <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Largo <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Espesor  <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Ancho  <br> (cm)</th>';
+            html += '<th class="detalle-pedido-t a">Largo  <br> (cm)</th>';
             html += '<th class="detalle-pedido-t">Tipo Empaque</th>';
             html += '<th class="detalle-pedido-t">Alto Paquete <br> (cm)</th>';
             html += '<th class="detalle-pedido-t">Ancho Paquete <br> (cm)</th>';
