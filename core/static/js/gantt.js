@@ -262,35 +262,42 @@ class Gantt {
         }
 
 
-        for (let key in groupedRows) {
-            let row = groupedRows[key];
-            const ids = row.ids.join(', ');
-            var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
+
+        const sortedRows = Object.values(groupedRows).sort((a, b) => {
+            const productNameA = a.product.toLowerCase();
+            const productNameB = b.product.toLowerCase();
+            return productNameA.localeCompare(productNameB);
+        });
+
+
+        for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
+            const ids = sortedRow.ids.join(', ');
+            var dateDiff = this.diffInDays(sortedRow.fechaFin, sortedRow.fechaInicio);
             maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
             function roundToThreeDecimals(number) {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-
+        
             bodyHtml += '<tr>';
-            bodyHtml += `<td>${row.product}</td>`;
-            bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
+            bodyHtml += `<td>${sortedRow.product}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.ancho.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.alto.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
             bodyHtml += `<td class="right-align"></td>`;
-            bodyHtml += `<td class="right-align">${roundToThreeDecimals(row.cantidadm3).toString().replace('.', ',')}</td>`;
+            bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
-
-            for (let i = 0; i < row.detalles.length; i++) {
-                let detalle = row.detalles[i];
+        
+            for (let i = 0; i < sortedRow.detalles.length; i++) {
+                let detalle = sortedRow.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
                     let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-
+        
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
@@ -301,9 +308,10 @@ class Gantt {
                 }
                 bodyHtml += '</td>';
             }
-
-            bodyHtml += '</tr>';
         }
+        
+        bodyHtml += '</tr>';
+        
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -472,27 +480,35 @@ class Gantt {
         }
 
 
-        for (let key in groupedRows) {
-            let row = groupedRows[key];
-            const ids = row.ids.join(', ');
-            var dateDiff = this.diffInDays(row.fechaFin, row.fechaInicio);
+        const sortedRows = Object.values(groupedRows).sort((a, b) => {
+            const productNameA = a.product.toLowerCase();
+            const productNameB = b.product.toLowerCase();
+            return productNameA.localeCompare(productNameB);
+        });
+
+
+        for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
+            const ids = sortedRow.ids.join(', ');
+            var dateDiff = this.diffInDays(sortedRow.fechaFin, sortedRow.fechaInicio);
             maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
             function roundToThreeDecimals(number) {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-
+        
             bodyHtml += '<tr>';
-            bodyHtml += `<td>${row.product}</td>`;
-            bodyHtml += `<td class="right-align">${row.largo.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.ancho.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.alto.toLocaleString()}</td>`;
-            bodyHtml += `<td class="right-align">${row.cantidad}</td>`;
-            bodyHtml += `<td class="right-align">${roundToThreeDecimals(row.cantidadm3).toString().replace('.', ',')}</td>`;
+            bodyHtml += `<td>${sortedRow.product}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.ancho.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.alto.toLocaleString()}</td>`;
+            bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
+            bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-
-            bodyHtml += '</tr>';
+        
         }
+        
+        bodyHtml += '</tr>';
+        
 
         html += bodyHtml;
         html += '</tbody></table>';
