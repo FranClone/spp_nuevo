@@ -38,7 +38,10 @@ from .models import Usuario
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
-from datetime import datetime
+import datetime
+
+from datetime import datetime, date
+
 import random
 from django.urls import reverse
 import pandas as pd
@@ -125,16 +128,18 @@ def process_uploaded_file(request,xlsfile):
                         
                         id_cliente = row['cliente']
                         cliente = Cliente.objects.get(id=id_cliente)
+                        fecha_entrega = date.fromisoformat(row['fecha_entrega'])
                         pedido = Pedido(
                             cliente=cliente,
-                            fecha_produccion=row['fecha_produccion'],
-                            fecha_entrega=row['fecha_entrega'],
+                            fecha_entrega=fecha_entrega,
                             orden_interna=row['op'],
                             comentario=row['comentario'],
                             #prioridad=row['prioridad'],#agregar para editar en la pagina null=false
                             version=row['version'],
                             estado=row['estado']#agregar para editar en la pagina null=false
                         )
+                        # Convert the date strings from the Excel file to datetime objects
+  
                         pedido.save()
                         factura = Factura(
                             FSC=row['FSC'],  
@@ -232,7 +237,7 @@ def process_uploaded_file(request,xlsfile):
                                 est=row['Est']
                             )
                             detalle_pedido.save()
-                            
+    
                             # Obtiene la fecha y hora actual formateada
                         fecha_actual = datetime.now()
                         fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
@@ -1176,6 +1181,7 @@ def actualizar_stock_rollizo(request):
 
 
 
+
 @require_role('ADMINISTRADOR')  
 @login_required
 def stock(request):
@@ -1214,7 +1220,8 @@ def stock(request):
                     usuario_crea=usuario_crea,
         
                 )
-                            # Calcular equivalentes de paquetes
+                
+                # Calcular equivalentes de paquetes
                 equivalentes_paquetes = calcular_equivalentes_paquetes(producto_medida, cantidad_m3,producto_id_1)
 
                 # Actualizar paquetes_saldo en DetallePedido
@@ -1232,6 +1239,7 @@ def stock(request):
         'stocks': stocks,
     }
     return render(request, 'planificador/planificador_stock.html', context)
+
 from decimal import Decimal
 def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):
     print('calcular_equivalentes_paquetes')
@@ -1269,7 +1277,7 @@ def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1)
                 equivalentes_paquetes[medida] = cantidad_m3 / m3
     print('calcular_equivalentes_paquetes medidas in medidas',alto,ancho,largo) 
     return equivalentes_paquetes
-from datetime import date
+
 def actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes):
     print('En la función actualizar_paquetes_saldo')  # Agrega este print para asegurarte de que la función se esté ejecutando
     producto_medida_1 = ProductoMedida.objects.get(id=producto_id_1)
@@ -1292,6 +1300,7 @@ def actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes):
             if detalle_actualizar.fecha_entrega >= date.today():
                 detalle_actualizar.paquetes_saldo -= equivalentes
                 detalle_actualizar.save()
+
 
 @require_role('ADMINISTRADOR')  
 @login_required

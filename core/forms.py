@@ -279,28 +279,28 @@ class ActualizarPedidoForm(forms.ModelForm):
             }
         )
     )
-    fecha_produccion = forms.DateField(
-        widget=forms.DateInput(
-            format='%d/%m/%Y',
-            attrs={
-                'autocomplete': 'on',
-                'placeholder': 'dd/mm/yyyy',
-                'type': 'date',
-            }
-        )
-    )
+    # fecha_produccion = forms.DateField(
+    #     widget=forms.DateInput(
+    #         format='%d/%m/%Y',
+    #         attrs={
+    #             'autocomplete': 'on',
+    #             'placeholder': 'dd/mm/yyyy',
+    #             'type': 'date',
+    #         }
+    #     )
+    # )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['fecha_entrega'].widget.attrs.update({'class': 'form-control'})
-        self.fields['fecha_produccion'].widget.attrs.update({'class': 'form-control'})
+        # self.fields['fecha_produccion'].widget.attrs.update({'class': 'form-control'})
 
 
     class Meta:
          model = Pedido
          fields = [
              'cliente',
-             'fecha_produccion',
+            #  'fecha_produccion',
              'fecha_entrega',
              'orden_interna',
              'comentario',
