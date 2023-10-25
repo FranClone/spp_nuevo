@@ -125,7 +125,7 @@
                     <th class="detalle-pedido-t ">Mbf</th>
                     <th class="detalle-pedido-t ">Baño</th>
                     <th class="detalle-pedido-t">Marca</th>
-                    <th class="detalle-pedido-t">Fecha Creacion</th>
+                    {% comment %} <th class="detalle-pedido-t">Fecha Creacion</th> {% endcomment %}
                     <th class="detalle-pedido-t">Comentario</th>
                     <th class="detalle-pedido-t">Version</th>
                     <th class="detalle-pedido-t">Estado</th>
@@ -140,7 +140,7 @@
                     <td>{{ form.mbf }}</td>
                     <td>{{ form.banio}}</td>
                     <td>{{ form.marca}}</td>
-                    <td>{{ pedido_form.fecha_produccion }}</td>
+                    {% comment %} <td>{{ pedido_form.fecha_produccion }}</td> {% endcomment %}
                     <td>{{ pedido_form.comentario }}</td>
                     <td>{{ pedido_form.version }}</td>
                     <td>{{ pedido_form.estado }}</td>
