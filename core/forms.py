@@ -233,6 +233,9 @@ class DetallePedidoForm(forms.ModelForm):
     def save(self, commit=True):
         instance = super().save(commit=False)
         producto = self.cleaned_data.get('producto')
+        detalle_pedido = self.instance  # Obtén la instancia de DetallePedido actual
+        empaque = detalle_pedido.empaque  # Accede a la relación ForeignKey en DetallePedido
+
         print(producto)
         if producto:
 
@@ -256,8 +259,13 @@ class DetallePedidoForm(forms.ModelForm):
         else:
             instance.piezas_x_cpo = 0  # Or handle it based on your requirements
 
+        if empaque:
+            pqte = empaque.pqte
+            instance.paquetes_saldo = pqte
+
 
         if commit:
+            
             instance.save()        
         return instance
 class ActualizarPedidoForm(forms.ModelForm):

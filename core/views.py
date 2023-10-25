@@ -1205,12 +1205,14 @@ def stock(request):
             if formstockterminado.is_valid():
                 print('formulario valido')
                 producto_id, medida_id = formstockterminado.cleaned_data['medidas'].split('-')
+                producto_id_1, medida_id_1 = formstockterminado.cleaned_data['medidas'].split('-')
                 producto_id = int(producto_id)
                 medida_id = int(medida_id)
-
+                print("aaaaaa",producto_id_1)
                 producto_medida = ProductoMedida.objects.get(producto_id=producto_id, medida_id=medida_id).id
-                producto_medida =int(producto_medida)
+                producto_medida_1 = ProductoMedida.objects.get(producto_id=producto_id_1, medida_id=medida_id_1).id
                 
+                producto_medida =int(producto_medida)
                 print('medidas',producto_id,medida_id)
                 bodega=formstockterminado.cleaned_data['bodega']
                 cantidad_m3 = formstockterminado.cleaned_data['cantidad_m3']
@@ -1224,16 +1226,84 @@ def stock(request):
                     usuario_crea=usuario_crea,
         
                 )
+                            # Calcular equivalentes de paquetes
+                equivalentes_paquetes = calcular_equivalentes_paquetes(producto_medida, cantidad_m3,producto_id_1)
 
-                #nuevo_stock = formstockterminado.save()
-     
-                return redirect('planificador_stock')
+                # Actualizar paquetes_saldo en DetallePedido
+                actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes)
+
+
+                print(actualizar_paquetes_saldo)
+                # Crear la entrada de stock
+
+
+                return redirect('home')
     
     context = {
         'form': formstockterminado,
         'stocks': stocks,
     }
     return render(request, 'planificador/planificador_stock.html', context)
+from decimal import Decimal
+def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):
+    print('calcular_equivalentes_paquetes')
+    equivalentes_paquetes = {}
+    producto_medida_1 = ProductoMedida.objects.get(id=producto_id_1)
+    producto = producto_medida_1.producto
+    medidas = producto.medida.all()
+    
+    print('calcular_equivalentes_paquetes producto',producto)   
+    print('calcular_equivalentes_paquetes medidas',medidas)   
+
+    for medida in medidas:
+    # Obtén el DetallePedido que tenga la medida y su producto relacionado
+        detalle_pedido = DetallePedido.objects.filter(
+        producto__id=producto.id,
+        producto__medida__in=medidas
+        ).first()
+        if detalle_pedido:
+            empaque = detalle_pedido.empaque  # Accede al empaque a través del DetallePedido
+            alto = detalle_pedido.alto_producto
+            ancho = detalle_pedido.ancho_producto
+            largo = detalle_pedido.largo_producto
+            pqte = empaque.pqte
+            pzas_cpo = detalle_pedido.piezas_xpaquete
+            alto = Decimal(str(alto))
+            ancho = Decimal(str(ancho))
+            largo = Decimal(str(largo))
+            pqte = Decimal(str(pqte))
+
+            # Asegúrate de que pzas_cpo no sea None
+            if detalle_pedido.piezas_xpaquete is not None:
+                pzas_cpo = Decimal(str(detalle_pedido.piezas_xpaquete))
+
+                m3 = alto * ancho * largo * pqte * pzas_cpo
+                equivalentes_paquetes[medida] = cantidad_m3 / m3
+    print('calcular_equivalentes_paquetes medidas in medidas',alto,ancho,largo) 
+    return equivalentes_paquetes
+from datetime import date
+def actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes):
+    print('En la función actualizar_paquetes_saldo')  # Agrega este print para asegurarte de que la función se esté ejecutando
+    producto_medida_1 = ProductoMedida.objects.get(id=producto_id_1)
+    producto = producto_medida_1.producto
+    medidas = producto.medida.all()
+    
+    for medida, equivalentes in equivalentes_paquetes.items():
+        # Obtén los detalles de pedido relacionados con el producto y la medida
+        detalles_pedido = DetallePedido.objects.filter(producto=producto, medida=medida).order_by('fecha_entrega')
+
+        detalle_actualizar = None
+
+        # Encuentra el detalle más cercano a la fecha de entrega más pronta
+        for detalle in detalles_pedido:
+            if not detalle_actualizar or detalle.fecha_entrega < detalle_actualizar.fecha_entrega:
+                detalle_actualizar = detalle
+
+        if detalle_actualizar:
+            # Verifica que la fecha de entrega sea igual o mayor a la fecha actual
+            if detalle_actualizar.fecha_entrega >= date.today():
+                detalle_actualizar.paquetes_saldo -= equivalentes
+                detalle_actualizar.save()
 
 @require_role('ADMINISTRADOR')  
 @login_required
