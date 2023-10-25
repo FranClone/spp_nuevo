@@ -53,18 +53,19 @@
                             </div>
                         </div>
                         <input type="hidden" name="grafico" id="inputSelect" value="">    
-                        
                     </form>
                 </div>
             </main>
         </section> 
+        <div>
+            <li><button class="carga-button-bot" id="showPlanButton" onclick="window.location.href='{% url 'home' %}#plan'">Plan vigente</button></li>
+        </div>
         <section class="cols" style="width: 100%; overflow: hidden;">
             {% comment %} <figure style="position: relative; width: 100%;">
 
                       <iframe title="BI_Albarran_DW" width="100%" height="100%" src="https://app.powerbi.com/view?r=eyJrIjoiNTI0N2I0NjItZjRhYS00NTgxLWFhYTItODZkY2Y5NjVlZjRkIiwidCI6IjcyZmQwYjVhLThhNmEtNGNmZi04OWY2LWJkZTk2MWY3ZTI1MCIsImMiOjR9" frameborder="0" allowFullScreen="true"></iframe>               
 
             </figure> {% endcomment %}
-         
            <figure>
                 <img id="imgChart" src="{% static 'img/charts.png' %}" alt="">
                 <canvas id="myChart" class="chart-canvas"></canvas>

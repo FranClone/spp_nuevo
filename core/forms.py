@@ -237,11 +237,11 @@ class DetallePedidoForm(forms.ModelForm):
         empaque = detalle_pedido.empaque  # Accede a la relación ForeignKey en DetallePedido
 
         print(producto)
+
         if producto:
 
             # Access the id of the related Producto
             producto_id = producto.id
-            print(producto_id)
             instance.detalle_producto = producto.nombre  # Fill detalle_producto with product name
 
         if self.instance.pedido:  # Check if there's an associated Pedido
@@ -354,9 +354,7 @@ class StockForm(forms.ModelForm):
         choices = []
         for producto in Producto.objects.all():
             producto_id = producto.id
-            print('for producto',producto)
             for medida in producto.medida.all():
-                print('for medida',medida)
                 choice = (f'{producto.id}-{medida.id}', f'{producto.nombre} ({medida.alto_producto}x{medida.ancho_producto}x{medida.largo_producto})')
                 choices.append(choice)
         return choices

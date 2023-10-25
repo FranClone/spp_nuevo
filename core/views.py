@@ -107,10 +107,8 @@ def process_uploaded_file(request,xlsfile):
             df = pd.read_excel(xlsfile)
             # #Obtener la empresa, a la que pertenece el usuario que carga el pedido para agregarlo al producto nuevo    
             # nombre_empresa = request.user.empresa
-            # print(nombre_empresa)
             # empresa = Empresa.objects.get(nombre_empresa=nombre_empresa)
             # rut_empresa_usuario = empresa.rut_empresa 
-            # print(rut_empresa_usuario)
             # #Obtener el id de rollizo de los productos ya agregados
             # productos_existentes = Producto.objects.all().values('nombre', 'nombre_rollizo_id', 'linea_id')
             # id_rollizos_existentes = {producto['nombre']: producto['nombre_rollizo_id'] for producto in productos_existentes}
@@ -175,7 +173,6 @@ def process_uploaded_file(request,xlsfile):
                             # if producto_nombre in id_rollizos_existentes and id_lineas_existentes:
                             #     id_rollizo = id_rollizos_existentes[producto_nombre]
                             #     id_linea = id_lineas_existentes[producto_nombre]
-                            #     print("id rollizo encontrado>", id_rollizo,id_linea)
                             # else:
                             #     id_rollizo = 1 
                             #     id_linea=1# Aquí debes definir el valor adecuado
@@ -245,8 +242,6 @@ def process_uploaded_file(request,xlsfile):
                             'titulofecha': f"(Cargados {fecha_actual_formateada})"
                             }
                         
-                        print(titulofecha)
-
                         productos = Producto.objects.filter(nombre__in=productos_list)
                         pedido.producto.set(productos)
                         success = True
@@ -379,7 +374,6 @@ class Login(View):
     def post(self, request):
         
         if request.method == 'POST':
-            print(request.POST)
             #Se obtienen los valores del campo "Rut" y "contraseña" del formulario
             username = request.POST.get('username')
             password = request.POST.get('password')
@@ -387,13 +381,11 @@ class Login(View):
             user = authenticate(request, username=username, password=password)
             if user:
                 #Si el usuario se autentica correctamente, se inicia sesión
-                print("pasop")
                 login(request, user)
                 # se redirige al usuario a una página
                 return redirect('pantalla-carga')
             else:
                 #Si la autenticación no tiene éxito, se renderiza la plantilla 'login.html' nuevamente
-                print("paso aqui")
                 return render(request, 'login.html', {"error": "Usuario no valido"})
         return render(request, 'login.html')
     
@@ -489,7 +481,6 @@ def producto(request):
         elif 'crear' in request.POST:
             form = CrearProductoForm(request.POST)
             if form.is_valid():
-                print("Formulario válido")  # Mensaje de depuración
                 nuevo_producto = form.save()
                 print("Producto guardado en la base de datos con ID:", nuevo_producto.id)  # Mensaje de depuración
                 
@@ -797,7 +788,6 @@ def gantt_view(request):
     'formStockRollizo':formStockRollizo,
     'formstockterminado':formstockterminado # Include the detalle_pedido_formset in the context
     }
-    print("hola")
     return render(request, 'home.html', context)
 
 @require_role('ADMINISTRADOR')  
@@ -1182,7 +1172,6 @@ def actualizar_stock_rollizo(request):
         'formStockRollizo': formStockRollizo,
         'stocks': stocks
     }
-    print("chao")
     return render(request, 'home.html', context)
 
 
@@ -1196,7 +1185,6 @@ def stock(request):
     if request.method == 'POST':
         if 'crear' in request.POST:
             formstockterminado = StockForm(request.POST)
-            print('crear')
             if formstockterminado.is_valid():
                 print("formstockterminado is valid")
             else:

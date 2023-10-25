@@ -1014,3 +1014,27 @@ canvas {
 .botonPersonalizado:hover {
     background-color: #45a049;
 }
+
+
+.carga-button-bot {
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    border-radius: 6px;
+    padding: 13px 5px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    margin-bottom: 9px;
+    margin-right: 50px;
+}
+
+.close-button{
+    background-color: rgba(255, 0, 0, 0.705);
+    color: white;
+    border-radius: 6px;
+    padding: 13px 14px;
+    border: 2px solid white;
+    text-decoration: none !important;
+    margin-bottom: 9px;
+    margin-right: 50px;
+    margin-top: 20px;
+}
