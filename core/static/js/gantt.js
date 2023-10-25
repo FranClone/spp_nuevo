@@ -63,6 +63,12 @@ class Gantt {
 
         var uniqueOrdenPedido = [];
 
+        this.filteredTasks.sort((task1, task2) => {
+            const fechaETA1 = new Date(task1[2]);
+            const fechaETA2 = new Date(task2[2]);
+            return fechaETA1 - fechaETA2;
+        });
+
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
 
@@ -116,7 +122,6 @@ class Gantt {
                     bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver...</a></td>`; /*Detalle*/
 
                     for (let day = 0; day < 11; day++) {
-                        // Agregar lo que necesites para cada día, por ejemplo:
                         bodyHtml += '<td class="event-cell';
                         if (day < diasRestantes) {
                             bodyHtml += ' has-paquetes">';
@@ -133,9 +138,6 @@ class Gantt {
             }
         }
 
-
-
-        // Agrega el cuerpo de la tabla al encabezado
         html += bodyHtml;
 
         html += '</tbody></table>';
