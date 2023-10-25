@@ -319,7 +319,6 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">OP</th>';
         html += '<th style="color: white; width: 50vh; font-size: 15px; text-align: center; height:3vh;">Cliente</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Mercado</th>';
-        html += '<th style="color: white; width: 10vh; font-size: 15px; text-align: center; height:3vh;">Fecha Creacion</th>';
         html += '<th style="color: white; width: 10vh; font-size: 15px; text-align: center; height:3vh;">ETA</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Destino</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Programa</th>';
@@ -345,16 +344,13 @@ class Gantt {
 
                 const fechaISO = task[1];/*Fecha de carga*/
                 const fechaISO2 = task[2];/*ETA*/
-                const fechaISO3 = task[3];/*Fecha Creacion*/
                 const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
                 const fechaFormateada2 = new Date(fechaISO2).toLocaleDateString('es-ES');/*ETA*/
-                const fechaFormateada3 = new Date(fechaISO3).toLocaleDateString('es-ES');/*Fecha Creacion*/
 
                 bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
                 bodyHtml += `<td class="right-align">${task[0]}</td>`;/*OP Orden Interna*/
                 bodyHtml += `<td class="left-align">${task[5]}</td>`; /*Cliente*/
                 bodyHtml += `<td class="left-align">${task[38]}</td>`; /*Mercado*/
-                bodyHtml += `<td style="text-align: center;">${fechaFormateada3}</td>`; /*Fecha Creacion*/
                 bodyHtml += `<td style="text-align: center;">${fechaFormateada2}</td>`; /*ETA*/
                 bodyHtml += `<td class="left-align">${task[39]}</td>`; /*Destino*/
                 bodyHtml += `<td class="left-align">${task[54]}</td>`; /*Programa*/
