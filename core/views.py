@@ -175,34 +175,7 @@ def process_uploaded_file(request,xlsfile):
                                     producto.medida.add(medida)
                             except Producto.DoesNotExist:
                                 print(f"El producto {producto_nombre} no existe en la base de datos.")
-                            # if producto_nombre in id_rollizos_existentes and id_lineas_existentes:
-                            #     id_rollizo = id_rollizos_existentes[producto_nombre]
-                            #     id_linea = id_lineas_existentes[producto_nombre]
-                            # else:
-                            #     id_rollizo = 1 
-                            #     id_linea=1# Aquí debes definir el valor adecuado
-
-                            # Busca el producto por nombre
-                            # producto, created = Producto.objects.get_or_create(nombre=producto_nombre, empresa_id=rut_empresa_usuario, nombre_rollizo_id=id_rollizo, linea_id=id_linea, inventario_inicial=0, inventario_final=0)
-
-                            # Verifica si se han proporcionado medidas diferentes a las que ya existen
-                            # alto = row['alto']
-                            # ancho = row['ancho']
-                            # largo = row['largo']
-                            # medida, _ = Medida.objects.get_or_create(
-                            #     alto_producto=alto,
-                            #     ancho_producto=ancho,
-                            #     largo_producto=largo,
-                            # )
-                            # if created:
-                            #     # Asocia la medida con el nuevo producto si se ha creado
-                            #     producto.medida.add(medida)
-                            #     print(producto, "creado")
-                            # else:
-                            #     # Comprueba si la medida existe en el producto y si no, la asocia
-                            #     if medida not in producto.medida.all():
-                            #         producto.medida.add(medida)
-                            #         print(producto, medida, "asociado")
+           
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
@@ -237,7 +210,7 @@ def process_uploaded_file(request,xlsfile):
                                 est=row['Est']
                             )
                             detalle_pedido.save()
-    
+
                             # Obtiene la fecha y hora actual formateada
                         fecha_actual = datetime.now()
                         fecha_actual_formateada = fecha_actual.strftime('%d-%m-%Y %H:%M')
@@ -1162,10 +1135,12 @@ class Custom404View(View):
 @require_role('ADMINISTRADOR')  
 @login_required
 def actualizar_stock_rollizo(request):
+    print('actualizar_stock_rollizo')
     stocks = StockRollizo.objects.all()
     formStockRollizo = ActualizarStockRollizo()
     if request.method == 'POST':
         if 'crear' in request.POST:
+            print('en crear rollizo')
             formStockRollizo = ActualizarStockRollizo(request.POST)
             if formStockRollizo.is_valid():
                 nuevo_stock = formStockRollizo.save()
@@ -1178,7 +1153,6 @@ def actualizar_stock_rollizo(request):
         'stocks': stocks
     }
     return render(request, 'home.html', context)
-
 
 
 
@@ -1220,9 +1194,8 @@ def stock(request):
                     usuario_crea=usuario_crea,
         
                 )
-                
-                # Calcular equivalentes de paquetes
-                equivalentes_paquetes = calcular_equivalentes_paquetes(producto_medida, cantidad_m3,producto_id_1)
+                            # Calcular equivalentes de paquetes
+                equivalentes_paquetes = calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1)
 
                 # Actualizar paquetes_saldo en DetallePedido
                 actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes)
@@ -1257,49 +1230,64 @@ def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1)
         producto__id=producto.id,
         producto__medida__in=medidas
         ).first()
+  
         if detalle_pedido:
+            print(f'Detalle ID: {detalle_pedido.id}, Prioridad: {detalle_pedido.pedido.prioridad}, Fecha de Entrega: {detalle_pedido.pedido.fecha_entrega}')
+
             empaque = detalle_pedido.empaque  # Accede al empaque a través del DetallePedido
             alto = detalle_pedido.alto_producto
             ancho = detalle_pedido.ancho_producto
             largo = detalle_pedido.largo_producto
             pqte = empaque.pqte
-            pzas_cpo = detalle_pedido.piezas_xpaquete
+            piezas = detalle_pedido.piezas
             alto = Decimal(str(alto))
             ancho = Decimal(str(ancho))
             largo = Decimal(str(largo))
             pqte = Decimal(str(pqte))
 
             # Asegúrate de que pzas_cpo no sea None
-            if detalle_pedido.piezas_xpaquete is not None:
-                pzas_cpo = Decimal(str(detalle_pedido.piezas_xpaquete))
-
-                m3 = alto * ancho * largo * pqte * pzas_cpo
+            if detalle_pedido.piezas is not None:
+                piezas = Decimal(str(detalle_pedido.piezas))
+                print('calcular_equivalentes_paquetes medidas in medidas',piezas) 
+                m3 = (alto * ancho * largo * pqte * piezas)
+                cantidad_m3 = Decimal(str(cantidad_m3))
                 equivalentes_paquetes[medida] = cantidad_m3 / m3
-    print('calcular_equivalentes_paquetes medidas in medidas',alto,ancho,largo) 
+                print('calcular_equivalentes_paquetes medidas in medidas',alto,ancho,largo) 
+                print('calcular_equivalentes_paquetes medidas in m3 y equivalente',m3,equivalentes_paquetes)
     return equivalentes_paquetes
 
+from decimal import Decimal
+
 def actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes):
-    print('En la función actualizar_paquetes_saldo')  # Agrega este print para asegurarte de que la función se esté ejecutando
+    print('En la función actualizar_paquetes_saldo')
     producto_medida_1 = ProductoMedida.objects.get(id=producto_id_1)
     producto = producto_medida_1.producto
-    medidas = producto.medida.all()
-    
+
+    # Obtén los detalles de pedido relacionados con el producto y ordénalos por prioridad
+    detalles_pedido = DetallePedido.objects.filter(producto=producto).order_by('-pedido__prioridad')
+
     for medida, equivalentes in equivalentes_paquetes.items():
-        # Obtén los detalles de pedido relacionados con el producto y la medida
-        detalles_pedido = DetallePedido.objects.filter(producto=producto, medida=medida).order_by('fecha_entrega')
-
         detalle_actualizar = None
-
-        # Encuentra el detalle más cercano a la fecha de entrega más pronta
+        print('En medida, equivalentes in equivalentes_paquetes.items()')
         for detalle in detalles_pedido:
-            if not detalle_actualizar or detalle.fecha_entrega < detalle_actualizar.fecha_entrega:
+            if detalle_actualizar is None or detalle.pedido.prioridad == 'Alto':
+                detalle_actualizar = detalle
+            elif detalle.pedido.prioridad == 'Mediano' and detalle_actualizar.pedido.prioridad != 'Alto':
+                detalle_actualizar = detalle
+            elif detalle.pedido.prioridad == 'Bajo' and detalle_actualizar.pedido.prioridad != 'Alto' and detalle_actualizar.pedido.prioridad != 'Mediano':
                 detalle_actualizar = detalle
 
         if detalle_actualizar:
             # Verifica que la fecha de entrega sea igual o mayor a la fecha actual
-            if detalle_actualizar.fecha_entrega >= date.today():
-                detalle_actualizar.paquetes_saldo -= equivalentes
+            if detalle_actualizar.pedido.fecha_entrega >= date.today():
+                if detalle_actualizar.paquetes_saldo is not None:
+                    detalle_actualizar.paquetes_saldo += Decimal(str(equivalentes))  # Suma en lugar de resta
+                else:
+                    detalle_actualizar.paquetes_saldo = Decimal('0') + Decimal(str(equivalentes))  # Establece el valor en 0 y luego suma el equivalente
                 detalle_actualizar.save()
+                print(f'Se actualizó el saldo de paquetes en el detalle de pedido con ID {detalle_actualizar.id}')
+
+    print('Actualización de paquetes saldo completada')
 
 
 @require_role('ADMINISTRADOR')  
