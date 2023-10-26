@@ -16,4 +16,5 @@ class Migration(migrations.Migration):
             name='fecha_produccion',
             field=models.DateField(default=datetime.date.today),
         ),
+       
     ]

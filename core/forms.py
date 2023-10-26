@@ -463,11 +463,21 @@ class StockForm(forms.ModelForm):
 # print("cread1")
     
 
+
+
+
 class ActualizarStockRollizo(forms.ModelForm):
     exclude = ['fecha_crea']
     
     class Meta:
-        
         model = StockRollizo
-        fields = '__all__'
+        fields = ['bodega', 'rollizo', 'cantidad', 'usuario_crea']
 
+    def __init__(self, *args, **kwargs):
+        super(ActualizarStockRollizo, self).__init__(*args, **kwargs)
+        
+        # Customize the "rollizo" field's widget to display "clase_diametrica"
+        self.fields['rollizo'].widget = forms.Select(
+            attrs={'class': 'form-control'},
+            choices=[(rollizo.id, f'{rollizo.clase_diametrica} - {rollizo.nombre_rollizo}') for rollizo in Rollizo.objects.all()]
+        )

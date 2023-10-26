@@ -244,9 +244,10 @@
             {% csrf_token %}
             <table class="form-table">
                 <h2 class="bold-heading">Ingresar Stock materia prima</h2>
+                {{ formStockRollizo.management_form }}
                 <tr>
                     <th class="detalle-pedido-t">Bodega</th>
-                    <th class="detalle-pedido-t">Rollizo</th>
+                    <th class="detalle-pedido-t">Clase Diamétrica</th>
                     <th class="detalle-pedido-t">Cantidad <br> M3</th>
                     <th class="detalle-pedido-t">Creado por:</th>
                 </tr>

@@ -147,6 +147,7 @@ class Gantt {
 
 
     PlanTable() {
+     
         var html = '<table class="event-table second-table"><thead><tr>';
         html += '<tr>'
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
@@ -171,7 +172,7 @@ class Gantt {
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
-    
+        console.log('ola');
         // Agrega las fechas al encabezado
         for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
             const formattedDate = this.formatDate(date, "diario");
@@ -239,6 +240,8 @@ class Gantt {
     
                     groupedRows[key].ids.push(i);
                 }
+
+    
             }
         }
 
@@ -251,14 +254,16 @@ class Gantt {
             for (let id of ids) {
                 const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
                 const currentDate = new Date(); // Obtén la fecha actual
-
+  
                 // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
                 const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
 
                 if (dateDiff > maxFechaLejanaPorFila) {
                     maxFechaLejanaPorFila = dateDiff;
                 }
+   
             }
+
         }
 
 
@@ -268,6 +273,7 @@ class Gantt {
             const productNameB = b.product.toLowerCase();
             return productNameA.localeCompare(productNameB);
         });
+                        // Check if the date is today
 
 
         for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
@@ -303,6 +309,7 @@ class Gantt {
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
+            
                 } else {
                     bodyHtml += '"></td>';
                 }
