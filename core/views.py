@@ -33,6 +33,7 @@ from .modelos.stock_rollizo import StockRollizo
 from .modelos.medida import Medida
 from .modelos.producto_medida import ProductoMedida
 from .models import Usuario
+from .modelos.demanda import Demanda
 
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
@@ -108,15 +109,7 @@ def process_uploaded_file(request,xlsfile):
         try:
             # Cargar el archivo Excel en un DataFrame de pandas
             df = pd.read_excel(xlsfile)
-            # #Obtener la empresa, a la que pertenece el usuario que carga el pedido para agregarlo al producto nuevo    
-            # nombre_empresa = request.user.empresa
-            # empresa = Empresa.objects.get(nombre_empresa=nombre_empresa)
-            # rut_empresa_usuario = empresa.rut_empresa 
-            # #Obtener el id de rollizo de los productos ya agregados
-            # productos_existentes = Producto.objects.all().values('nombre', 'nombre_rollizo_id', 'linea_id')
-            # id_rollizos_existentes = {producto['nombre']: producto['nombre_rollizo_id'] for producto in productos_existentes}
-            # #Obtener el id de linea de los productos ya agregados
-            # id_lineas_existentes = {producto['nombre']: producto['linea_id'] for producto in productos_existentes}
+
             with transaction.atomic():
                 # Use a transaction to ensure data integrity
 
@@ -173,9 +166,26 @@ def process_uploaded_file(request,xlsfile):
                                 # Asociar la medida con el producto
                                 if medida not in producto.medida.all():
                                     producto.medida.add(medida)
+                                    # Buscar o crear la instancia de Producto_Medida
+                                producto_medida, created = ProductoMedida.objects.get_or_create(
+                                    producto=producto,
+                                    medida=medida
+                                )
                             except Producto.DoesNotExist:
                                 print(f"El producto {producto_nombre} no existe en la base de datos.")
-           
+                            
+                            # Aquí tienes la instancia de Producto_Medida
+                            producto_medida_id = producto_medida.id
+
+                            # Crear una instancia de Demanda y guardarla
+                            demanda = Demanda(
+                                Medida_Producto_id=producto_medida_id,
+                                #dias_produccion=row['dias_produccion'],
+                                Pqtes_Solicitados=row['pqte'],
+                                #Pqtes_dia=row['Pqtes_dia'],
+                                M3=row['M3']
+                            )
+                            demanda.save()
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
