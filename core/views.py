@@ -41,7 +41,7 @@ import pyodbc, json, os, datetime, openpyxl, bleach
 from django.http import JsonResponse
 import datetime
 
-from datetime import datetime, date
+from datetime import datetime, date, timedelta
 
 import random
 from django.urls import reverse
@@ -149,10 +149,30 @@ def process_uploaded_file(request,xlsfile):
                             int_paquete=row['int_paquete']  
                         )
                         empaque.save()
+                        # Obtén la fecha de creación
+                        
                         for producto_nombre in productos_list:
                             try:
                                 producto = Producto.objects.get(nombre=producto_nombre)
+                                fecha_eta = date.fromisoformat(row['fecha_entrega'])
+                                fecha_inicio = datetime.now()  # Usa datetime en lugar de date
+                                
+                                dias_produccion = (fecha_eta - fecha_inicio.date()).days
+                                print('dias_produccion',dias_produccion)
 
+                                # Calcula la demanda total
+                                demanda_total = row['M3']
+                                print('demanda_total',demanda_total)
+                                # Inicializa una lista para almacenar las demandas
+                                demandas = []
+
+                                # Define el máximo de producción por día (50 m^3)
+                                max_m3_por_dia = 50
+
+                                demanda_total_paquetes = row['pqte']
+                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                # Inicializa una lista para almacenar las demandas en paquetes
+                                demandas_paquetes = []
                                 # Verificar si se han proporcionado medidas diferentes a las que ya existen
                                 alto = row['alto']
                                 ancho = row['ancho']
@@ -176,16 +196,44 @@ def process_uploaded_file(request,xlsfile):
                             
                             # Aquí tienes la instancia de Producto_Medida
                             producto_medida_id = producto_medida.id
+                            while demanda_total > 0:
+                                # Calcula la demanda para este día (máximo de 50 m^3)
+                                demanda_dia = min(demanda_total, max_m3_por_dia)
+                                print('demanda_dia',demanda_dia)
+                                fecha_dia_produccion = fecha_inicio
+                                # Calcula la demanda para este día en paquetes (máximo de 50 m³)
+                                demanda_dia_paquetes = (demanda_total_paquetes* demanda_dia )/ demanda_total
+                                print('demanda_dia_paquetes', demanda_dia_paquetes)
+                                # Crea una nueva fila de demanda y guárdala en la lista
+                                # Resta la demanda del día a la demanda total en paquetes
+                                demanda_total_paquetes -= demanda_dia_paquetes
+                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                demanda = Demanda(
+                                    Medida_Producto_id=producto_medida_id,
+                                    Pqtes_Solicitados=row['pqte'],
+                                    M3=demanda_dia,
+                                    dias_produccion=fecha_dia_produccion,
+                                    Pqtes_dia=demanda_dia_paquetes
+                                )
+                                demandas.append(demanda)
 
-                            # Crear una instancia de Demanda y guardarla
-                            demanda = Demanda(
-                                Medida_Producto_id=producto_medida_id,
-                                #dias_produccion=row['dias_produccion'],
-                                Pqtes_Solicitados=row['pqte'],
-                                #Pqtes_dia=row['Pqtes_dia'],
-                                M3=row['M3']
-                            )
-                            demanda.save()
+                                # Reduce la demanda total y avanza un día
+                                demanda_total -= demanda_dia
+                                print('demanda_total',demanda_total)
+                                fecha_inicio += timedelta(days=1)
+
+                            # Guarda las demandas en la base de datos
+                            for demanda in demandas:
+                                demanda.save()
+                                                        # Crear una instancia de Demanda y guardarla
+                            # demanda = Demanda(
+                            #     Medida_Producto_id=producto_medida_id,
+                            #     #dias_produccion=row['dias_produccion'],
+                            #     Pqtes_Solicitados=row['pqte'],
+                            #     #Pqtes_dia=row['Pqtes_dia'],
+                            #     M3=row['M3']
+                            # )
+                            #demanda.save()
                             detalle_pedido = DetallePedido(
                                 pedido=pedido,
                                 producto=producto,
