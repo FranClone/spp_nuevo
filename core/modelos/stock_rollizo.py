@@ -7,7 +7,9 @@ class StockRollizo(models.Model):
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
     bodega = models.ForeignKey('Bodega', on_delete=models.CASCADE, verbose_name='Bodega')
-
+    dias_produccion = models.DateField(null=True)
+    Costo_elab = models.FloatField(null=True)
+    stock_entrante = models.FloatField(null=True)
     class Meta:
         db_table = 'STOCK_ROLLIZO'
         

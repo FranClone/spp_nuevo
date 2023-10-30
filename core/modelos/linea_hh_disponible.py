@@ -8,7 +8,8 @@ class LineaHhDisponible(models.Model):
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
     periodo = models.ForeignKey('Periodo', on_delete=models.CASCADE, verbose_name='Periodo')
     numero_bloque = models.IntegerField(null=True,validators=[MinValueValidator(0)])
-    cantidad_hh = models.IntegerField(null=True,validators=[MinValueValidator(0)])
+    cantidad_hh = models.IntegerField(null=True,validators=[MinValueValidator(0)]),
+    dias_produccion = models.DateField(null=True)
     usuario_crea = models.CharField(max_length=20, blank=True, null=True)
     fecha_crea = models.DateField(auto_now_add=True)
 
