@@ -740,7 +740,7 @@ def gantt_view(request):
                     utilizado_patron = str(patron_corte_data.utilizado)
 
                   #  producto_asociado_patron = patron_corte_data.producto_asociado
-
+            
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
@@ -749,6 +749,42 @@ def gantt_view(request):
                     utilizado_patron = "N/A"
 
                   #  producto_asociado_patron = "N/A"
+                  
+                                
+                # Obtener el producto_id del pedido (ajusta esto a tu modelo de Pedido)
+                producto_id = detalle_pedido.producto.id
+
+                # Obtener el ID de Medida basado en las condiciones dadas
+                medida = Medida.objects.get(alto_producto=alto_producto, ancho_producto=ancho_producto, largo_producto=largo_producto)
+
+                try:
+                    # Intentar obtener un objeto ProductoMedida basado en producto_id y medida_id
+                    producto_medida = ProductoMedida.objects.get(medida_id=medida.id, producto_id=producto_id)
+                    # Consultar la tabla 'Demanda' basada en el producto_id
+                    demanda_data = Demanda.objects.filter(Medida_Producto_id=producto_medida.id)
+
+                    if demanda_data.exists():
+                        demanda_obj = demanda_data[0]  # Suponiendo que deseas el primer objeto
+                        Medida_Producto_id = demanda_obj.Medida_Producto_id
+                        dias_produccion = demanda_obj.dias_produccion
+                        pqtes_solicitados = demanda_obj.Pqtes_Solicitados
+                        pqtes_dias = demanda_obj.Pqtes_dia
+                        m3 = demanda_obj.M3
+                    else:
+                        # No se encontró una coincidencia en la tabla 'Demanda'
+                        dias_produccion = "N/A"
+                        pqtes_solicitados = "N/A"
+                        pqtes_dias = "N/A"
+                        m3 = "N/A"
+                except Medida.DoesNotExist:
+                    # No se encontró una coincidencia en la tabla 'Medida'
+                    dias_produccion = "N/A"
+                    pqtes_solicitados = "N/A"
+                    pqtes_dias = "N/A"
+                    m3 = "N/A"
+
+                # Ahora tienes los datos necesarios de la tabla 'Demanda' y 'ProductoMedida' para el 'pedido' actual
+                # Puedes usar estas variables en tu código existente
 
                 tasks_pedido = [
                     pedido.orden_interna,
@@ -812,6 +848,10 @@ def gantt_view(request):
                     anc_paquete, #58
                     est, #59
                     pedido_id, #60
+                    pqtes_solicitados, #61
+                    pqtes_dias, #62
+                    m3, #63
+                    Medida_Producto_id, #64
                 ]
 
                 tasks.append(tasks_pedido)

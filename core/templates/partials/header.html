@@ -27,6 +27,7 @@
             <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Planificar Producción</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#plan" id="showPlanButton">Plan vigente</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#planpedido" id="showPlanPedidosButton">Plan Pedidos</a></li>
+            <li><a class="nav-link" href="{% url 'home' %}#plan2" id="showPlan2Button">Prueba</a></li>
 
 
           </ul>
@@ -97,6 +98,12 @@
             gantt.showPlanTable();
             // Obtén la fecha de producción del elemento oculto
             titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
+            $("#btnGroup").show();
+            break;
+            case "#plan2":
+            gantt.showPlan2Table();
+            // Obtén la fecha de producción del elemento oculto
+            titulo.textContent = "PLAN PRUEBA";
             $("#btnGroup").show();
             break;
             case "#planpedido":
