@@ -137,7 +137,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='producto',
             name='patron_corte',
-            field=models.ManyToManyField(to='core.patroncorte'),
+            field=models.ManyToManyField(through='core.Rendimiento_Producto', to='core.patroncorte'),
         ),
         migrations.AlterField(
             model_name='pedido',

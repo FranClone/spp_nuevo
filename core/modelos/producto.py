@@ -7,7 +7,7 @@ class Producto(models.Model):
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, db_column='rut_empresa')
     nombre_rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
-    patron_corte = models.ManyToManyField(PatronCorte)  
+    patron_corte = models.ManyToManyField(PatronCorte, through='Rendimiento_Producto')  
     medida = models.ManyToManyField(
         Medida,
         through='ProductoMedida') # Campos para enlazar con el modelo intermedio
