@@ -30,6 +30,47 @@ class Gantt {
         return Math.ceil(diffTime / oneWeek);
     }
 
+
+    Plan2Table() {
+     
+        var html = '<table class="event-table second-table"><thead><tr>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
+        html += '</tr></thead><tbody>';
+    
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
+    
+        const groupedRows = {};
+    
+        // Iterar sobre cada producto y crear una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+            // Agrega un mensaje para rastrear el progreso
+    
+
+                // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+                for (let j = 0; j < task[64].length; j++) {
+                    var m = task[64][j];
+                    bodyHtml += `<td class="right-align">${m}</td>`;/*OP Orden Interna*/
+                    bodyHtml += `<td class="right-align">${task[61]}</td>`;/*OP Orden Interna*/
+                    bodyHtml += `<td class="right-align">${task[62]}</td>`;/*OP Orden Interna*/
+                    bodyHtml += `<td class="right-align">${task[63]}</td>`;/*OP Orden Interna*/
+                    bodyHtml += '</tr>';
+            
+                }
+
+    
+            
+        }
+        
+        html += bodyHtml;
+        html += '</tbody></table>';
+        return html;
+    }
+
     PlanPedidoTable() {
         var html = '<table class="second-table"><thead><tr>';
 
@@ -581,6 +622,11 @@ class Gantt {
     showPlanTable() {
         this.filteredTasks = this.tasks;
         document.getElementById('gantt').innerHTML = this.PlanTable();
+    }
+
+    showPlan2Table() {
+        this.filteredTasks = this.tasks;
+        document.getElementById('gantt').innerHTML = this.Plan2Table();
     }
 
     showPlanPedidoTable() {
