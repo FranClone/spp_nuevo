@@ -134,11 +134,7 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='core.rollizo', verbose_name='Rollizo'),
             preserve_default=False,
         ),
-        migrations.AddField(
-            model_name='producto',
-            name='patron_corte',
-            field=models.ManyToManyField(through='core.Rendimiento_Producto', to='core.patroncorte'),
-        ),
+
         migrations.AlterField(
             model_name='pedido',
             name='cliente',
