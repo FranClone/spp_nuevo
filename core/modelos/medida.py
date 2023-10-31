@@ -15,5 +15,7 @@ class Medida(models.Model):
         self.save()
         
     def __str__(self):
-        return f'medidas {self.alto_producto}-{self.ancho_producto}-{self.largo_producto} %'
+        return f'medidas {str(self.alto_producto)}-{str(self.ancho_producto)}-{str(self.largo_producto)}%'
+
+
 

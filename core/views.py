@@ -34,7 +34,6 @@ from .modelos.medida import Medida
 from .modelos.producto_medida import ProductoMedida
 from .models import Usuario
 from .modelos.demanda import Demanda
-
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -668,7 +667,6 @@ def gantt_view(request):
 }
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
-
     tasks=[]
     for pedido in pedidos:
 
@@ -692,9 +690,9 @@ def gantt_view(request):
                 destino = detalle_pedido.puerto_destino if detalle_pedido.mercado is not None else "N/A"
                 item = detalle_pedido.item if detalle_pedido.item is not None else "N/A"
                 folio = detalle_pedido.folio if detalle_pedido.folio is not None else "N/A"
-                alto_producto = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
-                ancho_producto = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
-                largo_producto = detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
+                alto_p = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
+                ancho_p = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
+                largo_p= detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
                 volumen_producto = detalle_pedido.volumen_producto if detalle_pedido.volumen_producto is not None else "N/A"
                 estado = pedido.estado if pedido.estado is not None else "N/A"
                 #estado_pedido_linea = detalle_pedido.estado_pedido_linea if detalle_pedido.estado_pedido_linea is not None else "N/A"
@@ -753,35 +751,49 @@ def gantt_view(request):
                                 
                 # Obtener el producto_id del pedido (ajusta esto a tu modelo de Pedido)
                 producto_id = detalle_pedido.producto.id
-
+                
                 # Obtener el ID de Medida basado en las condiciones dadas
-                medida = Medida.objects.get(alto_producto=alto_producto, ancho_producto=ancho_producto, largo_producto=largo_producto)
+                medida = Medida.objects.get(alto_producto=alto_p, ancho_producto=ancho_p, largo_producto=largo_p)
+                medida_id = medida.id
+                
+                print(f'Producto ID: {producto_id}')
+                print(f'Medida: {medida.id}')
 
-                try:
-                    # Intentar obtener un objeto ProductoMedida basado en producto_id y medida_id
-                    producto_medida = ProductoMedida.objects.get(medida_id=medida.id, producto_id=producto_id)
-                    # Consultar la tabla 'Demanda' basada en el producto_id
-                    demanda_data = Demanda.objects.filter(Medida_Producto_id=producto_medida.id)
+                demandas = Demanda.objects.all()
 
-                    if demanda_data.exists():
-                        demanda_obj = demanda_data[0]  # Suponiendo que deseas el primer objeto
-                        Medida_Producto_id = demanda_obj.Medida_Producto_id
-                        dias_produccion = demanda_obj.dias_produccion
-                        pqtes_solicitados = demanda_obj.Pqtes_Solicitados
-                        pqtes_dias = demanda_obj.Pqtes_dia
-                        m3 = demanda_obj.M3
-                    else:
-                        # No se encontró una coincidencia en la tabla 'Demanda'
-                        dias_produccion = "N/A"
-                        pqtes_solicitados = "N/A"
-                        pqtes_dias = "N/A"
-                        m3 = "N/A"
-                except Medida.DoesNotExist:
-                    # No se encontró una coincidencia en la tabla 'Medida'
-                    dias_produccion = "N/A"
-                    pqtes_solicitados = "N/A"
-                    pqtes_dias = "N/A"
-                    m3 = "N/A"
+# Crea un diccionario para almacenar los datos de cada demanda
+                demandas_data = []
+
+                for demanda_obj in demandas:
+                    demanda_id = demanda_obj.id
+                    Medida_Producto_id = demanda_obj.Medida_Producto_id
+                    dias_produccion = demanda_obj.dias_produccion.strftime('%Y/%m/%d')
+                    pqtes_solicitados = demanda_obj.Pqtes_Solicitados
+                    pqtes_dias = demanda_obj.Pqtes_dia
+                    m3 = demanda_obj.M3
+
+                    # Verifica si el ID de la demanda ya está en el diccionario
+                    # Si no está, agrégalo al diccionario
+                    if demanda_id not in [data['demanda_id'] for data in demandas_data]:
+                        demandas_data.append({
+                            'demanda_id': demanda_id,
+                            'Medida_Producto_id': Medida_Producto_id,
+                            'dias_produccion': dias_produccion,
+                            'pqtes_solicitados': pqtes_solicitados,
+                            'pqtes_dias': pqtes_dias,
+                            'm3': m3
+                        })
+                        
+                    for data in demandas_data:
+                        print(f"Demanda ID: {data['demanda_id']}")
+                        print(f"Medida_Producto ID: {data['Medida_Producto_id']}")
+                        print(f"Días de producción: {data['dias_produccion']}")
+                        print(f"Pqtes solicitados: {data['pqtes_solicitados']}")
+                        print(f"Pqtes días: {data['pqtes_dias']}")
+                        print(f"M3: {data['m3']}")
+                        print()
+                        
+                        
 
                 # Ahora tienes los datos necesarios de la tabla 'Demanda' y 'ProductoMedida' para el 'pedido' actual
                 # Puedes usar estas variables en tu código existente
@@ -804,9 +816,9 @@ def gantt_view(request):
                     inventario_inicial, #14
                     nombre_rollizo, #15
                     patron_corte, #16
-                    alto_producto, #17
-                    ancho_producto, #18
-                    largo_producto, #19
+                    alto_p, #17
+                    ancho_p, #18
+                    largo_p, #19
                     volumen_producto, #20
                     estado, #21
                     grado_urgencia, #22
@@ -852,6 +864,8 @@ def gantt_view(request):
                     pqtes_dias, #62
                     m3, #63
                     Medida_Producto_id, #64
+                    dias_produccion,#65
+                    demanda_id,
                 ]
 
                 tasks.append(tasks_pedido)
@@ -865,6 +879,9 @@ def gantt_view(request):
     'formstockterminado':formstockterminado # Include the detalle_pedido_formset in the context
     }
     return render(request, 'home.html', context)
+
+                
+        
 
 @require_role('ADMINISTRADOR')  
 @login_required
