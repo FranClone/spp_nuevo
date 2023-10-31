@@ -31,37 +31,54 @@ class Gantt {
     }
 
 
-    Plan2Table() {
-        var html = '<table class="event-table second-table"><thead><tr>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Id Demanda</th>';
-        // Añade los encabezados de las otras columnas aquí
-        html += '</tr></thead><tbody>';
-    
-        // Utiliza un conjunto para mantener un registro de los valores únicos de task[66]
-        var uniqueDemandValues = new Set();
-    
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-            var demanda = task[66]; // Obtén el valor de la demanda
-    
-            // Verifica si el valor de la demanda ya se ha agregado a la tabla
-            if (!uniqueDemandValues.has(demanda)) {
-                uniqueDemandValues.add(demanda);
-    
-                // Crea una fila para la demanda actual
-                html += '<tr>';
-                html += `<td class="right-align">${demanda}</td>`; // Columna de la demanda
-    
-                // Añade el resto de los valores de task en las celdas de la fila
-    
-                html += '</tr>';
-            }
+Plan2Table() {
+    var html = '<table class="event-table second-table"><thead><tr>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Id Demanda</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida_Producto</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Dias Produccion</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes Solicitados</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes dia</th>';
+    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
+    // Añade los encabezados de las otras columnas aquí
+    html += '</tr></thead><tbody>';
+
+    // Utiliza un conjunto para mantener un registro de los valores únicos de task[66]
+    var uniqueDemandValues = new Set();
+
+    for (let i = 0; i < this.filteredTasks.length; i++) {
+        var task = this.filteredTasks[i];
+        var demanda = task[66]; // Obtén el valor de la demanda
+
+        // Verifica si el valor de la demanda ya se ha agregado a la tabla
+        if (!uniqueDemandValues.has(demanda)) {
+            uniqueDemandValues.add(demanda);
+
+            // Crea una fila para la demanda actual
+            html += '<tr>';
+            html += `<td class="right-align">${demanda}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[7]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[17]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[18]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[19]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[64]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[65]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[61]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[62]}</td>`; // Columna de la demanda
+            html += `<td class="right-align">${task[63]}</td>`; // Columna de la demanda
+            // Añade el resto de los valores de task en las celdas de la fila
+
+            html += '</tr>';
         }
-    
-        html += '</tbody></table>';
-        return html;
     }
-    
+
+    html += '</tbody></table>';
+    return html;
+}
+
     
         
 
