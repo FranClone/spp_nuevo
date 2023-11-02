@@ -729,13 +729,14 @@ def gantt_view(request):
                 int_paquete = empaque.int_paquete if empaque else "N/A"
                 anc_paquete = empaque.anc_paquete if empaque else "N/A"
                 try:
-                    patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
-                    codigo_patron = patron_corte_data.codigo
-                    nombre_patron = patron_corte_data.nombre
-                    descripcion_patron = patron_corte_data.descripcion
-                    rendimiento_patron = patron_corte_data.rendimiento
+                    patron_corte_data = PatronCorte.objects.filter(rollizo=producto.nombre_rollizo)
 
-                    utilizado_patron = str(patron_corte_data.utilizado)
+                    for patron in patron_corte_data:
+                        codigo_patron = patron.codigo
+                        nombre_patron = patron.nombre
+                        descripcion_patron = patron.descripcion
+                        rendimiento_patron = patron.rendimiento
+                        utilizado_patron = str(patron.utilizado)
             
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
@@ -778,22 +779,22 @@ def gantt_view(request):
                             'm3': m3
                         })
                         
-                    for data in demandas_data:
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto: {producto_nombre}')
-                        print(f'Medida: {medida_id}')
-                        print(f'Medida_al: {medida_alto}')
-                        print(f'Medida_an: {medida_ancho}')
-                        print(f'Medida_l: {medida_largo}')
-                        print(f'producto_medida_id: {producto_medida_id}')
-                        print(f"Demanda ID: {data['demanda_id']}")
-                        print(f"Medida_Producto ID: {data['Medida_Producto_id']}")
-                        print(f"Días de producción: {data['dias_produccion']}")
-                        print(f"Pqtes solicitados: {data['pqtes_solicitados']}")
-                        print(f"Pqtes días: {data['pqtes_dias']}")
-                        print(f"M3: {data['m3']}")
-                        print()
+                    # for data in demandas_data:
+                    #     print(f'Producto ID: {producto_id}')
+                    #     print(f'Producto ID: {producto_id}')
+                    #     print(f'Producto: {producto_nombre}')
+                    #     print(f'Medida: {medida_id}')
+                    #     print(f'Medida_al: {medida_alto}')
+                    #     print(f'Medida_an: {medida_ancho}')
+                    #     print(f'Medida_l: {medida_largo}')
+                    #     print(f'producto_medida_id: {producto_medida_id}')
+                    #     print(f"Demanda ID: {data['demanda_id']}")
+                    #     print(f"Medida_Producto ID: {data['Medida_Producto_id']}")
+                    #     print(f"Días de producción: {data['dias_produccion']}")
+                    #     print(f"Pqtes solicitados: {data['pqtes_solicitados']}")
+                    #     print(f"Pqtes días: {data['pqtes_dias']}")
+                    #     print(f"M3: {data['m3']}")
+                    #     print()
                         
                         
 

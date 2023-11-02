@@ -801,7 +801,8 @@ table tr {
 
 .form-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: collapse !important; 
+    border: none !important;
     /* Combina los bordes de la tabla */
 }
 
