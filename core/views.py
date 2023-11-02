@@ -745,20 +745,8 @@ def gantt_view(request):
                     utilizado_patron = "N/A"
                 
                 demandas = Demanda.objects.all()
-                demandas_data = []
 
                 for demanda_obj in demandas:
-                    
-                    producto_id = detalle_pedido.producto.id
-                    medida = Medida.objects.get(alto_producto=alto_p, ancho_producto=ancho_p, largo_producto=largo_p)
-                    medida_id = medida.id
-                    producto_nombre = detalle_pedido.producto.nombre
-                    medida_alto = medida.alto_producto
-                    medida_ancho = medida.ancho_producto
-                    medida_largo = medida.largo_producto
-                    producto_medida = ProductoMedida.objects.get(producto_id=producto_id,medida_id=medida_id)
-                    producto_medida_id = producto_medida.id
-                    
                     demanda_id = demanda_obj.id
                     Medida_Producto_id = demanda_obj.Medida_Producto_id 
                     dias_produccion = demanda_obj.dias_produccion.strftime('%Y/%m/%d')
@@ -766,41 +754,23 @@ def gantt_view(request):
                     pqtes_dias = demanda_obj.Pqtes_dia
                     m3 = demanda_obj.M3
 
-                    # Verifica si el ID de la demanda ya está en el diccionario
-                    # Si no está, agrégalo al diccionario
-                    if demanda_id not in [data['demanda_id'] for data in demandas_data]:
-                        demandas_data.append({
-                            'demanda_id': demanda_id,
-                            'Medida_Producto_id': Medida_Producto_id,
-                            'dias_produccion': dias_produccion,
-                            'pqtes_solicitados': pqtes_solicitados,
-                            'pqtes_dias': pqtes_dias,
-                            'm3': m3
-                        })
-                        
-                    for data in demandas_data:
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto: {producto_nombre}')
-                        print(f'Medida: {medida_id}')
-                        print(f'Medida_al: {medida_alto}')
-                        print(f'Medida_an: {medida_ancho}')
-                        print(f'Medida_l: {medida_largo}')
-                        print(f'producto_medida_id: {producto_medida_id}')
-                        print(f"Demanda ID: {data['demanda_id']}")
-                        print(f"Medida_Producto ID: {data['Medida_Producto_id']}")
-                        print(f"Días de producción: {data['dias_produccion']}")
-                        print(f"Pqtes solicitados: {data['pqtes_solicitados']}")
-                        print(f"Pqtes días: {data['pqtes_dias']}")
-                        print(f"M3: {data['m3']}")
-                        print()
+                    print(f"Demanda ID: {demanda_id}")
+                    print(f"Medida_Producto ID: {Medida_Producto_id}")
+                    print(f"Días de producción: {dias_produccion}")
+                    print(f"Pqtes solicitados: {pqtes_solicitados}")
+                    print(f"Pqtes días: {pqtes_dias}")
+                    print(f"M3: {m3}")
+                    print()
+
+                    
+
                         
                         
 
                 # Ahora tienes los datos necesarios de la tabla 'Demanda' y 'ProductoMedida' para el 'pedido' actual
                 # Puedes usar estas variables en tu código existente
 
-                        tasks_pedido = [
+            tasks_pedido = [
                             pedido.orden_interna,
                             fecha_actual,   # 1
                             pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
@@ -862,15 +832,9 @@ def gantt_view(request):
                             anc_paquete, #58
                             est, #59
                             pedido_id, #60
-                            pqtes_solicitados, #61
-                            pqtes_dias, #62
-                            m3, #63
-                            Medida_Producto_id, #64
-                            dias_produccion,#65
-                            demanda_id,#66
                         ]
-
-                        tasks.append(tasks_pedido)
+            tasks_pedido.extend([demanda_id, Medida_Producto_id, dias_produccion, pqtes_solicitados, pqtes_dias, m3])
+            tasks.append(tasks_pedido)
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
     context = {
