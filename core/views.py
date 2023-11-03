@@ -744,9 +744,6 @@ def gantt_view(request):
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
-                
-    
-
            
 
                     tasks_pedido = [
@@ -820,6 +817,7 @@ def gantt_view(request):
                         ]
 
                     tasks.append(tasks_pedido)
+
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
     context = {
