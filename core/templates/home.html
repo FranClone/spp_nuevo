@@ -95,7 +95,7 @@
 
         <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:100vh;" id="carga-form">
             {% csrf_token %}
-            <table class="form-table">
+            <table id="form-table">
                 <th><span>Detalle Pedido</span></th>
                 {{ detalle_pedido_formset.management_form }}
 
@@ -135,7 +135,7 @@
                     {{ form.errors }}
                 </tr>
             </table>
-            <table class="form-table">
+            <table id="form-table">
 
                 <tr>
                     <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
@@ -170,7 +170,7 @@
                 </tr>
 
             </table>
-            <table class="form-table">
+            <table id="form-table">
                 <th>Detalle Factura</th>
                 <tr>
                     <th class="detalle-pedido-t">FSC</th>
@@ -185,7 +185,7 @@
                     <td>{{ form.lar_fact }}</td>
                 </tr>
             </table>
-            <table>
+            <table  id="form-table">
                 <th>Detalle Paquete</th>
                 <tr>
                     <th class="detalle-pedido-t">Tipo Empaque</th>
