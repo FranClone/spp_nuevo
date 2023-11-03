@@ -719,6 +719,10 @@ class Gantt {
 
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoIds];
+            const product = productoData[7];
+            const largo = productoData[19];
+            const ancho = productoData[18];
+            const alto = productoData[17];
 
             var html = '<table class="second-table"><thead><tr>';
             html += '<tr>'
@@ -801,12 +805,12 @@ class Gantt {
 
             // Set the innerHTML of the popup element
             popup.innerHTML = `
-                <div class="popup-content" id="popup">
-                    <h2 style="margin-bottom: 2vh; text-align: center;">Plan de Producción ${task[7]} - ${task[19]}-${task[18]}-${task[17]} </h2>
-                    ${html} <!-- Insert the generated table here -->
-                    <button style="float:right;" class="close-button">Cerrar</button>
-                </div>
-            `;
+            <div class="popup-content" id="popup">
+                <h2 style="margin-bottom: 2vh; text-align: center;">Plan de Producción ${product} - ${largo}-${ancho}-${alto} </h2>
+                ${html} <!-- Inserta aquí la tabla generada -->
+                <button style="float:right;" class="close-button">Cerrar</button>
+            </div>
+        `;
             // boton para el agregar folio
             //<button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
 
