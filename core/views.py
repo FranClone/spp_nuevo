@@ -1269,13 +1269,13 @@ def stock(request):
                 # Crear la entrada de stock
 
 
-                return redirect('home.html')
+                return redirect('home')
     
     context = {
         'form': formstockterminado,
         'stocks': stocks,
     }
-    return render(request, 'planificador/planificador_stock.html', context)
+    return render(request, 'home.html', context)
 
 from decimal import Decimal
 def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):
