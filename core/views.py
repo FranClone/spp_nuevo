@@ -1269,7 +1269,7 @@ def stock(request):
                 # Crear la entrada de stock
 
 
-                return redirect('home')
+                return redirect('home.html')
     
     context = {
         'form': formstockterminado,
