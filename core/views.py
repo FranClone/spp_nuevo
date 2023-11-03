@@ -746,68 +746,68 @@ def gantt_view(request):
                     utilizado_patron = "N/A"
            
 
-                    tasks_pedido = [
-                        pedido.orden_interna,
-                        fecha_actual,   # 1
-                        pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                        pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                        porcentaje_progreso,  # 4
-                        nombre_cliente,  # 5
-                        pedido.comentario,  # 6
-                        productos_name,  # 7
-                        pedido.prioridad,  # 8
-                        producto_codigo,  #9 
-                        nombre_linea, #10
-                        color, #11
-                        color_p, #12
-                        descripcion, #13
-                        inventario_inicial, #14
-                        nombre_rollizo, #15
-                        patron_corte, #16
-                        alto_p, #17
-                        ancho_p, #18
-                        largo_p, #19
-                        volumen_producto, #20
-                        estado, #21
-                        grado_urgencia, #22
-                        cantidad_piezas, #23
-                        cantidad_trozos, #24
-                        piezas_xpaquete, #25
-                        piezas_xtrozo, #26
-                        paquetes_solicitados, #27
-                        volumen_obtenido, #28
-                        paquetes_saldo, #29
-                        diametro_rollizo, #30
-                        codigo_patron, #31
-                        nombre_patron, #32
-                        descripcion_patron, #33
-                        rendimiento_patron, #34
-                        utilizado_patron, #35
-                        item, #36
-                        folio, #37
-                        mercado, #38
-                        destino, #39
-                        largo_rollizo, #40
-                        FSC, #41
-                        esp_fact, #42
-                        anc_fact, #43
-                        lar_fact, #44
-                        pqte, #45
-                        tipo_empaque, #46
-                        alto_paquete, #47
-                        int_paquete, #48
-                        term, #49
-                        calidad, #50
-                        mbf, #51
-                        banio, #52
-                        marca, #53
-                        programa, #54
-                        piezas, #55
-                        cpo, #56
-                        piezas_x_cpo, #57
-                        anc_paquete, #58
-                        est, #59
-                        pedido_id, #60
+                tasks_pedido = [
+                    pedido.orden_interna,
+                    fecha_actual,   # 1
+                    pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                    pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
+                    porcentaje_progreso,  # 4
+                    nombre_cliente,  # 5
+                    pedido.comentario,  # 6
+                    productos_name,  # 7
+                    pedido.prioridad,  # 8
+                    producto_codigo,  #9 
+                    nombre_linea, #10
+                    color, #11
+                    color_p, #12
+                    descripcion, #13
+                    inventario_inicial, #14
+                    nombre_rollizo, #15
+                    patron_corte, #16
+                    alto_p, #17
+                    ancho_p, #18
+                    largo_p, #19
+                    volumen_producto, #20
+                    estado, #21
+                    grado_urgencia, #22
+                    cantidad_piezas, #23
+                    cantidad_trozos, #24
+                    piezas_xpaquete, #25
+                    piezas_xtrozo, #26
+                    paquetes_solicitados, #27
+                    volumen_obtenido, #28
+                    paquetes_saldo, #29
+                    diametro_rollizo, #30
+                    codigo_patron, #31
+                    nombre_patron, #32
+                    descripcion_patron, #33
+                    rendimiento_patron, #34
+                    utilizado_patron, #35
+                    item, #36
+                    folio, #37
+                    mercado, #38
+                    destino, #39
+                    largo_rollizo, #40
+                    FSC, #41
+                    esp_fact, #42
+                    anc_fact, #43
+                    lar_fact, #44
+                    pqte, #45
+                    tipo_empaque, #46
+                    alto_paquete, #47
+                    int_paquete, #48
+                    term, #49
+                    calidad, #50
+                    mbf, #51
+                    banio, #52
+                    marca, #53
+                    programa, #54
+                    piezas, #55
+                    cpo, #56
+                    piezas_x_cpo, #57
+                    anc_paquete, #58
+                    est, #59
+                    pedido_id, #60
                             # pqtes_solicitados, #61
                             # pqtes_dias, #62
                             # m3, #63
@@ -816,7 +816,7 @@ def gantt_view(request):
                             # demanda_id,#66
                         ]
 
-                    tasks.append(tasks_pedido)
+                tasks.append(tasks_pedido)
 
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
@@ -1275,7 +1275,7 @@ def stock(request):
         'form': formstockterminado,
         'stocks': stocks,
     }
-    return render(request, 'planificador/planificador_stock.html', context)
+    return render(request, 'home.html', context)
 
 from decimal import Decimal
 def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):
