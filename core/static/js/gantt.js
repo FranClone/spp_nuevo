@@ -80,33 +80,33 @@ class Gantt {
 // }
 
 
-        const groupedRows = {};
+    //     const groupedRows = {};
 
-        // Iterar sobre cada producto y crear una fila por producto
-        for (let i = 0; i < this.filteredTasks.length; i++) {
-            var task = this.filteredTasks[i];
-            // Agrega un mensaje para rastrear el progreso
-
-
-            // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
-            for (let j = 0; j < task[64].length; j++) {
-                var m = task[64][j];
-                bodyHtml += `<td class="right-align">${m}</td>`;/*OP Orden Interna*/
-                bodyHtml += `<td class="right-align">${task[61]}</td>`;/*OP Orden Interna*/
-                bodyHtml += `<td class="right-align">${task[62]}</td>`;/*OP Orden Interna*/
-                bodyHtml += `<td class="right-align">${task[63]}</td>`;/*OP Orden Interna*/
-                bodyHtml += '</tr>';
-
-            }
+    //     // Iterar sobre cada producto y crear una fila por producto
+    //     for (let i = 0; i < this.filteredTasks.length; i++) {
+    //         var task = this.filteredTasks[i];
+    //         // Agrega un mensaje para rastrear el progreso
 
 
+    //         // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+    //         for (let j = 0; j < task[64].length; j++) {
+    //             var m = task[64][j];
+    //             bodyHtml += `<td class="right-align">${m}</td>`;/*OP Orden Interna*/
+    //             bodyHtml += `<td class="right-align">${task[61]}</td>`;/*OP Orden Interna*/
+    //             bodyHtml += `<td class="right-align">${task[62]}</td>`;/*OP Orden Interna*/
+    //             bodyHtml += `<td class="right-align">${task[63]}</td>`;/*OP Orden Interna*/
+    //             bodyHtml += '</tr>';
 
-        }
+    //         }
 
-        html += bodyHtml;
-        html += '</tbody></table>';
-        return html;
-    }
+
+
+    //     }
+
+    //     html += bodyHtml;
+    //     html += '</tbody></table>';
+    //     return html;
+    // }
 
     PlanPedidoTable() {
         var html = '<table  class="event-table second-table"><thead><tr>';
@@ -240,7 +240,7 @@ class Gantt {
 
         // Continuar con los demás encabezados
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
+        //html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
@@ -743,11 +743,17 @@ class Gantt {
 
 
         if (popupType === 'producto') {
-            productoData = this.tasks[pedidoIds];
-            const product = productoData[7];
-            const largo = productoData[19];
-            const ancho = productoData[18];
-            const alto = productoData[17];
+            let product, largo, ancho, alto;
+        for (let i = 0; i < pedidoIds.length; i++) {
+            productoData = this.tasks[pedidoIds[i]];
+            if (productoData) {
+                product = productoData[7];
+                largo = productoData[19];
+                ancho = productoData[18];
+                alto = productoData[17];
+                break;
+                }
+            }
 
 
             var html = '<div id="scroll">';
@@ -848,7 +854,8 @@ class Gantt {
             // boton para el agregar folio
             //<button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
 
-        } else if (popupType === 'pedido') {
+        }
+        else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
 
             var html = '<div id="scroll">';
