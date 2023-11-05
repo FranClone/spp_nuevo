@@ -719,7 +719,7 @@ class Gantt {
 
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoIds];
-
+            let nombreProducto;
             var html = '<table class="second-table"><thead><tr>';
             html += '<tr>'
             html += '<th class="detalle-pedido-t" colspan="5" ></th>';
@@ -779,6 +779,7 @@ class Gantt {
                 totalM3 += parseFloat(task[20]); // Convierte a número de punto flotante
                 totalMbf += parseFloat(task[51]); // Convierte a número de punto flotante
                 totalPiezas += parseFloat(task[55]); // Convierte a número de punto flotante
+                
             }
 
             // Agregar la fila de totales
