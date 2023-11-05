@@ -161,7 +161,7 @@ def process_uploaded_file(request,xlsfile):
 
                                 # Calcula la demanda total
                                 demanda_total = row['M3']
-                                print('demanda_total',demanda_total)
+                               # print('demanda_total',demanda_total)
                                 # Inicializa una lista para almacenar las demandas
                                 demandas = []
 
@@ -169,7 +169,7 @@ def process_uploaded_file(request,xlsfile):
                                 max_m3_por_dia = 50
 
                                 demanda_total_paquetes = row['pqte']
-                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                #print('demanda_total_paquetes', demanda_total_paquetes)
                                 # Inicializa una lista para almacenar las demandas en paquetes
                                 demandas_paquetes = []
                                 # Verificar si se han proporcionado medidas diferentes a las que ya existen
@@ -198,15 +198,15 @@ def process_uploaded_file(request,xlsfile):
                             while demanda_total > 0:
                                 # Calcula la demanda para este día (máximo de 50 m^3)
                                 demanda_dia = min(demanda_total, max_m3_por_dia)
-                                print('demanda_dia',demanda_dia)
+                                #print('demanda_dia',demanda_dia)
                                 fecha_dia_produccion = fecha_inicio
                                 # Calcula la demanda para este día en paquetes (máximo de 50 m³)
                                 demanda_dia_paquetes = (demanda_total_paquetes* demanda_dia )/ demanda_total
-                                print('demanda_dia_paquetes', demanda_dia_paquetes)
+                                #print('demanda_dia_paquetes', demanda_dia_paquetes)
                                 # Crea una nueva fila de demanda y guárdala en la lista
                                 # Resta la demanda del día a la demanda total en paquetes
                                 demanda_total_paquetes -= demanda_dia_paquetes
-                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                #print('demanda_total_paquetes', demanda_total_paquetes)
                                 demanda = Demanda(
                                     Medida_Producto_id=producto_medida_id,
                                     Pqtes_Solicitados=row['pqte'],
@@ -218,7 +218,7 @@ def process_uploaded_file(request,xlsfile):
 
                                 # Reduce la demanda total y avanza un día
                                 demanda_total -= demanda_dia
-                                print('demanda_total',demanda_total)
+                                #print('demanda_total',demanda_total)
                                 fecha_inicio += timedelta(days=1)
 
                             # Guarda las demandas en la base de datos
@@ -1276,7 +1276,7 @@ def stock(request):
         'form': formstockterminado,
         'stocks': stocks,
     }
-    return render(request, 'home.html', context)
+    return render(request, 'planificador/planificador_stock.html', context)
 
 from decimal import Decimal
 def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):
