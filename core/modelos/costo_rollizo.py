@@ -13,10 +13,10 @@ class CostoRollizo(models.Model):
     rollizo = models.ForeignKey('rollizo', on_delete=models.CASCADE, verbose_name='rollizo')
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa')
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
-    nombre_costo = models.CharField(null=True,max_length=200)
-    valor_m3 = models.FloatField(null=True,validators=[MinValueValidator(0)]) # Costo usd/m3
+    nombre_costo = models.CharField(null=False,max_length=200)
+    valor_m3 = models.FloatField(null=False,validators=[MinValueValidator(0)]) # Costo usd/m3
     fecha_crea = models.DateField(auto_now_add=True)
-    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=False)
 
 
     class Meta:

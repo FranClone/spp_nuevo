@@ -729,13 +729,14 @@ def gantt_view(request):
                 int_paquete = empaque.int_paquete if empaque else "N/A"
                 anc_paquete = empaque.anc_paquete if empaque else "N/A"
                 try:
-                    patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
-                    codigo_patron = patron_corte_data.codigo
-                    nombre_patron = patron_corte_data.nombre
-                    descripcion_patron = patron_corte_data.descripcion
-                    rendimiento_patron = patron_corte_data.rendimiento
+                    patron_corte_data = PatronCorte.objects.filter(rollizo=producto.nombre_rollizo)
 
-                    utilizado_patron = str(patron_corte_data.utilizado)
+                    for patron in patron_corte_data:
+                        codigo_patron = patron.codigo
+                        nombre_patron = patron.nombre
+                        descripcion_patron = patron.descripcion
+                        rendimiento_patron = patron.rendimiento
+                        utilizado_patron = str(patron.utilizado)
             
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
@@ -743,119 +744,81 @@ def gantt_view(request):
                     descripcion_patron = "N/A"
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
-                
-                demandas = Demanda.objects.all()
-                demandas_data = []
 
-                for demanda_obj in demandas:
-                    
-                    producto_id = detalle_pedido.producto.id
-                    medida = Medida.objects.get(alto_producto=alto_p, ancho_producto=ancho_p, largo_producto=largo_p)
-                    medida_id = medida.id
-                    producto_nombre = detalle_pedido.producto.nombre
-                    medida_alto = medida.alto_producto
-                    medida_ancho = medida.ancho_producto
-                    medida_largo = medida.largo_producto
-                    producto_medida = ProductoMedida.objects.get(producto_id=producto_id,medida_id=medida_id)
-                    producto_medida_id = producto_medida.id
-                    
-                    demanda_id = demanda_obj.id
-                    Medida_Producto_id = demanda_obj.Medida_Producto_id 
-                    dias_produccion = demanda_obj.dias_produccion.strftime('%Y/%m/%d')
-                    pqtes_solicitados = demanda_obj.Pqtes_Solicitados
-                    pqtes_dias = demanda_obj.Pqtes_dia
-                    m3 = demanda_obj.M3
+           
 
-                    # Verifica si el ID de la demanda ya está en el diccionario
-                    # Si no está, agrégalo al diccionario
-                    if demanda_id not in [data['demanda_id'] for data in demandas_data]:
-                        demandas_data.append({
-                            'demanda_id': demanda_id,
-                            'Medida_Producto_id': Medida_Producto_id,
-                            'dias_produccion': dias_produccion,
-                            'pqtes_solicitados': pqtes_solicitados,
-                            'pqtes_dias': pqtes_dias,
-                            'm3': m3
-                        })
-                        
-                   
-                        
-                        
-
-                # Ahora tienes los datos necesarios de la tabla 'Demanda' y 'ProductoMedida' para el 'pedido' actual
-                # Puedes usar estas variables en tu código existente
-
-            tasks_pedido = [
-                            pedido.orden_interna,
-                            fecha_actual,   # 1
-                            pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
-                            pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
-                            porcentaje_progreso,  # 4
-                            nombre_cliente,  # 5
-                            pedido.comentario,  # 6
-                            productos_name,  # 7
-                            pedido.prioridad,  # 8
-                            producto_codigo,  #9 
-                            nombre_linea, #10
-                            color, #11
-                            color_p, #12
-                            descripcion, #13
-                            inventario_inicial, #14
-                            nombre_rollizo, #15
-                            patron_corte, #16
-                            alto_p, #17
-                            ancho_p, #18
-                            largo_p, #19
-                            volumen_producto, #20
-                            estado, #21
-                            grado_urgencia, #22
-                            cantidad_piezas, #23
-                            cantidad_trozos, #24
-                            piezas_xpaquete, #25
-                            piezas_xtrozo, #26
-                            paquetes_solicitados, #27
-                            volumen_obtenido, #28
-                            paquetes_saldo, #29
-                            diametro_rollizo, #30
-                            codigo_patron, #31
-                            nombre_patron, #32
-                            descripcion_patron, #33
-                            rendimiento_patron, #34
-                            utilizado_patron, #35
-                            item, #36
-                            folio, #37
-                            mercado, #38
-                            destino, #39
-                            largo_rollizo, #40
-                            FSC, #41
-                            esp_fact, #42
-                            anc_fact, #43
-                            lar_fact, #44
-                            pqte, #45
-                            tipo_empaque, #46
-                            alto_paquete, #47
-                            int_paquete, #48
-                            term, #49
-                            calidad, #50
-                            mbf, #51
-                            banio, #52
-                            marca, #53
-                            programa, #54
-                            piezas, #55
-                            cpo, #56
-                            piezas_x_cpo, #57
-                            anc_paquete, #58
-                            est, #59
-                            pedido_id, #60
-                            pqtes_solicitados, #61
-                            pqtes_dias, #62
-                            m3, #63
-                            Medida_Producto_id, #64
-                            dias_produccion,#65
-                            demanda_id,#66
+                tasks_pedido = [
+                    pedido.orden_interna,
+                    fecha_actual,   # 1
+                    pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
+                    pedido.fecha_produccion.strftime('%Y/%m/%d'),  # 3
+                    porcentaje_progreso,  # 4
+                    nombre_cliente,  # 5
+                    pedido.comentario,  # 6
+                    productos_name,  # 7
+                    pedido.prioridad,  # 8
+                    producto_codigo,  #9 
+                    nombre_linea, #10
+                    color, #11
+                    color_p, #12
+                    descripcion, #13
+                    inventario_inicial, #14
+                    nombre_rollizo, #15
+                    patron_corte, #16
+                    alto_p, #17
+                    ancho_p, #18
+                    largo_p, #19
+                    volumen_producto, #20
+                    estado, #21
+                    grado_urgencia, #22
+                    cantidad_piezas, #23
+                    cantidad_trozos, #24
+                    piezas_xpaquete, #25
+                    piezas_xtrozo, #26
+                    paquetes_solicitados, #27
+                    volumen_obtenido, #28
+                    paquetes_saldo, #29
+                    diametro_rollizo, #30
+                    codigo_patron, #31
+                    nombre_patron, #32
+                    descripcion_patron, #33
+                    rendimiento_patron, #34
+                    utilizado_patron, #35
+                    item, #36
+                    folio, #37
+                    mercado, #38
+                    destino, #39
+                    largo_rollizo, #40
+                    FSC, #41
+                    esp_fact, #42
+                    anc_fact, #43
+                    lar_fact, #44
+                    pqte, #45
+                    tipo_empaque, #46
+                    alto_paquete, #47
+                    int_paquete, #48
+                    term, #49
+                    calidad, #50
+                    mbf, #51
+                    banio, #52
+                    marca, #53
+                    programa, #54
+                    piezas, #55
+                    cpo, #56
+                    piezas_x_cpo, #57
+                    anc_paquete, #58
+                    est, #59
+                    pedido_id, #60
+                            # pqtes_solicitados, #61
+                            # pqtes_dias, #62
+                            # m3, #63
+                            # Medida_Producto_id, #64
+                            # dias_produccion,#65
+                            # demanda_id,#66
                         ]
 
-            tasks.append(tasks_pedido)
+                tasks.append(tasks_pedido)
+
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
     context = {
@@ -1313,7 +1276,7 @@ def stock(request):
         'form': formstockterminado,
         'stocks': stocks,
     }
-    return render(request, 'planificador/planificador_stock.html', context)
+    return render(request, 'home.html', context)
 
 from decimal import Decimal
 def calcular_equivalentes_paquetes(producto_medida_1, cantidad_m3,producto_id_1):

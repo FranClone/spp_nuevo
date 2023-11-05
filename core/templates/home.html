@@ -91,12 +91,11 @@
 
 
 
-
     <div class="form-container-productos">
 
-        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:120vh;" id="carga-form">
+        <form method="post" action="{% url 'pedidos' %}" style="display: none ; width:100vh;" id="carga-form">
             {% csrf_token %}
-            <table class="form-table">
+            <table id="form-table">
                 <th><span>Detalle Pedido</span></th>
                 {{ detalle_pedido_formset.management_form }}
 
@@ -107,12 +106,6 @@
                     <th class="detalle-pedido-t">ETA</th>
                     <th class="detalle-pedido-t">Destino</th>
                     <th class="detalle-pedido-t" style="width:20vh;">Programa</th>
-                    <th class="detalle-pedido-t">Item</th>
-                    <th class="detalle-pedido-t">Nombre producto</th>
-                    <th class="detalle-pedido-t">Est</th>
-                    <th class="detalle-pedido-t">term</th>
-                    <th class="detalle-pedido-t">Calidad</th>
-                    <th class="detalle-pedido-t">Cpo</th>
                 </tr>
                 {% for form in detalle_pedido_formset %}
                 <tr>
@@ -122,6 +115,17 @@
                     <td>{{ pedido_form.fecha_entrega }}</td>
                     <td>{{ form.puerto_destino }}</td>
                     <td>{{ form.programa }}</td>
+                </tr>
+                <tr>
+                    <th class="detalle-pedido-t">Item</th>
+                    <th class="detalle-pedido-t">Nombre producto</th>
+                    <th class="detalle-pedido-t">Est</th>
+                    <th class="detalle-pedido-t">term</th>
+                    <th class="detalle-pedido-t">Calidad</th>
+                    <th class="detalle-pedido-t">Cpo</th>
+                </tr>
+
+                <tr>
                     <td>{{ form.item }}</td>
                     <td >{{ form.producto }}</td>
                     <td>{{ form.est }}</td>
@@ -131,7 +135,7 @@
                     {{ form.errors }}
                 </tr>
             </table>
-            <table class="form-table">
+            <table id="form-table">
 
                 <tr>
                     <th class="detalle-pedido-t a">Esp. Producc <br> (cm)</th>
@@ -140,14 +144,7 @@
                     <th class="detalle-pedido-t">Pzas</th>
                     <th class="detalle-pedido-t">M3</th>
                     <th class="detalle-pedido-t ">Mbf</th>
-                    <th class="detalle-pedido-t ">Baño</th>
-                    <th class="detalle-pedido-t">Marca</th>
-                    {% comment %} <th class="detalle-pedido-t">Fecha Creacion</th> {% endcomment %}
-                    <th class="detalle-pedido-t">Comentario</th>
-                    <th class="detalle-pedido-t">Version</th>
-                    <th class="detalle-pedido-t">Estado</th>
                 </tr>
-
                 <tr>
                     <td>{{ form.alto_producto }}</td>
                     <td>{{ form.ancho_producto }}</td>
@@ -155,17 +152,25 @@
                     <td>{{ form.piezas }}</td>
                     <td>{{ form.volumen_producto }}</td>
                     <td>{{ form.mbf }}</td>
+                </tr>
+                <tr>
+                    <th class="detalle-pedido-t ">Baño</th>
+                    <th class="detalle-pedido-t">Marca</th>
+                    <th class="detalle-pedido-t">Comentario</th>
+                    <th class="detalle-pedido-t">Version</th>
+                    <th class="detalle-pedido-t">Estado</th>
+                </tr>
+                <tr>
                     <td>{{ form.banio}}</td>
                     <td>{{ form.marca}}</td>
-                    {% comment %} <td>{{ pedido_form.fecha_produccion }}</td> {% endcomment %}
-                    <td>{{ pedido_form.comentario }}</td>
+                    <td style="width:70vh;!important">{{ pedido_form.comentario }}</td>
                     <td>{{ pedido_form.version }}</td>
                     <td>{{ pedido_form.estado }}</td>
 
                 </tr>
 
             </table>
-            <table class="form-table">
+            <table id="form-table">
                 <th>Detalle Factura</th>
                 <tr>
                     <th class="detalle-pedido-t">FSC</th>
@@ -180,7 +185,7 @@
                     <td>{{ form.lar_fact }}</td>
                 </tr>
             </table>
-            <table>
+            <table  id="form-table">
                 <th>Detalle Paquete</th>
                 <tr>
                     <th class="detalle-pedido-t">Tipo Empaque</th>
@@ -198,12 +203,11 @@
                 </tr>
             </table>
             {% endfor %}
-
             <div class="button-container">
                 <button type="submit" name="crear" class="red-button-g">Crear</button>
-                <button class="red-button-c" onclick="closePopup()">cerrar</button>
+                <button type="button" id="cancelar" class="red-button-c">Cerrar</button>
+
             </div>
-            
         </form>
     </div>
     <br>
@@ -356,6 +360,16 @@
         $('input[type="file"]').change(function() {
             var fileName = $(this).val().split('\\').pop(); // Obtén el nombre del archivo seleccionado
             $('#file-name-display').text(fileName); // Muestra el nombre del archivo en el span
+        });
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const botonCancelar = document.getElementById('cancelar');
+        const formulario = document.getElementById('carga-form');
+
+        botonCancelar.addEventListener('click', function () {
+            formulario.style.display = 'none';
         });
     });
 </script>

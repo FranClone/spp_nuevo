@@ -31,17 +31,54 @@ class Gantt {
     }
 
 
-    Plan2Table() {
+// Plan2Table() {
+//     var html = '<table class="event-table second-table"><thead><tr>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Id Demanda</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida_Producto</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Dias Produccion</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes Solicitados</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes dia</th>';
+//     html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
+//     // Añade los encabezados de las otras columnas aquí
+//     html += '</tr></thead><tbody>';
 
-        var html = '<table class="event-table second-table"><thead><tr>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
-        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
-        html += '</tr></thead><tbody>';
+//     // Utiliza un conjunto para mantener un registro de los valores únicos de task[66]
+//     var uniqueDemandValues = new Set();
 
-        // Utiliza una variable diferente para el cuerpo de la tabla
-        var bodyHtml = '';
+//     for (let i = 0; i < this.filteredTasks.length; i++) {
+//         var task = this.filteredTasks[i];
+//         var demanda = task[66]; // Obtén el valor de la demanda
+
+//         // Verifica si el valor de la demanda ya se ha agregado a la tabla
+//         if (!uniqueDemandValues.has(demanda)) {
+//             uniqueDemandValues.add(demanda);
+
+//             // Crea una fila para la demanda actual
+//             html += '<tr>';
+//             html += `<td class="right-align">${demanda}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[7]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[17]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[18]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[19]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[64]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[65]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[61]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[62]}</td>`; // Columna de la demanda
+//             html += `<td class="right-align">${task[63]}</td>`; // Columna de la demanda
+//             // Añade el resto de los valores de task en las celdas de la fila
+
+//             html += '</tr>';
+//         }
+//     }
+
+//     html += '</tbody></table>';
+//     return html;
+// }
+
 
         const groupedRows = {};
 
@@ -72,7 +109,7 @@ class Gantt {
     }
 
     PlanPedidoTable() {
-        var html = '<table class="second-table"><thead><tr>';
+        var html = '<table  class="event-table second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 30vh; font-size: 13px;">Fecha Carga</th>';
@@ -368,7 +405,7 @@ class Gantt {
 
 
     PedidoTable() {
-        var html = '<table id="miTabla" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
+        var html = '<table id="miTabla" class="event-table" style="margin-left: auto; margin-right: auto;" class="second-table"><thead><tr>';
 
         // Agregar dos columnas adicionales a la izquierda
         html += '<th style="color: white; width: 20vh; font-size: 15px; text-align: center; height:3vh;">Fecha carga</th>';
@@ -624,10 +661,10 @@ class Gantt {
         document.getElementById('gantt').innerHTML = this.PlanTable();
     }
 
-    showPlan2Table() {
-        this.filteredTasks = this.tasks;
-        document.getElementById('gantt').innerHTML = this.Plan2Table();
-    }
+    // showPlan2Table() {
+    //     this.filteredTasks = this.tasks;
+    //     document.getElementById('gantt').innerHTML = this.Plan2Table();
+    // }
 
     showPlanPedidoTable() {
         this.filteredTasks = this.tasks;
@@ -707,6 +744,11 @@ class Gantt {
 
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoIds];
+            const product = productoData[7];
+            const largo = productoData[19];
+            const ancho = productoData[18];
+            const alto = productoData[17];
+
 
             var html = '<div id="scroll">';
             html +='<table class="second-table" ><thead class="scroll-top"><tr>';
@@ -763,14 +805,12 @@ class Gantt {
             let totalPiezas = 0;
             for (let j = 0; j < pedidoIds.length; j++) {
                 let i = pedidoIds[j];
-                if (i < this.filteredTasks.length) {
-                    let task = this.filteredTasks[i];
-                    // Convert to number and add to totals
-                    totalPqteSolicitados += parseInt(task[45], 10);
-                    totalM3 += parseFloat(task[20]);
-                    totalMbf += parseFloat(task[51]);
-                    totalPiezas += parseFloat(task[55]);
-                }
+                let task = this.filteredTasks[i];
+                totalPqteSolicitados += parseInt(task[45], 10); // Convierte a número
+                totalM3 += parseFloat(task[20]); // Convierte a número de punto flotante
+                totalMbf += parseFloat(task[51]); // Convierte a número de punto flotante
+                totalPiezas += parseFloat(task[55]); // Convierte a número de punto flotante
+                
             }
 
 
@@ -799,12 +839,12 @@ class Gantt {
 
             // Set the innerHTML of the popup element
             popup.innerHTML = `
-                <div class="popup-content" id="popup">
-                    <h2 style="margin-bottom: 2vh; text-align: center;">Plan de Producción ${task[7]} - ${task[19]}-${task[18]}-${task[17]} </h2>
-                    ${html} <!-- Insert the generated table here -->
-                    <button style="float:right;" class="close-button">Cerrar</button>
-                </div>
-            `;
+            <div class="popup-content" id="popup">
+                <h2 style="margin-bottom: 2vh; text-align: center;">Plan de Producción ${product} - ${largo}-${ancho}-${alto} </h2>
+                ${html} <!-- Inserta aquí la tabla generada -->
+                <button style="float:right;" class="close-button">Cerrar</button>
+            </div>
+        `;
             // boton para el agregar folio
             //<button style="margin-top: 2vh; margin-left: 47%; background-color: red; color: white; width:6%; border: 1px solid white;" class="close-button abrir-folio-button">Agregar Folio</button>
 

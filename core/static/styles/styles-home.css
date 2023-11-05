@@ -20,10 +20,37 @@ h3 {
     padding-top: 15px;
 }
 
-table tr {
+#form-table {
+    width: 100%;
+    border-collapse: collapse; 
+    border-color: none !important;
+   
+    /* Combina los bordes de la tabla */
+}
+
+#form-table td {
+    padding: 5px;
+    vertical-align: top;
+    /* Alinea los campos verticalmente */
+}
+
+#form-table label {
+    display: block;
+    /* Hace que las etiquetas ocupen todo el ancho de la celda */
+    margin-bottom: 5px;
+    text-align: left;
+}
+
+#form-table input {
+    width: 100%;
+    box-sizing: border-box;
+    /* Incluye el ancho del borde y el relleno en el ancho total */
+}
+
+/* table tr {
     border: 1px solid black;
     border-bottom: 1px solid black;
-}
+} */
 
 .btn-agregar-pedido,
 .btn-materia-prima,
@@ -256,7 +283,10 @@ table tr {
     width: 100%;
 
 }
-
+.event-table tr {
+    border: 1px solid black;
+    border-bottom: 1px solid black;
+}
 #gantt table tr td.event-cell:last-child {
     border-right: 1px solid black;
     border-left: 1px solid black;
@@ -806,31 +836,6 @@ table tr {
     right: 5px;
 }
 
-
-.form-table {
-    width: 100%;
-    border-collapse: collapse;
-    /* Combina los bordes de la tabla */
-}
-
-.form-table td {
-    padding: 5px;
-    vertical-align: top;
-    /* Alinea los campos verticalmente */
-}
-
-.form-table label {
-    display: block;
-    /* Hace que las etiquetas ocupen todo el ancho de la celda */
-    margin-bottom: 5px;
-    text-align: left;
-}
-
-.form-table input {
-    width: 100%;
-    box-sizing: border-box;
-    /* Incluye el ancho del borde y el relleno en el ancho total */
-}
 
 
 .detalle-pedido {

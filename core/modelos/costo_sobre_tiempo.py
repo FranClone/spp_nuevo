@@ -10,11 +10,11 @@ from django.core.validators import MinValueValidator
 
 class CostoSobreTiempo(models.Model):
     #suma de las horas extras del equipo 
-    costos_horas_extras = models.FloatField(null=True,validators=[MinValueValidator(0)])
-    cantidad_horas  = models.FloatField(null=True,validators=[MinValueValidator(0)])
+    costos_horas_extras = models.FloatField(null=False,validators=[MinValueValidator(0)])
+    cantidad_horas  = models.FloatField(null=False,validators=[MinValueValidator(0)])
     empresa = models.ForeignKey('Empresa', on_delete=models.CASCADE, verbose_name='Empresa', db_column='rut_empresa', blank=True, null=True)
     linea = models.ForeignKey('Linea', on_delete=models.CASCADE, verbose_name='Linea')
-    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=False)
     fecha_crea = models.DateField(auto_now_add=True)
 
     class Meta:
