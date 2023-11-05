@@ -731,15 +731,14 @@ def gantt_view(request):
                 int_paquete = empaque.int_paquete if empaque else "N/A"
                 anc_paquete = empaque.anc_paquete if empaque else "N/A"
                 try:
-                    patron_corte_data = PatronCorte.objects.get(rollizo=producto.nombre_rollizo)
-                    codigo_patron = patron_corte_data.codigo
-                    nombre_patron = patron_corte_data.nombre
-                    descripcion_patron = patron_corte_data.descripcion
-                    rendimiento_patron = patron_corte_data.rendimiento
+                    patron_corte_data = PatronCorte.objects.filter(rollizo=producto.nombre_rollizo)
 
-                    utilizado_patron = str(patron_corte_data.utilizado)
-
-                  #  producto_asociado_patron = patron_corte_data.producto_asociado
+                    for patron in patron_corte_data:
+                        codigo_patron = patron.codigo
+                        nombre_patron = patron.nombre
+                        descripcion_patron = patron.descripcion
+                        rendimiento_patron = patron.rendimiento
+                        utilizado_patron = str(patron.utilizado)
 
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"

@@ -191,4 +191,4 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'core/static_recopiled')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 X_FRAME_OPTIONS = "SAMEORIGIN"
-
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None

@@ -34,4 +34,5 @@ class Migration(migrations.Migration):
             name='stock_entrante',
             field=models.FloatField(null=True),
         ),
+
     ]

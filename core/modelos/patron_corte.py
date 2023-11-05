@@ -7,7 +7,7 @@ class PatronCorte(models.Model):
    #Rendimiento del Patron de corte RE 
 
     rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
-    codigo = models.CharField(max_length=20, unique=True, null=False, blank=False, default='')
+    codigo = models.CharField(max_length=20, unique=False, null=False, blank=False, default='')
     nombre = models.CharField(max_length=20, null=False, blank=False)
     descripcion = models.CharField(max_length=20, null=True, blank=False)
     rendimiento = models.FloatField(max_length=5, null=True,validators=[MinValueValidator(0)]) #RE
