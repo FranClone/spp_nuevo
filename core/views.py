@@ -34,7 +34,6 @@ from .modelos.medida import Medida
 from .modelos.producto_medida import ProductoMedida
 from .models import Usuario
 from .modelos.demanda import Demanda
-
 #from .pedidoForm import PedidoForm, DetallePedidoForm, DetallePedidoFormSet
 from .queries import sel_cliente_admin, sel_pedido_empresa, sel_empresa_like, sel_pedido_productos_empresa, insertar_pedido, insertar_detalle_pedido, sel_rollizo_empresa, sel_bodega_empresa, sel_linea_empresa, sel_producto_empresa, cantidad_pedidos_por_mes
 import pyodbc, json, os, datetime, openpyxl, bleach
@@ -162,7 +161,7 @@ def process_uploaded_file(request,xlsfile):
 
                                 # Calcula la demanda total
                                 demanda_total = row['M3']
-                                print('demanda_total',demanda_total)
+                               # print('demanda_total',demanda_total)
                                 # Inicializa una lista para almacenar las demandas
                                 demandas = []
 
@@ -170,7 +169,7 @@ def process_uploaded_file(request,xlsfile):
                                 max_m3_por_dia = 50
 
                                 demanda_total_paquetes = row['pqte']
-                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                #print('demanda_total_paquetes', demanda_total_paquetes)
                                 # Inicializa una lista para almacenar las demandas en paquetes
                                 demandas_paquetes = []
                                 # Verificar si se han proporcionado medidas diferentes a las que ya existen
@@ -199,15 +198,15 @@ def process_uploaded_file(request,xlsfile):
                             while demanda_total > 0:
                                 # Calcula la demanda para este día (máximo de 50 m^3)
                                 demanda_dia = min(demanda_total, max_m3_por_dia)
-                                print('demanda_dia',demanda_dia)
+                                #print('demanda_dia',demanda_dia)
                                 fecha_dia_produccion = fecha_inicio
                                 # Calcula la demanda para este día en paquetes (máximo de 50 m³)
                                 demanda_dia_paquetes = (demanda_total_paquetes* demanda_dia )/ demanda_total
-                                print('demanda_dia_paquetes', demanda_dia_paquetes)
+                                #print('demanda_dia_paquetes', demanda_dia_paquetes)
                                 # Crea una nueva fila de demanda y guárdala en la lista
                                 # Resta la demanda del día a la demanda total en paquetes
                                 demanda_total_paquetes -= demanda_dia_paquetes
-                                print('demanda_total_paquetes', demanda_total_paquetes)
+                                #print('demanda_total_paquetes', demanda_total_paquetes)
                                 demanda = Demanda(
                                     Medida_Producto_id=producto_medida_id,
                                     Pqtes_Solicitados=row['pqte'],
@@ -219,7 +218,7 @@ def process_uploaded_file(request,xlsfile):
 
                                 # Reduce la demanda total y avanza un día
                                 demanda_total -= demanda_dia
-                                print('demanda_total',demanda_total)
+                                #print('demanda_total',demanda_total)
                                 fecha_inicio += timedelta(days=1)
 
                             # Guarda las demandas en la base de datos
@@ -668,7 +667,6 @@ def gantt_view(request):
 }
     
     colores = ['#4287f5', '#c1409b', '#0b9971', '#d26a52', '#0b9851', '#c4632b', '#0b4282', '#ff6600']
-
     tasks=[]
     for pedido in pedidos:
 
@@ -692,9 +690,9 @@ def gantt_view(request):
                 destino = detalle_pedido.puerto_destino if detalle_pedido.mercado is not None else "N/A"
                 item = detalle_pedido.item if detalle_pedido.item is not None else "N/A"
                 folio = detalle_pedido.folio if detalle_pedido.folio is not None else "N/A"
-                alto_producto = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
-                ancho_producto = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
-                largo_producto = detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
+                alto_p = detalle_pedido.alto_producto if detalle_pedido.alto_producto is not None else "N/A"
+                ancho_p = detalle_pedido.ancho_producto if detalle_pedido.ancho_producto is not None else "N/A"
+                largo_p= detalle_pedido.largo_producto if detalle_pedido.largo_producto is not None else "N/A"
                 volumen_producto = detalle_pedido.volumen_producto if detalle_pedido.volumen_producto is not None else "N/A"
                 estado = pedido.estado if pedido.estado is not None else "N/A"
                 #estado_pedido_linea = detalle_pedido.estado_pedido_linea if detalle_pedido.estado_pedido_linea is not None else "N/A"
@@ -739,7 +737,11 @@ def gantt_view(request):
                         descripcion_patron = patron.descripcion
                         rendimiento_patron = patron.rendimiento
                         utilizado_patron = str(patron.utilizado)
+<<<<<<< HEAD
 
+=======
+            
+>>>>>>> 2f929c4f71c682581f7855f0cbe075fd2c2748c4
                 except PatronCorte.DoesNotExist:
                     codigo_patron = "N/A"
                     nombre_patron = "N/A"
@@ -747,7 +749,7 @@ def gantt_view(request):
                     rendimiento_patron = "N/A"
                     utilizado_patron = "N/A"
 
-                  #  producto_asociado_patron = "N/A"
+           
 
                 tasks_pedido = [
                     pedido.orden_interna,
@@ -767,9 +769,9 @@ def gantt_view(request):
                     inventario_inicial, #14
                     nombre_rollizo, #15
                     patron_corte, #16
-                    alto_producto, #17
-                    ancho_producto, #18
-                    largo_producto, #19
+                    alto_p, #17
+                    ancho_p, #18
+                    largo_p, #19
                     volumen_producto, #20
                     estado, #21
                     grado_urgencia, #22
@@ -811,9 +813,16 @@ def gantt_view(request):
                     anc_paquete, #58
                     est, #59
                     pedido_id, #60
-                ]
+                            # pqtes_solicitados, #61
+                            # pqtes_dias, #62
+                            # m3, #63
+                            # Medida_Producto_id, #64
+                            # dias_produccion,#65
+                            # demanda_id,#66
+                        ]
 
                 tasks.append(tasks_pedido)
+
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
     context = {
@@ -824,6 +833,9 @@ def gantt_view(request):
     'formstockterminado':formstockterminado # Include the detalle_pedido_formset in the context
     }
     return render(request, 'home.html', context)
+
+
+      
 
 @require_role('ADMINISTRADOR')  
 @login_required

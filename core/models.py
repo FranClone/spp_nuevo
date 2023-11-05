@@ -4,6 +4,7 @@ from core.modelos.empaque import Empaque
 from core.modelos.factura import Factura
 from core.modelos.demanda import Demanda
 from core.modelos.rendimiento_producto import Rendimiento_Producto
+from core.modelos.demanda_pedido import Demanda_Producto
 
 class Usuario(models.Model):
     nombre = models.CharField(max_length=50, null=False, blank=False)

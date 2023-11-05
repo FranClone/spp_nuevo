@@ -20,7 +20,7 @@
     <button type="button" id="toggle-carga-button" onclick="toggleFormVisibility()" class="carga-button">Carga
         Manual</button>
     <!--Filtro desplegable desde el botón-->
-    <div class="filter-section">
+    {% comment %} <div class="filter-section">
         <button type="button" id="toggle-filter-button" class="filter-button">Filtrar</button>
         <form id="filter-form" class="filter-form" style="display: none;">
             <div class="filter-field">
@@ -48,7 +48,7 @@
                 <button type="button" id="cancel-filter-button" class="cancel-filter-button">Cancelar</button>
             </div>
         </form>
-    </div>
+    </div> {% endcomment %}
 
     <!--Carga Manual de Patrones de Corte-->
 

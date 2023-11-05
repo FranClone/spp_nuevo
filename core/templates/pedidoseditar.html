@@ -26,7 +26,7 @@
         <!--Sección formulario desplegable mediante botón "Carga Manual"-->
         <div class="form-container-productos">
 
-            <form method="post" action="{% url 'pedido_editar' id %}" id="carga-form">
+            <form method="post" action="{% url 'pedido_editar' id %}" style=" width:100vh;"  id="carga-form">
                         {% csrf_token %}
                         <table class="form-table" >
                             <th>Detalle Pedido</th>
@@ -38,12 +38,6 @@
                                <th class="detalle-pedido-t">ETA</th>
                                <th class="detalle-pedido-t">Destino</th>
                                <th class="detalle-pedido-t" style="width:20vh;" >Programa</th>
-                                <th class="detalle-pedido-t">Item</th>
-                                <th class="detalle-pedido-t">Nombre Producto</th>
-                               <th class="detalle-pedido-t">Est</th>
-                               <th class="detalle-pedido-t">term</th>
-                               <th class="detalle-pedido-t">Calidad</th>
-                               <th class="detalle-pedido-t">Cpo</th>
                             </tr>
                             {% for detalle in detalle_pedido_formset %}
                             <input type="hidden" name="{{ detalle.prefix }}-id" value="{{ detalle.instance.id }}">
@@ -57,6 +51,17 @@
                                 <td>{{ pedido_form.fecha_entrega }}</td>
                                 <td>{{ detalle.puerto_destino }}</td>
                                 <td>{{ detalle.programa }}</td>
+                            </tr>
+                            <tr>
+                                <th class="detalle-pedido-t">Item</th>
+                                <th class="detalle-pedido-t">Nombre Producto</th>
+                               <th class="detalle-pedido-t">Est</th>
+                               <th class="detalle-pedido-t">term</th>
+                               <th class="detalle-pedido-t">Calidad</th>
+                               <th class="detalle-pedido-t">Cpo</th>
+                            </tr>
+        
+                            <tr>
                                 <td>{{ detalle.item }}</td>              
                                 <td>{{ detalle.producto }}</td>
                                 <td>{{ detalle.est }}</td>
@@ -76,14 +81,7 @@
                                <th class="detalle-pedido-t">Pzas</th>
                                <th class="detalle-pedido-t">M3</th>
                                <th class="detalle-pedido-t ">Mbf</th>
-                                <th class="detalle-pedido-t ">Baño</th>
-                               <th class="detalle-pedido-t">Marca</th>
-                               <th class="detalle-pedido-t">Fecha Creación</th>
-                               <th class="detalle-pedido-t">Comentario</th>
-                               <th class="detalle-pedido-t">Versión</th>
-                               <th class="detalle-pedido-t">Estado</th>
                             </tr>
-                   
                             <tr>              
                                 <td>{{ detalle.alto_producto }}</td>
                                 <td>{{ detalle.ancho_producto }}</td>
@@ -91,10 +89,20 @@
                                 <td>{{ detalle.piezas }}</td>
                                 <td>{{ detalle.volumen_producto }}</td>
                                 <td>{{ detalle.mbf }}</td>
+                            </tr>
+                            <tr>
+                                <th class="detalle-pedido-t ">Baño</th>
+                               <th class="detalle-pedido-t">Marca</th>
+                               <th class="detalle-pedido-t" >Comentario</th>
+                               <th class="detalle-pedido-t">Versión</th>
+                               <th class="detalle-pedido-t">Estado</th>
+                            </tr>
+                   
+         
+                            <tr >
                                 <td>{{ detalle.banio}}</td>
                                 <td>{{ detalle.marca}}</td>
-                                <td>{{ pedido_form.fecha_produccion }}</td>
-                                <td>{{ pedido_form.comentario }}</td>
+                                <td style="width:70vh;!important">{{ pedido_form.comentario }}</td>
                                 <td>{{ pedido_form.version }}</td>
                                 <td>{{ pedido_form.estado }}</td>
                            

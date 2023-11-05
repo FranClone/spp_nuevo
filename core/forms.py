@@ -135,7 +135,10 @@ class CrearProductoForm(forms.ModelForm):
 
 
 class CrearRollizoForm(forms.ModelForm):
+    diametro=forms.FloatField(min_value=0)
+    largo = forms.FloatField(min_value=0)
     exclude = ['fecha_crea']
+    
     class Meta:
         model = Rollizo
         fields ='__all__'
@@ -144,6 +147,7 @@ class CrearRollizoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
 class CrearLineaForm(forms.ModelForm):
+    velocidad = forms.DecimalField(min_value=0)
     exclude = ['fecha_crea']
     class Meta:
         model = Linea
@@ -479,5 +483,5 @@ class ActualizarStockRollizo(forms.ModelForm):
         # Customize the "rollizo" field's widget to display "clase_diametrica"
         self.fields['rollizo'].widget = forms.Select(
             attrs={'class': 'form-control'},
-            choices=[(rollizo.id, f'{rollizo.clase_diametrica} - {rollizo.nombre_rollizo}') for rollizo in Rollizo.objects.all()]
+            choices=[(rollizo.id, f'{rollizo.diametro} - {rollizo.nombre_rollizo}') for rollizo in Rollizo.objects.all()]
         )

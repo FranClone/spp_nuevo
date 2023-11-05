@@ -9,11 +9,11 @@ from django.db import models
 
 
 class Periodo(models.Model):
-    nombre_periodo = models.CharField(max_length=200, blank=True, null=True)
+    nombre_periodo = models.CharField(max_length=200, blank=True, null=False)
     tipo_periodo = models.ForeignKey('TipoPeriodo', on_delete=models.CASCADE, verbose_name='Tipo de Periodo')
     descripcion_periodo = models.CharField(max_length=300, blank=True, null=True)
-    cantidad_periodos = models.IntegerField(blank=True, null=True)
-    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    cantidad_periodos = models.IntegerField(blank=True, null=False)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=False)
     fecha_crea = models.DateField(auto_now_add=True)
 
     class Meta:

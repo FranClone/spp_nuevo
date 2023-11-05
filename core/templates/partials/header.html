@@ -27,6 +27,7 @@
             <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Planificar Producción</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#plan" id="showPlanButton">Plan vigente</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#planpedido" id="showPlanPedidosButton">Plan Pedidos</a></li>
+            {% comment %} <li><a class="nav-link" href="{% url 'home' %}#plan2" id="showPlan2Button">Prueba</a></li> {% endcomment %}
 
 
           </ul>
@@ -87,27 +88,33 @@
         switch (fragmento) {
           case "#pedidos":
             gantt.showPedidosTable();
-            titulo.textContent = "Pedidos JCE";
+            titulo.textContent = "PEDIDOS EMPRESA {{ request.user.empresa }}";
             break;
           case "#productos":
             gantt.showProductosTable();
-            titulo.textContent = "Productos JCE";
+            titulo.textContent = "PRODUCTOS EMPRESA {{ request.user.empresa }}";
             break;
           case "#plan":
             gantt.showPlanTable();
             // Obtén la fecha de producción del elemento oculto
-            titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL JCE - 19/10/2023";
+            titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL EMPRESA {{ request.user.empresa }} - 19/10/2023";
             $("#btnGroup").show();
             break;
+            //} case "#plan2":
+            //gantt.showPlan2Table();
+            // Obtén la fecha de producción del elemento oculto
+            //titulo.textContent = "PLAN PRUEBA";
+            //$("#btnGroup").show();
+            //break;
             case "#planpedido":
             gantt.showPlanPedidoTable();
             // Obtén la fecha de producción del elemento oculto
-            titulo.textContent = "PLAN DE PEDIDO ACTUAL JCE - 19/10/2023";
+            titulo.textContent = "PLAN DE PEDIDO ACTUAL EMPRESA {{ request.user.empresa }} - 19/10/2023";
             break;
           default:
             // Fragmento de URL no reconocido, muestra una tabla predeterminada
             gantt.showPedidosTable();
-            titulo.textContent = "Pedidos JCE";
+            titulo.textContent = "PEDIDOS EMPRESA {{ request.user.empresa }}";
             break;
         }
       }

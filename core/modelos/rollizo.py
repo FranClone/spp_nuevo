@@ -3,10 +3,10 @@ from django.core.validators import MinValueValidator
 
 class Rollizo(models.Model):
     nombre_rollizo = models.CharField(max_length=300)
-    descripcion_rollizo = models.CharField(max_length=500, blank=True, null=True)
-    diametro =models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
-    largo = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=True)
-    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    descripcion_rollizo = models.CharField(max_length=500, blank=True, null=False)
+    diametro =models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=False)
+    largo = models.FloatField(max_length=10, validators=[MinValueValidator(0)],null=False)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=False)
     fecha_crea = models.DateField(auto_now_add=True)
     CLASE_DIAMETRICA_CHOICES = []
     for i in range(12, 31, 2):

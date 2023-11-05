@@ -4,7 +4,7 @@ from django.db import models
 class StockRollizo(models.Model):
     rollizo = models.ForeignKey('Rollizo', on_delete=models.CASCADE, verbose_name='Rollizo')
     cantidad = models.FloatField()#m3
-    usuario_crea = models.CharField(max_length=20, blank=True, null=True)
+    usuario_crea = models.CharField(max_length=20, blank=True, null=False)
     fecha_crea = models.DateField(auto_now_add=True)
     bodega = models.ForeignKey('Bodega', on_delete=models.CASCADE, verbose_name='Bodega')
     dias_produccion = models.DateField(null=True)
