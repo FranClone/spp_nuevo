@@ -79,9 +79,34 @@ class Gantt {
 //     return html;
 // }
 
-    
-        
 
+        const groupedRows = {};
+
+        // Iterar sobre cada producto y crear una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+            // Agrega un mensaje para rastrear el progreso
+
+
+            // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+            for (let j = 0; j < task[64].length; j++) {
+                var m = task[64][j];
+                bodyHtml += `<td class="right-align">${m}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[61]}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[62]}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[63]}</td>`;/*OP Orden Interna*/
+                bodyHtml += '</tr>';
+
+            }
+
+
+
+        }
+
+        html += bodyHtml;
+        html += '</tbody></table>';
+        return html;
+    }
 
     PlanPedidoTable() {
         var html = '<table  class="event-table second-table"><thead><tr>';
@@ -181,7 +206,7 @@ class Gantt {
                         } else {
                             bodyHtml += '"></td>';
                         }
-                    
+
                         bodyHtml += '</td>';
                     }
 
@@ -200,7 +225,7 @@ class Gantt {
 
 
     PlanTable() {
-     
+
         var html = '<table class="event-table second-table"><thead><tr>';
         html += '<tr>'
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
@@ -218,10 +243,10 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
-    
+
         // Obtén la fecha actual
         const currentDate = new Date();
-    
+
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
@@ -231,19 +256,19 @@ class Gantt {
             const formattedDate = this.formatDate(date, "diario");
             html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
         }
-    
+
         html += '</tr></thead><tbody>';
-    
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         const groupedRows = {};
-    
+
         // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
             // Agrega un mensaje para rastrear el progreso
-    
+
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
             // Obtén la fecha actual
@@ -253,7 +278,7 @@ class Gantt {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
                     var product = task[7][j];
-    
+
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
@@ -267,13 +292,13 @@ class Gantt {
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
                             ids: []
-                           
+
                         };
-                    }      
+                    }
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
-    
+
                     while (sum < target) {
                         let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                         sum += randomNumber;
@@ -282,7 +307,7 @@ class Gantt {
                             break;
                         }
                     }
-    
+
                     groupedRows[key].cantidad += parseInt(task[45], 10);
                     groupedRows[key].cantidadm3 += parseFloat(task[20]);
                     groupedRows[key].detalles.push({
@@ -290,11 +315,11 @@ class Gantt {
                         randomNumbers: randomNumbers,
                         i: i,
                     });
-    
+
                     groupedRows[key].ids.push(i);
                 }
 
-    
+
             }
         }
 
@@ -307,14 +332,14 @@ class Gantt {
             for (let id of ids) {
                 const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
                 const currentDate = new Date(); // Obtén la fecha actual
-  
+
                 // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
                 const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
 
                 if (dateDiff > maxFechaLejanaPorFila) {
                     maxFechaLejanaPorFila = dateDiff;
                 }
-   
+
             }
 
         }
@@ -326,7 +351,7 @@ class Gantt {
             const productNameB = b.product.toLowerCase();
             return productNameA.localeCompare(productNameB);
         });
-                        // Check if the date is today
+        // Check if the date is today
 
 
         for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
@@ -337,7 +362,7 @@ class Gantt {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-        
+
             bodyHtml += '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
@@ -348,7 +373,7 @@ class Gantt {
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
-        
+
             for (let i = 0; i < sortedRow.detalles.length; i++) {
                 let detalle = sortedRow.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
@@ -356,22 +381,22 @@ class Gantt {
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-        
+
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
-            
+
                 } else {
                     bodyHtml += '"></td>';
                 }
                 bodyHtml += '</td>';
             }
         }
-        
+
         bodyHtml += '</tr>';
-        
+
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -457,17 +482,17 @@ class Gantt {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
         html += '</tr></thead><tbody>';
-    
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         const groupedRows = {};
-    
+
         // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
             // Agrega un mensaje para rastrear el progreso
-    
+
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
             // Obtén la fecha actual
@@ -477,7 +502,7 @@ class Gantt {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
                     var product = task[7][j];
-    
+
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
@@ -491,13 +516,13 @@ class Gantt {
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
                             ids: []
-                           
+
                         };
-                    }      
+                    }
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
-    
+
                     while (sum < target) {
                         let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                         sum += randomNumber;
@@ -506,7 +531,7 @@ class Gantt {
                             break;
                         }
                     }
-    
+
                     groupedRows[key].cantidad += parseInt(task[45], 10);
                     groupedRows[key].cantidadm3 += parseFloat(task[20]);
                     groupedRows[key].detalles.push({
@@ -514,7 +539,7 @@ class Gantt {
                         randomNumbers: randomNumbers,
                         i: i,
                     });
-    
+
                     groupedRows[key].ids.push(i);
                 }
             }
@@ -555,7 +580,7 @@ class Gantt {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-        
+
             bodyHtml += '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
@@ -564,11 +589,11 @@ class Gantt {
             bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-        
+
         }
-        
+
         bodyHtml += '</tr>';
-        
+
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -725,7 +750,9 @@ class Gantt {
             const alto = productoData[17];
 
 
-            var html = '<table class="second-table"><thead><tr>';
+            var html = '<div id="scroll">';
+            html +='<table class="second-table" ><thead class="scroll-top"><tr>';
+
             html += '<tr>'
             html += '<th class="detalle-pedido-t" colspan="5" ></th>';
             html += '<th class="detalle-pedido-t" colspan="3" >Paquete</th>';
@@ -776,7 +803,6 @@ class Gantt {
             let totalM3 = 0;
             let totalMbf = 0;
             let totalPiezas = 0;
-
             for (let j = 0; j < pedidoIds.length; j++) {
                 let i = pedidoIds[j];
                 let task = this.filteredTasks[i];
@@ -787,23 +813,29 @@ class Gantt {
                 
             }
 
-            // Agregar la fila de totales
+
+            // Cerrar la estructura de la tabla
+            html += '</tbody>';
+
+            html += '<tfoot class="scroll-bot">';
             html += '<tr>';
-            html += '<td class="detalle-pedido right-align"><b>Totales</b></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += `<td class="detalle-pedido right-align"><b>${totalPqteSolicitados.toLocaleString()}</b></td>`;
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += `<td class="detalle-pedido right-align"><b>${totalPiezas.toLocaleString()}</b></td>`; // Pzas
-            html += `<td class="detalle-pedido right-align"><b>${totalM3.toLocaleString().replace('.', ',')}</b></td>`;
-            html += `<td class="detalle-pedido right-align"><b>${totalMbf.toLocaleString().replace('.', ',')}</b></td>`;
+            html += '<th class="detalle-pedido-t">Total:</th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPqteSolicitados.toLocaleString()}</th>`; // Pqte. Solicitados
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPiezas.toLocaleString()}</th>`; // Pzas
+            html += `<th class="detalle-pedido-t">${totalM3.toLocaleString().replace('.', ',')}</th>`; // M3
+            html += `<th class="detalle-pedido-t">${totalMbf.toLocaleString().replace('.', ',')}</th>`; // Mbf
             html += '</tr>';
-            // Close the table structure
-            html += '</tbody></table>';
+            html += '</tfoot></table></div>';
+
+
+
 
             // Set the innerHTML of the popup element
             popup.innerHTML = `
@@ -819,7 +851,8 @@ class Gantt {
         } else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
 
-            var html = '<table class="second-table"><thead><tr>';
+            var html = '<div id="scroll">';
+            html +='<table class="second-table" ><thead class="scroll-top"><tr>';
             html += '<tr>'
             html += '<th class="detalle-pedido-t" colspan="6" ></th>';
             html += '<th class="detalle-pedido-t" colspan="3" >Facturacion</th>';
@@ -881,11 +914,53 @@ class Gantt {
                     }
                 }
             }
+            // Calcular los totales
+            let totalM3 = 0;
+            let totalMbf = 0;
+            let totalPiezas = 0;
+            let totalPqtes = 0;
+            for (let j = 0; j < pedidoIds.length; j++) {
+                let i = pedidoIds[j];
+                if (i < this.filteredTasks.length) {
+                    let task = this.filteredTasks[i];
+                    // Convert to number and add to totals
+                    totalM3 += parseFloat(task[20]);
+                    totalMbf += parseFloat(task[51]);
+                    totalPqtes += parseFloat(task[45]);
+                    totalPiezas += parseFloat(task[55]);
+                }
+            }
+            
+            // Cerrar la estructura de la tabla
+            html += '</tbody>';
 
-            // Close the table structure
-            html += '</tbody></table>';
+            html += '<tfoot class="scroll-bot">';
+            html += '<tr>';
+            html += '<th class="detalle-pedido-t">Total:</th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPiezas.toLocaleString()}</th>`; // Pzas
+            html += `<th class="detalle-pedido-t">${totalPqtes.toLocaleString()}</th>`; // Pqte. Solicitados
+            html += `<th class="detalle-pedido-t">${totalM3.toLocaleString().replace('.', ',')}</th>`; // M3
+            html += `<th class="detalle-pedido-t">${totalMbf.toLocaleString().replace('.', ',')}</th>`; // Mbf
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '</tr>';
+            html += '</tfoot></table></div>';
 
-
+            
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
@@ -897,51 +972,6 @@ class Gantt {
 
 
 
-        }
-        else if (popupType === 'patron') {
-            productoData = this.tasks[pedidoId];
-            popup.innerHTML = `
-            <div class="popup-content" id="popup">
-                <h2>Detalles</h2>
-                <div class="popup-item">
-                    <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Diametro:</strong> <span>${productoData[35]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Largo trozo:</strong> <span>${productoData[24]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Codigo patrón:</strong> <span>${productoData[36]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Nombre patrón:</strong> <span>${productoData[37]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Descripción patrón:</strong> <span>${productoData[38]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Rendimiento patrón:</strong> <span>${productoData[39]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Velocidad línea patrón:</strong> <span>${productoData[40]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Setup time patrón:</strong> <span>${productoData[41]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Lead time patrón:</strong> <span>${productoData[42]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Utilizado patrón:</strong> <span>${productoData[43]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Producto asociado patrón:</strong> <span>${productoData[44]}</span>
-                </div>
-                <button class="close-button" >Cerrar</button>
-            </div>
-        `;
         }
         document.body.appendChild(popup);
 
