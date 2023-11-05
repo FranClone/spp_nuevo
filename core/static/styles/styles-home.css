@@ -69,24 +69,30 @@ table tr {
     float: left;
     margin-top: 1vh;
     margin-left: 1%;
- 
+
 }
 
 .carga-button-bot {
-    background-color: rgba(255, 0, 0, 0.705);
     color: white;
+    background-color: rgba(255, 0, 0, 0.705);
     border-radius: 6px;
-    padding: 13px 5px;
+    padding: 13px 3px;
     border: 2px solid white;
     text-decoration: none !important;
-    margin-bottom: 9px;
 }
 
-.carga-button-bot:hover {
-    background-color: white;
-    color: red;
-    transition: 0.5s ease-in-out;
+.carga-button-bot-a {
+    background-color: red;
+    color: white;
+    border-radius: 3px;
+    padding: 10px;
+    border: 1px solid white;
+    float: right;
+    margin-top: 1%;
+    margin-left: 1%;
+    margin-right: 1%;
 }
+
 
 .date-header {
     background-color: black;
@@ -205,12 +211,12 @@ table tr {
     border-right: 1px solid black;
     border-collapse: collapse;
     font-size: 16px;
-    background-color: rgba(235, 0, 0, 0.822); 
+    background-color: rgba(235, 0, 0, 0.822);
     line-height: 30px;
     text-align: center;
-    color: white; 
+    color: white;
     font-size: 15px;
-    
+
 }
 
 /*configurar lineas dentro de la tabla (columnas)*/
@@ -241,13 +247,14 @@ table tr {
 }
 
 .has-paquetes {
-    background-color: #79ac75; /* Cambia el color de fondo a amarillo para celdas con paquetes solicitados */
+    background-color: #79ac75;
+    /* Cambia el color de fondo a amarillo para celdas con paquetes solicitados */
 }
 
 .event-table {
     border-collapse: collapse;
     width: 100%;
-    
+
 }
 
 #gantt table tr td.event-cell:last-child {
@@ -350,8 +357,9 @@ table tr {
 .form-container-productos input,
 .form-container-productos select {
     flex: 1;
-    width: 100%;
+    width: 105%;
     margin-bottom: 10px;
+    height: 35px;
 }
 
 .carga-button {
@@ -612,7 +620,7 @@ table tr {
 }
 
 
-#materiaprima{
+#materiaprima {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
@@ -621,7 +629,7 @@ table tr {
     text-decoration: none !important;
 }
 
-#agregarpedido{
+#agregarpedido {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
@@ -630,7 +638,7 @@ table tr {
     text-decoration: none !important;
 }
 
-#produccion{
+#produccion {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
@@ -668,7 +676,7 @@ table tr {
 
 .bold-heading {
     font-weight: bold;
-    margin:auto;
+    margin: auto;
     margin-top: 20px;
 }
 
@@ -719,7 +727,7 @@ table tr {
     margin-right: 15px;
     margin-bottom: 15px;
 }
- 
+
 .btn-group {
     margin-top: 1vh;
     width: 100%;
@@ -762,7 +770,7 @@ table tr {
     background-color: rgba(255, 0, 0, 0.705);
     color: white;
     border-radius: 6px;
-    padding: 13px  3px;
+    padding: 13px 3px;
     border: 2px solid white;
     text-decoration: none !important;
     cursor: pointer;
@@ -825,42 +833,44 @@ table tr {
 }
 
 
-.detalle-pedido{
-    background-color: rgba(194, 194, 194, 0.705); 
-    color: Black; 
-    width: 30vh; 
-    font-size: 13px; 
-    border-width: 1px; 
+.detalle-pedido {
+    background-color: rgba(194, 194, 194, 0.705);
+    color: Black;
+    width: 30vh;
+    font-size: 13px;
+    border-width: 1px;
     text-align: center;
     border-right: 1px solid black;
 }
 
 
 
-.detalle-pedido-t{
-    background-color: rgba(235, 0, 0, 0.822);
-    color: white; 
-    width: 30vh; 
-    height:3vh;
-    font-size: 13px; 
+.detalle-pedido-t {
+    background-color: rgba(235, 0, 0, 1);
+    color: white;
+    width: 30vh;
+    height: 3vh;
+    font-size: 13px;
     border-width: 1px;
     text-align: center;
 
 }
-.a{
-    width: 30vh; 
-    background-color: rgba(235, 0, 0, 0.822); 
+
+.a {
+    width: 30vh;
+    background-color: rgba(235, 0, 0, 0.822);
 }
+
 .right-align {
     text-align: right;
-    padding-right:0.5vh;
-    height:3vh;
+    padding-right: 0.5vh;
+    height: 3vh;
 }
 
 .left-align {
     text-align: left;
-    padding-left:0.5vh;
-    height:3vh;
+    padding-left: 0.5vh;
+    height: 3vh;
 }
 
 .popup2 {
@@ -877,34 +887,41 @@ table tr {
     display: flex;
     flex-direction: column;
 }
+
 .button-container {
     display: flex;
     justify-content: space-between;
 }
 
-.file-name{
+.file-name {
     font-weight: bold;
 }
+
 th.asc::after {
-    content: ' ▲'; /* Flecha hacia arriba */
-  }
-  
+    content: ' ▲';
+    /* Flecha hacia arriba */
+}
+
 th.desc::after {
-    content: ' ▼'; /* Flecha hacia abajo */
+    content: ' ▼';
+    /* Flecha hacia abajo */
 }
 
 .button-container {
     display: flex;
-    justify-content: flex-end; /* Alinea los botones a la derecha */
-    margin-top: 10px; /* Agrega margen superior si es necesario */
+    justify-content: flex-end;
+    /* Alinea los botones a la derecha */
+    margin-top: 10px;
+    /* Agrega margen superior si es necesario */
 }
 
-.red-button-g, .red-button-c {
+.red-button-g,
+.red-button-c {
     background-color: red;
     color: white;
     border: 1px solid white;
     border-radius: 5px;
-    margin-left: 10px; 
+    margin-left: 10px;
     padding: 0.5vh;
     width: 5vh;
 }
@@ -978,12 +995,30 @@ th.desc::after {
 */
 #miBoton {
     font-size: 18px;
-    color: #f5ae43; /* Color del ícono */
+    color: #f5ae43;
+    /* Color del ícono */
     cursor: pointer;
     display: flex;
     justify-content: right;
 }
 
 #miBoton:hover {
-    color: #ff5e00; /* Cambia el color del ícono cuando el mouse está sobre él */
+    color: #ff5e00;
+    /* Cambia el color del ícono cuando el mouse está sobre él */
+}
+
+#scroll {
+    max-height: 300px; /* Establece la altura máxima del contenedor */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical cuando el contenido excede la altura máxima */
+}
+
+.scroll-top{
+    top: 0;
+    position: sticky;
+    border-width: 1px;
+    border-color: black;
+}
+.scroll-bot{
+    bottom: 0;
+    position: sticky;
 }

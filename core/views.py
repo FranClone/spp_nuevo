@@ -778,29 +778,14 @@ def gantt_view(request):
                             'm3': m3
                         })
                         
-                    for data in demandas_data:
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto ID: {producto_id}')
-                        print(f'Producto: {producto_nombre}')
-                        print(f'Medida: {medida_id}')
-                        print(f'Medida_al: {medida_alto}')
-                        print(f'Medida_an: {medida_ancho}')
-                        print(f'Medida_l: {medida_largo}')
-                        print(f'producto_medida_id: {producto_medida_id}')
-                        print(f"Demanda ID: {data['demanda_id']}")
-                        print(f"Medida_Producto ID: {data['Medida_Producto_id']}")
-                        print(f"Días de producción: {data['dias_produccion']}")
-                        print(f"Pqtes solicitados: {data['pqtes_solicitados']}")
-                        print(f"Pqtes días: {data['pqtes_dias']}")
-                        print(f"M3: {data['m3']}")
-                        print()
+                   
                         
                         
 
                 # Ahora tienes los datos necesarios de la tabla 'Demanda' y 'ProductoMedida' para el 'pedido' actual
                 # Puedes usar estas variables en tu código existente
 
-                        tasks_pedido = [
+            tasks_pedido = [
                             pedido.orden_interna,
                             fecha_actual,   # 1
                             pedido.fecha_entrega.strftime('%Y/%m/%d'),  # 2
@@ -870,7 +855,7 @@ def gantt_view(request):
                             demanda_id,#66
                         ]
 
-                        tasks.append(tasks_pedido)
+            tasks.append(tasks_pedido)
     formStockRollizo = ActualizarStockRollizo()
     formstockterminado = StockForm()
     context = {

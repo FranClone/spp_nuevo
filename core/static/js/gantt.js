@@ -31,57 +31,45 @@ class Gantt {
     }
 
 
-Plan2Table() {
-    var html = '<table class="event-table second-table"><thead><tr>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Id Demanda</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Producto</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida_Producto</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Dias Produccion</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes Solicitados</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes dia</th>';
-    html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3</th>';
-    // Añade los encabezados de las otras columnas aquí
-    html += '</tr></thead><tbody>';
+    Plan2Table() {
 
-    // Utiliza un conjunto para mantener un registro de los valores únicos de task[66]
-    var uniqueDemandValues = new Set();
+        var html = '<table class="event-table second-table"><thead><tr>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Medida</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Largo <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Ancho <br> (cm)</th>';
+        html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Alto <br> (cm)</th>';
+        html += '</tr></thead><tbody>';
 
-    for (let i = 0; i < this.filteredTasks.length; i++) {
-        var task = this.filteredTasks[i];
-        var demanda = task[66]; // Obtén el valor de la demanda
+        // Utiliza una variable diferente para el cuerpo de la tabla
+        var bodyHtml = '';
 
-        // Verifica si el valor de la demanda ya se ha agregado a la tabla
-        if (!uniqueDemandValues.has(demanda)) {
-            uniqueDemandValues.add(demanda);
+        const groupedRows = {};
 
-            // Crea una fila para la demanda actual
-            html += '<tr>';
-            html += `<td class="right-align">${demanda}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[7]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[17]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[18]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[19]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[64]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[65]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[61]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[62]}</td>`; // Columna de la demanda
-            html += `<td class="right-align">${task[63]}</td>`; // Columna de la demanda
-            // Añade el resto de los valores de task en las celdas de la fila
+        // Iterar sobre cada producto y crear una fila por producto
+        for (let i = 0; i < this.filteredTasks.length; i++) {
+            var task = this.filteredTasks[i];
+            // Agrega un mensaje para rastrear el progreso
 
-            html += '</tr>';
+
+            // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+            for (let j = 0; j < task[64].length; j++) {
+                var m = task[64][j];
+                bodyHtml += `<td class="right-align">${m}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[61]}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[62]}</td>`;/*OP Orden Interna*/
+                bodyHtml += `<td class="right-align">${task[63]}</td>`;/*OP Orden Interna*/
+                bodyHtml += '</tr>';
+
+            }
+
+
+
         }
+
+        html += bodyHtml;
+        html += '</tbody></table>';
+        return html;
     }
-
-    html += '</tbody></table>';
-    return html;
-}
-
-    
-        
-
 
     PlanPedidoTable() {
         var html = '<table class="second-table"><thead><tr>';
@@ -181,7 +169,7 @@ Plan2Table() {
                         } else {
                             bodyHtml += '"></td>';
                         }
-                    
+
                         bodyHtml += '</td>';
                     }
 
@@ -200,7 +188,7 @@ Plan2Table() {
 
 
     PlanTable() {
-     
+
         var html = '<table class="event-table second-table"><thead><tr>';
         html += '<tr>'
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
@@ -218,10 +206,10 @@ Plan2Table() {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
-    
+
         // Obtén la fecha actual
         const currentDate = new Date();
-    
+
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
@@ -231,19 +219,19 @@ Plan2Table() {
             const formattedDate = this.formatDate(date, "diario");
             html += '<th style="color: white; width: 70vh; font-size: 13px;">' + formattedDate + '</th>';
         }
-    
+
         html += '</tr></thead><tbody>';
-    
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         const groupedRows = {};
-    
+
         // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
             // Agrega un mensaje para rastrear el progreso
-    
+
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
             // Obtén la fecha actual
@@ -253,7 +241,7 @@ Plan2Table() {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
                     var product = task[7][j];
-    
+
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
@@ -267,13 +255,13 @@ Plan2Table() {
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
                             ids: []
-                           
+
                         };
-                    }      
+                    }
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
-    
+
                     while (sum < target) {
                         let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                         sum += randomNumber;
@@ -282,7 +270,7 @@ Plan2Table() {
                             break;
                         }
                     }
-    
+
                     groupedRows[key].cantidad += parseInt(task[45], 10);
                     groupedRows[key].cantidadm3 += parseFloat(task[20]);
                     groupedRows[key].detalles.push({
@@ -290,11 +278,11 @@ Plan2Table() {
                         randomNumbers: randomNumbers,
                         i: i,
                     });
-    
+
                     groupedRows[key].ids.push(i);
                 }
 
-    
+
             }
         }
 
@@ -307,14 +295,14 @@ Plan2Table() {
             for (let id of ids) {
                 const fechaTask2 = new Date(this.filteredTasks[id][2]); // Obtén la fecha de task[2] con el ID
                 const currentDate = new Date(); // Obtén la fecha actual
-  
+
                 // Calcula la diferencia de días entre la fecha de task[2] y la fecha actual
                 const dateDiff = Math.floor((fechaTask2 - currentDate) / (1000 * 60 * 60 * 24));
 
                 if (dateDiff > maxFechaLejanaPorFila) {
                     maxFechaLejanaPorFila = dateDiff;
                 }
-   
+
             }
 
         }
@@ -326,7 +314,7 @@ Plan2Table() {
             const productNameB = b.product.toLowerCase();
             return productNameA.localeCompare(productNameB);
         });
-                        // Check if the date is today
+        // Check if the date is today
 
 
         for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
@@ -337,7 +325,7 @@ Plan2Table() {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-        
+
             bodyHtml += '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
@@ -348,7 +336,7 @@ Plan2Table() {
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
-        
+
             for (let i = 0; i < sortedRow.detalles.length; i++) {
                 let detalle = sortedRow.detalles[i];
                 for (let l = 0; l < detalle.randomNumbers.length; l++) {
@@ -356,22 +344,22 @@ Plan2Table() {
                     paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
             }
-        
+
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
-            
+
                 } else {
                     bodyHtml += '"></td>';
                 }
                 bodyHtml += '</td>';
             }
         }
-        
+
         bodyHtml += '</tr>';
-        
+
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -457,17 +445,17 @@ Plan2Table() {
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
         html += '</tr></thead><tbody>';
-    
+
         // Utiliza una variable diferente para el cuerpo de la tabla
         var bodyHtml = '';
-    
+
         const groupedRows = {};
-    
+
         // Iterar sobre cada producto y crear una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
             // Agrega un mensaje para rastrear el progreso
-    
+
             // Obtén la fecha de ETA del pedido
             const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
             // Obtén la fecha actual
@@ -477,7 +465,7 @@ Plan2Table() {
                 // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
                 for (let j = 0; j < task[7].length; j++) {
                     var product = task[7][j];
-    
+
                     var key = `${product}_${task[19]}_${task[18]}_${task[17]}`; // Crear una clave única para agrupar
                     if (!groupedRows[key]) {
                         groupedRows[key] = {
@@ -491,13 +479,13 @@ Plan2Table() {
                             fechaInicio: new Date(task[3]),
                             fechaFin: new Date(task[2]),
                             ids: []
-                           
+
                         };
-                    }      
+                    }
                     let target = task[45];
                     let sum = 0;
                     let randomNumbers = [];
-    
+
                     while (sum < target) {
                         let randomNumber = Math.floor(Math.random() * (target - sum)) + 1;
                         sum += randomNumber;
@@ -506,7 +494,7 @@ Plan2Table() {
                             break;
                         }
                     }
-    
+
                     groupedRows[key].cantidad += parseInt(task[45], 10);
                     groupedRows[key].cantidadm3 += parseFloat(task[20]);
                     groupedRows[key].detalles.push({
@@ -514,7 +502,7 @@ Plan2Table() {
                         randomNumbers: randomNumbers,
                         i: i,
                     });
-    
+
                     groupedRows[key].ids.push(i);
                 }
             }
@@ -555,7 +543,7 @@ Plan2Table() {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-        
+
             bodyHtml += '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
@@ -564,11 +552,11 @@ Plan2Table() {
             bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
-        
+
         }
-        
+
         bodyHtml += '</tr>';
-        
+
 
         html += bodyHtml;
         html += '</tbody></table>';
@@ -720,7 +708,9 @@ Plan2Table() {
         if (popupType === 'producto') {
             productoData = this.tasks[pedidoIds];
 
-            var html = '<table class="second-table"><thead><tr>';
+            var html = '<div id="scroll">';
+            html +='<table class="second-table" ><thead class="scroll-top"><tr>';
+
             html += '<tr>'
             html += '<th class="detalle-pedido-t" colspan="5" ></th>';
             html += '<th class="detalle-pedido-t" colspan="3" >Paquete</th>';
@@ -771,33 +761,41 @@ Plan2Table() {
             let totalM3 = 0;
             let totalMbf = 0;
             let totalPiezas = 0;
-
             for (let j = 0; j < pedidoIds.length; j++) {
                 let i = pedidoIds[j];
-                let task = this.filteredTasks[i];
-                totalPqteSolicitados += parseInt(task[45], 10); // Convierte a número
-                totalM3 += parseFloat(task[20]); // Convierte a número de punto flotante
-                totalMbf += parseFloat(task[51]); // Convierte a número de punto flotante
-                totalPiezas += parseFloat(task[55]); // Convierte a número de punto flotante
+                if (i < this.filteredTasks.length) {
+                    let task = this.filteredTasks[i];
+                    // Convert to number and add to totals
+                    totalPqteSolicitados += parseInt(task[45], 10);
+                    totalM3 += parseFloat(task[20]);
+                    totalMbf += parseFloat(task[51]);
+                    totalPiezas += parseFloat(task[55]);
+                }
             }
 
-            // Agregar la fila de totales
+
+            // Cerrar la estructura de la tabla
+            html += '</tbody>';
+
+            html += '<tfoot class="scroll-bot">';
             html += '<tr>';
-            html += '<td class="detalle-pedido right-align"><b>Totales</b></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += `<td class="detalle-pedido right-align"><b>${totalPqteSolicitados.toLocaleString()}</b></td>`;
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += '<td class="detalle-pedido right-align"></td>';
-            html += `<td class="detalle-pedido right-align"><b>${totalPiezas.toLocaleString()}</b></td>`; // Pzas
-            html += `<td class="detalle-pedido right-align"><b>${totalM3.toLocaleString().replace('.', ',')}</b></td>`;
-            html += `<td class="detalle-pedido right-align"><b>${totalMbf.toLocaleString().replace('.', ',')}</b></td>`;
+            html += '<th class="detalle-pedido-t">Total:</th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPqteSolicitados.toLocaleString()}</th>`; // Pqte. Solicitados
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPiezas.toLocaleString()}</th>`; // Pzas
+            html += `<th class="detalle-pedido-t">${totalM3.toLocaleString().replace('.', ',')}</th>`; // M3
+            html += `<th class="detalle-pedido-t">${totalMbf.toLocaleString().replace('.', ',')}</th>`; // Mbf
             html += '</tr>';
-            // Close the table structure
-            html += '</tbody></table>';
+            html += '</tfoot></table></div>';
+
+
+
 
             // Set the innerHTML of the popup element
             popup.innerHTML = `
@@ -813,7 +811,8 @@ Plan2Table() {
         } else if (popupType === 'pedido') {
             productoData = this.tasks[pedidoId];
 
-            var html = '<table class="second-table"><thead><tr>';
+            var html = '<div id="scroll">';
+            html +='<table class="second-table" ><thead class="scroll-top"><tr>';
             html += '<tr>'
             html += '<th class="detalle-pedido-t" colspan="6" ></th>';
             html += '<th class="detalle-pedido-t" colspan="3" >Facturacion</th>';
@@ -875,11 +874,53 @@ Plan2Table() {
                     }
                 }
             }
+            // Calcular los totales
+            let totalM3 = 0;
+            let totalMbf = 0;
+            let totalPiezas = 0;
+            let totalPqtes = 0;
+            for (let j = 0; j < pedidoIds.length; j++) {
+                let i = pedidoIds[j];
+                if (i < this.filteredTasks.length) {
+                    let task = this.filteredTasks[i];
+                    // Convert to number and add to totals
+                    totalM3 += parseFloat(task[20]);
+                    totalMbf += parseFloat(task[51]);
+                    totalPqtes += parseFloat(task[45]);
+                    totalPiezas += parseFloat(task[55]);
+                }
+            }
+            
+            // Cerrar la estructura de la tabla
+            html += '</tbody>';
 
-            // Close the table structure
-            html += '</tbody></table>';
+            html += '<tfoot class="scroll-bot">';
+            html += '<tr>';
+            html += '<th class="detalle-pedido-t">Total:</th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '<th class="detalle-pedido-t"></th>';
+            html += `<th class="detalle-pedido-t">${totalPiezas.toLocaleString()}</th>`; // Pzas
+            html += `<th class="detalle-pedido-t">${totalPqtes.toLocaleString()}</th>`; // Pqte. Solicitados
+            html += `<th class="detalle-pedido-t">${totalM3.toLocaleString().replace('.', ',')}</th>`; // M3
+            html += `<th class="detalle-pedido-t">${totalMbf.toLocaleString().replace('.', ',')}</th>`; // Mbf
+            html += '<th class="detalle-pedido-t"></th>';
+            html += '</tr>';
+            html += '</tfoot></table></div>';
 
-
+            
             // Set the innerHTML of the popup element
             popup.innerHTML = `
                 <div class="popup-content" id="popup">
@@ -891,51 +932,6 @@ Plan2Table() {
 
 
 
-        }
-        else if (popupType === 'patron') {
-            productoData = this.tasks[pedidoId];
-            popup.innerHTML = `
-            <div class="popup-content" id="popup">
-                <h2>Detalles</h2>
-                <div class="popup-item">
-                    <strong>Codigo pedido:</strong> <span>${productoData[0]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Diametro:</strong> <span>${productoData[35]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Largo trozo:</strong> <span>${productoData[24]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Codigo patrón:</strong> <span>${productoData[36]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Nombre patrón:</strong> <span>${productoData[37]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Descripción patrón:</strong> <span>${productoData[38]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Rendimiento patrón:</strong> <span>${productoData[39]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Velocidad línea patrón:</strong> <span>${productoData[40]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Setup time patrón:</strong> <span>${productoData[41]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Lead time patrón:</strong> <span>${productoData[42]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Utilizado patrón:</strong> <span>${productoData[43]}</span>
-                </div>
-                <div class="popup-item">
-                    <strong>Producto asociado patrón:</strong> <span>${productoData[44]}</span>
-                </div>
-                <button class="close-button" >Cerrar</button>
-            </div>
-        `;
         }
         document.body.appendChild(popup);
 
