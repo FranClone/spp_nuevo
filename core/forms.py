@@ -135,7 +135,10 @@ class CrearProductoForm(forms.ModelForm):
 
 
 class CrearRollizoForm(forms.ModelForm):
+    diametro=forms.FloatField(min_value=0)
+    largo = forms.FloatField(min_value=0)
     exclude = ['fecha_crea']
+    
     class Meta:
         model = Rollizo
         fields ='__all__'
@@ -144,6 +147,7 @@ class CrearRollizoForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
 
 class CrearLineaForm(forms.ModelForm):
+    velocidad = forms.DecimalField(min_value=0)
     exclude = ['fecha_crea']
     class Meta:
         model = Linea
