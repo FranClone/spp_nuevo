@@ -240,7 +240,7 @@ class Gantt {
 
         // Continuar con los demás encabezados
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Solicitados</th>';
-        //html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
+       // html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Pqtes.Saldo</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">M3 <br> (cm)</th>';
         html += '<th style="color: white; width: 15vh; font-size: 15px; text-align: center; height:3vh;">Detalles</th>';
 
@@ -369,7 +369,7 @@ class Gantt {
             bodyHtml += `<td class="right-align">${sortedRow.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
-            bodyHtml += `<td class="right-align"></td>`;
+           // bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
