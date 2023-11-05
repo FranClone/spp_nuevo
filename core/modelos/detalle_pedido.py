@@ -35,7 +35,7 @@ class DetallePedido(models.Model):
     marca = models.CharField(max_length=40, null=True, blank=False)
     programa = models.CharField(max_length=40, null=True, blank=False)
     piezas = models.FloatField(validators=[MinValueValidator(0)], null=False)
-    cpo = models.FloatField(validators=[MinValueValidator(0)], null=False)
+    cpo = models.FloatField(validators=[MinValueValidator(0)], null=True)
     est = models.CharField(max_length=40, null=False, blank=False)
     # producto_key = models.CharField(max_length=300, null=True)
     folio =  models.CharField(max_length=20, null=False, blank=True)

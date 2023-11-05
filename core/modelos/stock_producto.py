@@ -10,8 +10,8 @@ class StockProducto(models.Model):
     cantidad_m3 = models.FloatField(null=False)
     fecha_crea = models.DateField(auto_now_add=True)
     usuario_crea = models.CharField(max_length=20, blank=True, null=False)
-    valor_inventario = models.FloatField(null=False,max_length=10) #USD/M3 VI
-    costo_almacenamiento = models.FloatField(null=False,max_length=10) #CI
+    valor_inventario = models.FloatField(null=True,max_length=10) #USD/M3 VI
+    costo_almacenamiento = models.FloatField(null=True,max_length=10) #CI
     class Meta:
         db_table = 'STOCK_PRODUCTO'
         
