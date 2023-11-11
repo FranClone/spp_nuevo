@@ -517,7 +517,6 @@ def producto(request):
             form = CrearProductoForm(request.POST)
             if form.is_valid():
                 nuevo_producto = form.save()
-                print("Producto guardado en la base de datos con ID:", nuevo_producto.id)  # Mensaje de depuración
                 
                 # Obtén los patrones de corte seleccionados en el formulario
                 patrones_de_corte = request.POST.getlist('patron_corte')
@@ -728,6 +727,11 @@ def gantt_view(request):
                 alto_paquete = empaque.alto_paquete if empaque else "N/A"
                 int_paquete = empaque.int_paquete if empaque else "N/A"
                 anc_paquete = empaque.anc_paquete if empaque else "N/A"
+                codigo_patron = "N/A"
+                nombre_patron = "N/A"
+                descripcion_patron = "N/A"
+                rendimiento_patron = "N/A"
+                utilizado_patron = "N/A"
                 try:
                     patron_corte_data = PatronCorte.objects.filter(rollizo=producto.nombre_rollizo)
 
@@ -737,17 +741,9 @@ def gantt_view(request):
                         descripcion_patron = patron.descripcion
                         rendimiento_patron = patron.rendimiento
                         utilizado_patron = str(patron.utilizado)
-<<<<<<< HEAD
-
-=======
             
->>>>>>> 2f929c4f71c682581f7855f0cbe075fd2c2748c4
                 except PatronCorte.DoesNotExist:
-                    codigo_patron = "N/A"
-                    nombre_patron = "N/A"
-                    descripcion_patron = "N/A"
-                    rendimiento_patron = "N/A"
-                    utilizado_patron = "N/A"
+                    pass
 
            
 
@@ -1045,7 +1041,6 @@ def linea(request):
             form = CrearLineaForm(request.POST)
             if form.is_valid():
                 nueva_linea = form.save()
-                print("Producto guardado en la base de datos con ID:", nueva_linea.id)  # Mensaje de depuración
                 return redirect('plan_linea')
     
     context = {
@@ -1064,7 +1059,6 @@ def rollizo(request):
             form = CrearRollizoForm(request.POST)
             if form.is_valid():
                 nuevo_rollizo = form.save()
-                print("Producto guardado en la base de datos con ID:", nuevo_rollizo.id)  # Mensaje de depuración
                 return redirect('plan_rollizo')
     
     context = {
@@ -1098,7 +1092,6 @@ def cliente(request):
             form = CrearClienteForm(request.POST)
             if form.is_valid():
                 nueva_cliente = form.save()
-                print("Producto guardado en la base de datos con ID:", nueva_cliente.id)  # Mensaje de depuración
                 return redirect('admin_cliente')
     
     context = {
@@ -1117,8 +1110,7 @@ def empresa(request):
         if 'crear' in request.POST:
             form = CrearEmpresaForm(request.POST)
             if form.is_valid():
-                nueva_empresa = form.save()
-                print("Producto guardado en la base de datos con ID:", nueva_empresa.id)
+                form.save()
                 return redirect('admin_empresa')
     
     context = {
@@ -1201,7 +1193,7 @@ class Custom404View(View):
     def get(self, request, *args, **kwargs):
         return render(request, '404.html', status=404)
     
-@require_role('ADMINISTRADOR')  
+@require_role(['ADMINISTRADOR', 'PLANIFICADOR'])  
 @login_required
 def actualizar_stock_rollizo(request):
     print('actualizar_stock_rollizo')
@@ -1213,8 +1205,7 @@ def actualizar_stock_rollizo(request):
             formStockRollizo = ActualizarStockRollizo(request.POST)
             if formStockRollizo.is_valid():
                 nuevo_stock = formStockRollizo.save()
-                print("Producto guardado en la base de datos con ID:", nuevo_stock.id)
-                return redirect('home')
+                return redirect(f"{reverse('home')}#plan")
     else:
         formStockRollizo = ActualizarStockRollizo()
     context = {
@@ -1225,7 +1216,7 @@ def actualizar_stock_rollizo(request):
 
 
 
-@require_role('ADMINISTRADOR')  
+@require_role(['ADMINISTRADOR', 'PLANIFICADOR'])  
 @login_required
 def stock(request):
     stocks = StockProducto.objects.all()
@@ -1269,12 +1260,10 @@ def stock(request):
                 # Actualizar paquetes_saldo en DetallePedido
                 actualizar_paquetes_saldo(producto_id_1, equivalentes_paquetes)
 
-
-                print(actualizar_paquetes_saldo)
                 # Crear la entrada de stock
 
 
-                return redirect('home')
+                return redirect(f"{reverse('home')}#plan")
     
     context = {
         'form': formstockterminado,

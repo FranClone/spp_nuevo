@@ -162,7 +162,7 @@
                             '{{ empresa.ciudad }}',
                             '{{ empresa.telefono }}', 
                             )"><i class="fa-regular fa-clipboard fa-xl"></i></button>
-                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ empresa.id }}')"></i>
+                            <i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ empresa.rut_empresa }}')"></i> 
                             <a href="admin_empresaeditar/{{empresa.rut_empresa}}"
                                 class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
                             {% endif %}
@@ -280,7 +280,7 @@
         // Función para abrir el popup de eliminación
         function openEliminarPopup(id) {
             empresaId = id; // Cambiado de stockId a empresaId
-            mensaje.textContent = `¿Estás seguro de borrar la empresa con ID: ${empresaId}?`; 
+            mensaje.textContent = `¿Estás seguro de borrar la empresa con rut: ${empresaId}?`; 
             // Actualiza el href del enlace "Confirmar"
             popupEliminar.style.display = 'flex';
         }

@@ -230,7 +230,7 @@
         </div>
 
         <div class="button-container" id="btnGroup" style="display: none;">
-            <button class="carga-button-bot" id="ejecutarBoton" style="margin:10px; display: none;">Ejecutar Algortimo</button>
+            <button class="carga-button-bot" id="ejecutarBoton" style="margin:10px; display: none;">Replanificar</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupmateria()">Materia Prima</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupproduccion()">Producción</button>
             <button class="carga-button-bot" style="margin:10px;" onclick="showPopupimport()">Agregar Pedidos</button>
@@ -264,8 +264,8 @@
             </table>
 
             <div class="button-container">
-                <button type="submit" name="crear" class="red-button-g">Crear</button>
-                <button class="red-button-c" onclick="closePopupmateria()">Cerrar</button>
+                <button type="submit" id="crearBoton" name="crear" class="red-button-g">Crear</button>
+                <button class="red-button-c" onclick="closePopupmateria()">Cancelar</button>
             </div>
         </form>
     </div>
@@ -296,7 +296,7 @@
                 {{ formstockterminado.errors }}
              
                 <div  class="button-container">
-                    <button  type="submit" name="crear" class="red-button-g">Crear</button>    
+                    <button  type="submit" id="crearBoton2" name="crear" class="red-button-g">Crear</button>     
 
                     <button class="red-button-c" onclick="closePopupproduccion()">Cancelar</button>
                 </div>
@@ -390,6 +390,54 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
 
+    });
+</script>
+<script>
+    document.getElementById('crearBoton').addEventListener('click', function() {
+        localStorage.setItem('botonCrearPresionado', 'true');
+        // Mostrar 'ejecutarBoton' al presionar 'crearBoton'
+        document.getElementById('ejecutarBoton').style.display = 'block';
+    });
+
+    document.getElementById('ejecutarBoton').addEventListener('click', function() {
+        localStorage.removeItem('botonCrearPresionado'); // Eliminar la clave al presionar 'ejecutarBoton'
+        this.style.display = 'none'; // Ocultar 'ejecutarBoton'
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var botonCrearPresionado = localStorage.getItem('botonCrearPresionado');
+        
+        if (botonCrearPresionado) {
+            // Mostrar 'ejecutarBoton' si 'crearBoton' fue presionado
+            document.getElementById('ejecutarBoton').style.display = 'block';
+        } else {
+            // Ocultar 'ejecutarBoton' si no se presionó 'crearBoton'
+            document.getElementById('ejecutarBoton').style.display = 'none';
+        }
+    });
+</script>
+<script>
+    document.getElementById('crearBoton2').addEventListener('click', function() {
+        localStorage.setItem('botonCrearPresionado', 'true');
+        // Mostrar 'ejecutarBoton' al presionar 'crearBoton'
+        document.getElementById('ejecutarBoton').style.display = 'block';
+    });
+
+    document.getElementById('ejecutarBoton').addEventListener('click', function() {
+        localStorage.removeItem('botonCrearPresionado'); // Eliminar la clave al presionar 'ejecutarBoton'
+        this.style.display = 'none'; // Ocultar 'ejecutarBoton'
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var botonCrearPresionado = localStorage.getItem('botonCrearPresionado');
+        
+        if (botonCrearPresionado) {
+            // Mostrar 'ejecutarBoton' si 'crearBoton' fue presionado
+            document.getElementById('ejecutarBoton').style.display = 'block';
+        } else {
+            // Ocultar 'ejecutarBoton' si no se presionó 'crearBoton'
+            document.getElementById('ejecutarBoton').style.display = 'none';
+        }
     });
 </script>
 </html>

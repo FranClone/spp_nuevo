@@ -110,7 +110,6 @@
                 <thead class="thead-pedidos">
                     <tr>
                         <th>id</th>
-                        <th>Producto key</th>
                         <th>Cantidad <br> M3</th>
                         <th>Fecha de Creación</th>
                         <th>Creado por</th>
@@ -123,13 +122,12 @@
 
                     <tr>
                         <td>{{ stock.id }}</td>
-                        <td>{{ stock.producto_key }}</td>
                         <td>{{ stock.cantidad_m3 }}</td>
                         <td>{{ stock.fecha_crea }}</td>
                         <td>{{ stock.usuario_crea }}</td>
                         <td>
                             <button class="btn block" onclick="openPopup('{{ stock.id }}','{{ stock.cantidad_m3 }}','{{ stock.fecha_crea }}','{{ stock.usuario_crea }}'
-                                ,'{{ stock.producto_key }}','{{ stock.bodega }}')">
+                                ,'{{ stock.bodega }}')">
                                 <i class="fa-regular fa-clipboard fa-xl"></i></button>
                             <!--<i class="fas fa-trash-alt fa-xl" onclick="openEliminarPopup('{{ stock.id }}')"></i>-->
                             <a href="editarstock/{{stock.id}}" class="fa-sharp fa-solid fa-pen-to-square fa-xl"></a>
@@ -161,7 +159,6 @@
                     <td class="detalle-pedido-t"><strong>Cantidad <br>M3:</strong></td>
                     <td class="detalle-pedido-t"><strong>Fecha de Creación:</strong></td>
                     <td class="detalle-pedido-t"><strong>Creado por:</strong></td>
-                    <td class="detalle-pedido-t"><strong>Producto:</strong></td>
                     <td class="detalle-pedido-t"><strong>Bodega:</strong></td>
 
                 </tr>
@@ -171,7 +168,6 @@
                     <td class="detalle-pedido"><span id="popupFecha"></span></td>
                     <td class="detalle-pedido"><span id="popupUser"></span></td>
                     <td class="detalle-pedido"><span id="popupBodega"></span></td>
-                    <td class="detalle-pedido"><span id="popupProducto"></span></td>
                 </tr>
             </table>
             <button class="close-button" onclick="closePopup()">Cerrar</button>

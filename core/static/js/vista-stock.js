@@ -92,14 +92,13 @@ $(document).ready(function() {
     }
 });
 
-function openPopup(id,cantidad_m3,fecha_crea,usuario_crea,bodega,producto_key) {
+function openPopup(id,cantidad_m3,fecha_crea,usuario_crea,bodega) {
 
     document.getElementById('popupId').innerText = id; 
     document.getElementById('popupCantidad').innerText = cantidad_m3; 
     document.getElementById('popupFecha').innerText = fecha_crea; 
     document.getElementById('popupUser').innerText = usuario_crea; 
     document.getElementById('popupBodega').innerText = bodega; 
-    document.getElementById('popupProducto').innerText = producto_key; 
     document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }

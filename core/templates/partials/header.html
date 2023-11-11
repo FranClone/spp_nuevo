@@ -24,7 +24,7 @@
           <ul role="menu" class="menu-vertical">
             <li><a href="#" class="nav-link" onclick="showPopupimport()">Cargar Pedido</a></li>
             <li><a href="{% url 'home' %}" class="nav-link" id="showPedidosButton">Ver Pedidos</a></li>
-            <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Planificar Producción</a></li>
+            <li><a class="nav-link" href="{% url 'home' %}#productos" id="showProductosButton">Ver Productos</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#plan" id="showPlanButton">Plan vigente</a></li>
             <li><a class="nav-link" href="{% url 'home' %}#planpedido" id="showPlanPedidosButton">Plan Pedidos</a></li>
             {% comment %} <li><a class="nav-link" href="{% url 'home' %}#plan2" id="showPlan2Button">Prueba</a></li> {% endcomment %}
@@ -59,14 +59,14 @@
           </ul>
         </li>
         {% endif %}
-        {% if 'BETECH' not in request.user.roles %}
+                <!--{% if 'BETECH' not in request.user.roles %}
         <li class="nav-item">
           <a class="nav-link" href="#">Reportes</a>
           <ul class="menu-vertical">
             <li><a class="nav-link" href="#">TBD</a></li>
           </ul>
         </li>
-        {% endif %}
+        {% endif %}-->
         <li class="nav-item">
           <a class="nav-link" href="{% url 'logout' %}">Salir</a>
         </li>
@@ -151,6 +151,18 @@
             $("#toggle-lineas-button").hide();
         });
     });
+    
+        $(document).ready(function() {
+      $("#showPlanPedidosButton").click(function() {
+          $("#btnGroup").hide();
+      });
+  });
+  
+  $(document).ready(function() {
+      $("#showPlanPedidosButton").click(function() {
+          $("#toggle-lineas-button").hide();
+      });
+  });
     
     </script>
     

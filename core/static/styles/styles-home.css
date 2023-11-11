@@ -922,13 +922,12 @@ th.desc::after {
 
 .red-button-g,
 .red-button-c {
-    background-color: red;
     color: white;
-    border: 1px solid white;
-    border-radius: 5px;
-    margin-left: 10px;
-    padding: 0.5vh;
-    width: 5vh;
+    background-color: rgba(255, 0, 0, 0.705);
+    border-radius: 6px;
+    padding: 13px 13px;
+    border: 2px solid white;
+    text-decoration: none !important;
 }
 
 .red-button-a {

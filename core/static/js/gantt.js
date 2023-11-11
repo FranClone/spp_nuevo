@@ -354,53 +354,78 @@ class Gantt {
         // Check if the date is today
 
 
-        for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
+        const botonReplanificar = document.getElementById('ejecutarBoton');
+        botonReplanificar.addEventListener('click', replanificar);
+
+        function replanificar() {
+            // Limpiar los valores almacenados en localStorage
+            for (let i = 0; i < sortedRows.length; i++) {
+                localStorage.removeItem(`paquetesGenerados_${i}`);
+            }
+
+            // Recargar la página o actualizar los valores directamente si es posible sin recargar
+            location.reload(); // Esto recargará la página para que los números aleatorios se regeneren
+        }
+
+        for (let index = 0; index < sortedRows.length; index++) {
+            const sortedRow = sortedRows[index];
             const ids = sortedRow.ids.join(', ');
             var dateDiff = this.diffInDays(sortedRow.fechaFin, sortedRow.fechaInicio);
             maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
+        
             function roundToThreeDecimals(number) {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-
-            bodyHtml += '<tr>';
+        
+            bodyHtml = '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
-           // bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
+            let paquetesGuardados = localStorage.getItem(`paquetesGenerados_${index}`); // Usamos el índice como parte del identificador
+        
 
-            for (let i = 0; i < sortedRow.detalles.length; i++) {
-                let detalle = sortedRow.detalles[i];
-                for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
-                    paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
+        
+            if (paquetesGuardados) {
+                paquetesPorDia = JSON.parse(paquetesGuardados);
+            } else {
+                paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
+        
+                for (let i = 0; i < sortedRow.detalles.length; i++) {
+                    let detalle = sortedRow.detalles[i];
+                    for (let l = 0; l < detalle.randomNumbers.length; l++) {
+                        let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
+                        paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
+                    }
                 }
+        
+                localStorage.setItem(`paquetesGenerados_${index}`, JSON.stringify(paquetesPorDia));
             }
-
+        
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
-
                 } else {
                     bodyHtml += '"></td>';
                 }
                 bodyHtml += '</td>';
             }
+            bodyHtml += '</tr>';
+        
+            html += bodyHtml;
         }
-
-        bodyHtml += '</tr>';
-
-
-        html += bodyHtml;
-        html += '</tbody></table>';
+        
+        html = `<table>${html}</table>`;
         return html;
+
+     
     }
 
 
@@ -426,33 +451,43 @@ class Gantt {
 
         // Maintain a list of unique orden_pedido values
         var uniqueOrdenPedido = [];
-
-        // Itera sobre cada producto y crea una fila por producto
         for (let i = 0; i < this.filteredTasks.length; i++) {
             var task = this.filteredTasks[i];
+            // Agrega un mensaje para rastrear el progreso
 
+            // Obtén la fecha de ETA del pedido
+            const fechaETA = new Date(task[2]); // Suponiendo que task[2] representa la fecha de ETA
+            // Obtén la fecha actual
+            const currentDate = new Date();
+            // Verifica si la fecha de ETA ya ha pasado
+            if (fechaETA >= currentDate) {
+                // El pedido aún no ha vencido, procesa el pedido y agrégalo a la tabla
+                for (let j = 0; j < task[7].length; j++) {
+                    var product = task[7][j];
 
-            // Check if orden_pedido already exists in the uniqueOrdenPedido list
-            if (!uniqueOrdenPedido.includes(task[0])) {
+                    // Check if orden_pedido already exists in the uniqueOrdenPedido list
+                    if (!uniqueOrdenPedido.includes(task[0])) {
 
-                const fechaISO = task[1];/*Fecha de carga*/
-                const fechaISO2 = task[2];/*ETA*/
-                const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
-                const fechaFormateada2 = new Date(fechaISO2).toLocaleDateString('es-ES');/*ETA*/
+                        const fechaISO = task[1];/*Fecha de carga*/
+                        const fechaISO2 = task[2];/*ETA*/
+                        const fechaFormateada = new Date(fechaISO).toLocaleDateString('es-ES');/*Fecha de carga*/
+                        const fechaFormateada2 = new Date(fechaISO2).toLocaleDateString('es-ES');/*ETA*/
 
-                bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
-                bodyHtml += `<td class="right-align">${task[0]}</td>`;/*OP Orden Interna*/
-                bodyHtml += `<td class="left-align">${task[5]}</td>`; /*Cliente*/
-                bodyHtml += `<td class="left-align">${task[38]}</td>`; /*Mercado*/
-                bodyHtml += `<td style="text-align: center;">${fechaFormateada2}</td>`; /*ETA*/
-                bodyHtml += `<td class="left-align">${task[39]}</td>`; /*Destino*/
-                bodyHtml += `<td class="left-align">${task[54]}</td>`; /*Programa*/
-                bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver...</a></td>`; /*Detalle*/
+                        bodyHtml += `<td style="text-align: center;">${fechaFormateada}</td>`; /*Fecha de carga*/
+                        bodyHtml += `<td class="right-align">${task[0]}</td>`;/*OP Orden Interna*/
+                        bodyHtml += `<td class="left-align">${task[5]}</td>`; /*Cliente*/
+                        bodyHtml += `<td class="left-align">${task[38]}</td>`; /*Mercado*/
+                        bodyHtml += `<td style="text-align: center;">${fechaFormateada2}</td>`; /*ETA*/
+                        bodyHtml += `<td class="left-align">${task[39]}</td>`; /*Destino*/
+                        bodyHtml += `<td class="left-align">${task[54]}</td>`; /*Programa*/
+                        bodyHtml += `<td  style="text-align: center;"><a class="popup-link" data-pedido-id="${i}" data-popup-type="pedido">Ver...</a></td>`; /*Detalle*/
 
-                bodyHtml += '</tr>';
+                        bodyHtml += '</tr>';
 
-                // Add the orden_pedido to the uniqueOrdenPedido list
-                uniqueOrdenPedido.push(task[0]);
+                        // Add the orden_pedido to the uniqueOrdenPedido list
+                        uniqueOrdenPedido.push(task[0]);
+                    }
+                }
             }
         }
 
