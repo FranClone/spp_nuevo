@@ -393,34 +393,22 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 </script>
 <script>
-    document.getElementById('crearBoton').addEventListener('click', function() {
+    document.getElementById('popupContainermateria').addEventListener('submit', function(event) {
+    // Verificar si el formulario es válido
+    if (event.target.checkValidity()) {
         localStorage.setItem('botonCrearPresionado', 'true');
         // Mostrar 'ejecutarBoton' al presionar 'crearBoton'
         document.getElementById('ejecutarBoton').style.display = 'block';
+    }
     });
 
-    document.getElementById('ejecutarBoton').addEventListener('click', function() {
-        localStorage.removeItem('botonCrearPresionado'); // Eliminar la clave al presionar 'ejecutarBoton'
-        this.style.display = 'none'; // Ocultar 'ejecutarBoton'
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        var botonCrearPresionado = localStorage.getItem('botonCrearPresionado');
-        
-        if (botonCrearPresionado) {
-            // Mostrar 'ejecutarBoton' si 'crearBoton' fue presionado
-            document.getElementById('ejecutarBoton').style.display = 'block';
-        } else {
-            // Ocultar 'ejecutarBoton' si no se presionó 'crearBoton'
-            document.getElementById('ejecutarBoton').style.display = 'none';
-        }
-    });
-</script>
-<script>
-    document.getElementById('crearBoton2').addEventListener('click', function() {
+    document.getElementById('popupContainerproduccion').addEventListener('submit', function(event) {
+    // Verificar si el formulario es válido
+    if (event.target.checkValidity()) {
         localStorage.setItem('botonCrearPresionado', 'true');
         // Mostrar 'ejecutarBoton' al presionar 'crearBoton'
         document.getElementById('ejecutarBoton').style.display = 'block';
+    }
     });
 
     document.getElementById('ejecutarBoton').addEventListener('click', function() {
