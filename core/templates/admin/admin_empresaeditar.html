@@ -40,35 +40,22 @@
                 </tr>
                 <tr>
                     <th>{{ form.fecha_vigencia.label_tag }}</th>
-                    <th>{{ form.usuario_crea.label_tag }}</th>
+                    <th>{{ form.nombre_fantasia.label_tag }}</th>
+
                 </tr>
                 <tr>
                     <td>{{ form.fecha_vigencia }}</td>
-                    <td>{{ form.usuario_crea }}</td>
-                </tr>
-                <tr>
-                    <th>{{ form.nombre_fantasia.label_tag }}</th>
-                    <th>{{ form.ciudad.label_tag }}</th>
-                </tr>
-                <tr>
                     <td>{{ form.nombre_fantasia }}</td>
-                    <td>{{ form.ciudad }}</td>
+
                 </tr>
                 <tr>
+                    <th>{{ form.ciudad.label_tag }}</th>
                     <th>{{ form.telefono.label_tag }}</th>
-                    <th>{{ form.productos.label_tag }}</th>
                 </tr>
                 <tr>
+                    <td>{{ form.ciudad }}</td>
                     <td>{{ form.telefono }}</td>
-                    <td>{{ form.productos }}</td>
                 </tr>
-                <tr>
-                    <th>{{ form.cliente.label_tag }}</th>
-                </tr>
-                <tr>
-                    <td>{{ form.cliente }}</td>
-                </tr>
-                
             </table>
     <button type="submit" name="guardar" class="red-button-g">Guardar</button>
     <button type="button" class="red-button-c">
