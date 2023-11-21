@@ -96,7 +96,6 @@ $(document).ready(function() {
 
 function openPopup(orden_producto, nombre, descripcion, inventario_inicial, nombre_rollizo, inventario_final,linea,patrones_de_corte) {
     // Set the data in the popup
-    console.log( patrones_de_corte);
     document.getElementById('popupOrden_producto').innerText = orden_producto;
     document.getElementById('popupNombre').innerText = nombre;
     document.getElementById('popupDescripcion').innerText = descripcion;
@@ -104,8 +103,10 @@ function openPopup(orden_producto, nombre, descripcion, inventario_inicial, nomb
     document.getElementById('popupNombre_rollizo').innerText = nombre_rollizo;
     document.getElementById('popupInventario_final').innerText = inventario_final;
     document.getElementById('popupLinea').innerText = linea;
+    if (!patrones_de_corte) {
+        patrones_de_corte = "Sin relación";
+    }
     document.getElementById('popupPatron_corte').innerText = patrones_de_corte;
-    console.log("IDs de patrones de corte relacionados:", patrones_de_corte);
     document.getElementById('popupOverlay').style.display = 'flex';
     document.getElementById('popup').style.display = 'block';
 }

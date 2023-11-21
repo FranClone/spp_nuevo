@@ -901,6 +901,7 @@ def rollizo_editar(request,id):
     if request.method == 'POST':
         formulario = CrearRollizoForm(data = request.POST, instance=prod)
         if formulario.is_valid():
+            formulario.instance.usuario_crea = request.user.username
             formulario.save()
             return redirect('plan_rollizo')
         else:
@@ -1058,6 +1059,7 @@ def rollizo(request):
         if 'crear' in request.POST:
             form = CrearRollizoForm(request.POST)
             if form.is_valid():
+                form.instance.usuario_crea = request.user.username
                 nuevo_rollizo = form.save()
                 return redirect('plan_rollizo')
     
@@ -1091,6 +1093,7 @@ def cliente(request):
         if 'crear' in request.POST:
             form = CrearClienteForm(request.POST)
             if form.is_valid():
+                form.instance.usuario_crea = request.user.username
                 nueva_cliente = form.save()
                 return redirect('admin_cliente')
     
@@ -1110,9 +1113,10 @@ def empresa(request):
         if 'crear' in request.POST:
             form = CrearEmpresaForm(request.POST)
             if form.is_valid():
+                form.instance.usuario_crea = request.user.username
                 form.save()
                 return redirect('admin_empresa')
-    
+
     context = {
         'form': form,
         'empresas': empresas
@@ -1168,6 +1172,7 @@ def cliente_editar(request,id):
     if request.method == 'POST':
         formulario = CrearClienteForm(data = request.POST, instance=cliente)
         if formulario.is_valid():
+            formulario.instance.usuario_crea = request.user.username
             formulario.save()
             return redirect('admin_cliente')
         else:
@@ -1183,6 +1188,7 @@ def empresa_editar(request,id):
     if request.method == 'POST':
         formulario = CrearEmpresaForm(data = request.POST, instance=empresa)
         if formulario.is_valid():
+            formulario.instance.usuario_crea = request.user.username
             formulario.save()
             return redirect('admin_empresa')
         else:
@@ -1201,9 +1207,9 @@ def actualizar_stock_rollizo(request):
     formStockRollizo = ActualizarStockRollizo()
     if request.method == 'POST':
         if 'crear' in request.POST:
-            print('en crear rollizo')
             formStockRollizo = ActualizarStockRollizo(request.POST)
             if formStockRollizo.is_valid():
+                formStockRollizo.instance.usuario_crea = request.user.username
                 nuevo_stock = formStockRollizo.save()
                 return redirect(f"{reverse('home')}#plan")
     else:

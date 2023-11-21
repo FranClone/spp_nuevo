@@ -177,10 +177,6 @@ class Gantt {
                     const fechaActual = new Date(); // Obtener la fecha actual
                     var diasRestantes = this.diffInDays(dMax, fechaActual);
 
-                    console.log('Fecha de inicio (dMin):', dMin);
-                    console.log('Fecha de finalización (dMax):', dMax);
-                    console.log('Días restantes:', diasRestantes);
-
 
 
                     bodyHtml += '<tr>';
@@ -250,7 +246,6 @@ class Gantt {
         // Calcula la fecha 10 días después
         const tenDaysLater = new Date(currentDate);
         tenDaysLater.setDate(currentDate.getDate() + 10);
-        console.log('ola');
         // Agrega las fechas al encabezado
         for (let date = new Date(currentDate); date <= tenDaysLater; date.setDate(date.getDate() + 1)) {
             const formattedDate = this.formatDate(date, "diario");
@@ -752,7 +747,6 @@ class Gantt {
 
     attachEventListeners() {
         const popupLinks = document.querySelectorAll('.popup-link');
-        console.log('Popup links found:', popupLinks.length);
 
         const self = this; // Store a reference to the current instance
 
@@ -1069,9 +1063,7 @@ $(document).on('click', '.agregar-folio-button', function () {
 
     // Guardar el texto en una variable
     var textoGuardado = textoIngresado;
-    // Hacer algo con la variable textoGuardado, por ejemplo, imprimirlo en la consola
-    console.log("Texto guardado:", textoGuardado);
-    // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+
 
 
 });
@@ -1164,10 +1156,7 @@ document.addEventListener('click', function (event) {
     if (event.target && event.target.classList.contains('popup-link')) {
         // Obtener el valor de 'i' desde el atributo de datos personalizado
         const iValue = event.target.getAttribute('data-i');
-        console.log('Valor de i:', iValue);
 
-        // Obtener todos los valores de 'i' almacenados en el array 'iValues' y mostrarlos
-        console.log('Valores de i almacenados:', iValues);
     }
 });
 
