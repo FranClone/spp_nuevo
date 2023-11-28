@@ -393,13 +393,9 @@ class Gantt {
                 bodyHtml += '</td>';
             }
         }
-<<<<<<< HEAD
-        return html;
-=======
 
         bodyHtml += '</tr>';
         
->>>>>>> 922419684e62c205ad0ffc5d6dc645fbbe2edf33
 
 
         html += bodyHtml;
