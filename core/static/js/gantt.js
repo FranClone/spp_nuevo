@@ -421,8 +421,6 @@ class Gantt {
         
             html += bodyHtml;
         }
-        
-        html = `<table>${html}</table>`;
         return html;
 
      
