@@ -278,6 +278,41 @@ h3 {
     /* Cambia el color de fondo a amarillo para celdas con paquetes solicitados */
 }
 
+.event-table-plan {
+    border-collapse: collapse;
+    width: 100%;
+    height: 100%;
+
+}
+.event-table-plan tr {
+    border: 1px solid black;
+    border-bottom: 1px solid black;
+}
+
+#scroll-plan {
+    max-height: 70vh; /* Establece la altura máxima del contenedor */
+    overflow-y: auto; /* Agrega una barra de desplazamiento vertical cuando el contenido excede la altura máxima */
+}
+
+.scroll-bot-plan{
+    bottom: 0;
+    position: sticky;
+    
+}
+.scroll-top-plan {
+    top: 0;
+    position: sticky;
+    border-width: 1px;
+    border-color: black;
+    z-index: 2;
+  }
+  
+  /* Style the table cells */
+  .event-table-plan th, .event-table-plan td {
+    padding: 8px;
+    border: 1px solid black;
+  }
+
 .event-table {
     border-collapse: collapse;
     width: 100%;

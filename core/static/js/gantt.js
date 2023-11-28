@@ -177,10 +177,6 @@ class Gantt {
                     const fechaActual = new Date(); // Obtener la fecha actual
                     var diasRestantes = this.diffInDays(dMax, fechaActual);
 
-                    console.log('Fecha de inicio (dMin):', dMin);
-                    console.log('Fecha de finalización (dMax):', dMax);
-                    console.log('Días restantes:', diasRestantes);
-
 
 
                     bodyHtml += '<tr>';
@@ -225,8 +221,10 @@ class Gantt {
 
 
     PlanTable() {
+                
 
-        var html = '<table class="event-table second-table"><thead><tr>';
+        var html = '<div id="scroll-plan">';
+        html += '<table class="event-table-plan second-table"><thead class="scroll-top-plan"><tr>';
         html += '<tr>'
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;"></th>';
         html += '<th style="color: white; width: 45vh; font-size: 15px; text-align: center; height:3vh;" colspan="3">Escuadrias</th>';
@@ -345,7 +343,6 @@ class Gantt {
         }
 
 
-
         const sortedRows = Object.values(groupedRows).sort((a, b) => {
             const productNameA = a.product.toLowerCase();
             const productNameB = b.product.toLowerCase();
@@ -354,76 +351,60 @@ class Gantt {
         // Check if the date is today
 
 
-        const botonReplanificar = document.getElementById('ejecutarBoton');
-        botonReplanificar.addEventListener('click', replanificar);
-
-        function replanificar() {
-            // Limpiar los valores almacenados en localStorage
-            for (let i = 0; i < sortedRows.length; i++) {
-                localStorage.removeItem(`paquetesGenerados_${i}`);
-            }
-
-            // Recargar la página o actualizar los valores directamente si es posible sin recargar
-            location.reload(); // Esto recargará la página para que los números aleatorios se regeneren
-        }
-
-        for (let index = 0; index < sortedRows.length; index++) {
-            const sortedRow = sortedRows[index];
+        for (let sortedRow of sortedRows) { // Cambia el nombre de la variable a sortedRow
             const ids = sortedRow.ids.join(', ');
             var dateDiff = this.diffInDays(sortedRow.fechaFin, sortedRow.fechaInicio);
             maxFechaLejanaPorFila = Math.min(maxFechaLejanaPorFila, 11);
-        
             function roundToThreeDecimals(number) {
                 const roundedNumber = Math.round(number * 1000) / 1000;
                 return roundedNumber;
             }
-        
-            bodyHtml = '<tr>';
+            bodyHtml += '</tbody>';
+
+         
+            bodyHtml += '<tr>';
             bodyHtml += `<td>${sortedRow.product}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.largo.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.ancho.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.alto.toLocaleString()}</td>`;
             bodyHtml += `<td class="right-align">${sortedRow.cantidad}</td>`;
+           // bodyHtml += `<td class="right-align"></td>`;
             bodyHtml += `<td class="right-align">${roundToThreeDecimals(sortedRow.cantidadm3).toString().replace('.', ',')}</td>`;
             bodyHtml += `<td class="left-align"><a class="popup-link" data-popup-type="producto" data-pedido-id="${ids}">Ver detalles</a></td>`;
             let paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
-            let paquetesGuardados = localStorage.getItem(`paquetesGenerados_${index}`); // Usamos el índice como parte del identificador
-        
 
-        
-            if (paquetesGuardados) {
-                paquetesPorDia = JSON.parse(paquetesGuardados);
-            } else {
-                paquetesPorDia = new Array(maxFechaLejanaPorFila).fill(0);
-        
-                for (let i = 0; i < sortedRow.detalles.length; i++) {
-                    let detalle = sortedRow.detalles[i];
-                    for (let l = 0; l < detalle.randomNumbers.length; l++) {
-                        let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
-                        paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
-                    }
+            for (let i = 0; i < sortedRow.detalles.length; i++) {
+                let detalle = sortedRow.detalles[i];
+                for (let l = 0; l < detalle.randomNumbers.length; l++) {
+                    let diaAleatorio = Math.floor(Math.random() * maxFechaLejanaPorFila);
+                    paquetesPorDia[diaAleatorio] += detalle.randomNumbers[l];
                 }
-        
-                localStorage.setItem(`paquetesGenerados_${index}`, JSON.stringify(paquetesPorDia));
             }
-        
+
             for (let k = 0; k < paquetesPorDia.length; k++) {
                 bodyHtml += '<td class="event-cell';
                 if (paquetesPorDia[k] > 0) {
                     bodyHtml += ' has-paquetes">';
                     bodyHtml += `<div style="text-align: center; font-size:1vh;"> ${paquetesPorDia[k]}</div>`;
+
                 } else {
                     bodyHtml += '"></td>';
                 }
                 bodyHtml += '</td>';
             }
-            bodyHtml += '</tr>';
-        
-            html += bodyHtml;
         }
+<<<<<<< HEAD
         return html;
+=======
 
-     
+        bodyHtml += '</tr>';
+        
+>>>>>>> 922419684e62c205ad0ffc5d6dc645fbbe2edf33
+
+
+        html += bodyHtml;
+        html += '</tfoot></table></div>';
+        return html;
     }
 
 
@@ -750,7 +731,6 @@ class Gantt {
 
     attachEventListeners() {
         const popupLinks = document.querySelectorAll('.popup-link');
-        console.log('Popup links found:', popupLinks.length);
 
         const self = this; // Store a reference to the current instance
 
@@ -1067,9 +1047,7 @@ $(document).on('click', '.agregar-folio-button', function () {
 
     // Guardar el texto en una variable
     var textoGuardado = textoIngresado;
-    // Hacer algo con la variable textoGuardado, por ejemplo, imprimirlo en la consola
-    console.log("Texto guardado:", textoGuardado);
-    // Puedes realizar cualquier acción adicional aquí, como enviar los datos al servidor.
+
 
 
 });
@@ -1162,10 +1140,7 @@ document.addEventListener('click', function (event) {
     if (event.target && event.target.classList.contains('popup-link')) {
         // Obtener el valor de 'i' desde el atributo de datos personalizado
         const iValue = event.target.getAttribute('data-i');
-        console.log('Valor de i:', iValue);
 
-        // Obtener todos los valores de 'i' almacenados en el array 'iValues' y mostrarlos
-        console.log('Valores de i almacenados:', iValues);
     }
 });
 
