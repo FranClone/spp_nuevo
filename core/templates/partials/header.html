@@ -77,55 +77,68 @@
       {{ request.user.email }}
     </div>
   </div>
-  <script>
+  
+  
+    <script>
     document.addEventListener("DOMContentLoaded", function () {
-      const gantt = new Gantt(tasksData);
-      const titulo = document.getElementById("titulo");
-    
-      // Función para mostrar la tabla según el fragmento de URL
-      function mostrarTablaSegunFragmento() {
-        const fragmento = window.location.hash;
-        switch (fragmento) {
-          case "#pedidos":
-            gantt.showPedidosTable();
-            titulo.textContent = "PEDIDOS EMPRESA {{ request.user.empresa }}";
-            break;
-          case "#productos":
-            gantt.showProductosTable();
-            titulo.textContent = "PRODUCTOS EMPRESA {{ request.user.empresa }}";
-            break;
-          case "#plan":
-            gantt.showPlanTable();
-            // Obtén la fecha de producción del elemento oculto
-            titulo.textContent = "PLAN DE PRODUCCIÓN ACTUAL EMPRESA {{ request.user.empresa }} - 19/10/2023";
-            $("#btnGroup").show();
-            break;
-            //} case "#plan2":
-            //gantt.showPlan2Table();
-            // Obtén la fecha de producción del elemento oculto
-            //titulo.textContent = "PLAN PRUEBA";
-            //$("#btnGroup").show();
-            //break;
-            case "#planpedido":
-            gantt.showPlanPedidoTable();
-            // Obtén la fecha de producción del elemento oculto
-            titulo.textContent = "PLAN DE PEDIDO ACTUAL EMPRESA {{ request.user.empresa }} - 19/10/2023";
-            break;
-          default:
-            // Fragmento de URL no reconocido, muestra una tabla predeterminada
-            gantt.showPedidosTable();
-            titulo.textContent = "PEDIDOS EMPRESA {{ request.user.empresa }}";
-            break;
-        }
-      }
-    
-      // Llama a la función al cargar la página y cuando cambia el fragmento de URL
-      mostrarTablaSegunFragmento();
-      window.addEventListener("hashchange", mostrarTablaSegunFragmento);
-    });
-    
+        const gantt = new Gantt(tasksData);
+        const titulo = document.getElementById("titulo");
+        const ejecutarBoton = document.getElementById('ejecutarBoton');
 
-  </script>
+        // Función para formatear la fecha como dd/mm/yyyy
+        function formatearFecha(fecha) {
+            const dia = String(fecha.getDate()).padStart(2, '0');
+            const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses comienzan desde 0
+            const anio = fecha.getFullYear();
+            return `${dia}/${mes}/${anio}`;
+        }
+
+        // Función para mostrar la tabla según el fragmento de URL
+        function mostrarTablaSegunFragmento() {
+            const fragmento = window.location.hash;
+            switch (fragmento) {
+                case "#pedidos":
+                    gantt.showPedidosTable();
+                    titulo.textContent = `PEDIDOS EMPRESA {{ request.user.empresa }}`;
+                    break;
+                case "#productos":
+                    gantt.showProductosTable();
+                    titulo.textContent = `PRODUCTOS EMPRESA {{ request.user.empresa }}`;
+                    break;
+                case "#plan":
+                    gantt.showPlanTable();
+                    // Obtén la fecha actual y formatea
+                    const fechaActual = new Date();
+                    titulo.textContent = `PLAN DE PRODUCCIÓN ACTUAL EMPRESA {{ request.user.empresa }} - ${formatearFecha(fechaActual)}`;
+                    $("#btnGroup").show();
+                    break;
+                case "#planpedido":
+                    gantt.showPlanPedidoTable();
+                    // Obtén la fecha actual y formatea
+                    const fechaActualPedido = new Date();
+                    titulo.textContent = `PLAN DE PEDIDO ACTUAL EMPRESA {{ request.user.empresa }} - ${formatearFecha(fechaActualPedido)}`;
+                    break;
+                default:
+                    // Fragmento de URL no reconocido, muestra una tabla predeterminada
+                    gantt.showPedidosTable();
+                    titulo.textContent = `PEDIDOS EMPRESA {{ request.user.empresa }}`;
+                    break;
+            }
+        }
+
+        // Llama a la función al cargar la página y cuando cambia el fragmento de URL
+        mostrarTablaSegunFragmento();
+        window.addEventListener("hashchange", mostrarTablaSegunFragmento);
+
+        // Agregar lógica de clic para el botón "ejecutarBoton"
+        ejecutarBoton.addEventListener('click', function() {
+            // Obtén la fecha actual y formatea
+            const fechaActualEjecutar = new Date();
+            console.log('Fecha de ejecución:', formatearFecha(fechaActualEjecutar));
+        });
+    });
+</script>
+
   <script>
     
     $(document).ready(function() {
